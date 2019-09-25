@@ -43,16 +43,17 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
 
 //    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:core:' + rootProject.coreVersion
+    implementation 'androidx.test:core:' + rootProject.coreVersion
     androidTestImplementation "androidx.test.ext:junit:$rootProject.extJUnitVersion"
-    androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
-    androidTestImplementation "androidx.test:rules:$rootProject.rulesVersion"
+    implementation "androidx.test:runner:$rootProject.runnerVersion"
+    implementation "androidx.test:rules:$rootProject.rulesVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$rootProject.espressoVersion"
+    implementation "androidx.test.espresso:espresso-idling-resource:$rootProject.espressoVersion"
 
     //Fragment Scenario
     implementation 'androidx.fragment:fragment:1.1.0'
-    androidTestImplementation  'androidx.fragment:fragment-testing:1.1.0'
+    implementation 'androidx.fragment:fragment-testing:1.1.0'
 
     implementation "androidx.navigation:navigation-fragment:$navigation_version"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"

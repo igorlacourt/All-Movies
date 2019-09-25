@@ -14,6 +14,7 @@ import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.AppConstants.DATE_ASC
 import com.lacourt.myapplication.AppConstants.DATE_DESC
 import com.lacourt.myapplication.database.AppDatabase
+import com.lacourt.myapplication.indlingresource.IdlingResoureManager
 import com.lacourt.myapplication.model.Genre
 import com.lacourt.myapplication.model.Movie
 import com.lacourt.myapplication.network.Apifactory
@@ -85,9 +86,16 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
         override fun doInBackground(vararg params: Void?): Array<out Void?> {
             Log.d("testorder", "doInbackground called.\n")
+
+            IdlingResoureManager.getIdlingResource().setIdleState(true)
             fetchGenres()
             fetchMovies()
             return params
+        }
+
+        override fun onPostExecute(result: Array<out Void?>?) {
+            super.onPostExecute(result)
+            IdlingResoureManager.getIdlingResource().setIdleState(false)
         }
 
         fun fetchGenres() {
