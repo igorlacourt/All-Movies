@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,8 +37,16 @@ class MovieAdapter(context: Context?, onMovieClick: OnMovieClick) : PagedListAda
 
         holder.title.text = movie?.title
         holder.rate.text = movie?.vote_average.toString()
-        holder.genreAndDate.text = "${movie?.genres?.get(0)}, ${movie?.release_date?.subSequence(0,4)}"
 
+        if(movie?.genres == null) {
+            Log.d("rxlog", "MovieAdapter: movie.genres is null")
+            holder.genreAndDate.text = " ... , ${movie?.release_date?.subSequence(0, 4)}"
+        }
+        else {
+            Log.d("rxlog", "MovieAdapter: movie.genres NOT null")
+            holder.genreAndDate.text =
+                "${movie?.genres?.get(0)}, ${movie?.release_date?.subSequence(0, 4)}"
+        }
 
 //        holder.poster.setImageBitmap(decodeImage(movie.encoded_poster))
         Picasso.get().load("https://image.tmdb.org/t/p/w185/${movie!!.poster_path}")

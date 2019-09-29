@@ -1,13 +1,8 @@
 package com.lacourt.myapplication
 
-import android.app.Application
-import androidx.lifecycle.LiveData
-import androidx.paging.PagedList
 import com.lacourt.myapplication.model.Movie
-import com.lacourt.myapplication.testExample.Person
-import com.lacourt.myapplication.ui.home.HomeViewModel
+import com.lacourt.myapplication.viewmodel.HomeViewModel
 import io.mockk.*
-import io.mockk.impl.annotations.SpyK
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 

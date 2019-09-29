@@ -2,6 +2,7 @@ package com.lacourt.myapplication.network
 
 import com.lacourt.myapplication.model.GenreResponse
 import com.lacourt.myapplication.model.MovieResponse
+import io.reactivex.Observable
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -21,5 +22,17 @@ interface TmdbApi{
 
     @GET("genre/movie/list")
     fun getGenres() : Call<GenreResponse>
+
+    @GET("movie/upcoming")
+    fun getMoviesObservable(
+
+        @Query("language")
+        language: String,
+
+        @Query("page")
+        page: Int): Observable<MovieResponse>
+
+    @GET("genre/movie/list")
+    fun getGenresObservable() : Observable<GenreResponse>
 
 }

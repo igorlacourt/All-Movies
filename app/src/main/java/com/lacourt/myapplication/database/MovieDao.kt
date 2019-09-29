@@ -5,6 +5,7 @@ import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.lacourt.myapplication.model.Movie
 
 @Dao
@@ -12,6 +13,9 @@ interface MovieDao {
 
     @Insert
     fun insert(movie: Movie)
+
+    @Update
+    fun update(movie: Movie)
 
     @Query("SELECT * FROM movies ORDER BY release_date DESC")
     fun dateDesc(): DataSource.Factory<Int, Movie>

@@ -1,4 +1,4 @@
-package com.lacourt.myapplication.ui.home
+package com.lacourt.myapplication.viewmodel
 
 import android.app.Application
 import android.content.Context
@@ -18,6 +18,13 @@ import com.lacourt.myapplication.indlingresource.IdlingResoureManager
 import com.lacourt.myapplication.model.Genre
 import com.lacourt.myapplication.model.Movie
 import com.lacourt.myapplication.network.Apifactory
+import com.lacourt.myapplication.network.Apifactory.tmdbApi
+import io.reactivex.Observable
+import io.reactivex.Observer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.observers.DisposableObserver
+import io.reactivex.schedulers.Schedulers
 import java.io.IOException
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
@@ -63,11 +70,13 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 //        Log.d("testorder", "init: list = ${moviePagedList?.value?.size}, dbCount = ${movieDao.getCount()}")
 
         val count = movieDao.getCount()
-        if (count < 100) {
+        //TODO mudar para 100 de novo
+        if (count < 20) {
             if (count > 0)
                 movieDao.deleteAll()
 
-            FetchData().execute()
+            rxJava()
+//            FetchData().execute()
         }
     }
 
@@ -79,6 +88,70 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getMoviesList(): LiveData<PagedList<Movie>> {
         return movieDao.dateDesc().toLiveData(pageSize = 50)
+    }
+
+    var moviesObservable: ArrayList<Movie>? = null
+
+    //TODO(Continue rxJava)
+    fun rxJava(){
+        tmdbApi.getMoviesObservable(AppConstants.LANGUAGE, 1)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .flatMap {movieResponse ->
+//                moviesObservable = movieResponse.results
+                Observable.fromIterable(movieResponse.results)
+                    .subscribeOn(Schedulers.io())
+            }
+            .flatMap { movie ->
+                movieDao.insert(movie)
+                Log.d("rxlog", "movieDao.insert")
+                tmdbApi.getGenresObservable()
+                    .subscribeOn(Schedulers.io())
+                    .map { genresResponse ->
+                        val genres = genresResponse.genres
+                        Thread.sleep(5000)
+                        for (i in 0..genres.size - 1){
+                            movie.genre_ids?.forEach {id ->
+                                if(genres.get(i).id == id.toInt()){
+                                    movie.genres?.add(genres.get(i).name)
+                                }
+                            }
+                        }
+                        movie
+                    }
+
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object: Observer<Movie>{
+                override fun onSubscribe(d: Disposable) {
+
+                }
+
+                override fun onNext(movie: Movie) {
+                    Log.d("rxlog", "movieDao.update")
+                    movieDao.update(movie)
+                    if(currentOrder == DATE_ASC)
+                        movies.value = movieDao?.dateAsc().toLiveData(pageSize = 50)
+                        else
+                        movieDao.dateDesc().toLiveData(pageSize = 50)
+//                    updateMovie(movie)
+                }
+
+                override fun onError(e: Throwable) {
+
+                }
+
+                override fun onComplete() {
+
+                }
+
+            })
+
+    }
+
+    fun updateMovie(movie: Movie) {
+        if(moviesObservable != null)
+            moviesObservable?.set(moviesObservable?.indexOf(movie)!!, movie)
     }
 
     inner class FetchData() : AsyncTask<Void, Void, Array<out Void?>>() {
@@ -194,4 +267,10 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun getTestString(): String = "Just a test"
+}
+
+fun <T> List<T>.replace(newValue: T, block: (T) -> Boolean): List<T> {
+    return map {
+        if (block(it)) newValue else it
+    }
 }

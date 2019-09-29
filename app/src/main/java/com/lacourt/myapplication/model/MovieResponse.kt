@@ -4,5 +4,5 @@ import com.google.gson.annotations.Expose
 
 data class MovieResponse(
     @Expose
-    val results: List<Movie>
+    val results: ArrayList<Movie>
 )
