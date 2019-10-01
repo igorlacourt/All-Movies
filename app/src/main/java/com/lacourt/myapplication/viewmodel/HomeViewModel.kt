@@ -222,70 +222,70 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         ).show()
     }
 
-    inner class FetchData() : AsyncTask<Void, Void, Array<out Void?>>() {
-        var genresList: ArrayList<Genre>? = null
-
-        override fun doInBackground(vararg params: Void?): Array<out Void?> {
-            Log.d("testorder", "doInbackground called.\n")
-
-            IdlingResoureManager.getIdlingResource().setIdleState(true)
-            fetchGenres()
-            fetchMovies()
-            return params
-        }
-
-        override fun onPostExecute(result: Array<out Void?>?) {
-            super.onPostExecute(result)
-            IdlingResoureManager.getIdlingResource().setIdleState(false)
-        }
-
-        fun fetchGenres() {
-            try {
-                var api = Apifactory.tmdbApi.getGenres()
-                var response = api.execute()
-                var genreResponse = response.body()
-                genresList = genreResponse!!.genres as ArrayList<Genre>
-
-            } catch (e: IOException) {
-                networkErrorToast()
-            }
-        }
-
-        fun fetchMovies() {
-            Log.d("testorder", "fetchMovies() called")
-            for (i in 1..5) {
-                Log.d("testorder", "--------------------------PAGE-${i}--------------------------")
-                try {
-                    val response = Apifactory.tmdbApi.getMovies(AppConstants.LANGUAGE, i).execute()
-                    var movies = response.body()!!.results
-
-                    movies.forEach { movie ->
-                        val movieWithGenre = addGenreForEachMovie(movie)
-                        Log.d(
-                            "testorder",
-                            "inserting ${movieWithGenre.title}, id=${movieWithGenre.id}"
-                        )
-                        movieDao.insert(movieWithGenre)
-                    }
-
-                } catch (e: IOException) {
-                    networkErrorToast()
-                }
-            }
-
-        }
-
-        fun addGenreForEachMovie(movie: Movie): Movie {
-            movie.genre_ids!!.forEach { id ->
-                genresList!!.forEach { genre ->
-                    if (genre.id.toString().equals(id)) {
-                        movie.genres = ArrayList()
-                        movie.genres!!.add(genre.name)
-                    }
-                }
-            }
-            return movie
-        }
+//    inner class FetchData() : AsyncTask<Void, Void, Array<out Void?>>() {
+//        var genresList: ArrayList<Genre>? = null
+//
+//        override fun doInBackground(vararg params: Void?): Array<out Void?> {
+//            Log.d("testorder", "doInbackground called.\n")
+//
+//            IdlingResoureManager.getIdlingResource().setIdleState(true)
+//            fetchGenres()
+//            fetchMovies()
+//            return params
+//        }
+//
+//        override fun onPostExecute(result: Array<out Void?>?) {
+//            super.onPostExecute(result)
+//            IdlingResoureManager.getIdlingResource().setIdleState(false)
+//        }
+//
+//        fun fetchGenres() {
+//            try {
+//                var api = Apifactory.tmdbApi.getGenres()
+//                var response = api.execute()
+//                var genreResponse = response.body()
+//                genresList = genreResponse!!.genres as ArrayList<Genre>
+//
+//            } catch (e: IOException) {
+//                networkErrorToast()
+//            }
+//        }
+//
+//        fun fetchMovies() {
+//            Log.d("testorder", "fetchMovies() called")
+//            for (i in 1..5) {
+//                Log.d("testorder", "--------------------------PAGE-${i}--------------------------")
+//                try {
+//                    val response = Apifactory.tmdbApi.getMovies(AppConstants.LANGUAGE, i).execute()
+//                    var movies = response.body()!!.results
+//
+//                    movies.forEach { movie ->
+//                        val movieWithGenre = addGenreForEachMovie(movie)
+//                        Log.d(
+//                            "testorder",
+//                            "inserting ${movieWithGenre.title}, id=${movieWithGenre.id}"
+//                        )
+//                        movieDao.insert(movieWithGenre)
+//                    }
+//
+//                } catch (e: IOException) {
+//                    networkErrorToast()
+//                }
+//            }
+//
+//        }
+//
+//        fun addGenreForEachMovie(movie: Movie): Movie {
+//            movie.genre_ids!!.forEach { id ->
+//                genresList!!.forEach { genre ->
+//                    if (genre.id.toString().equals(id)) {
+//                        movie.genres = ArrayList()
+//                        movie.genres!!.add(genre.name)
+//                    }
+//                }
+//            }
+//            return movie
+//        }
 
 
 /*
