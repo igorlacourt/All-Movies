@@ -1,5 +1,6 @@
 package com.lacourt.myapplication.viewmodel
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.os.AsyncTask
@@ -16,7 +17,9 @@ import com.lacourt.myapplication.AppConstants.DATE_DESC
 import com.lacourt.myapplication.database.AppDatabase
 import com.lacourt.myapplication.indlingresource.IdlingResoureManager
 import com.lacourt.myapplication.model.Genre
+import com.lacourt.myapplication.model.GenreResponse
 import com.lacourt.myapplication.model.Movie
+import com.lacourt.myapplication.model.MovieResponse
 import com.lacourt.myapplication.network.Apifactory
 import com.lacourt.myapplication.network.Apifactory.tmdbApi
 import io.reactivex.Observable
@@ -69,15 +72,18 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
 //        Log.d("testorder", "init: list = ${moviePagedList?.value?.size}, dbCount = ${movieDao.getCount()}")
 
+        movieDao.deleteAll()
+        rxJava2()
+
         val count = movieDao.getCount()
         //TODO mudar para 100 de novo
-        if (count < 20) {
-            if (count > 0)
-                movieDao.deleteAll()
-
-            rxJava()
-//            FetchData().execute()
-        }
+//        if (count < 20) {
+//            if (count > 0)
+//                movieDao.deleteAll()
+//
+//            rxJava2()
+////            FetchData().execute()
+//        }
     }
 
     fun rearrengeMovies(order: String) = when (order) {
@@ -92,13 +98,13 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     var moviesObservable: ArrayList<Movie>? = null
 
-    //TODO(Continue rxJava)
-    fun rxJava(){
+    /*
+    fun rxJava() {
         tmdbApi.getMoviesObservable(AppConstants.LANGUAGE, 1)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .flatMap {movieResponse ->
-//                moviesObservable = movieResponse.results
+            .flatMap { movieResponse ->
+                //                moviesObservable = movieResponse.results
                 Observable.fromIterable(movieResponse.results)
                     .subscribeOn(Schedulers.io())
             }
@@ -110,19 +116,18 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                     .map { genresResponse ->
                         val genres = genresResponse.genres
                         Thread.sleep(5000)
-                        for (i in 0..genres.size - 1){
-                            movie.genre_ids?.forEach {id ->
-                                if(genres.get(i).id == id.toInt()){
+                        for (i in 0..genres.size - 1) {
+                            movie.genre_ids?.forEach { id ->
+                                if (genres.get(i).id == id.toInt()) {
                                     movie.genres?.add(genres.get(i).name)
                                 }
                             }
                         }
                         movie
                     }
-
             }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object: Observer<Movie>{
+            .subscribe(object : Observer<Movie> {
                 override fun onSubscribe(d: Disposable) {
 
                 }
@@ -130,9 +135,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                 override fun onNext(movie: Movie) {
                     Log.d("rxlog", "movieDao.update")
                     movieDao.update(movie)
-                    if(currentOrder == DATE_ASC)
+                    if (currentOrder == DATE_ASC)
                         movies.value = movieDao?.dateAsc().toLiveData(pageSize = 50)
-                        else
+                    else
                         movieDao.dateDesc().toLiveData(pageSize = 50)
 //                    updateMovie(movie)
                 }
@@ -148,10 +153,73 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             })
 
     }
+*/
+    fun genresRequest(): Observable<GenreResponse> = tmdbApi.getGenresObservable()
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
 
+    fun moviesRequest(): Observable<MovieResponse> =
+        tmdbApi.getMoviesObservable(AppConstants.LANGUAGE, 1)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+
+    fun requestObserver() : Observer<Movie> = object: Observer<Movie> {
+        override fun onSubscribe(d: Disposable) {
+        }
+
+        override fun onNext(movie: Movie) {
+        }
+
+        override fun onError(e: Throwable) {
+            networkErrorToast()
+        }
+
+        override fun onComplete() {
+        }
+    }
+
+    @SuppressLint("CheckResult")
+    fun rxJava2() {
+        genresRequest()
+            .flatMap { genresResponse ->
+                var genres = genresResponse.genres as ArrayList<Genre>
+                moviesRequest()
+                    .flatMap { movieResponse ->
+                        Observable.fromIterable(movieResponse.results)
+                            .subscribeOn(Schedulers.io())
+                    }
+                    .map { movie ->
+                        var updatedMovie = addGenreForEachMovie2(movie, genres)
+                        movieDao.insert(updatedMovie)
+                        movie
+                    }
+            }
+            .subscribe(requestObserver())
+
+    }
+
+    fun addGenreForEachMovie2(movie: Movie, genresList: ArrayList<Genre>): Movie {
+        movie.genre_ids!!.forEach { id ->
+            genresList!!.forEach { genre ->
+                if (genre.id.toString().equals(id)) {
+                    movie.genres = ArrayList()
+                    movie.genres!!.add(genre.name)
+                }
+            }
+        }
+        return movie
+    }
     fun updateMovie(movie: Movie) {
-        if(moviesObservable != null)
+        if (moviesObservable != null)
             moviesObservable?.set(moviesObservable?.indexOf(movie)!!, movie)
+    }
+
+    fun networkErrorToast() {
+        Toast.makeText(
+            context,
+            "Network failure :(",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     inner class FetchData() : AsyncTask<Void, Void, Array<out Void?>>() {
@@ -219,51 +287,10 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             return movie
         }
 
-        fun networkErrorToast() {
-            Toast.makeText(
-                context,
-                "Network failure :(",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-/*
-        lateinit var target: Target
-
-        private fun saveImages(movie: Movie) {
-            Picasso.get()
-                .load("https://image.tmdb.org/t/p/w185/${movie.poster_path}")
-                .into(target)
-
-            target = object: Target {
-                override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-
-                }
-
-                override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
-
-                }
-
-                override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-                   encodeBitmapAndSaveToDatabase(bitmap)
-                }
-
-            }
-        }
-
-        private fun encodeBitmapAndSaveToDatabase(bitmap: Bitmap?) {
-            val baos = ByteArrayOutputStream()
-            if(bitmap != null) {
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
-                var encodedImage = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT)
-
-            }
-        }
-        */
     }
 
-
     fun getMovieById(id: Int): Movie? {
-       return movieDao.getMovieById(id)
+        return movieDao.getMovieById(id)
     }
 
     fun getTestString(): String = "Just a test"
