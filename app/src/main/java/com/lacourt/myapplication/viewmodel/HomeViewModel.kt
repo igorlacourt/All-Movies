@@ -286,42 +286,42 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 //            }
 //            return movie
 //        }
-
-
-/*
-        lateinit var target: Target
-
-        private fun saveImages(movie: Movie) {
-            Picasso.get()
-                .load("https://image.tmdb.org/t/p/w185/${movie.poster_path}")
-                .into(target)
-
-            target = object: Target {
-                override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-
-                }
-
-                override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
-
-                }
-
-                override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-                   encodeBitmapAndSaveToDatabase(bitmap)
-                }
-
-            }
-        }
-
-        private fun encodeBitmapAndSaveToDatabase(bitmap: Bitmap?) {
-            val baos = ByteArrayOutputStream()
-            if(bitmap != null) {
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
-                var encodedImage = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT)
-
-            }
-        }
-        */
-    }
+//
+//
+///*
+//        lateinit var target: Target
+//
+//        private fun saveImages(movie: Movie) {
+//            Picasso.get()
+//                .load("https://image.tmdb.org/t/p/w185/${movie.poster_path}")
+//                .into(target)
+//
+//            target = object: Target {
+//                override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+//
+//                }
+//
+//                override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+//
+//                }
+//
+//                override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+//                   encodeBitmapAndSaveToDatabase(bitmap)
+//                }
+//
+//            }
+//        }
+//
+//        private fun encodeBitmapAndSaveToDatabase(bitmap: Bitmap?) {
+//            val baos = ByteArrayOutputStream()
+//            if(bitmap != null) {
+//                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+//                var encodedImage = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT)
+//
+//            }
+//        }
+//        */
+//    }
 
 
     fun getMovieById(id: Int): Movie? {
