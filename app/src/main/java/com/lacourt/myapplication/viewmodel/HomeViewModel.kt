@@ -163,21 +163,6 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    fun requestObserver() : Observer<Movie> = object: Observer<Movie> {
-        override fun onSubscribe(d: Disposable) {
-        }
-
-        override fun onNext(movie: Movie) {
-        }
-
-        override fun onError(e: Throwable) {
-            networkErrorToast()
-        }
-
-        override fun onComplete() {
-        }
-    }
-
     @SuppressLint("CheckResult")
     fun rxJava2() {
         genresRequest()
@@ -194,10 +179,24 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
                         movie
                     }
             }
-            .subscribe(requestObserver())
+            .subscribe(object : Observer<Movie> {
+                override fun onSubscribe(d: Disposable) {
+                }
+
+                override fun onNext(movie: Movie) {
+                }
+
+                override fun onError(e: Throwable) {
+                    networkErrorToast()
+                }
+
+                override fun onComplete() {
+
+                }
+
+            })
 
     }
-
     fun addGenreForEachMovie2(movie: Movie, genresList: ArrayList<Genre>): Movie {
         movie.genre_ids!!.forEach { id ->
             genresList!!.forEach { genre ->
@@ -209,6 +208,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         }
         return movie
     }
+
     fun updateMovie(movie: Movie) {
         if (moviesObservable != null)
             moviesObservable?.set(moviesObservable?.indexOf(movie)!!, movie)
@@ -287,7 +287,42 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             return movie
         }
 
+
+/*
+        lateinit var target: Target
+
+        private fun saveImages(movie: Movie) {
+            Picasso.get()
+                .load("https://image.tmdb.org/t/p/w185/${movie.poster_path}")
+                .into(target)
+
+            target = object: Target {
+                override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+
+                }
+
+                override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+
+                }
+
+                override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                   encodeBitmapAndSaveToDatabase(bitmap)
+                }
+
+            }
+        }
+
+        private fun encodeBitmapAndSaveToDatabase(bitmap: Bitmap?) {
+            val baos = ByteArrayOutputStream()
+            if(bitmap != null) {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+                var encodedImage = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT)
+
+            }
+        }
+        */
     }
+
 
     fun getMovieById(id: Int): Movie? {
         return movieDao.getMovieById(id)
