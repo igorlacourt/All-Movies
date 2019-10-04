@@ -110,6 +110,8 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+
+
     @SuppressLint("CheckResult")
     fun rxJava2() {
         genresRequest()
