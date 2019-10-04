@@ -57,12 +57,9 @@ class HomeFragment : Fragment(), OnMovieClick {
             }
         })
 
-        homeViewModel.movies.observe(this, Observer { pagedList ->
+        homeViewModel.movies?.observe(this, Observer { pagedList ->
             adapter.submitList(pagedList)
             progressBar.visibility = View.INVISIBLE
-
-            //TODO pagedList fetchs the entiry database and not the 50 it should fetch
-            Log.d("testorder", ".observe: list = ${pagedList?.size}, dbCount = ${homeViewModel.movieDao.getCount()}")
         })
 
         return root

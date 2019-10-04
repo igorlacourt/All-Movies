@@ -22,6 +22,7 @@ import com.lacourt.myapplication.model.Movie
 import com.lacourt.myapplication.model.MovieResponse
 import com.lacourt.myapplication.network.Apifactory
 import com.lacourt.myapplication.network.Apifactory.tmdbApi
+import com.lacourt.myapplication.repository.Repository
 import io.reactivex.Observable
 import io.reactivex.ObservableSource
 import io.reactivex.Observer
@@ -34,158 +35,15 @@ import java.io.IOException
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
-    var context: Context
-    val movieDao =
-        AppDatabase.getDatabase(application)!!.MovieDao() //Not sure if it should be here.
+    private var repository: Repository? = null
+    var movies: LiveData<PagedList<Movie>>? = null
 
-    private val moviesDescending: LiveData<PagedList<Movie>> =
-        movieDao.dateDesc().toLiveData(pageSize = 50)
-    private val moviesAscending: LiveData<PagedList<Movie>> =
-        movieDao.dateAsc().toLiveData(pageSize = 50)
-
-    private var currentOrder = DATE_DESC
-
-    private val dbMovies = movieDao.dateDesc().toLiveData(pageSize = 50)
-    val movies = MediatorLiveData<PagedList<Movie>>()
-
-    /*Remember:
-     1. that the returned list cannot be mutable
-     2. the mutable livedata should be private(check in the video again)*/
     init {
-        Log.d(
-            "testorder",
-            "----------------------------------- HomeViewModel init{...} called --------------------------------\n"
-        )
-        context = application.applicationContext
-
-        movies.addSource(moviesDescending) { result ->
-            if (currentOrder == DATE_DESC) {
-                Log.d("testorder", "addSource(moviesDescending)")
-                result?.let { movies.value = it }
-            }
-        }
-
-        movies.addSource(moviesAscending) { result ->
-            if (currentOrder == DATE_ASC) {
-                Log.d("testorder", "addSource(moviesAscending)")
-                result.let { movies.value = it }
-            }
-        }
-
-//        Log.d("testorder", "init: list = ${moviePagedList?.value?.size}, dbCount = ${movieDao.getCount()}")
-
-        movieDao.deleteAll()
-        rxJava2()
-
-        val count = movieDao.getCount()
-        //TODO mudar para 100 de novo
-//        if (count < 20) {
-//            if (count > 0)
-//                movieDao.deleteAll()
-//
-//            rxJava2()
-////            FetchData().execute()
-//        }
+        repository = Repository(application)
+        movies = repository?.movies
     }
 
-    fun rearrengeMovies(order: String) = when (order) {
-        DATE_ASC -> moviesAscending.value?.let { movies.value = it }
-        else -> moviesDescending.value?.let { movies.value = it }
-
-    }.also { currentOrder = order }
-
-    fun getMoviesList(): LiveData<PagedList<Movie>> {
-        return movieDao.dateDesc().toLiveData(pageSize = 50)
-    }
-
-    var moviesObservable: ArrayList<Movie>? = null
-
-    fun genresRequest(): Observable<GenreResponse> = tmdbApi.getGenresObservable()
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-
-
-    fun moviesRequest(page: Int): Observable<MovieResponse> =
-        tmdbApi.getMoviesObservable(AppConstants.LANGUAGE, page)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-
-
-
-    @SuppressLint("CheckResult")
-    fun rxJava2() {
-        genresRequest()
-            .flatMap { genresResponse ->
-                var genres = genresResponse.genres as ArrayList<Genre>
-                Observable.range(1, 10)
-                    .flatMap { page ->
-                        moviesRequest(page)
-                            .flatMap { movieResponse ->
-                                Observable.fromIterable(movieResponse.results)
-                                    .subscribeOn(Schedulers.io())
-                            }
-                            .map { movie ->
-                                var updatedMovie = addGenreForEachMovie2(movie, genres)
-                                movieDao.insert(updatedMovie)
-                                movie
-                            }
-                    }
-
-            }
-            .subscribe(object : Observer<Movie> {
-                override fun onSubscribe(d: Disposable) {
-                }
-
-                override fun onNext(movie: Movie) {
-                }
-
-                override fun onError(e: Throwable) {
-                    networkErrorToast()
-                }
-
-                override fun onComplete() {
-
-                }
-
-            })
-
-    }
-    fun addGenreForEachMovie2(movie: Movie, genresList: ArrayList<Genre>): Movie {
-        movie.genre_ids!!.forEach { id ->
-            genresList!!.forEach { genre ->
-                if (genre.id.toString().equals(id)) {
-                    movie.genres = ArrayList()
-                    movie.genres!!.add(genre.name)
-                }
-            }
-        }
-        return movie
-    }
-
-    fun updateMovie(movie: Movie) {
-        if (moviesObservable != null)
-            moviesObservable?.set(moviesObservable?.indexOf(movie)!!, movie)
-    }
-
-    fun networkErrorToast() {
-        Toast.makeText(
-            context,
-            "Network failure :(",
-            Toast.LENGTH_SHORT
-        ).show()
-    }
-
-
-
-    fun getMovieById(id: Int): Movie? {
-        return movieDao.getMovieById(id)
-    }
-
-    fun getTestString(): String = "Just a test"
-}
-
-fun <T> List<T>.replace(newValue: T, block: (T) -> Boolean): List<T> {
-    return map {
-        if (block(it)) newValue else it
+    fun rearrengeMovies(order: String) {
+        repository?.rearrengeMovies(order)
     }
 }
