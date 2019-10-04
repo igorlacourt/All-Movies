@@ -8,5 +8,4 @@ object AppConstants{
     const val LANGUAGE = "en-US"
     const val DATE_ASC = "ASC"
     const val DATE_DESC = "DESC"
-
 }

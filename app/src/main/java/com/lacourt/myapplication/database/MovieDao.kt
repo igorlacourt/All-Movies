@@ -34,6 +34,9 @@ interface MovieDao {
 
     @Query ("DELETE FROM movies")
     fun deleteAll()
+
+    @Query("SELECT * FROM movies WHERE title LIKE '%' || :search || '%'")
+    fun searchMovie(search: String?): LiveData<List<Movie>>
 //
 //    @Query("SELECT * FROM movies WHERE id=:id" )
 //    fun getMovieById(id: Int?): Movie
