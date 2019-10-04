@@ -34,9 +34,9 @@ class RetrofitTest {
     fun movies_call_mockito(){
 //        Mockito.verify(tmdbApi).getMovies(Mockito.anyString(), cb.capture())
 //
-//        val testRepos = ArrayList<Repository>()
-//        testRepos.add(Repository("rails", "ruby", Owner("dhh")))
-//        testRepos.add(Repository("android", "java", Owner("google")))
+//        val testRepos = ArrayList<HomeRepository>()
+//        testRepos.add(HomeRepository("rails", "ruby", Owner("dhh")))
+//        testRepos.add(HomeRepository("android", "java", Owner("google")))
 //
 //        cb.getValue().success(testRepos, null)
 //

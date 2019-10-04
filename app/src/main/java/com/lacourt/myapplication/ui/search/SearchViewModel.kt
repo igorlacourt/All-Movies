@@ -1,4 +1,4 @@
-package com.lacourt.myapplication.viewmodel
+package com.lacourt.myapplication.ui.search
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -12,12 +12,11 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     private val query = MutableLiveData<String>()
     private val repository = SearchRepository(application)
 
-    val userNameResult: LiveData<List<Movie>> = Transformations.switchMap(
+    val searchResult: LiveData<List<Movie>> = Transformations.switchMap(
         query,
         ::func
     )
 
     private fun func(name: String) = repository.searchMovie(name)
     fun searchMovie(name: String) = apply { query.value = name }
-
 }

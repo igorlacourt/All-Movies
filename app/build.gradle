@@ -44,6 +44,8 @@ dependencies {
 
 //    testImplementation 'junit:junit:4.12'
     implementation 'androidx.test:core:' + rootProject.coreVersion
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0'
     androidTestImplementation "androidx.test.ext:junit:$rootProject.extJUnitVersion"
     implementation "androidx.test:runner:$rootProject.runnerVersion"
     implementation "androidx.test:rules:$rootProject.rulesVersion"

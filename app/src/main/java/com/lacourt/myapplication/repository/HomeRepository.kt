@@ -21,7 +21,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class Repository(val application: Application   ) {
+class HomeRepository(val application: Application   ) {
 
     private var currentOrder = AppConstants.DATE_DESC
 
