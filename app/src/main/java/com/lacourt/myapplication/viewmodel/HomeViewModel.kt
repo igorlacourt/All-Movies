@@ -23,11 +23,13 @@ import com.lacourt.myapplication.model.MovieResponse
 import com.lacourt.myapplication.network.Apifactory
 import com.lacourt.myapplication.network.Apifactory.tmdbApi
 import io.reactivex.Observable
+import io.reactivex.ObservableSource
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
 import java.io.IOException
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
@@ -102,8 +104,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
 
-    fun moviesRequest(): Observable<MovieResponse> =
-        tmdbApi.getMoviesObservable(AppConstants.LANGUAGE, 1)
+
+    fun moviesRequest(page: Int): Observable<MovieResponse> =
+        tmdbApi.getMoviesObservable(AppConstants.LANGUAGE, page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
@@ -112,16 +115,20 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         genresRequest()
             .flatMap { genresResponse ->
                 var genres = genresResponse.genres as ArrayList<Genre>
-                moviesRequest()
-                    .flatMap { movieResponse ->
-                        Observable.fromIterable(movieResponse.results)
-                            .subscribeOn(Schedulers.io())
+                Observable.range(1, 5)
+                    .flatMap { page ->
+                        moviesRequest(page)
+                            .flatMap { movieResponse ->
+                                Observable.fromIterable(movieResponse.results)
+                                    .subscribeOn(Schedulers.io())
+                            }
+                            .map { movie ->
+                                var updatedMovie = addGenreForEachMovie2(movie, genres)
+                                movieDao.insert(updatedMovie)
+                                movie
+                            }
                     }
-                    .map { movie ->
-                        var updatedMovie = addGenreForEachMovie2(movie, genres)
-                        movieDao.insert(updatedMovie)
-                        movie
-                    }
+
             }
             .subscribe(object : Observer<Movie> {
                 override fun onSubscribe(d: Disposable) {

@@ -74,7 +74,8 @@ class MoviesListTest {
     @Test
     fun matchRecyclerviewItemText() {
         onView(withId(R.id.movie_list))
-            .check(matches(atPosition(0, hasDescendant(withText("Test Text")))));
+//            .check(matches(atPosition(0, withText("One Piece: Stampede"))))
+            .check(matches(atPosition(0, hasDescendant(withText("One Piece: Stampede")))))
 
     }
 
@@ -112,7 +113,7 @@ class MoviesListTest {
 
         // Check that the item has the special text.
         val middleElementText =
-            "The Day Shall Come"
+            "One Piece: Stampede"
         onView(withText(middleElementText)).check(matches(isDisplayed()))
     }
 
