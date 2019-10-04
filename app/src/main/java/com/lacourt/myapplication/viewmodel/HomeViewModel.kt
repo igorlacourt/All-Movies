@@ -115,7 +115,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         genresRequest()
             .flatMap { genresResponse ->
                 var genres = genresResponse.genres as ArrayList<Genre>
-                Observable.range(1, 5)
+                Observable.range(1, 10)
                     .flatMap { page ->
                         moviesRequest(page)
                             .flatMap { movieResponse ->
