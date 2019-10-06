@@ -1,6 +1,7 @@
 package com.lacourt.myapplication.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
@@ -13,6 +14,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     var movies: LiveData<PagedList<Movie>>? = null
 
     init {
+        Log.d("callstest", "homeViewModel init called.\n")
         homeRepository = HomeRepository(application)
         movies = homeRepository?.movies
     }

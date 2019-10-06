@@ -68,9 +68,9 @@ class MovieAdapter(context: Context?, onMovieClick: OnMovieClick) : PagedListAda
             ) = oldMovie.id == newMovie.id
 
             override fun areContentsTheSame(
-                oldConcert: Movie,
-                newConcert: Movie
-            ) = oldConcert == newConcert
+                oldItem: Movie,
+                newItem: Movie
+            ) = oldItem == newItem
         }
     }
 }

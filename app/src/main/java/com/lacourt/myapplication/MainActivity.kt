@@ -3,6 +3,7 @@ package com.lacourt.myapplication
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import com.lacourt.myapplication.ui.dashboard.DashboardFragment
@@ -21,6 +22,8 @@ class MainActivity : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.my_tool_bar)
         setSupportActionBar(toolbar);
+
+        Log.d("callstest", "MainActivity onCreate called\n")
 
         supportFragmentManager
             .beginTransaction()

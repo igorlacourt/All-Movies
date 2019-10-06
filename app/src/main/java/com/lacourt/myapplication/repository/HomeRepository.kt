@@ -21,18 +21,23 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class HomeRepository(val application: Application   ) {
+class HomeRepository(private val application: Application   ) {
+    private val config = PagedList.Config.Builder()
+        .setInitialLoadSizeHint(50)
+        .setPageSize(50)
+        .setEnablePlaceholders(false)
+        .build()
 
     private var currentOrder = AppConstants.DATE_DESC
 
-    val movieDao =
+    private val movieDao =
         AppDatabase.getDatabase(application)!!.MovieDao() //Not sure if it should be here.
 
     private val moviesDescending: LiveData<PagedList<Movie>> =
-        movieDao.dateDesc().toLiveData(pageSize = 50)
+        movieDao.dateDesc().toLiveData(config)
 
     private val moviesAscending: LiveData<PagedList<Movie>> =
-        movieDao.dateAsc().toLiveData(pageSize = 50)
+        movieDao.dateAsc().toLiveData(config)
 
     val movies = MediatorLiveData<PagedList<Movie>>()
 
@@ -40,21 +45,17 @@ class HomeRepository(val application: Application   ) {
      1. that the returned list cannot be mutable
      2. the mutable livedata should be private(check in the video again)*/
     init {
-        Log.d(
-            "testorder",
-            "----------------------------------- HomeViewModel init{...} called --------------------------------\n"
-        )
-
+        Log.d("callstest", "repository called")
         movies.addSource(moviesDescending) { result ->
             if (currentOrder == AppConstants.DATE_DESC) {
-                Log.d("testorder", "addSource(moviesDescending)")
+                Log.d("callstest", "addSource(moviesDescending)")
                 result?.let { movies.value = it }
             }
         }
 
         movies.addSource(moviesAscending) {result ->
             if (currentOrder == AppConstants.DATE_ASC) {
-                Log.d("testorder", "addSource(moviesAscending)")
+                Log.d("callstest", "addSource(moviesAscending)")
                 result.let { movies.value = it }
             }
         }

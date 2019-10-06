@@ -30,14 +30,13 @@ class HomeFragment : Fragment(), OnMovieClick {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d("callstest", "onCreateView called.\n")
+        Log.d("callstest", "onCreateView called\n")
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
         /*An 'activity' is passed in to '.of()' method below, because when passing
         'this', the ViewModel's init block is called twice.*/
         homeViewModel =
-            ViewModelProviders.of(activity!!).get(HomeViewModel::class.java)
-        Log.d("callstest", "homeViewModel initialized.\n")
+            ViewModelProviders.of(this).get(HomeViewModel::class.java)
 
         val progressBar: ProgressBar = root.findViewById(R.id.progress_circular)
         recyclerView = root.findViewById(R.id.movie_list)

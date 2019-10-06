@@ -7,7 +7,7 @@ import android.text.TextWatcher
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.lacourt.myapplication.R
-import kotlinx.android.synthetic.main.search_fragment.*
+import kotlinx.android.synthetic.main.activity_search.*
 
 class SearchActivity : AppCompatActivity() {
 
@@ -21,7 +21,7 @@ class SearchActivity : AppCompatActivity() {
 
         viewModel.searchResult.observe(this, Observer{resultList ->
             resultList.forEach{movie ->
-                search_results_tv.append("\n${movie.title}\n")
+                edt_search.append("\n${movie.title}\n")
             }
             //TODO show list of movie
         })
