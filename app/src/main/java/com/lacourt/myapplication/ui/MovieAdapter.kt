@@ -20,7 +20,6 @@ import kotlinx.android.synthetic.main.movie_list_item.view.*
 class MovieAdapter(context: Context?, onMovieClick: OnMovieClick) : PagedListAdapter<Movie, MovieViewHolder>(DIFF_CALLBACK) {
     val context = context
     val onMovieClick = onMovieClick
-    lateinit var target: Target
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         return MovieViewHolder(
@@ -58,15 +57,6 @@ class MovieAdapter(context: Context?, onMovieClick: OnMovieClick) : PagedListAda
         }
     }
 
-    private fun decodeImage(strBase64: String): Bitmap {
-        var b: ByteArray? = Base64.decode(strBase64, Base64.DEFAULT)
-
-        val bitmap = BitmapFactory.decodeByteArray(b, 0, b!!.size)
-        b = null
-
-        return bitmap
-    }
-
     companion object {
         private val DIFF_CALLBACK = object :
             DiffUtil.ItemCallback<Movie>() {
@@ -83,19 +73,6 @@ class MovieAdapter(context: Context?, onMovieClick: OnMovieClick) : PagedListAda
             ) = oldConcert == newConcert
         }
     }
-
-    fun addGenres(genres: ArrayList<String>?, textView: TextView) {
-        if (!genres.isNullOrEmpty()) {
-            textView.text = genres.get(0)
-            if (genres.size > 1) {
-                for (i in 1..genres.size - 1) {
-                    textView.append(" - " + genres.get(i))
-                }
-            }
-        }
-    }
-
-
 }
 
 class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

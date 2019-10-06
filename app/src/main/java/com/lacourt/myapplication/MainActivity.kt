@@ -1,12 +1,13 @@
 package com.lacourt.myapplication
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import com.lacourt.myapplication.ui.dashboard.DashboardFragment
 import com.lacourt.myapplication.ui.home.HomeFragment
-import com.lacourt.myapplication.ui.search.SearchFragment
+import com.lacourt.myapplication.ui.search.SearchActivity
 import kotlinx.android.synthetic.main.bottom_nav.*
 import kotlinx.android.synthetic.main.tool_bar_layout.*
 
@@ -40,14 +41,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         search_btn.setOnClickListener {
-            var SearchFragment = supportFragmentManager.findFragmentByTag("search")
-
-            if (SearchFragment == null || !SearchFragment.isAdded) {
-                supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.nav_host_fragment, SearchFragment(), "search")
-                    .commit()
-            }
+            var i = Intent(this, SearchActivity::class.java)
+            startActivity(i)
         }
 //        val navView: BottomNavigationView = findViewById(R.id.nav_view)
 //

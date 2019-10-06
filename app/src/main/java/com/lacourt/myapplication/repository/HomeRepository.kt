@@ -52,7 +52,7 @@ class HomeRepository(val application: Application   ) {
             }
         }
 
-        movies.addSource(moviesAscending) { result ->
+        movies.addSource(moviesAscending) {result ->
             if (currentOrder == AppConstants.DATE_ASC) {
                 Log.d("testorder", "addSource(moviesAscending)")
                 result.let { movies.value = it }
@@ -91,7 +91,7 @@ class HomeRepository(val application: Application   ) {
         genresRequest()
             .flatMap { genresResponse ->
                 var genres = genresResponse.genres as ArrayList<Genre>
-                Observable.range(1, 10)
+                Observable.range(1, 20)
                     .flatMap { page ->
                         moviesRequest(page)
                             .flatMap { movieResponse ->

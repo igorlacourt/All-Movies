@@ -51,7 +51,8 @@ class HomeFragment : Fragment(), OnMovieClick {
         recyclerView.adapter = adapter
         progressBar.visibility = View.VISIBLE
 
-        (recyclerView.adapter as MovieAdapter).registerAdapterDataObserver(object: RecyclerView.AdapterDataObserver() {
+        (recyclerView.adapter as MovieAdapter).registerAdapterDataObserver(object :
+            RecyclerView.AdapterDataObserver() {
             override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
                 recyclerView.scrollToPosition(0)
             }
@@ -60,6 +61,15 @@ class HomeFragment : Fragment(), OnMovieClick {
         homeViewModel.movies?.observe(this, Observer { pagedList ->
             adapter.submitList(pagedList)
             progressBar.visibility = View.INVISIBLE
+
+            Log.d("paginglog", "\n\n")
+            Log.d("paginglog", "LIST SIZE ${pagedList.size}\n")
+            pagedList.forEach { movie ->
+                if (movie == null)
+                    Log.d("paginglog", "NULL movie\n")
+                else
+                    Log.d("paginglog", "${movie.title}\n")
+            }
         })
 
         return root
