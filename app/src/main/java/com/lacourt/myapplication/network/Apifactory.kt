@@ -1,14 +1,17 @@
 package com.lacourt.myapplication.network
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.lacourt.myapplication.AppConstants
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
+import okhttp3.*
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
+
 
 object Apifactory {
-
     //Creating Auth Interceptor to add api_key query in front of all the requests.
     private val authInterceptor = Interceptor { chain ->
         val newUrl = chain.request().url
@@ -24,20 +27,23 @@ object Apifactory {
         chain.proceed(newRequest)
     }
 
-//    OkhttpClient for building http request url
-    private val tmdbClient = OkHttpClient().newBuilder()
-        .addInterceptor(authInterceptor)
-        .build()
+    fun loggingClient(): OkHttpClient{
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
 
+        return OkHttpClient.Builder()
+            .addNetworkInterceptor(interceptor)
+            .addNetworkInterceptor(authInterceptor)
+            .build()
+    }
 
     fun retrofit(): Retrofit = Retrofit.Builder()
-        .client(tmdbClient)
         .baseUrl("https://api.themoviedb.org/3/")
+        .client(loggingClient())
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build()
 
-
     val tmdbApi: TmdbApi = retrofit().create(TmdbApi::class.java)
-
 }
+

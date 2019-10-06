@@ -78,28 +78,28 @@ class HomeRepository(private val application: Application   ) {
         else -> moviesDescending.value?.let { movies.value = it }
     }.also { currentOrder = order }
 
-    fun genresRequest(): Observable<GenreResponse> = Apifactory.tmdbApi.getGenresObservable()
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+    fun genresRequest(): Observable<GenreResponse>? = Apifactory.tmdbApi?.getGenresObservable()
+        ?.subscribeOn(Schedulers.io())
+        ?.observeOn(AndroidSchedulers.mainThread())
 
-    fun moviesRequest(page: Int): Observable<MovieResponse> =
-        Apifactory.tmdbApi.getMoviesObservable(AppConstants.LANGUAGE, page)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+    fun moviesRequest(page: Int): Observable<MovieResponse>? =
+        Apifactory.tmdbApi?.getMoviesObservable(AppConstants.LANGUAGE, page)
+            ?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
 
     @SuppressLint("CheckResult")
     fun fetchMovies() {
         genresRequest()
-            .flatMap { genresResponse ->
+            ?.flatMap { genresResponse ->
                 var genres = genresResponse.genres as ArrayList<Genre>
                 Observable.range(1, 20)
                     .flatMap { page ->
                         moviesRequest(page)
-                            .flatMap { movieResponse ->
+                            ?.flatMap { movieResponse ->
                                 Observable.fromIterable(movieResponse.results)
                                     .subscribeOn(Schedulers.io())
                             }
-                            .map { movie ->
+                            ?.map { movie ->
                                 var updatedMovie = addGenreForEachMovie2(movie, genres)
                                 movieDao.insert(updatedMovie)
                                 movie
@@ -107,7 +107,7 @@ class HomeRepository(private val application: Application   ) {
                     }
 
             }
-            .subscribe(object : Observer<Movie> {
+            ?.subscribe(object : Observer<Movie> {
                 override fun onSubscribe(d: Disposable) {
                 }
 

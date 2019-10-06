@@ -17,6 +17,16 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         ::func
     )
 
-    private fun func(name: String) = repository.searchMovie(name)
-    fun searchMovie(name: String) = apply { query.value = name }
+    private fun func(title: String) = repository.searchMovie(title)
+
+    /*
+        The transformations aren't calculated unless an observer is observing
+      the returned LiveData object.
+        In other words, as soon as there's an observer attached to the 'searchResult'
+      LiveData, the 'query.value' will call the 'onChange()' that will receive the
+      'query' variable transformed by the 'func()" function.
+      Reference: https://developer.android.com/reference/android/arch/lifecycle/Transformations
+     */
+    fun searchMovie(title: String) = apply { query.value = title }
+
 }
