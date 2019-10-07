@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.model.Movie
-import com.lacourt.myapplication.ui.MovieAdapter
 import com.lacourt.myapplication.ui.OnMovieClick
 import com.lacourt.myapplication.viewmodel.HomeViewModel
 
@@ -60,15 +59,6 @@ class HomeFragment : Fragment(), OnMovieClick {
         homeViewModel.movies?.observe(this, Observer { pagedList ->
             adapter.submitList(pagedList)
             progressBar.visibility = View.INVISIBLE
-
-            Log.d("paginglog", "\n\n")
-            Log.d("paginglog", "LIST SIZE ${pagedList.size}\n")
-            pagedList.forEach { movie ->
-                if (movie == null)
-                    Log.d("paginglog", "NULL movie\n")
-                else
-                    Log.d("paginglog", "${movie.title}\n")
-            }
         })
 
         return root

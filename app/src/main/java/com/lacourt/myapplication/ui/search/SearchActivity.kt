@@ -4,26 +4,40 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
+import android.widget.ProgressBar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.R
+import com.lacourt.myapplication.model.Movie
+import com.lacourt.myapplication.ui.home.MovieAdapter
+import com.lacourt.myapplication.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.activity_search.*
 
-class SearchActivity : AppCompatActivity() {
-
+class SearchActivity : AppCompatActivity(), OnSearchedItemClick{
     private lateinit var viewModel: SearchViewModel
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var progressBar: ProgressBar
+    private lateinit var adapter: SearchAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        progressBar = findViewById(R.id.search_progress_bar)
+        setUpReyclerview()
         viewModel = ViewModelProviders.of(this).get(SearchViewModel::class.java)
 
         viewModel.searchResult.observe(this, Observer{resultList ->
-            resultList.forEach{movie ->
-                edt_search.append("\n${movie.title}\n")
-            }
-            //TODO show list of movie
+            adapter.setList(resultList)
+            progressBar.visibility = View.INVISIBLE
+//            resultList.forEach{movie ->
+//                edt_search.append("\n${movie.title}\n")
+
+//            }
         })
 
         edt_search.addTextChangedListener(searchTextWatcher())
@@ -33,11 +47,33 @@ class SearchActivity : AppCompatActivity() {
 
         override fun afterTextChanged(s: Editable) {}
 
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            progressBar.visibility = View.VISIBLE
+        }
 
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
             if (s.isNotEmpty())
                 viewModel.searchMovie(s.toString())
+            progressBar.visibility = View.INVISIBLE
+
         }
+    }
+
+    override fun onSearchItemClick(movie: Movie) {
+
+    }
+
+
+    fun setUpReyclerview(){
+        recyclerView = findViewById(R.id.searched_list)
+        adapter = SearchAdapter(this, ArrayList<Movie>())
+
+        recyclerView.computeVerticalScrollOffset()
+
+        var linearLayoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = linearLayoutManager
+
+        recyclerView.adapter = adapter
+        progressBar.visibility = View.VISIBLE
     }
 }

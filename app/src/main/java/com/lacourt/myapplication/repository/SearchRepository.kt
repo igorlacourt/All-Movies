@@ -3,14 +3,31 @@ package com.lacourt.myapplication.repository
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.database.AppDatabase
 import com.lacourt.myapplication.model.Movie
+import com.lacourt.myapplication.model.MovieResponse
+import com.lacourt.myapplication.network.Apifactory
+import com.lacourt.myapplication.network.TmdbApi
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SearchRepository(application: Application) {
-    var searchResult: MutableLiveData<Movie> = MutableLiveData()
-    val movieDao = AppDatabase.getDatabase(application)!!.MovieDao()
+    var searchResult: MutableLiveData<ArrayList<Movie>>? = MutableLiveData()
+//    val movieDao = AppDatabase.getDatabase(application)!!.MovieDao()
 
-    fun searchMovie(title:String) : LiveData<List<Movie>> {
-        return movieDao.searchMovie(title)
+    fun searchMovie(title:String) {//: LiveData<List<Movie>> {
+//        return movieDao.searchMovie(title)
+        Apifactory.tmdbApi.searchMovie(AppConstants.LANGUAGE, title, false).enqueue(object : Callback<MovieResponse> {
+            override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+
+            }
+
+            override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
+                if(response.isSuccessful)
+                    searchResult?.value = response.body()?.results
+            }
+        })
     }
 }

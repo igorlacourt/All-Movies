@@ -14,7 +14,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
 import com.lacourt.myapplication.indlingresource.IdlingResoureManager
-import com.lacourt.myapplication.ui.MovieViewHolder
+import com.lacourt.myapplication.ui.home.MovieViewHolder
 import com.lacourt.myapplication.ui.home.HomeFragment
 import org.hamcrest.Description
 import org.hamcrest.Matcher
@@ -26,9 +26,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.matcher.BoundedMatcher
-import androidx.annotation.NonNull
-
-
 
 
 /**
