@@ -1,5 +1,6 @@
 package com.lacourt.myapplication.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.model.Movie
 import com.lacourt.myapplication.ui.OnMovieClick
+import com.lacourt.myapplication.ui.details.DetailsActivity
 import com.lacourt.myapplication.viewmodel.HomeViewModel
 
 
@@ -75,6 +77,8 @@ class HomeFragment : Fragment(), OnMovieClick {
     }
 
     override fun onMovieClick(movie: Movie) {
-        Toast.makeText(context, "${movie.title}", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, "${movie.title}", Toast.LENGTH_SHORT).show()
+        val i = Intent(context, DetailsActivity::class.java)
+        context?.startActivity(i)
     }
 }

@@ -1,5 +1,6 @@
 package com.lacourt.myapplication.ui.search
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.model.Movie
+import com.lacourt.myapplication.ui.details.DetailsActivity
 import com.lacourt.myapplication.ui.home.MovieAdapter
 import com.lacourt.myapplication.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.activity_search.*
@@ -31,13 +33,16 @@ class SearchActivity : AppCompatActivity(), OnSearchedItemClick{
         setUpReyclerview()
         viewModel = ViewModelProviders.of(this).get(SearchViewModel::class.java)
 
+        progressBar.visibility = View.INVISIBLE
+
         viewModel.searchResult.observe(this, Observer{resultList ->
             adapter.setList(resultList)
             progressBar.visibility = View.INVISIBLE
-//            resultList.forEach{movie ->
-//                edt_search.append("\n${movie.title}\n")
 
-//            }
+            if(resultList == null || resultList.isEmpty())
+                search_no_results.visibility = View.VISIBLE
+            else
+                search_no_results.visibility = View.INVISIBLE
         })
 
         edt_search.addTextChangedListener(searchTextWatcher())
@@ -45,22 +50,24 @@ class SearchActivity : AppCompatActivity(), OnSearchedItemClick{
 
     fun searchTextWatcher() = object : TextWatcher {
 
-        override fun afterTextChanged(s: Editable) {}
+        override fun afterTextChanged(s: Editable) {
+
+        }
 
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            progressBar.visibility = View.VISIBLE
+
         }
 
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
             if (s.isNotEmpty())
                 viewModel.searchMovie(s.toString())
-            progressBar.visibility = View.INVISIBLE
-
+            progressBar.visibility = View.VISIBLE
         }
     }
 
     override fun onSearchItemClick(movie: Movie) {
-
+        val i = Intent(this, DetailsActivity::class.java)
+        startActivity(i)
     }
 
 

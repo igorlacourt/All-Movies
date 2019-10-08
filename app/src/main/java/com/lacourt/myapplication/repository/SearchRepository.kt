@@ -15,15 +15,12 @@ import retrofit2.Response
 
 class SearchRepository(application: Application) {
     var searchResult: MutableLiveData<ArrayList<Movie>>? = MutableLiveData()
-//    val movieDao = AppDatabase.getDatabase(application)!!.MovieDao()
 
-    fun searchMovie(title:String) {//: LiveData<List<Movie>> {
-//        return movieDao.searchMovie(title)
+    fun searchMovie(title:String) {
         Apifactory.tmdbApi.searchMovie(AppConstants.LANGUAGE, title, false).enqueue(object : Callback<MovieResponse> {
             override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
 
             }
-
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
                 if(response.isSuccessful)
                     searchResult?.value = response.body()?.results
