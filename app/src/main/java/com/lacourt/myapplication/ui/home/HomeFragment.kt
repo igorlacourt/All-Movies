@@ -79,6 +79,8 @@ class HomeFragment : Fragment(), OnMovieClick {
     override fun onMovieClick(movie: Movie) {
 //        Toast.makeText(context, "${movie.title}", Toast.LENGTH_SHORT).show()
         val i = Intent(context, DetailsActivity::class.java)
+        i.putExtra("movie", movie)
         context?.startActivity(i)
     }
+
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.model.Movie
 import com.lacourt.myapplication.ui.OnMovieClick
@@ -42,7 +43,7 @@ class MovieAdapter(context: Context?, onMovieClick: OnMovieClick) : PagedListAda
 //        holder.genreAndDate.text = "${movie?.genres?.get(0)}, ${movie?.release_date?.subSequence(0, 4)}"
 
 //        holder.poster.setImageBitmap(decodeImage(movie.encoded_poster))
-        Picasso.get().load("https://image.tmdb.org/t/p/w185/${movie!!.poster_path}")
+        Picasso.get().load("${AppConstants.TMDB_IMAGE_BASE_URL_W185}${movie!!.poster_path}")
             .placeholder(R.drawable.clapperboard)
             .into(holder.poster)
 

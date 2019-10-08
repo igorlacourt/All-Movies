@@ -1,14 +1,13 @@
 package com.lacourt.myapplication.ui.search
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.model.Movie
-import com.lacourt.myapplication.ui.details.DetailsActivity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.searched_list_item.view.*
 
@@ -32,7 +31,7 @@ class SearchAdapter(
 
         holder.apply {
             title.text = list[position].title
-            Picasso.get().load("https://image.tmdb.org/t/p/w185/${list[position].backdrop_path}")
+            Picasso.get().load("${AppConstants.TMDB_IMAGE_BASE_URL_W185}${list[position].backdrop_path}")
                 .placeholder(R.drawable.clapperboard)
                 .into(backdrop)
 

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
+import java.io.Serializable
 
 @Entity(tableName = "movies")
 data class Movie(
@@ -53,4 +54,4 @@ data class Movie(
 
     @Expose
     val vote_count: Int?
-)
+) : Serializable
