@@ -12,16 +12,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.model.Movie
+import com.lacourt.myapplication.model.dbMovie.DbMovie
 import com.lacourt.myapplication.ui.OnMovieClick
 import com.lacourt.myapplication.ui.details.DetailsActivity
 import com.lacourt.myapplication.viewmodel.HomeViewModel
 
 
 class HomeFragment : Fragment(), OnMovieClick {
+
     private val onMovieClick = this as OnMovieClick
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var recyclerView: RecyclerView
@@ -45,8 +48,8 @@ class HomeFragment : Fragment(), OnMovieClick {
 
         recyclerView.computeVerticalScrollOffset()
 
-        var gridLayoutManager = GridLayoutManager(context, 3)
-        recyclerView.layoutManager = gridLayoutManager
+        var layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = layoutManager
 
         recyclerView.adapter = adapter
         progressBar.visibility = View.VISIBLE
@@ -76,7 +79,7 @@ class HomeFragment : Fragment(), OnMovieClick {
         Log.d("testorder", "orderDateDesc()")
     }
 
-    override fun onMovieClick(movie: Movie) {
+    override fun onMovieClick(movie: DbMovie) {
 //        Toast.makeText(context, "${movie.title}", Toast.LENGTH_SHORT).show()
         val i = Intent(context, DetailsActivity::class.java)
         i.putExtra("movie", movie)

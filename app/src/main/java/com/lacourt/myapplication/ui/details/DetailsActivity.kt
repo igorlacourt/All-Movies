@@ -1,5 +1,6 @@
 package com.lacourt.myapplication.ui.details
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -37,5 +38,8 @@ class DetailsActivity : AppCompatActivity() {
             detail_overview.text = overview
         }
 
+        wish_list_btn.setOnClickListener {
+
+        }
     }
 }

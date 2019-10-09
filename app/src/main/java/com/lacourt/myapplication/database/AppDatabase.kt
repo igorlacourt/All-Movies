@@ -8,10 +8,11 @@ import androidx.room.TypeConverters
 import com.lacourt.myapplication.database.AppDatabase.Companion.DATABASE_VERSION
 import com.lacourt.myapplication.model.Favorite
 import com.lacourt.myapplication.model.Movie
+import com.lacourt.myapplication.model.dbMovie.DbMovie
 
 private var INSTANCE: AppDatabase? = null
 
-@Database(entities = arrayOf(Movie::class, Favorite::class), version = DATABASE_VERSION, exportSchema = false)
+@Database(entities = [DbMovie::class, Favorite::class], version = DATABASE_VERSION, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase: RoomDatabase() {
 

@@ -4,27 +4,28 @@ import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
 import com.lacourt.myapplication.model.Movie
+import com.lacourt.myapplication.model.dbMovie.DbMovie
 
 @Dao
 interface MovieDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(movie: Movie)
+    fun insert(movie: DbMovie)
 
     @Update
-    fun update(movie: Movie)
+    fun update(movie: DbMovie)
 
     @Query("SELECT * FROM movies ORDER BY release_date DESC")
-    fun dateDesc(): DataSource.Factory<Int, Movie>
+    fun dateDesc(): DataSource.Factory<Int, DbMovie>
 
     @Query("SELECT * FROM movies ORDER BY release_date")
-    fun dateAsc(): DataSource.Factory<Int, Movie>
+    fun dateAsc(): DataSource.Factory<Int, DbMovie>
 
     @Query("SELECT * FROM movies")
-    fun getMovies(): LiveData<List<Movie>>
+    fun getMovies(): LiveData<List<DbMovie>>
 
     @Query("SELECT * FROM movies WHERE id=:id")
-    fun getMovieById(id: Int): Movie?
+    fun getMovieById(id: Int): DbMovie?
 
     @Query("SELECT COUNT(id) FROM movies")
     fun getCount(): Int
@@ -32,8 +33,8 @@ interface MovieDao {
     @Query ("DELETE FROM movies")
     fun deleteAll()
 
-    @Query("SELECT * FROM movies WHERE title LIKE '%' || :search || '%'")
-    fun searchMovie(search: String?): LiveData<List<Movie>>
+//    @Query("SELECT * FROM movies WHERE title LIKE '%' || :search || '%'")
+//    fun searchDbMovie(search: String?): LiveData<List<DbMovie>>
 //
 //    @Query("SELECT * FROM movies WHERE id=:id" )
 //    fun getMovieById(id: Int?): Movie

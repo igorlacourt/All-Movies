@@ -10,18 +10,23 @@ import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.database.AppDatabase
+import com.lacourt.myapplication.domainMappers.Mapper
 import com.lacourt.myapplication.model.Genre
 import com.lacourt.myapplication.model.GenreResponse
 import com.lacourt.myapplication.model.Movie
 import com.lacourt.myapplication.model.MovieResponse
+import com.lacourt.myapplication.model.dbMovie.DbMovie
 import com.lacourt.myapplication.network.Apifactory
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class HomeRepository(private val application: Application   ) {
+class HomeRepository(private val application: Application, private val movieDataMapper: Mapper<Movie, DbMovie>) {
     private val config = PagedList.Config.Builder()
         .setInitialLoadSizeHint(50)
         .setPageSize(50)
@@ -33,13 +38,13 @@ class HomeRepository(private val application: Application   ) {
     private val movieDao =
         AppDatabase.getDatabase(application)!!.MovieDao() //Not sure if it should be here.
 
-    private val moviesDescending: LiveData<PagedList<Movie>> =
+    private val moviesDescending: LiveData<PagedList<DbMovie>> =
         movieDao.dateDesc().toLiveData(config)
 
-    private val moviesAscending: LiveData<PagedList<Movie>> =
+    private val moviesAscending: LiveData<PagedList<DbMovie>> =
         movieDao.dateAsc().toLiveData(config)
 
-    val movies = MediatorLiveData<PagedList<Movie>>()
+    val movies = MediatorLiveData<PagedList<DbMovie>>()
 
     /*Remember:
      1. that the returned list cannot be mutable
@@ -62,7 +67,7 @@ class HomeRepository(private val application: Application   ) {
 
         movieDao.deleteAll()
         fetchMovies()
-        val count = movieDao.getCount()
+//        val count = movieDao.getCount()
         //TODO mudar para 100 de novo
 //        if (count < 20) {
 //            if (count > 0)
@@ -87,31 +92,44 @@ class HomeRepository(private val application: Application   ) {
             ?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
 
-    @SuppressLint("CheckResult")
-    fun fetchMovies() {
-        genresRequest()
-            ?.flatMap { genresResponse ->
-                var genres = genresResponse.genres as ArrayList<Genre>
-                Observable.range(1, 20)
-                    .flatMap { page ->
-                        moviesRequest(page)
-                            ?.flatMap { movieResponse ->
-                                Observable.fromIterable(movieResponse.results)
-                                    .subscribeOn(Schedulers.io())
-                            }
-                            ?.map { movie ->
-                                var updatedMovie = addGenreForEachMovie2(movie, genres)
-                                movieDao.insert(updatedMovie)
-                                movie
-                            }
-                    }
+    fun loadMovies(page: Int){
+        Apifactory.tmdbApi.getMovies(AppConstants.LANGUAGE, page).enqueue(object :
+            Callback<MovieResponse> {
+            override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
 
             }
-            ?.subscribe(object : Observer<Movie> {
+            override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
+                if(response.isSuccessful)
+                    mapMovies(response.body()?.results as List<Movie>)
+            }
+        })
+    }
+
+    private fun mapMovies(networkMoviesList: List<Movie>): List<DbMovie> {
+        return networkMoviesList.map {
+           movieDataMapper.map(it)
+        }
+    }
+
+    @SuppressLint("CheckResult")
+    fun fetchMovies() {
+        Observable.range(1, 10)
+            .flatMap { page ->
+                moviesRequest(page)
+                    ?.map {
+                        mapMovies(it.results)
+                    }
+                    ?.flatMap {
+                        Observable.fromIterable(it)
+                            .subscribeOn(Schedulers.io())
+                    }
+            }
+            .subscribe(object : Observer<DbMovie> {
                 override fun onSubscribe(d: Disposable) {
                 }
 
-                override fun onNext(movie: Movie) {
+                override fun onNext(movie: DbMovie) {
+                    movieDao.insert(movie)
                 }
 
                 override fun onError(e: Throwable) {

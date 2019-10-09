@@ -1,12 +1,9 @@
 package com.lacourt.myapplication.model
 
 import androidx.annotation.NonNull
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import java.io.Serializable
 
-@Entity(tableName = "movies")
 data class Movie(
     @Expose
     val adult: Boolean?,
@@ -22,7 +19,6 @@ data class Movie(
 
     @Expose
     @NonNull
-    @PrimaryKey(autoGenerate = false)
     val id: Int,
 
     @Expose

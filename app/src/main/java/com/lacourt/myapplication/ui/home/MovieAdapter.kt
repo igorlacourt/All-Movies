@@ -10,15 +10,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.model.Movie
+import com.lacourt.myapplication.model.dbMovie.DbMovie
 import com.lacourt.myapplication.ui.OnMovieClick
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_list_item.view.*
 
-class MovieAdapter(context: Context?, onMovieClick: OnMovieClick) : PagedListAdapter<Movie, MovieViewHolder>(
+class MovieAdapter(
+    private val context: Context?,
+    private val onMovieClick: OnMovieClick
+) : PagedListAdapter<DbMovie, MovieViewHolder>(
     DIFF_CALLBACK
 ) {
-    val context = context
-    val onMovieClick = onMovieClick
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         return MovieViewHolder(
@@ -31,40 +33,33 @@ class MovieAdapter(context: Context?, onMovieClick: OnMovieClick) : PagedListAda
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        val movie: Movie? = getItem(position)
+        val movie: DbMovie? = getItem(position)
 
         holder.apply {
-            title.text = movie?.title
-            rate.text = movie?.vote_average.toString()
-            genreAndDate.text = "${movie?.genres?.get(0)}, ${movie?.release_date?.subSequence(0, 4)}"
-        }
-//        holder.title.text = movie?.title
-//        holder.rate.text = movie?.vote_average.toString()
-//        holder.genreAndDate.text = "${movie?.genres?.get(0)}, ${movie?.release_date?.subSequence(0, 4)}"
+            Picasso.get().load("${AppConstants.TMDB_IMAGE_BASE_URL_W185}${movie!!.poster_path}")
+                .placeholder(R.drawable.clapperboard)
+                .into(poster)
 
-//        holder.poster.setImageBitmap(decodeImage(movie.encoded_poster))
-        Picasso.get().load("${AppConstants.TMDB_IMAGE_BASE_URL_W185}${movie!!.poster_path}")
-            .placeholder(R.drawable.clapperboard)
-            .into(holder.poster)
-
-        holder.cardView.setOnClickListener {
-            onMovieClick.onMovieClick(movie)
+            cardView.setOnClickListener {
+                onMovieClick.onMovieClick(movie)
+            }
         }
+
     }
 
     companion object {
         private val DIFF_CALLBACK = object :
-            DiffUtil.ItemCallback<Movie>() {
+            DiffUtil.ItemCallback<DbMovie>() {
             // Concert details may have changed if reloaded from the database,
             // but ID is fixed.
             override fun areItemsTheSame(
-                oldMovie: Movie,
-                newMovie: Movie
+                oldMovie: DbMovie,
+                newMovie: DbMovie
             ) = oldMovie.id == newMovie.id
 
             override fun areContentsTheSame(
-                oldItem: Movie,
-                newItem: Movie
+                oldItem: DbMovie,
+                newItem: DbMovie
             ) = oldItem == newItem
         }
     }
@@ -74,9 +69,6 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     // We'll use this field to showcase matching the holder from the test.
     var IsInTheMiddle: Boolean = false
     var poster = itemView.iv_poster
-    var title = itemView.title
-    var rate = itemView.rating
-    var genreAndDate = itemView.genre_date
     var cardView = itemView.movie_card_view
     var layout = itemView.movie_layout
 
