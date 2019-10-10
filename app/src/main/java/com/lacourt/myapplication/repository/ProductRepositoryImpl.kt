@@ -6,14 +6,14 @@ import com.lacourt.myapplication.domainMappers.Mapper
 import com.lacourt.myapplication.model.Movie
 import com.lacourt.myapplication.model.MovieResponse
 import com.lacourt.myapplication.model.domainmodel.DataMovie
-import com.lacourt.myapplication.model.domainmodel.MovieDomainModel
+import com.lacourt.myapplication.model.domainmodel.DomainModel
 import com.lacourt.myapplication.network.Apifactory
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class ProductRepositoryImpl(
-    private val movieDataMapper: Mapper<DataMovie, MovieDomainModel>,
+    private val dataMapper: Mapper<DataMovie, DomainModel>,
     private val productPreferences: MoviePreferences
 )  {
     var searchResult: MutableLiveData<ArrayList<Movie>>? = MutableLiveData()
@@ -31,9 +31,9 @@ class ProductRepositoryImpl(
         })
     }
 
-    private fun mapProducts(networkMoviesList: List<Movie>): List<MovieDomainModel> {
+    private fun mapProducts(networkMoviesList: List<Movie>): List<DomainModel> {
         return networkMoviesList.map {
-            movieDataMapper.map(DataMovie(it, productPreferences.isFavourite(it.id)))
+            dataMapper.map(DataMovie(it, productPreferences.isFavourite(it.id)))
         }
     }
 }

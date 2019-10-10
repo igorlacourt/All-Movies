@@ -13,7 +13,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SearchRepository(application: Application) {
+class SearchRepository() {
     var searchResult: MutableLiveData<ArrayList<Movie>>? = MutableLiveData()
 
     fun searchMovie(title:String) {

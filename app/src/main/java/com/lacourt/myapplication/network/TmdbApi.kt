@@ -1,17 +1,26 @@
 package com.lacourt.myapplication.network
 
+import com.lacourt.myapplication.model.Details
 import com.lacourt.myapplication.model.GenreResponse
 import com.lacourt.myapplication.model.Movie
 import com.lacourt.myapplication.model.MovieResponse
 import io.reactivex.Observable
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TmdbApi{
 //    @GET("movie/upcoming")
 //    fun getMovies() : Call<MovieResponse>
 //
+
+    @GET("movie/{id}")
+    fun getDetails(
+        @Path("id")
+        id: Int
+    ): Call<Details>
+
     @GET("movie/upcoming")
     fun getMovies(
 

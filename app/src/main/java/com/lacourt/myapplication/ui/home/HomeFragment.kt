@@ -48,7 +48,7 @@ class HomeFragment : Fragment(), OnMovieClick {
 
         recyclerView.computeVerticalScrollOffset()
 
-        var layoutManager = LinearLayoutManager(context)
+        var layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManager
 
         recyclerView.adapter = adapter
@@ -79,10 +79,9 @@ class HomeFragment : Fragment(), OnMovieClick {
         Log.d("testorder", "orderDateDesc()")
     }
 
-    override fun onMovieClick(movie: DbMovie) {
-//        Toast.makeText(context, "${movie.title}", Toast.LENGTH_SHORT).show()
+    override fun onMovieClick(id: Int) {
         val i = Intent(context, DetailsActivity::class.java)
-        i.putExtra("movie", movie)
+        i.putExtra("id", id)
         context?.startActivity(i)
     }
 

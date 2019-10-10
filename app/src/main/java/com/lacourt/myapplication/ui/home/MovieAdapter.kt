@@ -41,7 +41,7 @@ class MovieAdapter(
                 .into(poster)
 
             cardView.setOnClickListener {
-                onMovieClick.onMovieClick(movie)
+                onMovieClick.onMovieClick(movie.id)
             }
         }
 

@@ -10,7 +10,7 @@ import com.lacourt.myapplication.repository.SearchRepository
 
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
     //    private val query = MutableLiveData<String>()
-    private val repository = SearchRepository(application)
+    private val repository = SearchRepository()
 
     var searchResult:LiveData<ArrayList<Movie>> = repository.searchResult as LiveData<ArrayList<Movie>>
 
