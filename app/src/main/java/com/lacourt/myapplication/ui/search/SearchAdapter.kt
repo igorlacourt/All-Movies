@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
-import com.lacourt.myapplication.model.Movie
+import com.lacourt.myapplication.model.dto.Movie
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.searched_list_item.view.*
 

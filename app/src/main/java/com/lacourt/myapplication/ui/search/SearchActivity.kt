@@ -9,13 +9,11 @@ import android.view.View
 import android.widget.ProgressBar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.R
-import com.lacourt.myapplication.model.Movie
+import com.lacourt.myapplication.model.dto.Movie
 import com.lacourt.myapplication.ui.details.DetailsActivity
-import com.lacourt.myapplication.ui.home.MovieAdapter
 import com.lacourt.myapplication.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.activity_search.*
 

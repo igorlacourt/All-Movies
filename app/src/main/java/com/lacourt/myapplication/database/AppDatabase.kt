@@ -6,21 +6,21 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.lacourt.myapplication.database.AppDatabase.Companion.DATABASE_VERSION
-import com.lacourt.myapplication.model.Favorite
-import com.lacourt.myapplication.model.dbMovie.DbMovie
+import com.lacourt.myapplication.model.dbmodel.MyListItem
+import com.lacourt.myapplication.model.dbmodel.DbMovie
 
 private var INSTANCE: AppDatabase? = null
 
-@Database(entities = [DbMovie::class, Favorite::class], version = DATABASE_VERSION, exportSchema = false)
+@Database(entities = [DbMovie::class, MyListItem::class], version = DATABASE_VERSION, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase: RoomDatabase() {
 
     abstract fun MovieDao() : MovieDao
-    abstract fun FavoriteDao() : FavoriteDao
+    abstract fun MyListDao() : MyListDao
 
 //TODO(create the favorites table)
     companion object {
-        const val DATABASE_VERSION = 6
+        const val DATABASE_VERSION = 1
         val DATABASE_NAME = "app_database"
 
         fun getDatabase(context: Context): AppDatabase? {

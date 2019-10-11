@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.Toolbar
-import com.lacourt.myapplication.ui.dashboard.DashboardFragment
+import com.lacourt.myapplication.ui.mylist.MyListFragment
 import com.lacourt.myapplication.ui.home.HomeFragment
 import com.lacourt.myapplication.ui.search.SearchActivity
 import kotlinx.android.synthetic.main.bottom_nav.*
@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         if (myListFragment == null || !myListFragment.isAdded) {
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.nav_host_fragment, DashboardFragment(), "my_list")
+                .replace(R.id.nav_host_fragment, MyListFragment(), "my_list")
                 .commit()
         }
     }

@@ -1,4 +1,4 @@
-package com.lacourt.myapplication.model
+package com.lacourt.myapplication.model.dto
 
 data class ProductionCompany(
     val id: Int,

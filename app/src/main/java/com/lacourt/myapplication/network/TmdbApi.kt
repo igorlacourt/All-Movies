@@ -1,9 +1,8 @@
 package com.lacourt.myapplication.network
 
-import com.lacourt.myapplication.model.Details
-import com.lacourt.myapplication.model.GenreResponse
-import com.lacourt.myapplication.model.Movie
-import com.lacourt.myapplication.model.MovieResponse
+import com.lacourt.myapplication.model.dto.Details
+import com.lacourt.myapplication.model.dto.GenreResponse
+import com.lacourt.myapplication.model.dto.MovieResponse
 import io.reactivex.Observable
 import retrofit2.Call
 import retrofit2.http.GET

@@ -1,6 +1,6 @@
 package com.lacourt.myapplication
 
-import com.lacourt.myapplication.model.Movie
+import com.lacourt.myapplication.model.dto.Movie
 import com.lacourt.myapplication.viewmodel.HomeViewModel
 import io.mockk.*
 import org.junit.jupiter.api.*

@@ -3,8 +3,7 @@ package com.lacourt.myapplication.database
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
-import com.lacourt.myapplication.model.Movie
-import com.lacourt.myapplication.model.dbMovie.DbMovie
+import com.lacourt.myapplication.model.dbmodel.DbMovie
 
 @Dao
 interface MovieDao {

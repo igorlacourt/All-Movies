@@ -11,11 +11,11 @@ import androidx.paging.toLiveData
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.database.AppDatabase
 import com.lacourt.myapplication.domainMappers.Mapper
-import com.lacourt.myapplication.model.Genre
-import com.lacourt.myapplication.model.GenreResponse
-import com.lacourt.myapplication.model.Movie
-import com.lacourt.myapplication.model.MovieResponse
-import com.lacourt.myapplication.model.dbMovie.DbMovie
+import com.lacourt.myapplication.model.dto.Genre
+import com.lacourt.myapplication.model.dto.GenreResponse
+import com.lacourt.myapplication.model.dto.Movie
+import com.lacourt.myapplication.model.dto.MovieResponse
+import com.lacourt.myapplication.model.dbmodel.DbMovie
 import com.lacourt.myapplication.network.Apifactory
 import io.reactivex.Observable
 import io.reactivex.Observer

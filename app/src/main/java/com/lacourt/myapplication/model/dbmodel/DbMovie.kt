@@ -1,4 +1,4 @@
-package com.lacourt.myapplication.model.dbMovie
+package com.lacourt.myapplication.model.dbmodel
 
 import androidx.annotation.NonNull
 import androidx.room.Entity

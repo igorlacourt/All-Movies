@@ -7,17 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
-import com.lacourt.myapplication.model.Movie
-import com.lacourt.myapplication.model.dbMovie.DbMovie
 import com.lacourt.myapplication.ui.OnMovieClick
 import com.lacourt.myapplication.ui.details.DetailsActivity
 import com.lacourt.myapplication.viewmodel.HomeViewModel

@@ -9,8 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
-import com.lacourt.myapplication.model.Movie
-import com.lacourt.myapplication.model.dbMovie.DbMovie
+import com.lacourt.myapplication.model.dbmodel.DbMovie
 import com.lacourt.myapplication.ui.OnMovieClick
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_list_item.view.*
@@ -66,8 +65,6 @@ class MovieAdapter(
 }
 
 class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    // We'll use this field to showcase matching the holder from the test.
-    var IsInTheMiddle: Boolean = false
     var poster = itemView.iv_poster
     var cardView = itemView.movie_card_view
     var layout = itemView.movie_layout

@@ -6,8 +6,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
 import com.lacourt.myapplication.domainMappers.Mapper
-import com.lacourt.myapplication.model.Movie
-import com.lacourt.myapplication.model.dbMovie.DbMovie
+import com.lacourt.myapplication.model.dto.Movie
+import com.lacourt.myapplication.model.dbmodel.DbMovie
 import com.lacourt.myapplication.repository.HomeRepository
 
 class HomeViewModel(application: Application) : AndroidViewModel(application),

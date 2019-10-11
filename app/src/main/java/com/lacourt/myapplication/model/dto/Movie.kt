@@ -1,4 +1,4 @@
-package com.lacourt.myapplication.model
+package com.lacourt.myapplication.model.dto
 
 import androidx.annotation.NonNull
 import com.google.gson.annotations.Expose

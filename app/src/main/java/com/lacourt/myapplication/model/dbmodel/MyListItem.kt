@@ -1,22 +1,22 @@
-package com.lacourt.myapplication.model
+package com.lacourt.myapplication.model.dbmodel
 
 import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 
-@Entity(tableName = "favorites")
-data class Favorite(@Expose
+@Entity(tableName = "mylist")
+data class MyListItem(@Expose
                     @NonNull
                     @PrimaryKey(autoGenerate = false)
                     val id: Int,
 
-                    @Expose
+                      @Expose
                     val poster_path: String?,
 
-                    @Expose
+                      @Expose
                     val release_date: String?,
 
-                    @Expose
+                      @Expose
                     val vote_average: Double?
 )

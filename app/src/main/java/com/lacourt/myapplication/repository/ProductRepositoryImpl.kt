@@ -3,8 +3,8 @@ package com.lacourt.myapplication.repository
 import androidx.lifecycle.MutableLiveData
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.domainMappers.Mapper
-import com.lacourt.myapplication.model.Movie
-import com.lacourt.myapplication.model.MovieResponse
+import com.lacourt.myapplication.model.dto.Movie
+import com.lacourt.myapplication.model.dto.MovieResponse
 import com.lacourt.myapplication.model.domainmodel.DataMovie
 import com.lacourt.myapplication.model.domainmodel.DomainModel
 import com.lacourt.myapplication.network.Apifactory

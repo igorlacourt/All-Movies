@@ -1,10 +1,10 @@
 package com.lacourt.myapplication.model.domainmodel
 
-import com.lacourt.myapplication.model.*
+import com.lacourt.myapplication.model.dto.GenreX
 
 data class DomainModel(
 //    val adult: Boolean,
-    val backdrop_path: String,
+    val backdrop_path: String?,
 //    val belongs_to_collection: BelongsToCollection,
 //    val budget: Int,
     val genres: List<GenreX>,
