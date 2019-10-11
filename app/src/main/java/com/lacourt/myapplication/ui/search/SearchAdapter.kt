@@ -36,7 +36,7 @@ class SearchAdapter(
                 .into(backdrop)
 
             itemLayout.setOnClickListener {
-                onSearchedItemClick.onSearchItemClick(list[position])
+                onSearchedItemClick.onSearchItemClick(list[position].id)
             }
         }
 
@@ -56,5 +56,5 @@ class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 }
 
 interface OnSearchedItemClick {
-    fun onSearchItemClick(movie: Movie)
+    fun onSearchItemClick(int: Int)
 }

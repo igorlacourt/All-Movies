@@ -65,13 +65,14 @@ class SearchActivity : AppCompatActivity(), OnSearchedItemClick{
         }
     }
 
-    override fun onSearchItemClick(movie: Movie) {
+    override fun onSearchItemClick(id: Int) {
         val i = Intent(this, DetailsActivity::class.java)
+        i.putExtra("id", id)
         startActivity(i)
     }
 
 
-    fun setUpReyclerview(){
+    private fun setUpReyclerview(){
         recyclerView = findViewById(R.id.searched_list)
         adapter = SearchAdapter(this, ArrayList<Movie>())
 

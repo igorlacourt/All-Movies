@@ -1,19 +1,15 @@
 package com.lacourt.myapplication.repository
 
-import android.app.Application
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.lacourt.myapplication.AppConstants
-import com.lacourt.myapplication.database.AppDatabase
 import com.lacourt.myapplication.model.Movie
 import com.lacourt.myapplication.model.MovieResponse
 import com.lacourt.myapplication.network.Apifactory
-import com.lacourt.myapplication.network.TmdbApi
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SearchRepository() {
+class SearchRepository{
     var searchResult: MutableLiveData<ArrayList<Movie>>? = MutableLiveData()
 
     fun searchMovie(title:String) {
@@ -27,4 +23,6 @@ class SearchRepository() {
             }
         })
     }
+
+
 }

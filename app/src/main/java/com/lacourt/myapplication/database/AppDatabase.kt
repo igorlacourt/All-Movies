@@ -7,7 +7,6 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.lacourt.myapplication.database.AppDatabase.Companion.DATABASE_VERSION
 import com.lacourt.myapplication.model.Favorite
-import com.lacourt.myapplication.model.Movie
 import com.lacourt.myapplication.model.dbMovie.DbMovie
 
 private var INSTANCE: AppDatabase? = null
@@ -17,6 +16,8 @@ private var INSTANCE: AppDatabase? = null
 abstract class AppDatabase: RoomDatabase() {
 
     abstract fun MovieDao() : MovieDao
+    abstract fun FavoriteDao() : FavoriteDao
+
 //TODO(create the favorites table)
     companion object {
         const val DATABASE_VERSION = 6

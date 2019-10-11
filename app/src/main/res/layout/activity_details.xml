@@ -49,18 +49,18 @@
         android:id="@+id/wish_list_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/wish_list_btn_24dp"
+        android:src="@drawable/wish_list_btn_48dp"
         app:layout_constraintStart_toStartOf="@+id/detail_overview"
         app:layout_constraintTop_toBottomOf="@+id/detail_overview" />
 
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Wish List"-->
-<!--        android:textColor="#aaa"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/wish_list_btn"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/wish_list_btn"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/wish_list_btn"/>-->
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wish List"
+        android:textColor="#aaa"
+        app:layout_constraintTop_toBottomOf="@id/wish_list_btn"
+        app:layout_constraintStart_toStartOf="@+id/wish_list_btn"
+        app:layout_constraintEnd_toEndOf="@+id/wish_list_btn"/>
 
 <!--    <TextView-->
 <!--        android:id="@+id/title"-->
