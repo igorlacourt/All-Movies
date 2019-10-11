@@ -45,8 +45,10 @@ class MainActivity : AppCompatActivity() {
 
         search_btn.setOnClickListener {
             var i = Intent(this, SearchActivity::class.java)
-            startActivity(i)
+            startActivityForResult(i, 1)
         }
+
+
 //        val navView: BottomNavigationView = findViewById(R.id.nav_view)
 //
 //        val navController = findNavController(R.id.nav_host_fragment)
@@ -59,6 +61,18 @@ class MainActivity : AppCompatActivity() {
 //        )
 //        setupActionBarWithNavController(navController, appBarConfiguration)
 //        navView.setupWithNavController(navController)
+    }
+
+    /*     onActivityResult replaces myListFragment wiht itself for updating
+     the list in realtime when coming back from search coming from details.  */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.nav_host_fragment, MyListFragment(), "my_list")
+                .commit()
+        }
     }
 
     fun onHomeClick(view: View) {

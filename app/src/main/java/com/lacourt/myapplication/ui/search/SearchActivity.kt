@@ -1,5 +1,6 @@
 package com.lacourt.myapplication.ui.search
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -69,6 +70,10 @@ class SearchActivity : AppCompatActivity(), OnSearchedItemClick{
         startActivity(i)
     }
 
+    override fun onStop() {
+        super.onStop()
+        setResult(Activity.RESULT_CANCELED, Intent())
+    }
 
     private fun setUpReyclerview(){
         recyclerView = findViewById(R.id.searched_list)
