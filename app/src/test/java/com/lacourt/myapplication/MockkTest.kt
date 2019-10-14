@@ -1,13 +1,13 @@
 package com.lacourt.myapplication
 
-import com.lacourt.myapplication.model.dto.Movie
+import com.lacourt.myapplication.dto.MovieDTO
 import com.lacourt.myapplication.viewmodel.HomeViewModel
 import io.mockk.*
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 
 class MockkTest {
-    val movie = Movie(
+    val movie = MovieDTO(
         false,
         "backdrop_path",
         arrayListOf("10", "11", "12"),
@@ -25,7 +25,7 @@ class MockkTest {
         1000
     )
 
-    val emptyMovie = Movie(
+    val emptyMovie = MovieDTO(
         null,
         null,
         null,

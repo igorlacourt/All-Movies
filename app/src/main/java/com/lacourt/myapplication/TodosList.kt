@@ -10,3 +10,5 @@ package com.lacourt.myapplication
 //TODO 8. Set style hierarchy correctly
 //TODO 9. Remove hard coded string and colors
 //TODO 7. Add Dagger
+//TODO 9. Implement Navigation
+//TODO 10. Implement backwards navigation for home an mylist fragments (when click back the app closes instead of back to the one was being displayed before)

@@ -7,18 +7,17 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
-import com.lacourt.myapplication.database.AppDatabase
-import com.lacourt.myapplication.domainMappers.Mapper
-import com.lacourt.myapplication.model.dbmodel.DbMovie
-import com.lacourt.myapplication.model.dbmodel.MyListItem
-import com.lacourt.myapplication.model.domainmodel.DomainModel
+import com.lacourt.myapplication.domainMappers.MapperFunctions
+import com.lacourt.myapplication.domainMappers.not_used_interfaces.Mapper
+import com.lacourt.myapplication.domainmodel.MyListItem
+import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.viewmodel.DetailsViewModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_details.*
 import java.lang.Exception
 
-class DetailsActivity : AppCompatActivity(), Mapper<DomainModel, MyListItem> {
+class DetailsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,22 +65,16 @@ class DetailsActivity : AppCompatActivity(), Mapper<DomainModel, MyListItem> {
         })
 
         wish_list_btn.setOnClickListener {
-            val myListItem = viewModel.movie?.value?.let { map(it) }
+            val myListItem = viewModel.movie?.value?.let { MapperFunctions.toMyListItem(it) }
             if (myListItem != null) {
                 viewModel.insert(myListItem)
             } else {
                 Toast.makeText(
                     this@DetailsActivity,
-                    "Did not save to wish list.",
+                    "Did not save to My List.",
                     Toast.LENGTH_LONG
                 ).show()
             }
-        }
-    }
-
-    override fun map(input: DomainModel): MyListItem {
-        return with(input) {
-            MyListItem(id, poster_path, release_date, vote_average)
         }
     }
 }

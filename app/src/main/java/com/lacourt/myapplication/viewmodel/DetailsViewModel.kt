@@ -3,16 +3,13 @@ package com.lacourt.myapplication.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import com.lacourt.myapplication.database.AppDatabase
-import com.lacourt.myapplication.domainMappers.Mapper
-import com.lacourt.myapplication.model.dbmodel.MyListItem
-import com.lacourt.myapplication.model.dto.Details
-import com.lacourt.myapplication.model.domainmodel.DomainModel
+import com.lacourt.myapplication.domainmodel.MyListItem
+import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.repository.DetailsRepository
 
-class DetailsViewModel(application: Application) : AndroidViewModel(application), Mapper<Details, DomainModel> {
-    internal var movie: LiveData<DomainModel>? = null
-    private val repository: DetailsRepository = DetailsRepository(application, this)
+class DetailsViewModel(application: Application) : AndroidViewModel(application){
+    internal var movie: LiveData<Details>? = null
+    private val repository: DetailsRepository = DetailsRepository(application)
 
     init {
         movie = repository.movie
@@ -23,25 +20,8 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun fetchDetails(id: Int) {
-        repository.fetchDetails(id)
+        repository.getDetails(id)
+//        repository.fetchDetails(id)
     }
 
-    override fun map(input: Details): DomainModel {
-        return detailsToDomain(input)
-    }
-
-    private fun detailsToDomain(input: Details): DomainModel {
-        return with(input) {
-            DomainModel(
-                backdrop_path,
-                genres,
-                id,
-                overview,
-                poster_path,
-                release_date,
-                title,
-                vote_average
-            )
-        }
-    }
 }

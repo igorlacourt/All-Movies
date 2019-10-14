@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
-import com.lacourt.myapplication.model.dto.Movie
+import com.lacourt.myapplication.dto.MovieDTO
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.searched_list_item.view.*
 
 class SearchAdapter(
     private val onSearchedItemClick: OnSearchedItemClick,
-    private var list: ArrayList<Movie>
+    private var list: ArrayList<MovieDTO>
 ) : RecyclerView.Adapter<SearchViewHolder>() {
 
     private val context = onSearchedItemClick as Context
@@ -42,7 +42,7 @@ class SearchAdapter(
 
     }
 
-    fun setList(list: ArrayList<Movie>) {
+    fun setList(list: ArrayList<MovieDTO>) {
         this.list.clear()
         this.list.addAll(list)
         notifyDataSetChanged()

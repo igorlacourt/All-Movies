@@ -1,6 +1,6 @@
-package com.lacourt.myapplication.model.dto
+package com.lacourt.myapplication.dto
 
-data class ProductionCompany(
+data class ProductionCompanyDTO(
     val id: Int,
     val logo_path: String,
     val name: String,

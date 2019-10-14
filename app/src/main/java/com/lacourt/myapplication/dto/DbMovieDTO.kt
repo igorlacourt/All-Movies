@@ -1,4 +1,4 @@
-package com.lacourt.myapplication.model.dbmodel
+package com.lacourt.myapplication.dto
 
 import androidx.annotation.NonNull
 import androidx.room.Entity
@@ -7,7 +7,7 @@ import com.google.gson.annotations.Expose
 import java.io.Serializable
 
 @Entity(tableName = "movies")
-data class DbMovie(
+data class DbMovieDTO(
     @Expose
     @NonNull
     @PrimaryKey(autoGenerate = false)

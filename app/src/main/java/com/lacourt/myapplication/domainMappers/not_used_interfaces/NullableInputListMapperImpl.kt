@@ -1,4 +1,4 @@
-package com.lacourt.myapplication.domainMappers
+package com.lacourt.myapplication.domainMappers.not_used_interfaces
 
 class NullableInputListMapperImpl<I, O>(
     private val mapper: Mapper<I, O>

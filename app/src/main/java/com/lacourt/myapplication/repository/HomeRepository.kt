@@ -10,12 +10,13 @@ import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.database.AppDatabase
-import com.lacourt.myapplication.domainMappers.Mapper
-import com.lacourt.myapplication.model.dto.Genre
-import com.lacourt.myapplication.model.dto.GenreResponse
-import com.lacourt.myapplication.model.dto.Movie
-import com.lacourt.myapplication.model.dto.MovieResponse
-import com.lacourt.myapplication.model.dbmodel.DbMovie
+import com.lacourt.myapplication.domainMappers.MapperFunctions
+import com.lacourt.myapplication.domainMappers.not_used_interfaces.Mapper
+import com.lacourt.myapplication.dto.GenreDTO
+import com.lacourt.myapplication.dto.GenreResponseDTO
+import com.lacourt.myapplication.dto.MovieDTO
+import com.lacourt.myapplication.dto.MovieResponseDTO
+import com.lacourt.myapplication.dto.DbMovieDTO
 import com.lacourt.myapplication.network.Apifactory
 import io.reactivex.Observable
 import io.reactivex.Observer
@@ -26,7 +27,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeRepository(private val application: Application, private val movieDataMapper: Mapper<Movie, DbMovie>) {
+class HomeRepository(private val application: Application) {
     private val config = PagedList.Config.Builder()
         .setInitialLoadSizeHint(50)
         .setPageSize(50)
@@ -38,13 +39,13 @@ class HomeRepository(private val application: Application, private val movieData
     private val movieDao =
         AppDatabase.getDatabase(application)!!.MovieDao() //Not sure if it should be here.
 
-    private val moviesDescending: LiveData<PagedList<DbMovie>> =
+    private val moviesDescending: LiveData<PagedList<DbMovieDTO>> =
         movieDao.dateDesc().toLiveData(config)
 
-    private val moviesAscending: LiveData<PagedList<DbMovie>> =
+    private val moviesAscending: LiveData<PagedList<DbMovieDTO>> =
         movieDao.dateAsc().toLiveData(config)
 
-    val movies = MediatorLiveData<PagedList<DbMovie>>()
+    val movies = MediatorLiveData<PagedList<DbMovieDTO>>()
 
     /*Remember:
      1. that the returned list cannot be mutable
@@ -83,33 +84,10 @@ class HomeRepository(private val application: Application, private val movieData
         else -> moviesDescending.value?.let { movies.value = it }
     }.also { currentOrder = order }
 
-    fun genresRequest(): Observable<GenreResponse>? = Apifactory.tmdbApi?.getGenresObservable()
-        ?.subscribeOn(Schedulers.io())
-        ?.observeOn(AndroidSchedulers.mainThread())
-
-    fun moviesRequest(page: Int): Observable<MovieResponse>? =
+    fun moviesRequest(page: Int): Observable<MovieResponseDTO>? =
         Apifactory.tmdbApi?.getMoviesObservable(AppConstants.LANGUAGE, page)
             ?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
-
-    fun loadMovies(page: Int){
-        Apifactory.tmdbApi.getMovies(AppConstants.LANGUAGE, page).enqueue(object :
-            Callback<MovieResponse> {
-            override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
-
-            }
-            override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
-                if(response.isSuccessful)
-                    mapMovies(response.body()?.results as List<Movie>)
-            }
-        })
-    }
-
-    private fun mapMovies(networkMoviesList: List<Movie>): List<DbMovie> {
-        return networkMoviesList.map {
-           movieDataMapper.map(it)
-        }
-    }
 
     @SuppressLint("CheckResult")
     fun fetchMovies() {
@@ -117,19 +95,19 @@ class HomeRepository(private val application: Application, private val movieData
             .flatMap { page ->
                 moviesRequest(page)
                     ?.map {
-                        mapMovies(it.results)
+                        MapperFunctions.toListOfDbMovieDTO(it.results)
                     }
                     ?.flatMap {
                         Observable.fromIterable(it)
                             .subscribeOn(Schedulers.io())
                     }
             }
-            .subscribe(object : Observer<DbMovie> {
+            .subscribe(object : Observer<DbMovieDTO> {
                 override fun onSubscribe(d: Disposable) {
                 }
 
-                override fun onNext(movie: DbMovie) {
-                    movieDao.insert(movie)
+                override fun onNext(movieDTO: DbMovieDTO) {
+                    movieDao.insert(movieDTO)
                 }
 
                 override fun onError(e: Throwable) {
@@ -141,18 +119,6 @@ class HomeRepository(private val application: Application, private val movieData
                 }
 
             })
-    }
-
-    fun addGenreForEachMovie2(movie: Movie, genresList: ArrayList<Genre>): Movie {
-        movie.genre_ids!!.forEach { id ->
-            genresList!!.forEach { genre ->
-                if (genre.id.toString().equals(id)) {
-                    movie.genres = ArrayList()
-                    movie.genres!!.add(genre.name)
-                }
-            }
-        }
-        return movie
     }
 
     fun networkErrorToast() {

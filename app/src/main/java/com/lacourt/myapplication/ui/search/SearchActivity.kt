@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.R
-import com.lacourt.myapplication.model.dto.Movie
+import com.lacourt.myapplication.dto.MovieDTO
 import com.lacourt.myapplication.ui.details.DetailsActivity
 import com.lacourt.myapplication.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.activity_search.*
@@ -77,7 +77,7 @@ class SearchActivity : AppCompatActivity(), OnSearchedItemClick{
 
     private fun setUpReyclerview(){
         recyclerView = findViewById(R.id.searched_list)
-        adapter = SearchAdapter(this, ArrayList<Movie>())
+        adapter = SearchAdapter(this, ArrayList<MovieDTO>())
 
         recyclerView.computeVerticalScrollOffset()
 

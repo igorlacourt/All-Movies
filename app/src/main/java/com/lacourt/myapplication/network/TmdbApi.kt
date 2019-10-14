@@ -1,8 +1,8 @@
 package com.lacourt.myapplication.network
 
-import com.lacourt.myapplication.model.dto.Details
-import com.lacourt.myapplication.model.dto.GenreResponse
-import com.lacourt.myapplication.model.dto.MovieResponse
+import com.lacourt.myapplication.dto.DetailsDTO
+import com.lacourt.myapplication.dto.GenreResponseDTO
+import com.lacourt.myapplication.dto.MovieResponseDTO
 import io.reactivex.Observable
 import retrofit2.Call
 import retrofit2.http.GET
@@ -11,14 +11,14 @@ import retrofit2.http.Query
 
 interface TmdbApi{
 //    @GET("movie/upcoming")
-//    fun getMovies() : Call<MovieResponse>
+//    fun getMovies() : Call<MovieResponseDTO>
 //
 
     @GET("movie/{id}")
     fun getDetails(
         @Path("id")
         id: Int
-    ): Call<Details>
+    ): Call<DetailsDTO>
 
     @GET("movie/upcoming")
     fun getMovies(
@@ -27,10 +27,10 @@ interface TmdbApi{
         language: String,
 
         @Query("page")
-        page: Int): Call<MovieResponse>
+        page: Int): Call<MovieResponseDTO>
 //
 //    @GET("genre/movie/list")
-//    fun getGenres() : Call<GenreResponse>
+//    fun getGenreDTOS() : Call<GenreResponseDTO>
 
     @GET("movie/upcoming")
     fun getMoviesObservable(
@@ -39,10 +39,10 @@ interface TmdbApi{
         language: String,
 
         @Query("page")
-        page: Int): Observable<MovieResponse>
+        page: Int): Observable<MovieResponseDTO>
 
     @GET("genre/movie/list")
-    fun getGenresObservable() : Observable<GenreResponse>
+    fun getGenresObservable() : Observable<GenreResponseDTO>
 
     @GET("search/movie")
     fun searchMovie(
@@ -55,6 +55,6 @@ interface TmdbApi{
         @Query("include_adult")
         adult: Boolean
 
-    ) : Call<MovieResponse>
+    ) : Call<MovieResponseDTO>
 
 }

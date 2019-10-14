@@ -1,6 +1,6 @@
-package com.lacourt.myapplication.model.dto
+package com.lacourt.myapplication.dto
 
-data class BelongsToCollection(
+data class BelongsToCollectionDTO(
     val backdrop_path: String,
     val id: Int,
     val name: String,

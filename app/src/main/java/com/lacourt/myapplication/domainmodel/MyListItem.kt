@@ -1,4 +1,4 @@
-package com.lacourt.myapplication.model.dbmodel
+package com.lacourt.myapplication.domainmodel
 
 import androidx.annotation.NonNull
 import androidx.room.Entity

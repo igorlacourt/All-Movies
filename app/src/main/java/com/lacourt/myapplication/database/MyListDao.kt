@@ -5,8 +5,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.lacourt.myapplication.model.dbmodel.MyListItem
-import com.lacourt.myapplication.model.dbmodel.DbMovie
+import com.lacourt.myapplication.domainmodel.MyListItem
+import com.lacourt.myapplication.dto.DbMovieDTO
 
 @Dao
 interface MyListDao {
@@ -20,8 +20,8 @@ interface MyListDao {
     fun deleteById(id: Int)
 
     @Query("SELECT * FROM mylist ORDER BY release_date DESC")
-    fun dateDesc(): DataSource.Factory<Int, DbMovie>
+    fun dateDesc(): DataSource.Factory<Int, DbMovieDTO>
 
     @Query("SELECT * FROM mylist ORDER BY release_date ASC")
-    fun dateAsc(): DataSource.Factory<Int, DbMovie>
+    fun dateAsc(): DataSource.Factory<Int, DbMovieDTO>
 }

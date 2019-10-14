@@ -1,10 +1,10 @@
-package com.lacourt.myapplication.model.dto
+package com.lacourt.myapplication.dto
 
 import androidx.annotation.NonNull
 import com.google.gson.annotations.Expose
 import java.io.Serializable
 
-data class Movie(
+data class MovieDTO(
     @Expose
     val adult: Boolean?,
 

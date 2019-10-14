@@ -3,21 +3,21 @@ package com.lacourt.myapplication.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import com.lacourt.myapplication.model.dto.Movie
+import com.lacourt.myapplication.dto.MovieDTO
 import com.lacourt.myapplication.repository.SearchRepository
 
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
     //    private val query = MutableLiveData<String>()
     private val repository = SearchRepository()
 
-    var searchResult:LiveData<ArrayList<Movie>> = repository.searchResult as LiveData<ArrayList<Movie>>
+    var searchResult:LiveData<ArrayList<MovieDTO>> = repository.searchResult as LiveData<ArrayList<MovieDTO>>
 
     fun searchMovie(title: String){
         repository.searchMovie(title)
     }
 
 
-//    val searchResult: LiveData<List<Movie>> = Transformations.switchMap(
+//    val searchResult: LiveData<List<MovieDTO>> = Transformations.switchMap(
 //        query,
 //        ::func
 //    )

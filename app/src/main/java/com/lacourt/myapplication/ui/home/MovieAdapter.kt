@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
-import com.lacourt.myapplication.model.dbmodel.DbMovie
+import com.lacourt.myapplication.dto.DbMovieDTO
 import com.lacourt.myapplication.ui.OnMovieClick
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_list_item.view.*
@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.movie_list_item.view.*
 class MovieAdapter(
     private val context: Context?,
     private val onMovieClick: OnMovieClick
-) : PagedListAdapter<DbMovie, MovieViewHolder>(
+) : PagedListAdapter<DbMovieDTO, MovieViewHolder>(
     DIFF_CALLBACK
 ) {
 
@@ -32,15 +32,15 @@ class MovieAdapter(
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        val movie: DbMovie? = getItem(position)
+        val movieDTO: DbMovieDTO? = getItem(position)
 
         holder.apply {
-            Picasso.get().load("${AppConstants.TMDB_IMAGE_BASE_URL_W185}${movie!!.poster_path}")
+            Picasso.get().load("${AppConstants.TMDB_IMAGE_BASE_URL_W185}${movieDTO!!.poster_path}")
                 .placeholder(R.drawable.clapperboard)
                 .into(poster)
 
             cardView.setOnClickListener {
-                onMovieClick.onMovieClick(movie.id)
+                onMovieClick.onMovieClick(movieDTO.id)
             }
         }
 
@@ -48,17 +48,17 @@ class MovieAdapter(
 
     companion object {
         private val DIFF_CALLBACK = object :
-            DiffUtil.ItemCallback<DbMovie>() {
+            DiffUtil.ItemCallback<DbMovieDTO>() {
             // Concert details may have changed if reloaded from the database,
             // but ID is fixed.
             override fun areItemsTheSame(
-                oldMovie: DbMovie,
-                newMovie: DbMovie
-            ) = oldMovie.id == newMovie.id
+                oldMovieDTO: DbMovieDTO,
+                newMovieDTO: DbMovieDTO
+            ) = oldMovieDTO.id == newMovieDTO.id
 
             override fun areContentsTheSame(
-                oldItem: DbMovie,
-                newItem: DbMovie
+                oldItem: DbMovieDTO,
+                newItem: DbMovieDTO
             ) = oldItem == newItem
         }
     }

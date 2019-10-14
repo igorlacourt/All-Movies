@@ -6,12 +6,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.lacourt.myapplication.database.AppDatabase.Companion.DATABASE_VERSION
-import com.lacourt.myapplication.model.dbmodel.MyListItem
-import com.lacourt.myapplication.model.dbmodel.DbMovie
+import com.lacourt.myapplication.domainmodel.MyListItem
+import com.lacourt.myapplication.dto.DbMovieDTO
 
 private var INSTANCE: AppDatabase? = null
 
-@Database(entities = [DbMovie::class, MyListItem::class], version = DATABASE_VERSION, exportSchema = false)
+@Database(entities = [DbMovieDTO::class, MyListItem::class], version = DATABASE_VERSION, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase: RoomDatabase() {
 

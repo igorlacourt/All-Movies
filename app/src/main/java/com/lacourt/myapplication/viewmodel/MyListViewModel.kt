@@ -5,7 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.lacourt.myapplication.database.AppDatabase
-import com.lacourt.myapplication.model.dbmodel.MyListItem
+import com.lacourt.myapplication.domainmodel.MyListItem
 
 class MyListViewModel(application: Application) : AndroidViewModel(application) {
     val repository = MyListRepository(application)
