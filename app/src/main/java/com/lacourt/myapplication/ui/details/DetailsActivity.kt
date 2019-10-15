@@ -2,15 +2,14 @@ package com.lacourt.myapplication.ui.details
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.domainMappers.MapperFunctions
-import com.lacourt.myapplication.domainMappers.not_used_interfaces.Mapper
-import com.lacourt.myapplication.domainmodel.MyListItem
-import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.viewmodel.DetailsViewModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -23,6 +22,8 @@ class DetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
 
+        datails_progress_bar.visibility = View.VISIBLE
+
         val id = intent.getIntExtra("id", 0)
 
         val viewModel =
@@ -34,10 +35,11 @@ class DetailsActivity : AppCompatActivity() {
             Toast.LENGTH_LONG
         ).show()
 
-        viewModel.movie?.observe(this, Observer {
-            it.apply {
+        viewModel.movie.observe(this, Observer {
+            Log.d("calltest", "onChange called, response = $it")
+            it?.apply {
                 var imagePath = backdrop_path ?: poster_path
-
+                Log.d("calltest", "onChange, response = $it")
                 Picasso.get()
                     .load("${AppConstants.TMDB_IMAGE_BASE_URL_W500}$imagePath")
                     .placeholder(R.drawable.clapperboard)
@@ -59,13 +61,18 @@ class DetailsActivity : AppCompatActivity() {
                         }
 
                     })
+//                detail_title.text = data?.title
+//                detail_overview.text = data?.overview
                 detail_title.text = title
                 detail_overview.text = overview
+                release_year.text = release_date
+                datails_progress_bar.visibility = View.INVISIBLE
             }
         })
 
         wish_list_btn.setOnClickListener {
             val myListItem = viewModel.movie?.value?.let { MapperFunctions.toMyListItem(it) }
+
             if (myListItem != null) {
                 viewModel.insert(myListItem)
             } else {
