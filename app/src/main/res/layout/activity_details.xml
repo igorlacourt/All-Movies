@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
     tools:context=".ui.details.DetailsActivity">
 
     <ImageView
@@ -22,7 +21,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:textColor="#ccc"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +35,6 @@
         android:layout_margin="20dp"
         android:layout_marginBottom="10dp"
         android:gravity="start|left"
-        android:textColor="#ccc"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,7 +54,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Wish List"
-        android:textColor="#aaa"
         app:layout_constraintEnd_toEndOf="@+id/wish_list_btn"
         app:layout_constraintStart_toStartOf="@+id/wish_list_btn"
         app:layout_constraintTop_toBottomOf="@id/wish_list_btn" />
@@ -66,7 +62,6 @@
         android:id="@+id/release_year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#ccc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.11"
         app:layout_constraintStart_toEndOf="@+id/wish_list_btn"
