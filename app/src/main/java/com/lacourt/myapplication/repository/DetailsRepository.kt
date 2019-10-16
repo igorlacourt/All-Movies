@@ -26,10 +26,9 @@ class DetailsRepository(val application: Application) : BaseRepository() {
     fun getDetails(id: Int) {
         Log.d("calltest", "getDetails called")
 
-//        var networkCall = NetworkCall<DetailsDTO>()
-//        networkCall.makeCall(Apifactory.tmdbApi.getDetails(id))
-//        var details = networkCall.result.value?.data?.let { MapperFunctions.toDetails(it) }
-//
+        var networkCall = NetworkCall<DetailsDTO>()
+        networkCall.makeCall(Apifactory.tmdbApi.getDetails(id))
+        var details = networkCall.result.value?.data?.let { MapperFunctions.toDetails(it) }
 //        if (details != null)
 //            movie.value = details
 

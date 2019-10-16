@@ -20,7 +20,9 @@ import com.lacourt.myapplication.dto.DbMovieDTO
 import com.lacourt.myapplication.network.Apifactory
 import io.reactivex.Observable
 import io.reactivex.Observer
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
@@ -46,6 +48,8 @@ class HomeRepository(private val application: Application) {
         movieDao.dateAsc().toLiveData(config)
 
     val movies = MediatorLiveData<PagedList<DbMovieDTO>>()
+
+    var disposables = CompositeDisposable()
 
     /*Remember:
      1. that the returned list cannot be mutable
@@ -89,9 +93,12 @@ class HomeRepository(private val application: Application) {
             ?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
 
+
     @SuppressLint("CheckResult")
     fun fetchMovies() {
-        Observable.range(1, 10)
+
+
+       Observable.range(1, 10)
             .flatMap { page ->
                 moviesRequest(page)
                     ?.map {
@@ -102,23 +109,15 @@ class HomeRepository(private val application: Application) {
                             .subscribeOn(Schedulers.io())
                     }
             }
-            .subscribe(object : Observer<DbMovieDTO> {
-                override fun onSubscribe(d: Disposable) {
-                }
-
-                override fun onNext(movieDTO: DbMovieDTO) {
-                    movieDao.insert(movieDTO)
-                }
-
-                override fun onError(e: Throwable) {
-                    networkErrorToast()
-                }
-
-                override fun onComplete() {
-
-                }
-
-            })
+           .doOnNext {
+               Log.d("rxjavalog", "doOnNext called, id = ${it.id}")
+               movieDao.insert(it)
+           }
+           .doOnComplete{
+               Log.d("rxjavalog", "doOnComplete called")
+           }
+           .doOnError { networkErrorToast() }
+           .subscribe()
     }
 
     fun networkErrorToast() {
