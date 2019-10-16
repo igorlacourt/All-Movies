@@ -96,8 +96,6 @@ class HomeRepository(private val application: Application) {
 
     @SuppressLint("CheckResult")
     fun fetchMovies() {
-
-
        Observable.range(1, 10)
             .flatMap { page ->
                 moviesRequest(page)

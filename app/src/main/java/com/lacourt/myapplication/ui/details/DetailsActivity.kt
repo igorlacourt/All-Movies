@@ -29,16 +29,16 @@ class DetailsActivity : AppCompatActivity() {
         val viewModel =
             ViewModelProviders.of(this).get(DetailsViewModel::class.java)
 
-        if (id != 0) viewModel.fetchDetails(id) else Toast.makeText(
+        if (id != 0) viewModel.getDetails(id) else Toast.makeText(
             this,
             "id is NULL",
             Toast.LENGTH_LONG
         ).show()
 
-        viewModel.movie.observe(this, Observer {
+        viewModel.movie?.observe(this, Observer {
             Log.d("calltest", "onChange called, response = $it")
             it?.apply {
-                var imagePath = backdrop_path ?: poster_path
+                var imagePath = data?.backdrop_path ?: data?.poster_path
                 Log.d("calltest", "onChange, response = $it")
                 Picasso.get()
                     .load("${AppConstants.TMDB_IMAGE_BASE_URL_W500}$imagePath")
@@ -63,25 +63,25 @@ class DetailsActivity : AppCompatActivity() {
                     })
 //                detail_title.text = data?.title
 //                detail_overview.text = data?.overview
-                detail_title.text = title
-                detail_overview.text = overview
-                release_year.text = release_date
+                detail_title.text = data?.title
+                detail_overview.text = data?.overview
+                release_year.text = data?.release_date
                 datails_progress_bar.visibility = View.INVISIBLE
             }
         })
 
         wish_list_btn.setOnClickListener {
-            val myListItem = viewModel.movie?.value?.let { MapperFunctions.toMyListItem(it) }
-
-            if (myListItem != null) {
-                viewModel.insert(myListItem)
-            } else {
-                Toast.makeText(
-                    this@DetailsActivity,
-                    "Did not save to My List.",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+//            val myListItem = viewModel.movie?.value?.let { MapperFunctions.toMyListItem(it) }
+//
+//            if (myListItem != null) {
+//                viewModel.insert(myListItem)
+//            } else {
+//                Toast.makeText(
+//                    this@DetailsActivity,
+//                    "Did not save to My List.",
+//                    Toast.LENGTH_LONG
+//                ).show()
+//            }
         }
     }
 }
