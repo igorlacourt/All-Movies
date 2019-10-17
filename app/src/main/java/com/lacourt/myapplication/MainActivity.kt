@@ -20,8 +20,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val toolbar = findViewById<Toolbar>(R.id.my_tool_bar)
-        setSupportActionBar(toolbar);
+//        val toolbar = findViewById<Toolbar>(R.id.my_tool_bar)
+//        setSupportActionBar(toolbar);
 
         Log.d("callstest", "MainActivity onCreate called\n")
 

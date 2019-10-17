@@ -44,7 +44,7 @@ class DetailsActivity : AppCompatActivity() {
                     displayDetails(it.data)
                 }
                 Resource.Status.LOADING -> {
-                    // A return is given only once, so it's SUCCESS or ERROR. This loading case may not be necessary.
+                    // A return is given only once, so it is SUCCESS or ERROR. This loading case may not be necessary.
                     datails_progress_bar.visibility = View.VISIBLE
                 }
                 Resource.Status.ERROR -> {
@@ -77,6 +77,7 @@ class DetailsActivity : AppCompatActivity() {
         details?.apply {
             var imagePath = backdrop_path ?: poster_path
             Log.d("calltest", "onChange, response = $this")
+
             Picasso.get()
                 .load("${AppConstants.TMDB_IMAGE_BASE_URL_W500}$imagePath")
                 .placeholder(R.drawable.clapperboard)
@@ -96,7 +97,6 @@ class DetailsActivity : AppCompatActivity() {
                             Toast.LENGTH_LONG
                         ).show()
                     }
-
                 })
             detail_title.text = title
             detail_overview.text = overview

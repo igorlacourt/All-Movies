@@ -49,8 +49,6 @@ class HomeRepository(private val application: Application) {
 
     val movies = MediatorLiveData<PagedList<DbMovieDTO>>()
 
-    var disposables = CompositeDisposable()
-
     /*Remember:
      1. that the returned list cannot be mutable
      2. the mutable livedata should be private(check in the video again)*/
@@ -71,7 +69,7 @@ class HomeRepository(private val application: Application) {
         }
 
         movieDao.deleteAll()
-        fetchMovies()
+//        fetchMovies()
 //        val count = movieDao.getCount()
         //TODO mudar para 100 de novo
 //        if (count < 20) {
@@ -89,8 +87,8 @@ class HomeRepository(private val application: Application) {
     }.also { currentOrder = order }
 
     fun moviesRequest(page: Int): Observable<MovieResponseDTO>? =
-        Apifactory.tmdbApi?.getMoviesObservable(AppConstants.LANGUAGE, page)
-            ?.subscribeOn(Schedulers.io())
+        Apifactory.tmdbApi.getMoviesObservable(AppConstants.LANGUAGE, page)
+            .subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
 
 
