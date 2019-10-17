@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.domainMappers.MapperFunctions
+import com.lacourt.myapplication.domainmodel.Details
+import com.lacourt.myapplication.network.Resource
 import com.lacourt.myapplication.viewmodel.DetailsViewModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -37,35 +39,19 @@ class DetailsActivity : AppCompatActivity() {
 
         viewModel.movie?.observe(this, Observer {
             Log.d("calltest", "onChange called, response = $it")
-            it?.apply {
-                var imagePath = data?.backdrop_path ?: data?.poster_path
-                Log.d("calltest", "onChange, response = $it")
-                Picasso.get()
-                    .load("${AppConstants.TMDB_IMAGE_BASE_URL_W500}$imagePath")
-                    .placeholder(R.drawable.clapperboard)
-                    .into(detail_backdrop, object : Callback {
-                        override fun onSuccess() {
-                            Toast.makeText(
-                                this@DetailsActivity,
-                                "Image loaded",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-
-                        override fun onError(e: Exception?) {
-                            Toast.makeText(
-                                this@DetailsActivity,
-                                "Error loading image",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-
-                    })
-                detail_title.text = data?.title
-                detail_overview.text = data?.overview
-                release_year.text = data?.release_date
-                datails_progress_bar.visibility = View.INVISIBLE
+            when (it?.status) {
+                Resource.Status.SUCCESS -> {
+                    displayDetails(it.data)
+                }
+                Resource.Status.LOADING -> {
+                    // A return is given only once, so it's SUCCESS or ERROR. This loading case may not be necessary.
+                    datails_progress_bar.visibility = View.VISIBLE
+                }
+                Resource.Status.ERROR -> {
+                    //Display error message
+                }
             }
+
         })
 
         wish_list_btn.setOnClickListener {
@@ -84,6 +70,38 @@ class DetailsActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG
                 ).show()
             }
+        }
+    }
+
+    fun displayDetails(details: Details?){
+        details?.apply {
+            var imagePath = backdrop_path ?: poster_path
+            Log.d("calltest", "onChange, response = $this")
+            Picasso.get()
+                .load("${AppConstants.TMDB_IMAGE_BASE_URL_W500}$imagePath")
+                .placeholder(R.drawable.clapperboard)
+                .into(detail_backdrop, object : Callback {
+                    override fun onSuccess() {
+                        Toast.makeText(
+                            this@DetailsActivity,
+                            "Image loaded",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+
+                    override fun onError(e: Exception?) {
+                        Toast.makeText(
+                            this@DetailsActivity,
+                            "Error loading image",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+
+                })
+            detail_title.text = title
+            detail_overview.text = overview
+            release_year.text = release_date
+            datails_progress_bar.visibility = View.INVISIBLE
         }
     }
 }
