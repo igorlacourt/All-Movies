@@ -61,8 +61,6 @@ class DetailsActivity : AppCompatActivity() {
                         }
 
                     })
-//                detail_title.text = data?.title
-//                detail_overview.text = data?.overview
                 detail_title.text = data?.title
                 detail_overview.text = data?.overview
                 release_year.text = data?.release_date
@@ -71,17 +69,21 @@ class DetailsActivity : AppCompatActivity() {
         })
 
         wish_list_btn.setOnClickListener {
-//            val myListItem = viewModel.movie?.value?.let { MapperFunctions.toMyListItem(it) }
-//
-//            if (myListItem != null) {
-//                viewModel.insert(myListItem)
-//            } else {
-//                Toast.makeText(
-//                    this@DetailsActivity,
-//                    "Did not save to My List.",
-//                    Toast.LENGTH_LONG
-//                ).show()
-//            }
+            val myListItem = viewModel.movie?.value?.let { it.data?.let { details ->
+                MapperFunctions.toMyListItem(
+                    details
+                )
+            } }
+
+            if (myListItem != null) {
+                viewModel.insert(myListItem)
+            } else {
+                Toast.makeText(
+                    this@DetailsActivity,
+                    "Did not save to My List.",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
 }
