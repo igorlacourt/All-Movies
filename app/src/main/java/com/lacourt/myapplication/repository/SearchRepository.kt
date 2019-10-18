@@ -1,5 +1,6 @@
 package com.lacourt.myapplication.repository
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.dto.MovieDTO
@@ -19,6 +20,7 @@ class SearchRepository{
             }
             override fun onResponse(call: Call<MovieResponseDTO>, responseDTO: Response<MovieResponseDTO>) {
                 if(responseDTO.isSuccessful)
+                    Log.d("searchlog", "onSuccessful, result = ${responseDTO.body()}")
                     searchResult?.value = responseDTO.body()?.results
             }
         })

@@ -10,6 +10,7 @@ import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -38,22 +39,18 @@ class HomeFragment : Fragment(), OnMovieClick {
 //        shimmerContainer?.visibility = View.VISIBLE
 //        shimmerContainer?.startShimmer()
 
-        /*An 'activity' is passed in to '.of()' method below, because when passing
-        'this', the ViewModel's init block is called twice.*/
         homeViewModel =
             ViewModelProviders.of(this).get(HomeViewModel::class.java)
 
         val progressBar: ProgressBar = root.findViewById(R.id.progress_circular)
+        progressBar.visibility = View.VISIBLE
         recyclerView = root.findViewById(R.id.movie_list)
         val adapter = MovieAdapter(context, onMovieClick)
-
-        recyclerView.computeVerticalScrollOffset()
 
         var layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManager
 
         recyclerView.adapter = adapter
-        progressBar.visibility = View.VISIBLE
 
         (recyclerView.adapter as MovieAdapter).registerAdapterDataObserver(object :
             RecyclerView.AdapterDataObserver() {
@@ -63,21 +60,13 @@ class HomeFragment : Fragment(), OnMovieClick {
         })
 
         homeViewModel.movies?.observe(this, Observer { pagedList ->
-            adapter.submitList(pagedList)
-            progressBar.visibility = View.INVISIBLE
+            if(pagedList != null && pagedList.isNotEmpty()) {
+                adapter.submitList(pagedList)
+                progressBar.visibility = View.INVISIBLE
+            }
         })
 
         return root
-    }
-
-    fun orderDateAsc() {
-        homeViewModel.rearrengeMovies(AppConstants.DATE_ASC)
-        Log.d("testorder", "orderDateAsc()")
-    }
-
-    fun orderDateDesc() {
-        homeViewModel.rearrengeMovies(AppConstants.DATE_DESC)
-        Log.d("testorder", "orderDateDesc()")
     }
 
     override fun onMovieClick(id: Int) {

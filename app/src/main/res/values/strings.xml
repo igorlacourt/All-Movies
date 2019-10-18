@@ -9,5 +9,6 @@
     <string name="search_no_results">No results.</string>
     <string name="title_activity_bottom_nav">BottomNavActivity</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_search">search</string>
+    <string name="title_search">Search</string>
+    <string name="my_list_at_details">My List</string>
 </resources>

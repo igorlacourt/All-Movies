@@ -6,19 +6,17 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.Toolbar
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lacourt.myapplication.ui.details.DetailsActivity
 import com.lacourt.myapplication.ui.mylist.MyListFragment
 import com.lacourt.myapplication.ui.home.HomeFragment
-import com.lacourt.myapplication.ui.search.SearchActivity
-import kotlinx.android.synthetic.main.bottom_nav.*
-import kotlinx.android.synthetic.main.tool_bar_layout.*
+import android.view.MenuItem
+import androidx.annotation.NonNull
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.my_tool_bar)
         setSupportActionBar(toolbar)
+        toolbar.visibility = View.INVISIBLE
 
         Log.d("callstest", "MainActivity onCreate called\n")
 
@@ -41,48 +40,15 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_my_list
+                R.id.navigation_home, R.id.navigation_my_list, R.id.navigation_search
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        navView.setOnNavigationItemSelectedListener {
-            when(it.itemId){
-                R.id.navigation_search  -> {startActivity(this, Intent(this, DetailsActivity::class.java))}
-                R.id.navigation_my_list -> {}
-                R.id.navigation_home -> {}
-
-            }
-        }
-
-
-//        supportFragmentManager
-//            .beginTransaction()
-//            .add(R.id.nav_host_fragment, HomeFragment(), "home")
-//            .commit()
-//
-//        descButton.setOnClickListener {
-//            val home = supportFragmentManager.findFragmentByTag("home")
-//            if (home != null)
-//                (home as HomeFragment).orderDateDesc()
-//        }
-//
-//        ascButton.setOnClickListener {
-//            val home = supportFragmentManager.findFragmentByTag("home")
-//            if (home != null) {
-//                (home as HomeFragment)?.orderDateAsc()
-//            }
-//        }
-//
-//        search_btn.setOnClickListener {
-//            var i = Intent(this, SearchActivity::class.java)
-//            startActivityForResult(i, 1)
-//        }
-
     }
 
-    /*     onActivityResult replaces myListFragment wiht itself for updating
+    /*     onActivityResult replaces myListFragment with itself for updating
      the list in realtime when coming back from search coming from details.  */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -94,26 +60,28 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun onHomeClick(view: View) {
+    fun onHomeClick() {
         var homeFragment = supportFragmentManager.findFragmentByTag("home")
 
-        if (homeFragment == null || !homeFragment.isAdded) {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment, HomeFragment(), "home")
-                .commit()
-        }
+//        if (homeFragment == null || !homeFragment.isAdded) {
+//            supportFragmentManager
+//                .beginTransaction()
+//                .replace(R.id.nav_host_fragment, HomeFragment(), "home")
+//                .commit()
+//        }
 
     }
 
-    fun onMyListClick(view: View) {
+    fun onMyListClick() {
         var myListFragment = supportFragmentManager.findFragmentByTag("my_list")
 
-        if (myListFragment == null || !myListFragment.isAdded) {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment, MyListFragment(), "my_list")
-                .commit()
-        }
+//        if (myListFragment == null || !myListFragment.isAdded) {
+//            supportFragmentManager
+//                .beginTransaction()
+//                .replace(R.id.nav_host_fragment, MyListFragment(), "my_list")
+//                .commit()
+//        }
+//        val layout = resources.getLayout(R.layout.fragment_mylist).id
+        findNavController(R.layout.fragment_mylist).navigate(R.id.action_navigation_home_to_detailsActivity)
     }
 }

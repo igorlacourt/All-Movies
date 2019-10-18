@@ -30,10 +30,11 @@ class MyListFragment : Fragment(), OnMyListItemClick{
     ): View? {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         val progressBar: ProgressBar = root.findViewById(R.id.progress_circular)
+
+        progressBar.visibility = View.VISIBLE
         adapter = MyListAdapter(activity?.applicationContext, onMyListItemClick, ArrayList())
         recyclerView = root.findViewById(R.id.movie_list)
 
-        progressBar.visibility = View.VISIBLE
 
         setUpRecyclerView()
         myListViewModel =
