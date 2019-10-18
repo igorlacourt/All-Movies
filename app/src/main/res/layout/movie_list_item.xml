@@ -13,36 +13,21 @@
         android:id="@+id/movie_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
         android:clickable="false"
         android:focusable="false">
         <!--            android:adjustViewBounds="true"-->
 
-
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmer_view_container"
+        <ImageView
+            android:id="@+id/iv_poster"
             android:layout_width="115dp"
             android:layout_height="180dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/iv_poster"
-                android:layout_width="115dp"
-                android:layout_height="180dp"
-                android:clickable="false"
-                android:focusable="false"
-                android:scaleType="centerCrop"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/clapperboard" />
-
-        </com.facebook.shimmer.ShimmerFrameLayout>
-
-
-
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/clapperboard" />
         <!--        android:scaleType="centerCrop"-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 

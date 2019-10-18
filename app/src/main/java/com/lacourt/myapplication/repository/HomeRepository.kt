@@ -69,15 +69,12 @@ class HomeRepository(private val application: Application) {
         }
 
         movieDao.deleteAll()
-//        fetchMovies()
+        fetchMovies()
 //        val count = movieDao.getCount()
         //TODO mudar para 100 de novo
 //        if (count < 20) {
 //            if (count > 0)
 //                movieDao.deleteAll()
-//
-//            rxJava2()
-////            FetchData().execute()
 //        }
     }
 

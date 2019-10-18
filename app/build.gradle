@@ -8,11 +8,12 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.lacourt.myapplication"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -46,6 +47,10 @@ dependencies {
     implementation 'androidx.test:core:' + rootProject.coreVersion
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0'
+    implementation 'androidx.navigation:navigation-fragment:2.1.0'
+    implementation 'androidx.navigation:navigation-ui:2.1.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.1.0'
     androidTestImplementation "androidx.test.ext:junit:$rootProject.extJUnitVersion"
     implementation "androidx.test:runner:$rootProject.runnerVersion"
     implementation "androidx.test:rules:$rootProject.rulesVersion"
@@ -121,6 +126,9 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.5.0"
 
     //Shimmer layout
-    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    implementation 'com.facebook.shimmer:shimmer:0.5.0@aar'
+
+    //Another Shimmer
+    implementation 'xyz.peridy.shimmer:shimmerlayout:1.1'
 
 }

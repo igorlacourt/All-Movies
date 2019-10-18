@@ -2,9 +2,12 @@
     <string name="app_name">PAG Test</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_my_list">My List</string>
     <string name="title_notifications">Notifications</string>
     <string name="movies_preferences">movies_preferences</string>
     <string name="search_hint">Search by title.</string>
     <string name="search_no_results">No results.</string>
+    <string name="title_activity_bottom_nav">BottomNavActivity</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_search">search</string>
 </resources>

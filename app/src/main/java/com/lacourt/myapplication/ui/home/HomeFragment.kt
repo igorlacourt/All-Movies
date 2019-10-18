@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.ui.OnMovieClick
@@ -32,6 +33,10 @@ class HomeFragment : Fragment(), OnMovieClick {
     ): View? {
         Log.d("callstest", "onCreateView called\n")
         val root = inflater.inflate(R.layout.fragment_home, container, false)
+
+//        var shimmerContainer = container?.findViewById<ShimmerFrameLayout>(R.id.shimmer_view_container)
+//        shimmerContainer?.visibility = View.VISIBLE
+//        shimmerContainer?.startShimmer()
 
         /*An 'activity' is passed in to '.of()' method below, because when passing
         'this', the ViewModel's init block is called twice.*/
