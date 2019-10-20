@@ -12,13 +12,13 @@ import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
 
-class SearchRepository @Inject constructor(private val tmdbApi: TmdbApi){
+class SearchRepository  {
 
     var searchResult: MutableLiveData<ArrayList<MovieDTO>>? = MutableLiveData()
 
     fun searchMovie(title: String) {
-        tmdbApi?.searchMovie(AppConstants.LANGUAGE, title, false)
-            ?.enqueue(object : Callback<MovieResponseDTO> {
+        Apifactory.tmdbApi.searchMovie(AppConstants.LANGUAGE, title, false)
+            .enqueue(object : Callback<MovieResponseDTO> {
                 override fun onFailure(call: Call<MovieResponseDTO>, t: Throwable) {
 
                 }

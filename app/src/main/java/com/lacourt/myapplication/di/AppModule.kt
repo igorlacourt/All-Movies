@@ -3,6 +3,7 @@ package com.lacourt.myapplication.di
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.network.Apifactory
 import com.lacourt.myapplication.network.TmdbApi
+import com.lacourt.myapplication.repository.SearchRepository
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -17,7 +18,7 @@ import javax.inject.Singleton
 class AppModule {
     @Singleton
     @Provides
-    fun provideRetrofitInstance(): TmdbApi {
+    fun provideRetrofitInstance(): Retrofit {
         val authInterceptor = Interceptor { chain ->
             val newUrl = chain.request().url
                 .newBuilder()
@@ -49,6 +50,16 @@ class AppModule {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
 
-        return Apifactory.retrofit().create(TmdbApi::class.java)
+        return retrofit()
     }
+
+    @Provides
+    fun providesString(): String {
+        return "Retornou!"
+    }
+//
+//    @Provides
+//    fun provideSearchRepository(tmdbApi: TmdbApi): SearchRepository{
+//        return SearchRepository(tmdbApi)
+//    }
 }
