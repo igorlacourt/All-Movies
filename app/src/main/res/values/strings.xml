@@ -11,4 +11,5 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_search">Search</string>
     <string name="my_list_at_details">My List</string>
+    <string name="title_activity_main2">Main2Activity</string>
 </resources>

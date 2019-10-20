@@ -11,11 +11,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.lacourt.myapplication.ui.details.DetailsActivity
 import com.lacourt.myapplication.ui.mylist.MyListFragment
 import com.lacourt.myapplication.ui.home.HomeFragment
-import android.view.MenuItem
-import androidx.annotation.NonNull
 
 
 class MainActivity : AppCompatActivity() {
@@ -81,7 +78,9 @@ class MainActivity : AppCompatActivity() {
 //                .replace(R.id.nav_host_fragment, MyListFragment(), "my_list")
 //                .commit()
 //        }
-//        val layout = resources.getLayout(R.layout.fragment_mylist).id
-        findNavController(R.layout.fragment_mylist).navigate(R.id.action_navigation_home_to_detailsActivity)
+//        val layout = resources.getLayout(R.layout.fragment_my_list).id
+
+
+//        findNavController(R.layout.fragment_my_list).navigate(R.id.action_navigation_home_to_detailsActivity)
     }
 }

@@ -9,12 +9,11 @@ import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.domainmodel.MyListItem
 import com.lacourt.myapplication.dto.DetailsDTO
 import com.lacourt.myapplication.network.Apifactory
-import com.lacourt.myapplication.test_retrofit_call_kotlin.BaseRepository
 import com.lacourt.myapplication.network.NetworkCallback
 import com.lacourt.myapplication.network.NetworkCall
 import com.lacourt.myapplication.network.Resource
 
-class DetailsRepository(val application: Application) : BaseRepository(), NetworkCallback<Details> {
+class DetailsRepository(val application: Application) : NetworkCallback<Details> {
     private val myListDao =
         AppDatabase.getDatabase(application)?.MyListDao()
     var movie: MutableLiveData<Resource<Details>> = MutableLiveData()

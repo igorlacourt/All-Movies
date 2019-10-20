@@ -1,5 +1,5 @@
 package com.lacourt.myapplication.network
 
-interface NetworkCallback<T>{
-    fun networkCallResult(callback: Resource<T>)
+interface NetworkCallback<R>{
+    fun networkCallResult(callback: Resource<R>)
 }
