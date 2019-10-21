@@ -1,14 +1,15 @@
 package com.lacourt.myapplication
 
-//TODO 1. Implement adding and removing from "my list" with button icon change
-//TODO 2. Check if it should be lateinit modifier for variables like recyclerview in MyListFragment and other classes
-//TODO 2. Change item layout's width maybe it's better to set a fixed height, wrap_content width, and use matrix instead of centerCrop scaleType
-//TODO 3. Adjust icons and bottom navigation
-//TODO 4. Set style hierarchy correctly
-//TODO 5. Remove hard coded string and colors
-//TODO 6. Add Dagger
-//TODO 7. Implement Navigation
-//TODO 8. Implement backwards navigation for home an mylist fragments (when click back the app closes instead of back to the one was being displayed before)
+//TODO 1. Correct crash when clicking in movie which doesn't have a loaded poster
+//TODO 2. Transform DetailsActivity in DetailsFragment
+//TODO 3. Check if it should be lateinit modifier for variables like recyclerview in MyListFragment and other classes
+//TODO 4. Change item layout's width maybe it's better to set a fixed height, wrap_content width, and use matrix instead of centerCrop scaleType
+//TODO 5. Adjust icons and bottom navigation
+//TODO 6. Set style hierarchy correctly
+//TODO 7. Remove hard coded string and colors
+//TODO 8. Add Dagger
+//TODO 9. Implement Navigation
+//TODO 10. Implement backwards navigation for home an mylist fragments (when click back the app closes instead of back to the one was being displayed before)
 
 //TODO adding and removing from "my list"
 //1. in DetailsActivity's onCreate
