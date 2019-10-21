@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.lacourt.myapplication.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_detailsActivity"
+            app:destination="@id/detailsActivity" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_my_list"
+        android:name="com.lacourt.myapplication.ui.mylist.MyListFragment"
+        android:label="@string/title_my_list"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.lacourt.myapplication.ui.search.SearchFragment"
+        android:label="@string/title_search"
+        tools:layout="@layout/fragment_search" />
+
+    <activity
+        android:id="@+id/detailsActivity"
+        android:name="com.lacourt.myapplication.ui.details.DetailsActivity"
+        android:label="activity_details"
+        tools:layout="@layout/activity_details" />
+
+</navigation>
