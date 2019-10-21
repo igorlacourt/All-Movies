@@ -1,5 +1,6 @@
 package com.lacourt.myapplication.repository
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -30,13 +31,7 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
     private val myListDao =
         AppDatabase.getDatabase(application)?.MyListDao()
     var movie: MutableLiveData<Resource<Details>> = MutableLiveData()
-    var myListMovie: MutableLiveData<Int> = MutableLiveData()
-
-    var isInserted: MutableLiveData<Boolean> = Transformations.map(myListMovie, ::isInMyList)
-
-//    fun isInMyList(myListItem: MyListItem): LiveData<Boolean> {
-//
-//    }
+    var isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getDetails(id: Int) {
         Log.d("calltest", "getDetails called")
@@ -49,16 +44,19 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
     }
 
     fun insert(myListItem: MyListItem) {
+        Log.d("log_is_inserted", "DetailsRepository, insert() called")
         myListDao?.insert(myListItem)
     }
 
-    fun delete(databaseCallback: DatabaseCallback, id: Int) {
+    fun delete(id: Int) {
+        Log.d("log_is_inserted", "DetailsRepository, delete() called")
         Completable.fromAction { myListDao?.deleteById(id) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : CompletableObserver {
                 override fun onComplete() {
-                    isInserted.value = false
+                    Log.d("log_is_inserted", "DetailsRepository, delete(), onComplete() called")
+                    isInDatabase.value = false
                 }
 
                 override fun onSubscribe(d: Disposable) {
@@ -66,16 +64,34 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
                 }
 
                 override fun onError(e: Throwable) {
-
+                    Log.d("log_is_inserted", "DetailsRepository, delete(), onError() called")
                 }
             })
     }
 
+    @SuppressLint("CheckResult")
     override fun networkCallResult(callback: Resource<Details>) {
+        Log.d("log_is_inserted", "DetailsRepository, networkCallResult() called, movie = ${callback.data?.title}")
         movie.value = callback
-        callback.data?.let {
-            myListMovie = myListDao?.getById(it.id)
+        val id: Int? = callback.data?.id
+        Log.d("log_is_inserted", "DetailsRepository, networkCallResult() called, id = $id")
+        if (id != null) {
+            isInDatabase.value = false
+            myListDao?.getById(id)
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.doOnNext{
+                    isInDatabase.value = true
+                    Log.d("log_is_inserted", "DetailsRepository, getById(), doOnNext called, isInDatabase.value = ${isInDatabase.value}")
+                }
+                ?.subscribe()
         }
+//            ?.subscribe {
+                //databaseCallback.onUsersLoaded(users);
+//            }
+
+
+
         Log.d(
             "calltest",
             "networkCallResult, movie.value = ${movie.value?.data}"

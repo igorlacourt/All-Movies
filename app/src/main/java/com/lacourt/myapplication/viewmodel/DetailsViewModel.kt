@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.google.android.material.snackbar.Snackbar
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.database.DatabaseCallback
@@ -15,18 +16,21 @@ import com.lacourt.myapplication.dto.DetailsDTO
 import com.lacourt.myapplication.repository.DetailsRepository
 import com.lacourt.myapplication.network.Resource
 
-class DetailsViewModel(application: Application) : AndroidViewModel(application), DatabaseCallback{
-
+class DetailsViewModel(application: Application) : AndroidViewModel(application){
     val app : Application = application
     private val repository: DetailsRepository = DetailsRepository(application)
     internal var movie: MutableLiveData<Resource<Details>>? = null
-    lateinit var isInserted: LiveData<Boolean>
+    var isInDatabase: LiveData<Boolean> = repository.isInDatabase
 
-    init {
-        isInserted = repository.isInserted
+
+    fun isInMyList(id: Int?): Boolean {
+        if (id == null)
+            return false
+        return true
     }
 
     fun insert(myListItem: MyListItem) {
+        Log.d("log_is_inserted", "DetailsViewModel, insert() called")
         repository.insert(myListItem)
     }
 
@@ -37,14 +41,9 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun delete(id: Int){
-        isInserted = repository.isInserted
+        Log.d("log_is_inserted", "DetailsViewModel, delete() called")
+
         repository.delete(id)
     }
-
-    override fun onItemDeleted() {
-        Toast.makeText(app, "").show()
-    }
-
-
 
 }

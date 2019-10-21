@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -16,6 +17,7 @@ import com.lacourt.myapplication.R
 import com.lacourt.myapplication.ui.details.DetailsActivity
 import com.lacourt.myapplication.ui.home.MovieAdapter
 import com.lacourt.myapplication.viewmodel.MyListViewModel
+import kotlinx.android.synthetic.main.fragment_mylist.*
 
 class MyListFragment : Fragment(), OnMyListItemClick{
     private val onMyListItemClick = this as OnMyListItemClick
@@ -28,12 +30,15 @@ class MyListFragment : Fragment(), OnMyListItemClick{
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val progressBar: ProgressBar = root.findViewById(R.id.progress_circular)
+        val root = inflater.inflate(R.layout.fragment_mylist, container, false)
+        val progressBar: ProgressBar = root.findViewById(R.id.my_list_progress_circular)
+
+        var emptyList = root.findViewById<TextView>(R.id.edt_my_list_empty)
+            emptyList.visibility = View.VISIBLE
 
         progressBar.visibility = View.VISIBLE
         adapter = MyListAdapter(activity?.applicationContext, onMyListItemClick, ArrayList())
-        recyclerView = root.findViewById(R.id.movie_list)
+        recyclerView = root.findViewById(R.id.my_list_list)
 
 
         setUpRecyclerView()
@@ -42,6 +47,10 @@ class MyListFragment : Fragment(), OnMyListItemClick{
         myListViewModel.myList.observe(this, Observer { list ->
             Log.d("receivertest", "onChange, list.size = ${list.size}")
             adapter.setList(list)
+
+            if(!list.isNullOrEmpty())
+                emptyList.visibility = View.INVISIBLE
+
             progressBar.visibility = View.INVISIBLE
         })
 
