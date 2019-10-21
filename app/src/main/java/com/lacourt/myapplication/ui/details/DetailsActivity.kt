@@ -15,6 +15,7 @@ import com.lacourt.myapplication.network.Resource
 import com.lacourt.myapplication.viewmodel.DetailsViewModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import io.reactivex.Completable
 import kotlinx.android.synthetic.main.activity_details.*
 import java.lang.Exception
 
@@ -30,6 +31,10 @@ class DetailsActivity : AppCompatActivity() {
 
         val viewModel =
             ViewModelProviders.of(this).get(DetailsViewModel::class.java)
+
+        viewModel.isInserted.observe(this, Observer {
+            detail_backdrop.setImageResource(R.drawable.)
+        })
 
         if (id != 0) viewModel.getDetails(id) else Toast.makeText(
             this,

@@ -1,5 +1,6 @@
 package com.lacourt.myapplication.database
 
+import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Insert
@@ -10,6 +11,9 @@ import com.lacourt.myapplication.dto.DbMovieDTO
 
 @Dao
 interface MyListDao {
+    @Query("SELECT id FROM mylist WHERE id = :id")
+    fun getById(id: Int): LiveData<Int>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: MyListItem)
 
