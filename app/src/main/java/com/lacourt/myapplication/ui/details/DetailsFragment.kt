@@ -14,6 +14,8 @@ import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.lacourt.myapplication.AppConstants
 
@@ -40,7 +42,7 @@ private const val PARAM_ID = "param_id"
  * create an instance of this fragment.
  */
 class DetailsFragment : Fragment() {
-    lateinit var viewModel:DetailsViewModel
+    lateinit var viewModel: DetailsViewModel
     lateinit var progressBar: ProgressBar
     lateinit var wishListButton: ImageView
 
@@ -60,14 +62,25 @@ class DetailsFragment : Fragment() {
         viewModel =
             ViewModelProviders.of(this).get(DetailsViewModel::class.java)
 
-        viewModel.isInDatabase.observe(this, Observer {isInDatabase ->
+        viewModel.isInDatabase.observe(this, Observer { isInDatabase ->
             Log.d("log_is_inserted", "onChanged()")
             if (isInDatabase) {
-                wishListButton.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.ic_check_mark_24dp, null))
+                wishListButton.setImageDrawable(
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.ic_check_mark_24dp,
+                        null
+                    )
+                )
                 Log.d("log_is_inserted", "isInserted true, button to checkmark")
-            }
-            else {
-                wishListButton.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.wish_list_btn_24dp, null))
+            } else {
+                wishListButton.setImageDrawable(
+                    ResourcesCompat.getDrawable(
+                        resources,
+                        R.drawable.wish_list_btn_24dp,
+                        null
+                    )
+                )
                 Log.d("log_is_inserted", "isInserted false, button to plus sign")
             }
         })
@@ -76,10 +89,10 @@ class DetailsFragment : Fragment() {
             viewModel.getDetails(id)
         else
             Toast.makeText(
-            context,
-            "id is NULL",
-            Toast.LENGTH_LONG
-        ).show()
+                context,
+                "id is NULL",
+                Toast.LENGTH_LONG
+            ).show()
 
         viewModel.movie?.observe(this, Observer {
             when (it?.status) {
@@ -98,7 +111,7 @@ class DetailsFragment : Fragment() {
 
         wishListButton.setOnClickListener {
             Log.d("log_is_inserted", "Button clicked")
-            if(viewModel.isInDatabase.value == false) {
+            if (viewModel.isInDatabase.value == false) {
                 Log.d("log_is_inserted", "isInDatabase false")
                 val itemData = viewModel.movie?.value?.data
                 if (itemData?.id != null) {
@@ -114,8 +127,7 @@ class DetailsFragment : Fragment() {
                         Toast.LENGTH_LONG
                     ).show()
                 }
-            }
-            else {
+            } else {
                 Log.d("log_is_inserted", "isInDatabase true")
                 viewModel.movie?.value?.data?.id?.let { id -> viewModel.delete(id) }
             }
@@ -123,7 +135,7 @@ class DetailsFragment : Fragment() {
         return view
     }
 
-    fun displayDetails(details: Details?){
+    fun displayDetails(details: Details?) {
         details?.apply {
             var imagePath = backdrop_path ?: poster_path
             Log.d("calltest", "onChange, response = $this")
@@ -153,7 +165,9 @@ class DetailsFragment : Fragment() {
             release_year.text = release_date
             progressBar.visibility = View.INVISIBLE
         }
+
     }
+
 //    companion object {
 //        /**
 //         * Use this factory method to create a new instance of

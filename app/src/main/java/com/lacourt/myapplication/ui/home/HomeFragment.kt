@@ -67,6 +67,7 @@ class HomeFragment : Fragment(), OnMovieClick {
     }
 
     override fun onMovieClick(id: Int) {
+
         if (id != 0) {
             val homeToDetailsFragment =
                 HomeFragmentDirections.actionNavigationHomeToDetailsFragment(id)
