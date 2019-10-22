@@ -9,7 +9,7 @@ import com.google.gson.annotations.Expose
 data class MyListItem(@Expose
                     @NonNull
                     @PrimaryKey(autoGenerate = false)
-                    val id: Int,
+                    val id: Int?,
 
                       @Expose
                     val poster_path: String?,

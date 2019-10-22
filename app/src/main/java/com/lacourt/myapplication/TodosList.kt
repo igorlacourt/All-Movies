@@ -1,6 +1,6 @@
 package com.lacourt.myapplication
 
-//TODO 1. Correct crash when clicking in movie which doesn't have a loaded poster
+//TODO 1. Load backdrop when there's no poster path in Details object to be presented in DetailsFragment
 //TODO 2. Transform DetailsActivity in DetailsFragment
 //TODO 3. Check if it should be lateinit modifier for variables like recyclerview in MyListFragment and other classes
 //TODO 4. Change item layout's width maybe it's better to set a fixed height, wrap_content width, and use matrix instead of centerCrop scaleType

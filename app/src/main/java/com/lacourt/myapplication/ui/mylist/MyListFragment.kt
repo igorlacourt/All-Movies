@@ -8,18 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.R
-import com.lacourt.myapplication.ui.details.DetailsActivity
 import com.lacourt.myapplication.ui.home.MovieAdapter
 import com.lacourt.myapplication.viewmodel.MyListViewModel
 import kotlinx.android.synthetic.main.fragment_mylist.*
 
-class MyListFragment : Fragment(), OnMyListItemClick{
+class MyListFragment : Fragment(), OnMyListItemClick {
     private val onMyListItemClick = this as OnMyListItemClick
     private lateinit var recyclerView: RecyclerView
     private lateinit var myListViewModel: MyListViewModel
@@ -34,7 +35,7 @@ class MyListFragment : Fragment(), OnMyListItemClick{
         val progressBar: ProgressBar = root.findViewById(R.id.my_list_progress_circular)
 
         var emptyList = root.findViewById<TextView>(R.id.edt_my_list_empty)
-            emptyList.visibility = View.VISIBLE
+        emptyList.visibility = View.VISIBLE
 
         progressBar.visibility = View.VISIBLE
         adapter = MyListAdapter(activity?.applicationContext, onMyListItemClick, ArrayList())
@@ -48,7 +49,7 @@ class MyListFragment : Fragment(), OnMyListItemClick{
             Log.d("receivertest", "onChange, list.size = ${list.size}")
             adapter.setList(list)
 
-            if(!list.isNullOrEmpty())
+            if (!list.isNullOrEmpty())
                 emptyList.visibility = View.INVISIBLE
 
             progressBar.visibility = View.INVISIBLE
@@ -64,9 +65,13 @@ class MyListFragment : Fragment(), OnMyListItemClick{
         recyclerView.adapter = adapter
     }
 
-    override fun onMyListItemClick(id: Int) {
-        val i = Intent(activity, DetailsActivity::class.java)
-        i.putExtra("id", id)
-        startActivity(i)
+    override fun onMyListItemClick(id: Int?) {
+        if (id != 0) {
+            val myListToDetailsFragment =
+                id?.let { MyListFragmentDirections.actionNavigationMyListToDetailsFragment(it) }
+            myListToDetailsFragment?.let { findNavController().navigate(it) }
+        } else {
+            Toast.makeText(context, "Sorry. Can not load this movie. :/", Toast.LENGTH_SHORT).show()
+        }
     }
 }

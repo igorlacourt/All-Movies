@@ -69,7 +69,7 @@
         tools:text="0000" />
 
     <ProgressBar
-        android:id="@+id/datails_progress_bar"
+        android:id="@+id/details_progress_bar"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

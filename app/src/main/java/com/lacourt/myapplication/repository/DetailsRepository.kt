@@ -90,8 +90,6 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
                 //databaseCallback.onUsersLoaded(users);
 //            }
 
-
-
         Log.d(
             "calltest",
             "networkCallResult, movie.value = ${movie.value?.data}"

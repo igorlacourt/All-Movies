@@ -11,26 +11,37 @@
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_navigation_home_to_detailsActivity"
-            app:destination="@id/detailsActivity" />
+            android:id="@+id/action_navigation_home_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_my_list"
         android:name="com.lacourt.myapplication.ui.mylist.MyListFragment"
         android:label="@string/title_my_list"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_navigation_my_list_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_search"
         android:name="com.lacourt.myapplication.ui.search.SearchFragment"
         android:label="@string/title_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_navigation_search_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
 
-    <activity
-        android:id="@+id/detailsActivity"
-        android:name="com.lacourt.myapplication.ui.details.DetailsActivity"
-        android:label="activity_details"
-        tools:layout="@layout/activity_details" />
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.lacourt.myapplication.ui.details.DetailsFragment"
+        android:label="DetailsFragment" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>

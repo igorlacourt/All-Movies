@@ -11,12 +11,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.lacourt.myapplication.R
-import com.lacourt.myapplication.ui.details.DetailsActivity
+import com.lacourt.myapplication.ui.home.HomeFragmentDirections
 import com.lacourt.myapplication.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
 
@@ -53,15 +55,14 @@ class SearchFragment : Fragment(), OnSearchedItemClick {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.searchResult.observe(this, Observer{resultList ->
+        viewModel.searchResult.observe(this, Observer { resultList ->
             adapter.setList(resultList)
             progressBar?.visibility = View.INVISIBLE
 
-            if(resultList == null || resultList.isEmpty()) {
+            if (resultList == null || resultList.isEmpty()) {
                 Log.d("searchlog", "observe, resultList.size = ${resultList.size}")
                 search_no_results.visibility = View.VISIBLE
-            }
-            else {
+            } else {
                 Log.d("searchlog", "observe, resultList.size = ${resultList.size}")
                 search_no_results.visibility = View.INVISIBLE
             }
@@ -88,9 +89,13 @@ class SearchFragment : Fragment(), OnSearchedItemClick {
     }
 
     override fun onSearchItemClick(id: Int) {
-        val i = Intent(context, DetailsActivity::class.java)
-        i.putExtra("id", id)
-        startActivity(i)
+        if (id != 0) {
+            val searchToDetailsFragment =
+                SearchFragmentDirections.actionNavigationSearchToDetailsFragment(id)
+            findNavController().navigate(searchToDetailsFragment)
+        } else {
+            Toast.makeText(context, "Sorry. Can not load this movie. :/", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onStop() {
