@@ -5,8 +5,21 @@ import com.lacourt.myapplication.domainmodel.MyListItem
 import com.lacourt.myapplication.dto.DbMovieDTO
 import com.lacourt.myapplication.dto.DetailsDTO
 import com.lacourt.myapplication.dto.MovieDTO
+import com.lacourt.myapplication.dto.MovieResponseDTO
 
 object MapperFunctions {
+
+    fun movieResponseToDbMovieDTO(input: MovieResponseDTO): List<DbMovieDTO> {
+        return input.results.map { movieDTO ->
+           DbMovieDTO(
+               movieDTO.id,
+               movieDTO.poster_path,
+               movieDTO.release_date,
+               movieDTO.vote_average
+           )
+
+        }
+    }
 
     fun toDetails(input: DetailsDTO): Details {
         return with(input) {
@@ -36,7 +49,7 @@ object MapperFunctions {
 
     fun toListOfDbMovieDTO(networkMoviesList: List<MovieDTO>): List<DbMovieDTO> {
         return networkMoviesList.map {
-            with(it){
+            with(it) {
                 DbMovieDTO(
                     id,
                     poster_path,
@@ -48,7 +61,7 @@ object MapperFunctions {
     }
 
     fun toDbMovieDTO(input: MovieDTO): DbMovieDTO {
-        return with(input){
+        return with(input) {
             DbMovieDTO(id, poster_path, release_date, vote_average)
         }
     }

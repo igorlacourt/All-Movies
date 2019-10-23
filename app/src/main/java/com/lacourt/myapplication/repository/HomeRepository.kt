@@ -17,6 +17,8 @@ import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.dto.*
 import com.lacourt.myapplication.network.Apifactory
 import com.lacourt.myapplication.network.NetworkCall
+import com.lacourt.myapplication.network.NetworkCallback
+import com.lacourt.myapplication.network.Resource
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.Single
@@ -28,7 +30,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeRepository(private val application: Application) {
+class HomeRepository(private val application: Application): NetworkCallback<List<DbMovieDTO>> {
+
     private val config = PagedList.Config.Builder()
         .setInitialLoadSizeHint(50)
         .setPageSize(50)
@@ -47,16 +50,16 @@ class HomeRepository(private val application: Application) {
         movieDao.dateAsc().toLiveData(config)
 
     val movies = MediatorLiveData<PagedList<DbMovieDTO>>()
-    val popularMovies = MutableLiveData<List<DbMovieDTO>>()
+    val popularMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
 
     /*Remember:
      1. that the returned list cannot be mutable
      2. the mutable livedata should be private(check in the video again)*/
     init {
-        NetworkCall<MovieResponseDTO, Details>().makeCall(
+        NetworkCall<MovieResponseDTO, List<DbMovieDTO>>().makeCall(
             Apifactory.tmdbApi.getPopularMovies(AppConstants.LANGUAGE, 1),
             this,
-            MapperFunctions::toDetails
+            MapperFunctions::movieResponseToDbMovieDTO
         )
 
         Log.d("callstest", "repository called")
@@ -82,6 +85,10 @@ class HomeRepository(private val application: Application) {
 //            if (count > 0)
 //                movieDao.deleteAll()
 //        }
+    }
+
+    override fun networkCallResult(callback: Resource<List<DbMovieDTO>>) {
+        popularMovies.value = callback
     }
 
     fun rearrengeMovies(order: String) = when (order) {

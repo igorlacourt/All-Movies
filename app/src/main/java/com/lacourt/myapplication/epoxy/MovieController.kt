@@ -6,9 +6,15 @@ import com.lacourt.myapplication.dto.DbMovieDTO
 class MovieController : EpoxyController() {
 
     var movies: List<DbMovieDTO>? = null
+    var popularMovies: List<DbMovieDTO>? = null
 
-    fun setMovie(newMovieList: List<DbMovieDTO>) {
+    fun submitMovie(newMovieList: List<DbMovieDTO>) {
         movies = newMovieList
+        requestModelBuild()
+    }
+
+    fun submitPopularMovies(newPopularMovies: List<DbMovieDTO>){
+        popularMovies = newPopularMovies
         requestModelBuild()
     }
 
@@ -21,6 +27,12 @@ class MovieController : EpoxyController() {
                 .addTo(this)
         }
 
+        popularMovies?.forEach { movie ->
+            MovieModel_()
+                .id(movie.id)
+                .movieItem(movie)
+                .addTo(this)
+        }
 //        movies?.let {movieList ->
 //            MovieModel_()
 //                .movieItem(movie)

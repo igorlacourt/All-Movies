@@ -13,8 +13,12 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.epoxy.CarouselModel_
+import com.airbnb.epoxy.EpoxyRecyclerView
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.epoxy.MovieController
+import com.lacourt.myapplication.epoxy.MovieModel_
+import com.lacourt.myapplication.network.Resource
 import com.lacourt.myapplication.ui.OnMovieClick
 import com.lacourt.myapplication.viewmodel.HomeViewModel
 
@@ -22,7 +26,8 @@ import com.lacourt.myapplication.viewmodel.HomeViewModel
 class HomeFragment : Fragment(), OnMovieClick {
     private val onMovieClick = this as OnMovieClick
     private lateinit var homeViewModel: HomeViewModel
-    private lateinit var recyclerView: RecyclerView
+//    private lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerView: EpoxyRecyclerView
     val movieController by lazy { MovieController() }
 
     override fun onCreateView(
@@ -51,6 +56,28 @@ class HomeFragment : Fragment(), OnMovieClick {
 
         recyclerView.adapter = adapter
 
+
+
+
+
+
+
+        recyclerView.buildModelsWith {
+            it.apply{
+                CarouselModel_
+
+            }
+        }
+
+
+
+
+
+
+
+
+
+
 //        (recyclerView.adapter as MovieAdapter).registerAdapterDataObserver(object :
 //            RecyclerView.AdapterDataObserver() {
 //            override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
@@ -61,16 +88,24 @@ class HomeFragment : Fragment(), OnMovieClick {
         homeViewModel.movies?.observe(this, Observer { pagedList ->
             if(pagedList != null && pagedList.isNotEmpty()) {
 //                adapter.submitList(pagedList)
-                movieController.setMovie(pagedList)
+                movieController.submitMovie(pagedList)
                 progressBar.visibility = View.INVISIBLE
             }
         })
 
-        homeViewModel.popularMovies?.observe(this, Observer { list ->
-            if(!list.isNullOrEmpty()) {
-                movieController.setMovie(list)
-                progressBar.visibility = View.INVISIBLE
+        homeViewModel.popularMovies?.observe(this, Observer { response ->
+            when(response.status){
+                Resource.Status.SUCCESS -> {
+                    response.data?.let { movieController.submitPopularMovies(it) }
+                    progressBar.visibility = View.INVISIBLE
+                }
+                Resource.Status.LOADING -> {}
+                Resource.Status.ERROR -> {}
             }
+//            if(!list.isNullOrEmpty()) {
+//                movieController.setMovie(list)
+//                progressBar.visibility = View.INVISIBLE
+//            }
         })
 
         return root
