@@ -6,18 +6,17 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.database.AppDatabase
 import com.lacourt.myapplication.domainMappers.MapperFunctions
 import com.lacourt.myapplication.domainMappers.not_used_interfaces.Mapper
-import com.lacourt.myapplication.dto.GenreDTO
-import com.lacourt.myapplication.dto.GenreResponseDTO
-import com.lacourt.myapplication.dto.MovieDTO
-import com.lacourt.myapplication.dto.MovieResponseDTO
-import com.lacourt.myapplication.dto.DbMovieDTO
+import com.lacourt.myapplication.domainmodel.Details
+import com.lacourt.myapplication.dto.*
 import com.lacourt.myapplication.network.Apifactory
+import com.lacourt.myapplication.network.NetworkCall
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.Single
@@ -48,11 +47,18 @@ class HomeRepository(private val application: Application) {
         movieDao.dateAsc().toLiveData(config)
 
     val movies = MediatorLiveData<PagedList<DbMovieDTO>>()
+    val popularMovies = MutableLiveData<List<DbMovieDTO>>()
 
     /*Remember:
      1. that the returned list cannot be mutable
      2. the mutable livedata should be private(check in the video again)*/
     init {
+        NetworkCall<MovieResponseDTO, Details>().makeCall(
+            Apifactory.tmdbApi.getPopularMovies(AppConstants.LANGUAGE, 1),
+            this,
+            MapperFunctions::toDetails
+        )
+
         Log.d("callstest", "repository called")
         movies.addSource(moviesDescending) { result ->
             if (currentOrder == AppConstants.DATE_DESC) {

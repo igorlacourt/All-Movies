@@ -14,15 +14,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.R
+import com.lacourt.myapplication.epoxy.MovieController
 import com.lacourt.myapplication.ui.OnMovieClick
 import com.lacourt.myapplication.viewmodel.HomeViewModel
 
 
 class HomeFragment : Fragment(), OnMovieClick {
-
     private val onMovieClick = this as OnMovieClick
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var recyclerView: RecyclerView
+    val movieController by lazy { MovieController() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,23 +43,32 @@ class HomeFragment : Fragment(), OnMovieClick {
         val progressBar: ProgressBar = root.findViewById(R.id.progress_circular)
         progressBar.visibility = View.VISIBLE
         recyclerView = root.findViewById(R.id.movie_list)
-        val adapter = MovieAdapter(context, onMovieClick)
+//        val adapter = MovieAdapter(context, onMovieClick)
+        val adapter = movieController.adapter
 
         var layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = layoutManager
 
         recyclerView.adapter = adapter
 
-        (recyclerView.adapter as MovieAdapter).registerAdapterDataObserver(object :
-            RecyclerView.AdapterDataObserver() {
-            override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
-                recyclerView.scrollToPosition(0)
-            }
-        })
+//        (recyclerView.adapter as MovieAdapter).registerAdapterDataObserver(object :
+//            RecyclerView.AdapterDataObserver() {
+//            override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
+//                recyclerView.scrollToPosition(0)
+//            }
+//        })
 
         homeViewModel.movies?.observe(this, Observer { pagedList ->
             if(pagedList != null && pagedList.isNotEmpty()) {
-                adapter.submitList(pagedList)
+//                adapter.submitList(pagedList)
+                movieController.setMovie(pagedList)
+                progressBar.visibility = View.INVISIBLE
+            }
+        })
+
+        homeViewModel.popularMovies?.observe(this, Observer { list ->
+            if(!list.isNullOrEmpty()) {
+                movieController.setMovie(list)
                 progressBar.visibility = View.INVISIBLE
             }
         })
@@ -67,7 +77,6 @@ class HomeFragment : Fragment(), OnMovieClick {
     }
 
     override fun onMovieClick(id: Int) {
-
         if (id != 0) {
             val homeToDetailsFragment =
                 HomeFragmentDirections.actionNavigationHomeToDetailsFragment(id)

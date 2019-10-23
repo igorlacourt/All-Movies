@@ -1,6 +1,5 @@
 package com.lacourt.myapplication.ui.search
 
-import android.content.Intent
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.text.Editable
@@ -18,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.lacourt.myapplication.R
-import com.lacourt.myapplication.ui.home.HomeFragmentDirections
 import com.lacourt.myapplication.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
 

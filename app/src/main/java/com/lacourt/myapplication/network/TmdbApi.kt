@@ -57,4 +57,12 @@ interface TmdbApi{
 
     ) : Call<MovieResponseDTO>
 
+    @GET("movie/popular")
+    fun getPopularMovies(
+
+        @Query("language")
+        language: String,
+
+        @Query("page")
+        page: Int): Call<MovieResponseDTO>
 }

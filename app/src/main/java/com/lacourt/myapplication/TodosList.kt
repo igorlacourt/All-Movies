@@ -1,5 +1,6 @@
 package com.lacourt.myapplication
-
+//TODO 1. Set epoxy pagedList for My List
+//TODO 1. Check if DbMovieDTO is named correctly
 //TODO 1. Load backdrop when there's no poster path in Details object to be presented in DetailsFragment
 //TODO 2. Transform DetailsActivity in DetailsFragment
 //TODO 3. Check if it should be lateinit modifier for variables like recyclerview in MyListFragment and other classes

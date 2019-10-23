@@ -4,6 +4,11 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs"
 //apply plugin: "androidx.navigation.safeargs.kotlin"
+
+kapt {
+    correctErrorTypes = true
+}
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
@@ -128,4 +133,8 @@ dependencies {
     //Another Shimmer
     implementation 'xyz.peridy.shimmer:shimmerlayout:1.1'
 
+    //Epoxy
+    implementation 'com.airbnb.android:epoxy:3.4.2'
+    kapt 'com.airbnb.android:epoxy-processor:3.4.2'
+    implementation 'com.airbnb.android:epoxy-paging:3.4.2'
 }
