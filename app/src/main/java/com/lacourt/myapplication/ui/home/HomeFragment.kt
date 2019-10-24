@@ -15,9 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyRecyclerView
+import com.airbnb.epoxy.OnModelClickListener
 import com.lacourt.myapplication.R
-import com.lacourt.myapplication.epoxy.MovieController
-import com.lacourt.myapplication.epoxy.MovieModel_
+import com.lacourt.myapplication.dto.DbMovieDTO
+import com.lacourt.myapplication.epoxy.*
 import com.lacourt.myapplication.network.Resource
 import com.lacourt.myapplication.ui.OnMovieClick
 import com.lacourt.myapplication.viewmodel.HomeViewModel
@@ -51,10 +52,11 @@ class HomeFragment : Fragment(), OnMovieClick {
 //        val adapter = MovieAdapter(context, onMovieClick)
         val adapter = movieController.adapter
 
-        var layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        var layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
 
         recyclerView.adapter = adapter
+
 
 
 
@@ -66,7 +68,80 @@ class HomeFragment : Fragment(), OnMovieClick {
             it.apply{
 //                CarouselModel_
 
+                val movies: ArrayList<DbMovieDTO> = ArrayList()
+                for (j in 1..10){
+                    movies.add(DbMovieDTO(j, "/2bXbqYdUdNVa8VIWXVfclP2ICtT.jpg", "2019-07-1", 0.0 + j))
+                }
+
+                val movieCategory = ArrayList<MovieCategoryListModel_>()
+                for (movie in movies) {
+                    movieCategory.add(
+                        MovieCategoryListModel_()
+                                .id(movie.id, 1)
+                            .mMoviePoster(movie.poster_path)
+                            .onClickListener(object :
+                                OnModelClickListener<MovieCategoryListModel_, MovieCategoryListModel.ViewHolder> {
+                                override fun onClick(
+                                    model: MovieCategoryListModel_,
+                                    parentView: MovieCategoryListModel.ViewHolder,
+                                    clickedView: View,
+                                    position: Int
+                                ) {
+
+                                }
+                            })
+                    )
+                }
+
+//                for (item in movieCategory){
+//                    item.addTo(this)
+//                }
+
+
+
+                val movies2: ArrayList<DbMovieDTO> = ArrayList()
+                for (j in 1..10){
+                    movies2.add(DbMovieDTO(j, "/jpfkzbIXgKZqCZAkEkFH2VYF63s.jpg", "2019-07-1", 0.0 + j))
+                }
+
+                val movieCategory2 = ArrayList<MovieCategoryListModel_>()
+                for (movie2 in movies2) {
+                    movieCategory2.add(
+                        MovieCategoryListModel_()
+                            .id(movie2.id, 2)
+                            .mMoviePoster(movie2.poster_path)
+                            .onClickListener(object :
+                                OnModelClickListener<MovieCategoryListModel_, MovieCategoryListModel.ViewHolder> {
+                                override fun onClick(
+                                    model: MovieCategoryListModel_,
+                                    parentView: MovieCategoryListModel.ViewHolder,
+                                    clickedView: View,
+                                    position: Int
+                                ) {
+
+                                }
+                            })
+                    )
+                }
+
+//                for (item in movieCategory2){
+//                    item.addTo(this)
+//                }
+
+                CarouselModel_()
+                    .id("carousel1")
+                    .models(movieCategory)
+                    .addTo(this)
+
+                CarouselModel_()
+                    .id("carousel2")
+                    .models(movieCategory2)
+                    .addTo(this)
+
             }
+
+
+
         }
 
 
@@ -78,12 +153,9 @@ class HomeFragment : Fragment(), OnMovieClick {
 
 
 
-//        (recyclerView.adapter as MovieAdapter).registerAdapterDataObserver(object :
-//            RecyclerView.AdapterDataObserver() {
-//            override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
-//                recyclerView.scrollToPosition(0)
-//            }
-//        })
+
+
+
 
         homeViewModel.movies?.observe(this, Observer { pagedList ->
             if(pagedList != null && pagedList.isNotEmpty()) {
@@ -102,10 +174,6 @@ class HomeFragment : Fragment(), OnMovieClick {
                 Resource.Status.LOADING -> {}
                 Resource.Status.ERROR -> {}
             }
-//            if(!list.isNullOrEmpty()) {
-//                movieController.setMovie(list)
-//                progressBar.visibility = View.INVISIBLE
-//            }
         })
 
         return root
@@ -122,3 +190,9 @@ class HomeFragment : Fragment(), OnMovieClick {
     }
 
 }
+//        (recyclerView.adapter as MovieAdapter).registerAdapterDataObserver(object :
+//            RecyclerView.AdapterDataObserver() {
+//            override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
+//                recyclerView.scrollToPosition(0)
+//            }
+//        })

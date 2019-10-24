@@ -5,6 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.LinearLayout
 import androidx.annotation.NonNull
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.airbnb.epoxy.EpoxyHolder
 import com.squareup.picasso.Picasso
@@ -35,7 +36,7 @@ abstract class MovieCategoryListModel : EpoxyModelWithHolder<MovieCategoryListMo
 
     class ViewHolder : EpoxyHolder() {
 
-        var mCardView: ConstraintLayout? = null
+        var mCardView: CardView? = null
         var mPosterImageView: ImageView? = null
 
         override fun bindView(@NonNull itemView: View) {

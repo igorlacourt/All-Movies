@@ -7,6 +7,7 @@ apply plugin: "androidx.navigation.safeargs"
 
 kapt {
     correctErrorTypes = true
+    generateStubs = true
 }
 
 android {
@@ -135,6 +136,12 @@ dependencies {
 
     //Epoxy
     implementation 'com.airbnb.android:epoxy:3.4.2'
-    kapt 'com.airbnb.android:epoxy-processor:3.4.2'
     implementation 'com.airbnb.android:epoxy-paging:3.4.2'
+    implementation 'com.airbnb.android:epoxy-databinding:3.4.2'
+    kapt 'com.airbnb.android:epoxy-processor:3.4.2'
+
+    // epoxy
+//    implementation 'com.airbnb.android:epoxy:3.3.0'
+//    implementation 'com.airbnb.android:epoxy-databinding:3.3.0'
+//    kapt 'com.airbnb.android:epoxy-processor:3.3.0'
 }

@@ -6,7 +6,6 @@
 //import com.airbnb.epoxy.OnModelClickListener
 //import android.R.id
 //import android.content.Context
-//import android.graphics.Movie
 //import android.view.View
 //import com.airbnb.epoxy.CarouselModel_
 //import com.lacourt.myapplication.dto.DbMovieDTO

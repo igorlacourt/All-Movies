@@ -8,7 +8,6 @@ import com.lacourt.myapplication.R
 import com.lacourt.myapplication.dto.DbMovieDTO
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_list_item.view.*
-import retrofit2.http.GET
 
 @EpoxyModelClass(layout = R.layout.movie_list_item)
 abstract class MovieModel : EpoxyModelWithHolder<MovieModel.MovieHolder>() {
