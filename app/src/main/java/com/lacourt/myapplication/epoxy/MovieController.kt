@@ -20,19 +20,20 @@ class MovieController : EpoxyController() {
 
     override fun buildModels() {
 
-        movies?.forEach { movie ->
-            MovieModel_()
-                .id(movie.id)
-                .movieItem(movie)
-                .addTo(this)
-        }
+//        movies?.forEach { movie ->
+//            MovieModel_()
+//                .id(movie.id)
+//                .movieItem(movie)
+//                .addTo(this)
+//        }
+//
+//        popularMovies?.forEach { movie ->
+//            MovieModel_()
+//                .id(movie.id)
+//                .movieItem(movie)
+//                .addTo(this)
+//        }
 
-        popularMovies?.forEach { movie ->
-            MovieModel_()
-                .id(movie.id)
-                .movieItem(movie)
-                .addTo(this)
-        }
 //        movies?.let {movieList ->
 //            MovieModel_()
 //                .movieItem(movie)

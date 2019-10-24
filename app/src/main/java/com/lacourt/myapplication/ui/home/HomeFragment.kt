@@ -64,7 +64,7 @@ class HomeFragment : Fragment(), OnMovieClick {
 
         recyclerView.buildModelsWith {
             it.apply{
-                CarouselModel_
+//                CarouselModel_
 
             }
         }

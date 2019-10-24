@@ -15,11 +15,11 @@ import com.airbnb.epoxy.EpoxyModelClass
 @EpoxyModelClass
 abstract class CarouselModel : EpoxyModelWithView<Carousel>() {
     @EpoxyAttribute
-    internal var models: List<EpoxyModel<*>>? = null
+    var models: List<EpoxyModel<*>>? = null
     @EpoxyAttribute
-    internal var numItemsExpectedOnDisplay: Int = 0
+    var numItemsExpectedOnDisplay: Int = 0
     @EpoxyAttribute(hash = false)
-    internal var recycledViewPool: RecyclerView.RecycledViewPool? = null
+    var recycledViewPool: RecyclerView.RecycledViewPool? = null
 
     override fun bind(carousel: Carousel) {
         // If there are multiple carousels showing the same item types, you can benefit by having a
