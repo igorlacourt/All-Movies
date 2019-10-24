@@ -14,17 +14,21 @@ import com.lacourt.myapplication.repository.HomeRepository
 class HomeViewModel(application: Application) : AndroidViewModel(application){
 
     private var homeRepository: HomeRepository? = null
-    var movies: LiveData<PagedList<DbMovieDTO>>? = null
+//    var upcomingMovies: LiveData<PagedList<DbMovieDTO>>? = null
+    var upcomingMovies: LiveData<Resource<List<DbMovieDTO>>>? = null
     var popularMovies: LiveData<Resource<List<DbMovieDTO>>>? = null
+    var trendingAll: LiveData<Resource<List<DbMovieDTO>>>? = null
 
     init {
         Log.d("callstest", "homeViewModel init called.\n")
         homeRepository = HomeRepository(application)
-        movies = homeRepository?.movies as LiveData<PagedList<DbMovieDTO>>
-        popularMovies = homeRepository?.popularMovies as LiveData<Resource<List<DbMovieDTO>>>
+//        upcomingMovies = homeRepository?.upcomingMovies as LiveData<PagedList<DbMovieDTO>>
+        upcomingMovies = homeRepository?.upcomingMovies
+        popularMovies = homeRepository?.popularMovies
+        trendingAll = homeRepository?.trendingAll
     }
 
     fun rearrengeMovies(order: String) {
-        homeRepository?.rearrengeMovies(order)
+//        homeRepository?.rearrengeMovies(order)
     }
 }

@@ -38,7 +38,7 @@ object Apifactory {
     }
 
     fun retrofit(): Retrofit = Retrofit.Builder()
-        .baseUrl("https://api.themoviedb.org/3/")
+        .baseUrl(AppConstants.TMDB_BASE_URL)
         .client(loggingClient())
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

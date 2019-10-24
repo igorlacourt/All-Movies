@@ -57,23 +57,45 @@ class HomeFragment : Fragment(), OnMovieClick {
         recyclerView.layoutManager = layoutManager
 
         recyclerView.adapter = adapter
-
-
-
-
-        recyclerView.buildModelsWith {
-            it.apply {
-            }
-        }
-
-
-
-
-        homeViewModel.movies?.observe(this, Observer { pagedList ->
+/*
+        homeViewModel.upcomingMovies?.observe(this, Observer { pagedList ->
             if (pagedList != null && pagedList.isNotEmpty()) {
 //                adapter.submitList(pagedList)
                 movieController.submitMovie(pagedList)
                 progressBar.visibility = View.INVISIBLE
+            }
+        })
+*/
+
+        homeViewModel.upcomingMovies?.observe(this, Observer { response ->
+            when (response.status) {
+                Resource.Status.SUCCESS -> {
+                    response.data?.let {
+                        movieController.submitUpcomingMovies(it)
+                        recyclerView.setController(movieController)
+                    }
+                    progressBar.visibility = View.INVISIBLE
+                }
+                Resource.Status.LOADING -> {
+                }
+                Resource.Status.ERROR -> {
+                }
+            }
+        })
+
+        homeViewModel.trendingAll?.observe(this, Observer { response ->
+            when (response.status) {
+                Resource.Status.SUCCESS -> {
+                    response.data?.let {
+                        movieController.submitAllTrending(it)
+                        recyclerView.setController(movieController)
+                    }
+                    progressBar.visibility = View.INVISIBLE
+                }
+                Resource.Status.LOADING -> {
+                }
+                Resource.Status.ERROR -> {
+                }
             }
         })
 
@@ -83,7 +105,6 @@ class HomeFragment : Fragment(), OnMovieClick {
                     response.data?.let {
                         movieController.submitPopularMovies(it)
                         recyclerView.setController(movieController)
-
                     }
                     progressBar.visibility = View.INVISIBLE
                 }

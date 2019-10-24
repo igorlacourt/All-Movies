@@ -31,7 +31,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class HomeRepository(private val application: Application): NetworkCallback<List<DbMovieDTO>> {
-
     private val config = PagedList.Config.Builder()
         .setInitialLoadSizeHint(50)
         .setPageSize(50)
@@ -49,8 +48,10 @@ class HomeRepository(private val application: Application): NetworkCallback<List
     private val moviesAscending: LiveData<PagedList<DbMovieDTO>> =
         movieDao.dateAsc().toLiveData(config)
 
-    val movies = MediatorLiveData<PagedList<DbMovieDTO>>()
+//    val upcomingMovies = MediatorLiveData<PagedList<DbMovieDTO>>()
+    val upcomingMovies = MediatorLiveData<Resource<List<DbMovieDTO>>>()
     val popularMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
+    val trendingAll = MutableLiveData<Resource<List<DbMovieDTO>>>()
 
     /*Remember:
      1. that the returned list cannot be mutable
@@ -62,7 +63,14 @@ class HomeRepository(private val application: Application): NetworkCallback<List
             MapperFunctions::movieResponseToDbMovieDTO
         )
 
+        NetworkCall<MovieResponseDTO, List<DbMovieDTO>>().makeCall(
+            Apifactory.tmdbApi.getTrendingAll(AppConstants.LANGUAGE, 1),
+            this,
+            MapperFunctions::movieResponseToDbMovieDTO
+        )
+
         Log.d("callstest", "repository called")
+        /*
         movies.addSource(moviesDescending) { result ->
             if (currentOrder == AppConstants.DATE_DESC) {
                 Log.d("callstest", "addSource(moviesDescending)")
@@ -76,7 +84,7 @@ class HomeRepository(private val application: Application): NetworkCallback<List
                 result.let { movies.value = it }
             }
         }
-
+*/
         movieDao.deleteAll()
         fetchMovies()
 //        val count = movieDao.getCount()
@@ -87,14 +95,14 @@ class HomeRepository(private val application: Application): NetworkCallback<List
 //        }
     }
 
-    override fun networkCallResult(callback: Resource<List<DbMovieDTO>>) {
-        popularMovies.value = callback
-    }
 
+
+    /*
     fun rearrengeMovies(order: String) = when (order) {
-        AppConstants.DATE_ASC -> moviesAscending.value?.let { movies.value = it }
-        else -> moviesDescending.value?.let { movies.value = it }
+        AppConstants.DATE_ASC -> moviesAscending.value?.let { popularMovies.value = it }
+        else -> moviesDescending.value?.let { popularMovies.value = it }
     }.also { currentOrder = order }
+    */
 
     fun moviesRequest(page: Int): Observable<MovieResponseDTO>? =
         Apifactory.tmdbApi.getMoviesObservable(AppConstants.LANGUAGE, page)
@@ -132,6 +140,37 @@ class HomeRepository(private val application: Application): NetworkCallback<List
             "Network failure :(",
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+    override fun networkCallResult(callback: Resource<List<DbMovieDTO>>) {
+        upcomingMovies.value = callback
+        popularMovies.value = callback
+        trendingAll.value = callback
+
+    }
+
+    override fun trendingAllCallback(callback: Resource<List<DbMovieDTO>>) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun upcomingMoviesCallback(callback: Resource<List<DbMovieDTO>>) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun popularMoviesCallback(callback: Resource<List<DbMovieDTO>>) {
+
+    }
+
+    override fun popularSeriesCallback(callback: Resource<List<DbMovieDTO>>) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun topRatedMoviesCallback(callback: Resource<List<DbMovieDTO>>) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun topRatedSeriesCallback(callback: Resource<List<DbMovieDTO>>) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 }

@@ -65,4 +65,13 @@ interface TmdbApi{
 
         @Query("page")
         page: Int): Call<MovieResponseDTO>
+
+    @GET("trending/all/day")
+    fun getTrendingAll(
+
+        @Query("language")
+        language: String,
+
+        @Query("page")
+        page: Int): Call<MovieResponseDTO>
 }

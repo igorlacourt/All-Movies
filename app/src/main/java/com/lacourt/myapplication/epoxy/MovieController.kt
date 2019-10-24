@@ -9,11 +9,23 @@ import com.lacourt.myapplication.ui.OnMovieClick
 
 class MovieController(private val onMovieClick: OnMovieClick) : EpoxyController() {
 
-    var movies: List<DbMovieDTO>? = null
+//    var movies: List<DbMovieDTO>? = null
+    var allTrending: List<DbMovieDTO>? = null
+    var upcomingMovies: List<DbMovieDTO>? = null
     var popularMovies: List<DbMovieDTO>? = null
 
-    fun submitMovie(newMovieList: List<DbMovieDTO>) {
-        movies = newMovieList
+//    fun submitMovie(newMovieList: List<DbMovieDTO>) {
+//        movies = newMovieList
+//        requestModelBuild()
+//    }
+
+    fun submitAllTrending(newAllTrending: List<DbMovieDTO>){
+        allTrending = newAllTrending
+        requestModelBuild()
+    }
+
+    fun submitUpcomingMovies(newUpcoming: List<DbMovieDTO>){
+        upcomingMovies = newUpcoming
         requestModelBuild()
     }
 
@@ -23,9 +35,9 @@ class MovieController(private val onMovieClick: OnMovieClick) : EpoxyController(
     }
 
     override fun buildModels() {
-        val movieModel = ArrayList<MovieListModel_>()
-        movies?.forEach { movie ->
-            movieModel.add(
+        val allTrendingModelList = ArrayList<MovieListModel_>()
+        allTrending?.forEach { movie ->
+            allTrendingModelList.add(
                 MovieListModel_()
                     .id(movie.id)
                     .mMoviePoster(movie.poster_path)
@@ -42,10 +54,28 @@ class MovieController(private val onMovieClick: OnMovieClick) : EpoxyController(
                     })
             )
         }
-
-        val popularMovieModel = ArrayList<MovieListModel_>()
+        val upcomingMovieModelList = ArrayList<MovieListModel_>()
+        upcomingMovies?.forEach { movie ->
+            upcomingMovieModelList.add(
+                MovieListModel_()
+                    .id(movie.id)
+                    .mMoviePoster(movie.poster_path)
+                    .onClickListener(object :
+                        OnModelClickListener<MovieListModel_, MovieListModel.ViewHolder> {
+                        override fun onClick(
+                            model: MovieListModel_,
+                            parentView: MovieListModel.ViewHolder,
+                            clickedView: View,
+                            position: Int
+                        ) {
+                            onMovieClick.onMovieClick(movie.id)
+                        }
+                    })
+            )
+        }
+        val popularMovieModelList = ArrayList<MovieListModel_>()
         popularMovies?.forEach { movie ->
-            popularMovieModel.add(
+            popularMovieModelList.add(
                 MovieListModel_()
                     .id(movie.id)
                     .mMoviePoster(movie.poster_path)
@@ -62,25 +92,34 @@ class MovieController(private val onMovieClick: OnMovieClick) : EpoxyController(
                     })
             )
         }
-
         HeaderModel_()
             .id(1)
-            .header("Upcoming movies")
+            .header("Trending")
             .addTo(this)
 
         CarouselModel_()
-            .id("carousel1")
-            .models(movieModel)
+            .id("carousel-1")
+            .models(allTrendingModelList)
             .addTo(this)
 
         HeaderModel_()
             .id(2)
+            .header("Upcoming movies")
+            .addTo(this)
+
+        CarouselModel_()
+            .id("carousel-2")
+            .models(upcomingMovieModelList)
+            .addTo(this)
+
+        HeaderModel_()
+            .id(3)
             .header("Popular movies")
             .addTo(this)
 
         CarouselModel_()
-            .id("carousel2")
-            .models(popularMovieModel)
+            .id("carousel-3")
+            .models(popularMovieModelList)
             .addTo(this)
 
 
