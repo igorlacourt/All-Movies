@@ -1,4 +1,4 @@
-package com.lacourt.myapplication.epoxy
+package com.lacourt.myapplication.epoxy.horizontal
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.epoxy.Carousel

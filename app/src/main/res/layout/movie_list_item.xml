@@ -1,26 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/movie_card_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    android:clickable="true"
-    android:focusable="true">
-
+    android:clickable="false"
+    android:focusable="false"
+    android:layout_marginStart="2dp"
+    android:layout_marginLeft="2dp"
+    android:layout_marginBottom="10dp">
+    <!--            android:adjustViewBounds="true"-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/movie_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="false"
-        android:focusable="false">
-        <!--            android:adjustViewBounds="true"-->
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageView
             android:id="@+id/iv_poster"
-            android:layout_width="115dp"
-            android:layout_height="180dp"
+            android:layout_width="101dp"
+            android:layout_height="150dp"
             android:clickable="false"
             android:focusable="false"
             android:scaleType="centerCrop"
@@ -28,7 +36,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/clapperboard" />
-        <!--        android:scaleType="centerCrop"-->
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!--        android:scaleType="centerCrop"-->
 </androidx.cardview.widget.CardView>

@@ -12,11 +12,12 @@ import com.squareup.picasso.Picasso
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.airbnb.epoxy.EpoxyModelClass
+import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
 
 
 @EpoxyModelClass(layout = R.layout.movie_list_item)
-abstract class MovieCategoryListModel : EpoxyModelWithHolder<MovieCategoryListModel.ViewHolder>() {
+abstract class MovieListModel : EpoxyModelWithHolder<MovieListModel.ViewHolder>() {
 
     @EpoxyAttribute
     var mMoviePoster: String? = null
@@ -26,7 +27,11 @@ abstract class MovieCategoryListModel : EpoxyModelWithHolder<MovieCategoryListMo
     override fun bind(@NonNull holder: ViewHolder) {
         super.bind(holder)
         val url = "https://image.tmdb.org/t/p/w500"
-        Picasso.get().load(url + mMoviePoster!!).into(holder.mPosterImageView)
+
+        val imagePath = mMoviePoster ?: ""
+        Picasso.get().load(AppConstants.TMDB_IMAGE_BASE_URL_W185 + imagePath)
+            .placeholder(R.drawable.clapperboard)
+            .into(holder.mPosterImageView)
         holder.mCardView!!.setOnClickListener(onClickListener)
     }
 

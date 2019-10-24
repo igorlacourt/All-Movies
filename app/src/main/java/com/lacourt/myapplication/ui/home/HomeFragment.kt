@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.epoxy.Carousel
 import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.airbnb.epoxy.OnModelClickListener
@@ -27,9 +28,9 @@ import com.lacourt.myapplication.viewmodel.HomeViewModel
 class HomeFragment : Fragment(), OnMovieClick {
     private val onMovieClick = this as OnMovieClick
     private lateinit var homeViewModel: HomeViewModel
-//    private lateinit var recyclerView: RecyclerView
+    //    private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerView: EpoxyRecyclerView
-    val movieController by lazy { MovieController() }
+    val movieController by lazy { MovieController(this) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,105 +61,16 @@ class HomeFragment : Fragment(), OnMovieClick {
 
 
 
-
-
-
-
         recyclerView.buildModelsWith {
-            it.apply{
-//                CarouselModel_
-
-                val movies: ArrayList<DbMovieDTO> = ArrayList()
-                for (j in 1..10){
-                    movies.add(DbMovieDTO(j, "/2bXbqYdUdNVa8VIWXVfclP2ICtT.jpg", "2019-07-1", 0.0 + j))
-                }
-
-                val movieCategory = ArrayList<MovieCategoryListModel_>()
-                for (movie in movies) {
-                    movieCategory.add(
-                        MovieCategoryListModel_()
-                                .id(movie.id, 1)
-                            .mMoviePoster(movie.poster_path)
-                            .onClickListener(object :
-                                OnModelClickListener<MovieCategoryListModel_, MovieCategoryListModel.ViewHolder> {
-                                override fun onClick(
-                                    model: MovieCategoryListModel_,
-                                    parentView: MovieCategoryListModel.ViewHolder,
-                                    clickedView: View,
-                                    position: Int
-                                ) {
-
-                                }
-                            })
-                    )
-                }
-
-//                for (item in movieCategory){
-//                    item.addTo(this)
-//                }
-
-
-
-                val movies2: ArrayList<DbMovieDTO> = ArrayList()
-                for (j in 1..10){
-                    movies2.add(DbMovieDTO(j, "/jpfkzbIXgKZqCZAkEkFH2VYF63s.jpg", "2019-07-1", 0.0 + j))
-                }
-
-                val movieCategory2 = ArrayList<MovieCategoryListModel_>()
-                for (movie2 in movies2) {
-                    movieCategory2.add(
-                        MovieCategoryListModel_()
-                            .id(movie2.id, 2)
-                            .mMoviePoster(movie2.poster_path)
-                            .onClickListener(object :
-                                OnModelClickListener<MovieCategoryListModel_, MovieCategoryListModel.ViewHolder> {
-                                override fun onClick(
-                                    model: MovieCategoryListModel_,
-                                    parentView: MovieCategoryListModel.ViewHolder,
-                                    clickedView: View,
-                                    position: Int
-                                ) {
-
-                                }
-                            })
-                    )
-                }
-
-//                for (item in movieCategory2){
-//                    item.addTo(this)
-//                }
-
-                CarouselModel_()
-                    .id("carousel1")
-                    .models(movieCategory)
-                    .addTo(this)
-
-                CarouselModel_()
-                    .id("carousel2")
-                    .models(movieCategory2)
-                    .addTo(this)
-
+            it.apply {
             }
-
-
-
         }
 
 
 
 
-
-
-
-
-
-
-
-
-
-
         homeViewModel.movies?.observe(this, Observer { pagedList ->
-            if(pagedList != null && pagedList.isNotEmpty()) {
+            if (pagedList != null && pagedList.isNotEmpty()) {
 //                adapter.submitList(pagedList)
                 movieController.submitMovie(pagedList)
                 progressBar.visibility = View.INVISIBLE
@@ -166,13 +78,19 @@ class HomeFragment : Fragment(), OnMovieClick {
         })
 
         homeViewModel.popularMovies?.observe(this, Observer { response ->
-            when(response.status){
+            when (response.status) {
                 Resource.Status.SUCCESS -> {
-                    response.data?.let { movieController.submitPopularMovies(it) }
+                    response.data?.let {
+                        movieController.submitPopularMovies(it)
+                        recyclerView.setController(movieController)
+
+                    }
                     progressBar.visibility = View.INVISIBLE
                 }
-                Resource.Status.LOADING -> {}
-                Resource.Status.ERROR -> {}
+                Resource.Status.LOADING -> {
+                }
+                Resource.Status.ERROR -> {
+                }
             }
         })
 
