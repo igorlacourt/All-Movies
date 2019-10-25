@@ -35,15 +35,16 @@ class HomeFragment : Fragment(), OnMovieClick {
     val movieController by lazy { MovieController(clickListener, this) }
 
 
-
-    val clickListener: ((Int) -> Unit) = {id ->
+    private val clickListener: ((Int) -> Unit) = { id ->
         if (id != 0) {
-            val homeToDetailsFragment =
-                HomeFragmentDirections.actionNavigationHomeToDetailsFragment(id)
-            findNavController().navigate(homeToDetailsFragment)
-        } else {
-            Toast.makeText(context, "Sorry. Can not load this movie. :/", Toast.LENGTH_SHORT).show()
+            Log.d("ae", id.toString())
         }
+//            val homeToDetailsFragment =
+//                HomeFragmentDirections.actionNavigationHomeToDetailsFragment(id)
+//            findNavController().navigate(homeToDetailsFragment)
+//        } else {
+//            Toast.makeText(context, "Sorry. Can not load this movie. :/", Toast.LENGTH_SHORT).show()
+//        }
     }
 
 

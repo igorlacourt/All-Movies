@@ -8,9 +8,12 @@ import com.airbnb.epoxy.OnModelClickListener
 import com.lacourt.myapplication.dto.DbMovieDTO
 import com.lacourt.myapplication.ui.OnMovieClick
 
-class MovieController(private val clickListener: (Int) -> Unit, private val onMovieClick: OnMovieClick) : EpoxyController() {
+class MovieController(
+    private val clickListener: (Int) -> Unit,
+    private val onMovieClick: OnMovieClick
+) : EpoxyController() {
 
-//    var movies: List<DbMovieDTO>? = null
+    //    var movies: List<DbMovieDTO>? = null
     var allTrending: List<DbMovieDTO>? = null
     var upcomingMovies: List<DbMovieDTO>? = null
     var popularMovies: List<DbMovieDTO>? = null
@@ -20,17 +23,17 @@ class MovieController(private val clickListener: (Int) -> Unit, private val onMo
 //        requestModelBuild()
 //    }
 
-    fun submitAllTrending(newAllTrending: List<DbMovieDTO>){
+    fun submitAllTrending(newAllTrending: List<DbMovieDTO>) {
         allTrending = newAllTrending
         requestModelBuild()
     }
 
-    fun submitUpcomingMovies(newUpcoming: List<DbMovieDTO>){
+    fun submitUpcomingMovies(newUpcoming: List<DbMovieDTO>) {
         upcomingMovies = newUpcoming
         requestModelBuild()
     }
 
-    fun submitPopularMovies(newPopularMovies: List<DbMovieDTO>){
+    fun submitPopularMovies(newPopularMovies: List<DbMovieDTO>) {
         popularMovies = newPopularMovies
         requestModelBuild()
     }
@@ -39,61 +42,34 @@ class MovieController(private val clickListener: (Int) -> Unit, private val onMo
         val allTrendingModelList = ArrayList<MovieListModel_>()
         allTrending?.forEach { movie ->
             allTrendingModelList.add(
-                MovieListModel_()
+                MovieListModel_(onMovieClick)
                     .id(movie.id)
                     .mMoviePoster(movie.poster_path)
-                    .onClickListener(object :
-                        OnModelClickListener<MovieListModel_, MovieListModel.ViewHolder> {
-                        override fun onClick(
-                            model: MovieListModel_,
-                            parentView: MovieListModel.ViewHolder,
-                            clickedView: View,
-                            position: Int
-                        ) {
-                            Log.d("onclicklog", "onClickCalled")
-                            onMovieClick.onMovieClick(movie.id)
-                        }
-                    })
+                    .clickListener(clickListener)
             )
         }
         val upcomingMovieModelList = ArrayList<MovieListModel_>()
         upcomingMovies?.forEach { movie ->
             upcomingMovieModelList.add(
-                MovieListModel_()
+                MovieListModel_(onMovieClick)
                     .id(movie.id)
                     .mMoviePoster(movie.poster_path)
-                    .onClickListener(object :
-                        OnModelClickListener<MovieListModel_, MovieListModel.ViewHolder> {
-                        override fun onClick(
-                            model: MovieListModel_,
-                            parentView: MovieListModel.ViewHolder,
-                            clickedView: View,
-                            position: Int
-                        ) {
-                            Log.d("onclicklog", "onClickCalled")
-                            onMovieClick.onMovieClick(movie.id)
-                        }
-                    })
+                    .clickListener {
+                        clickListener
+                    }
+//                    .cardClickListener { model, parentView, clickedView, position ->
+//                        Log.d("onclicklog", "onClickCalled")
+//                        onMovieClick.onMovieClick(movie.id)
+//                    }
             )
         }
         val popularMovieModelList = ArrayList<MovieListModel_>()
         popularMovies?.forEach { movie ->
             popularMovieModelList.add(
-                MovieListModel_()
+                MovieListModel_(onMovieClick)
                     .id(movie.id)
                     .mMoviePoster(movie.poster_path)
-                    .onClickListener(object :
-                        OnModelClickListener<MovieListModel_, MovieListModel.ViewHolder> {
-                        override fun onClick(
-                            model: MovieListModel_,
-                            parentView: MovieListModel.ViewHolder,
-                            clickedView: View,
-                            position: Int
-                        ) {
-                            Log.d("onclicklog", "onClickCalled")
-                            onMovieClick.onMovieClick(movie.id)
-                        }
-                    })
+                    .clickListener(clickListener)
             )
         }
         HeaderModel_()
