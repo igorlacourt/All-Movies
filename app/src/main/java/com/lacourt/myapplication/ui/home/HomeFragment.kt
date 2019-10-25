@@ -30,7 +30,22 @@ class HomeFragment : Fragment(), OnMovieClick {
     private lateinit var homeViewModel: HomeViewModel
     //    private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerView: EpoxyRecyclerView
-    val movieController by lazy { MovieController(this) }
+
+
+    val movieController by lazy { MovieController(clickListener, this) }
+
+
+
+    val clickListener: ((Int) -> Unit) = {id ->
+        if (id != 0) {
+            val homeToDetailsFragment =
+                HomeFragmentDirections.actionNavigationHomeToDetailsFragment(id)
+            findNavController().navigate(homeToDetailsFragment)
+        } else {
+            Toast.makeText(context, "Sorry. Can not load this movie. :/", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

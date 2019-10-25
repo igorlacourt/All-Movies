@@ -1,5 +1,6 @@
 package com.lacourt.myapplication.epoxy
 
+import android.util.Log
 import android.view.View
 import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyController
@@ -7,7 +8,7 @@ import com.airbnb.epoxy.OnModelClickListener
 import com.lacourt.myapplication.dto.DbMovieDTO
 import com.lacourt.myapplication.ui.OnMovieClick
 
-class MovieController(private val onMovieClick: OnMovieClick) : EpoxyController() {
+class MovieController(private val clickListener: (Int) -> Unit, private val onMovieClick: OnMovieClick) : EpoxyController() {
 
 //    var movies: List<DbMovieDTO>? = null
     var allTrending: List<DbMovieDTO>? = null
@@ -49,6 +50,7 @@ class MovieController(private val onMovieClick: OnMovieClick) : EpoxyController(
                             clickedView: View,
                             position: Int
                         ) {
+                            Log.d("onclicklog", "onClickCalled")
                             onMovieClick.onMovieClick(movie.id)
                         }
                     })
@@ -68,6 +70,7 @@ class MovieController(private val onMovieClick: OnMovieClick) : EpoxyController(
                             clickedView: View,
                             position: Int
                         ) {
+                            Log.d("onclicklog", "onClickCalled")
                             onMovieClick.onMovieClick(movie.id)
                         }
                     })
@@ -87,6 +90,7 @@ class MovieController(private val onMovieClick: OnMovieClick) : EpoxyController(
                             clickedView: View,
                             position: Int
                         ) {
+                            Log.d("onclicklog", "onClickCalled")
                             onMovieClick.onMovieClick(movie.id)
                         }
                     })

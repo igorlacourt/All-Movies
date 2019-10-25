@@ -14,12 +14,6 @@ interface TmdbApi{
 //    fun getMovies() : Call<MovieResponseDTO>
 //
 
-    @GET("movie/{id}")
-    fun getDetails(
-        @Path("id")
-        id: Int
-    ): Call<DetailsDTO>
-
     @GET("movie/upcoming")
     fun getMovies(
 
@@ -33,7 +27,25 @@ interface TmdbApi{
 //    fun getGenreDTOS() : Call<GenreResponseDTO>
 
     @GET("movie/upcoming")
-    fun getMoviesObservable(
+    fun getUpcomingMovies(
+
+        @Query("language")
+        language: String,
+
+        @Query("page")
+        page: Int): Observable<MovieResponseDTO>
+
+    @GET("movie/popular")
+    fun getPopularMovies(
+
+        @Query("language")
+        language: String,
+
+        @Query("page")
+        page: Int): Observable<MovieResponseDTO>
+
+    @GET("trending/all/day")
+    fun getTrendingAll(
 
         @Query("language")
         language: String,
@@ -57,21 +69,9 @@ interface TmdbApi{
 
     ) : Call<MovieResponseDTO>
 
-    @GET("movie/popular")
-    fun getPopularMovies(
-
-        @Query("language")
-        language: String,
-
-        @Query("page")
-        page: Int): Call<MovieResponseDTO>
-
-    @GET("trending/all/day")
-    fun getTrendingAll(
-
-        @Query("language")
-        language: String,
-
-        @Query("page")
-        page: Int): Call<MovieResponseDTO>
+    @GET("movie/{id}")
+    fun getDetails(
+        @Path("id")
+        id: Int
+    ): Call<DetailsDTO>
 }

@@ -14,6 +14,7 @@ import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.airbnb.epoxy.EpoxyModelClass
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
+import com.lacourt.myapplication.dto.DbMovieDTO
 
 
 @EpoxyModelClass(layout = R.layout.movie_list_item)
@@ -21,8 +22,12 @@ abstract class MovieListModel : EpoxyModelWithHolder<MovieListModel.ViewHolder>(
 
     @EpoxyAttribute
     var mMoviePoster: String? = null
+
     @EpoxyAttribute
     var onClickListener: View.OnClickListener? = null
+
+    @EpoxyAttribute(hash = false)
+    lateinit var clickListener: (Int) -> Unit
 
     override fun bind(@NonNull holder: ViewHolder) {
         super.bind(holder)
@@ -48,5 +53,6 @@ abstract class MovieListModel : EpoxyModelWithHolder<MovieListModel.ViewHolder>(
             mCardView = itemView.findViewById(R.id.movie_card_view)
             mPosterImageView = itemView.findViewById(R.id.iv_poster)
         }
+
     }
 }

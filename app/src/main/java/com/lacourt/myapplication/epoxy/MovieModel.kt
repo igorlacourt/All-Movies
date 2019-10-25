@@ -15,6 +15,8 @@ abstract class MovieModel : EpoxyModelWithHolder<MovieModel.MovieHolder>() {
     @EpoxyAttribute(hash = true)
     lateinit var movieItem: DbMovieDTO
 
+
+
     override fun bind(holder: MovieHolder) {
         super.bind(holder)
         holder.renderMovie(movieItem)
@@ -30,6 +32,7 @@ abstract class MovieModel : EpoxyModelWithHolder<MovieModel.MovieHolder>() {
                 .into(itemView.iv_poster)
 
         }
+
 
     }
 }

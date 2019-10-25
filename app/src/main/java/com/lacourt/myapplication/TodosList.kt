@@ -1,16 +1,19 @@
 package com.lacourt.myapplication
-//TODO 1. Set epoxy pagedList for My List
-//TODO 1. Check if DbMovieDTO is named correctly
-//TODO 1. Load backdrop when there's no poster path in Details object to be presented in DetailsFragment
-//TODO 2. Transform DetailsActivity in DetailsFragment
-//TODO 3. Check if it should be lateinit modifier for variables like recyclerview in MyListFragment and other classes
-//TODO 4. Change item layout's width maybe it's better to set a fixed height, wrap_content width, and use matrix instead of centerCrop scaleType
-//TODO 5. Adjust icons and bottom navigation
-//TODO 6. Set style hierarchy correctly
-//TODO 7. Remove hard coded string and colors
-//TODO 8. Add Dagger
-//TODO 9. Implement Navigation
-//TODO 10. Implement backwards navigation for home an mylist fragments (when click back the app closes instead of back to the one was being displayed before)
+
+//TODO 1. Simplify Epoxy with kotlin extension function as mentioned in airb&b github documentation
+//TODO 2. Make Apifacry's Retrofit a singleton
+//TODO 3. Set epoxy pagedList for My List
+//TODO 4. Check if DbMovieDTO is named correctly
+//TODO 5. Load backdrop when there's no poster path in Details object to be presented in DetailsFragment
+//TODO 6. Transform DetailsActivity in DetailsFragment
+//TODO 7. Check if it should be lateinit modifier for variables like recyclerview in MyListFragment and other classes
+//TODO 8. Change item layout's width maybe it's better to set a fixed height, wrap_content width, and use matrix instead of centerCrop scaleType
+//TODO 9. Adjust icons and bottom navigation
+//TODO 10. Set style hierarchy correctly
+//TODO 11. Remove hard coded string and colors
+//TODO 12. Add Dagger
+//TODO 13. Implement Navigation
+//TODO 14. Implement backwards navigation for home an mylist fragments (when click back the app closes instead of back to the one was being displayed before)
 
 //TODO adding and removing from "my list"
 //1. in DetailsActivity's onCreate

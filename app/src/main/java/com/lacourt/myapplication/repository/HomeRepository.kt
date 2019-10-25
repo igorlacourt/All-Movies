@@ -25,6 +25,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Function3
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Callback
@@ -57,17 +58,40 @@ class HomeRepository(private val application: Application): NetworkCallback<List
      1. that the returned list cannot be mutable
      2. the mutable livedata should be private(check in the video again)*/
     init {
-        NetworkCall<MovieResponseDTO, List<DbMovieDTO>>().makeCall(
-            Apifactory.tmdbApi.getPopularMovies(AppConstants.LANGUAGE, 1),
-            this,
-            MapperFunctions::movieResponseToDbMovieDTO
-        )
 
-        NetworkCall<MovieResponseDTO, List<DbMovieDTO>>().makeCall(
-            Apifactory.tmdbApi.getTrendingAll(AppConstants.LANGUAGE, 1),
-            this,
-            MapperFunctions::movieResponseToDbMovieDTO
-        )
+        val tmdbApi = Apifactory.tmdbApi
+        val trendinAllObservale = tmdbApi.getTrendingAll(AppConstants.LANGUAGE, 1)
+        val upcomingMoviesObservale = tmdbApi.getUpcomingMovies(AppConstants.LANGUAGE, 1)
+        val popularMoviesObservale = tmdbApi.getPopularMovies(AppConstants.LANGUAGE, 1)
+
+        val result =
+            Observable.zip(
+                trendinAllObservale.subscribeOn(Schedulers.io()),
+//                    .onErrorReturn{ },
+                upcomingMoviesObservale.subscribeOn(Schedulers.io()),
+                popularMoviesObservale.subscribeOn(Schedulers.io()),
+                Function3() { trendingAllResponse: MovieResponseDTO, upcomingMoviesResponse:MovieResponseDTO, popularMoviesResponse:MovieResponseDTO ->
+                    var map1 = MapperFunctions.movieResponseToDbMovieDTO(trendingAllResponse)
+                    var map2 = MapperFunctions.movieResponseToDbMovieDTO(upcomingMoviesResponse)
+                    var map3 = MapperFunctions.movieResponseToDbMovieDTO(popularMoviesResponse)
+
+                    trendingAll.postValue(Resource.success(map1))
+                    upcomingMovies.postValue(Resource.success(map2))
+                    popularMovies.postValue(Resource.success(map3))
+            })
+                .subscribe()
+
+//        NetworkCall<MovieResponseDTO, List<DbMovieDTO>>().makeCall(
+//            Apifactory.tmdbApi.getPopularMovies(AppConstants.LANGUAGE, 1),
+//            this,
+//            MapperFunctions::movieResponseToDbMovieDTO
+//        )
+//
+//        NetworkCall<MovieResponseDTO, List<DbMovieDTO>>().makeCall(
+//            Apifactory.tmdbApi.getTrendingAll(AppConstants.LANGUAGE, 1),
+//            this,
+//            MapperFunctions::movieResponseToDbMovieDTO
+//        )
 
         Log.d("callstest", "repository called")
         /*
@@ -86,7 +110,7 @@ class HomeRepository(private val application: Application): NetworkCallback<List
         }
 */
         movieDao.deleteAll()
-        fetchMovies()
+//        fetchMovies()
 //        val count = movieDao.getCount()
         //TODO mudar para 100 de novo
 //        if (count < 20) {
@@ -105,7 +129,7 @@ class HomeRepository(private val application: Application): NetworkCallback<List
     */
 
     fun moviesRequest(page: Int): Observable<MovieResponseDTO>? =
-        Apifactory.tmdbApi.getMoviesObservable(AppConstants.LANGUAGE, page)
+        Apifactory.tmdbApi.getPopularMovies(AppConstants.LANGUAGE, page)
             .subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
 
