@@ -55,11 +55,71 @@ class HomeFragment : Fragment(), OnMovieClick {
 
         recyclerView.adapter = adapter
 
-        homeViewModel.upcomingMovies?.observe(this, Observer { response ->
+        homeViewModel.trendingAll?.observe(this, Observer { response ->
             when (response.status) {
                 Resource.Status.SUCCESS -> {
                     response.data?.let {
-                        movieController.submitUpcomingMovies(it)
+                        movieController.submitAllTrending(it)
+                        recyclerView.setController(movieController)
+                    }
+                    progressBar.visibility = View.INVISIBLE
+                }
+                Resource.Status.LOADING -> {
+                }
+                Resource.Status.ERROR -> {
+                }
+            }
+        })
+//        homeViewModel.latestTv?.observe(this, Observer { response ->
+//            when (response.status) {
+//                Resource.Status.SUCCESS -> {
+//                    response.data?.let {
+//                        movieController.submitLatestTv(it)
+//                        recyclerView.setController(movieController)
+//                    }
+//                    progressBar.visibility = View.INVISIBLE
+//                }
+//                Resource.Status.LOADING -> {
+//                }
+//                Resource.Status.ERROR -> {
+//                }
+//            }
+//        })
+        homeViewModel.trendingTv?.observe(this, Observer { response ->
+            when (response.status) {
+                Resource.Status.SUCCESS -> {
+                    response.data?.let {
+                        movieController.submitTrendingTv(it)
+                        recyclerView.setController(movieController)
+                    }
+                    progressBar.visibility = View.INVISIBLE
+                }
+                Resource.Status.LOADING -> {
+                }
+                Resource.Status.ERROR -> {
+                }
+            }
+        })
+        homeViewModel.topRatedMovies?.observe(this, Observer { response ->
+            when (response.status) {
+                Resource.Status.SUCCESS -> {
+                    response.data?.let {
+                        movieController.submitTopRatedMovies(it)
+                        recyclerView.setController(movieController)
+                    }
+                    progressBar.visibility = View.INVISIBLE
+                }
+                Resource.Status.LOADING -> {
+                }
+                Resource.Status.ERROR -> {
+                }
+            }
+        })
+        homeViewModel.topRatedTv?.observe(this, Observer { response ->
+            when (response.status) {
+                Resource.Status.SUCCESS -> {
+                    response.data?.let {
+                        movieController.submitTopRatedTv(it)
                         recyclerView.setController(movieController)
                     }
                     progressBar.visibility = View.INVISIBLE
@@ -71,11 +131,11 @@ class HomeFragment : Fragment(), OnMovieClick {
             }
         })
 
-        homeViewModel.trendingAll?.observe(this, Observer { response ->
+        homeViewModel.upcomingMovies?.observe(this, Observer { response ->
             when (response.status) {
                 Resource.Status.SUCCESS -> {
                     response.data?.let {
-                        movieController.submitAllTrending(it)
+                        movieController.submitUpcomingMovies(it)
                         recyclerView.setController(movieController)
                     }
                     progressBar.visibility = View.INVISIBLE

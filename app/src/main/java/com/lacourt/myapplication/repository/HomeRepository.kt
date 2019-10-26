@@ -26,6 +26,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Function3
+import io.reactivex.functions.Function6
+import io.reactivex.functions.Function7
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Callback
@@ -49,10 +51,13 @@ class HomeRepository(private val application: Application): NetworkCallback<List
     private val moviesAscending: LiveData<PagedList<DbMovieDTO>> =
         movieDao.dateAsc().toLiveData(config)
 
-//    val upcomingMovies = MediatorLiveData<PagedList<DbMovieDTO>>()
-    val upcomingMovies = MediatorLiveData<Resource<List<DbMovieDTO>>>()
-    val popularMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
     val trendingAll = MutableLiveData<Resource<List<DbMovieDTO>>>()
+//    val latestTv = MediatorLiveData<Resource<List<DbMovieDTO>>>()
+    val trendingTv = MutableLiveData<Resource<List<DbMovieDTO>>>()
+    val topRatedMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
+    val topRatedTv = MutableLiveData<Resource<List<DbMovieDTO>>>()
+    val upcomingMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
+    val popularMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
 
     /*Remember:
      1. that the returned list cannot be mutable
@@ -61,25 +66,63 @@ class HomeRepository(private val application: Application): NetworkCallback<List
 
         val tmdbApi = Apifactory.tmdbApi
         val trendinAllObservale = tmdbApi.getTrendingAll(AppConstants.LANGUAGE, 1)
+//        val latestTvObservable = tmdbApi.getLatestTv(AppConstants.LANGUAGE, 1)
+        val trendingTvObservable = tmdbApi.getTrendingTv(AppConstants.LANGUAGE, 1)
+        val topRatedMoviesObservables = tmdbApi.getTopRatedMovies(AppConstants.LANGUAGE, 1)
+        val topRatedTvObservable = tmdbApi.getTopRatedTv(AppConstants.LANGUAGE, 1)
         val upcomingMoviesObservale = tmdbApi.getUpcomingMovies(AppConstants.LANGUAGE, 1)
         val popularMoviesObservale = tmdbApi.getPopularMovies(AppConstants.LANGUAGE, 1)
 
-        val result =
-            Observable.zip(
-                trendinAllObservale.subscribeOn(Schedulers.io()),
-//                    .onErrorReturn{ },
-                upcomingMoviesObservale.subscribeOn(Schedulers.io()),
-                popularMoviesObservale.subscribeOn(Schedulers.io()),
-                Function3() { trendingAllResponse: MovieResponseDTO, upcomingMoviesResponse:MovieResponseDTO, popularMoviesResponse:MovieResponseDTO ->
-                    var map1 = MapperFunctions.movieResponseToDbMovieDTO(trendingAllResponse)
-                    var map2 = MapperFunctions.movieResponseToDbMovieDTO(upcomingMoviesResponse)
-                    var map3 = MapperFunctions.movieResponseToDbMovieDTO(popularMoviesResponse)
+        Observable.zip(
+            trendinAllObservale.subscribeOn(Schedulers.io()),
+//            latestTvObservable.subscribeOn(Schedulers.io()),
+            trendingTvObservable.subscribeOn(Schedulers.io()),
+            topRatedMoviesObservables.subscribeOn(Schedulers.io()),
+            topRatedTvObservable.subscribeOn(Schedulers.io()),
+            upcomingMoviesObservale.subscribeOn(Schedulers.io()),
+            popularMoviesObservale.subscribeOn(Schedulers.io()),
 
-                    trendingAll.postValue(Resource.success(map1))
-                    upcomingMovies.postValue(Resource.success(map2))
-                    popularMovies.postValue(Resource.success(map3))
+            Function6{ trendingAllResponse: MovieResponseDTO,
+//                        latestTvResponse:MovieResponseDTO,
+                            trendingTvResponse:MovieResponseDTO,
+                            topRatedMoviesResponse:MovieResponseDTO,
+                            topRatedTvResponse:MovieResponseDTO,
+                            upcomingMoviesResponse:MovieResponseDTO,
+                            popularMoviesResponse:MovieResponseDTO ->
+
+                var map1 = MapperFunctions.movieResponseToDbMovieDTO(trendingAllResponse)
+//                var map2 = MapperFunctions.movieResponseToDbMovieDTO(latestTvResponse)
+                var map3 = MapperFunctions.movieResponseToDbMovieDTO(trendingTvResponse)
+                var map4 = MapperFunctions.movieResponseToDbMovieDTO(topRatedMoviesResponse)
+                var map5 = MapperFunctions.movieResponseToDbMovieDTO(topRatedTvResponse)
+                var map6 = MapperFunctions.movieResponseToDbMovieDTO(upcomingMoviesResponse)
+                var map7 = MapperFunctions.movieResponseToDbMovieDTO(popularMoviesResponse)
+
+                trendingAll.postValue(Resource.success(map1))
+//                latestTv.postValue(Resource.success(map2))
+                trendingTv.postValue(Resource.success(map3))
+                topRatedMovies.postValue(Resource.success(map4))
+                topRatedTv.postValue(Resource.success(map5))
+                upcomingMovies.postValue(Resource.success(map6))
+                popularMovies.postValue(Resource.success(map7))
             })
-                .subscribe()
+            .subscribe()
+
+//            Observable.zip(
+//                trendinAllObservale.subscribeOn(Schedulers.io()),
+////                    .onErrorReturn{ },
+//                upcomingMoviesObservale.subscribeOn(Schedulers.io()),
+//                popularMoviesObservale.subscribeOn(Schedulers.io()),
+//                Function3 { trendingAllResponse: MovieResponseDTO, upcomingMoviesResponse:MovieResponseDTO, popularMoviesResponse:MovieResponseDTO ->
+//                    var map1 = MapperFunctions.movieResponseToDbMovieDTO(trendingAllResponse)
+//                    var map2 = MapperFunctions.movieResponseToDbMovieDTO(upcomingMoviesResponse)
+//                    var map3 = MapperFunctions.movieResponseToDbMovieDTO(popularMoviesResponse)
+//
+//                    trendingAll.postValue(Resource.success(map1))
+//                    upcomingMovies.postValue(Resource.success(map2))
+//                    popularMovies.postValue(Resource.success(map3))
+//            })
+//                .subscribe()
 
 //        NetworkCall<MovieResponseDTO, List<DbMovieDTO>>().makeCall(
 //            Apifactory.tmdbApi.getPopularMovies(AppConstants.LANGUAGE, 1),
