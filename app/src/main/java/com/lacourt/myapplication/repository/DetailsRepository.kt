@@ -28,30 +28,6 @@ import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 class DetailsRepository(application: Application) : BaseRepository(), NetworkCallback<Details> {
-    override fun trendingAllCallback(callback: Resource<Details>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun upcomingMoviesCallback(callback: Resource<Details>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun popularMoviesCallback(callback: Resource<Details>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun popularSeriesCallback(callback: Resource<Details>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun topRatedMoviesCallback(callback: Resource<Details>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun topRatedSeriesCallback(callback: Resource<Details>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     private val myListDao =
         AppDatabase.getDatabase(application)?.MyListDao()
     var movie: MutableLiveData<Resource<Details>> = MutableLiveData()

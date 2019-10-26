@@ -7,12 +7,8 @@ import androidx.cardview.widget.CardView
 import com.airbnb.epoxy.*
 import com.squareup.picasso.Picasso
 import com.lacourt.myapplication.AppConstants
-import com.airbnb.epoxy.CallbackProp
-import androidx.annotation.Nullable
 import com.airbnb.epoxy.EpoxyAttribute
 import com.lacourt.myapplication.R
-import com.lacourt.myapplication.ui.OnMovieClick
-import kotlinx.android.synthetic.main.movie_list_item.view.*
 
 
 @EpoxyModelClass(layout = R.layout.movie_list_item)

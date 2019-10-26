@@ -17,10 +17,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.lacourt.myapplication.R
+import com.lacourt.myapplication.ui.OnItemClick
+import com.lacourt.myapplication.ui.mylist.MyListFragmentDirections
 import com.lacourt.myapplication.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
 
-class SearchFragment : Fragment(), OnSearchedItemClick {
+class SearchFragment : Fragment(), OnItemClick {
     private lateinit var viewModel: SearchViewModel
     private lateinit var recyclerView: RecyclerView
     private var progressBar: ProgressBar? = null
@@ -37,10 +39,12 @@ class SearchFragment : Fragment(), OnSearchedItemClick {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
 
+        val type: String? = arguments?.getString("item_type", null)
+
         progressBar = view.findViewById(R.id.search_progress_bar)
         progressBar?.visibility = View.INVISIBLE
         viewModel = ViewModelProviders.of(this).get(SearchViewModel::class.java)
-        adapter = SearchAdapter(context, this, ArrayList())
+        adapter = SearchAdapter(context,this, ArrayList())
 
         recyclerView = view.findViewById(R.id.searched_list)
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -86,11 +90,10 @@ class SearchFragment : Fragment(), OnSearchedItemClick {
         }
     }
 
-    override fun onSearchItemClick(id: Int) {
+    override fun onItemClick(id: Int) {
         if (id != 0) {
-            val searchToDetailsFragment =
-                SearchFragmentDirections.actionNavigationSearchToDetailsFragment(id)
-            findNavController().navigate(searchToDetailsFragment)
+            val myListToDetailsFragment = MyListFragmentDirections.actionNavigationMyListToDetailsFragment(id)
+            findNavController().navigate(myListToDetailsFragment)
         } else {
             Toast.makeText(context, "Sorry. Can not load this movie. :/", Toast.LENGTH_SHORT).show()
         }

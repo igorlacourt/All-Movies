@@ -62,6 +62,7 @@ class DetailsFragment : Fragment() {
         viewModel =
             ViewModelProviders.of(this).get(DetailsViewModel::class.java)
 
+
         viewModel.isInDatabase.observe(this, Observer { isInDatabase ->
             Log.d("log_is_inserted", "onChanged()")
             if (isInDatabase) {

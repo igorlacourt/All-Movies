@@ -4,16 +4,18 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.domainmodel.MyListItem
+import com.lacourt.myapplication.ui.OnItemClick
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_list_item.view.*
 
 class MyListAdapter(
     private val context: Context?,
-    private val onMyListItemClick: OnMyListItemClick,
+    private val onItemClick: OnItemClick,
     private var list: ArrayList<MyListItem>
 ) : RecyclerView.Adapter<MyListHolder>() {
 
@@ -31,12 +33,17 @@ class MyListAdapter(
     override fun onBindViewHolder(holder: MyListHolder, position: Int) {
 
         holder.apply {
-            Picasso.get().load("${AppConstants.TMDB_IMAGE_BASE_URL_W185}${list[position].poster_path}")
+            Picasso.get()
+                .load("${AppConstants.TMDB_IMAGE_BASE_URL_W185}${list[position].poster_path}")
                 .placeholder(R.drawable.clapperboard)
                 .into(poster)
 
             cardView.setOnClickListener {
-                onMyListItemClick.onMyListItemClick(list[position].id)
+                val id = list[position].id
+                if(id != null)
+                    onItemClick.onItemClick(id)
+                else
+                    Toast.makeText(context, "Sorry. Can not load this movie. :/", Toast.LENGTH_SHORT).show()
             }
         }
 

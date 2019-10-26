@@ -1,4 +1,5 @@
 package com.lacourt.myapplication
+//TODO 1. Correct bug on opening DetailsFragment
 //TODO 1. Handle http errors in rxjava request functions
 //TODO 1. Simplify Epoxy with kotlin extension function as mentioned in airb&b github documentation
 //TODO 2. Make Apifacry's Retrofit a singleton

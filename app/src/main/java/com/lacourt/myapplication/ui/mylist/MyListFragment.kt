@@ -16,12 +16,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.R
+import com.lacourt.myapplication.ui.OnItemClick
 import com.lacourt.myapplication.ui.home.MovieAdapter
 import com.lacourt.myapplication.viewmodel.MyListViewModel
 import kotlinx.android.synthetic.main.fragment_mylist.*
 
-class MyListFragment : Fragment(), OnMyListItemClick {
-    private val onMyListItemClick = this as OnMyListItemClick
+class MyListFragment : Fragment(), OnItemClick {
+    private val onItemClick = this as OnItemClick
     private lateinit var recyclerView: RecyclerView
     private lateinit var myListViewModel: MyListViewModel
     private lateinit var adapter: MyListAdapter
@@ -38,9 +39,8 @@ class MyListFragment : Fragment(), OnMyListItemClick {
         emptyList.visibility = View.VISIBLE
 
         progressBar.visibility = View.VISIBLE
-        adapter = MyListAdapter(activity?.applicationContext, onMyListItemClick, ArrayList())
+        adapter = MyListAdapter(activity?.applicationContext, onItemClick, ArrayList())
         recyclerView = root.findViewById(R.id.my_list_list)
-
 
         setUpRecyclerView()
         myListViewModel =
@@ -65,13 +65,8 @@ class MyListFragment : Fragment(), OnMyListItemClick {
         recyclerView.adapter = adapter
     }
 
-    override fun onMyListItemClick(id: Int?) {
-        if (id != 0) {
-            val myListToDetailsFragment =
-                id?.let { MyListFragmentDirections.actionNavigationMyListToDetailsFragment(it) }
-            myListToDetailsFragment?.let { findNavController().navigate(it) }
-        } else {
-            Toast.makeText(context, "Sorry. Can not load this movie. :/", Toast.LENGTH_SHORT).show()
-        }
+    override fun onItemClick(id: Int) {
+        val myListToDetailsFragment = MyListFragmentDirections.actionNavigationMyListToDetailsFragment(id)
+        findNavController().navigate(myListToDetailsFragment)
     }
 }

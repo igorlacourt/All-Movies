@@ -5,16 +5,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.dto.MovieDTO
+import com.lacourt.myapplication.ui.OnItemClick
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.searched_list_item.view.*
 
 class SearchAdapter(private val context: Context?,
-    private val onSearchedItemClick: OnSearchedItemClick,
-    private var list: ArrayList<MovieDTO>
+                    private val onItemClick: OnItemClick,
+                    private var list: ArrayList<MovieDTO>
 ) : RecyclerView.Adapter<SearchViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
@@ -35,7 +37,7 @@ class SearchAdapter(private val context: Context?,
                 .into(backdrop)
 
             itemLayout.setOnClickListener {
-                onSearchedItemClick.onSearchItemClick(list[position].id)
+                onItemClick.onItemClick(list[position].id)
             }
         }
 

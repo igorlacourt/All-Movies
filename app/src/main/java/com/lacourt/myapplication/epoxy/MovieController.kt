@@ -1,24 +1,27 @@
 package com.lacourt.myapplication.epoxy
 
+import android.content.Context
 import android.util.Log
-import android.view.View
+import android.widget.Toast
 import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyController
-import com.airbnb.epoxy.OnModelClickListener
+import com.lacourt.myapplication.R
+import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.dto.DbMovieDTO
-import com.lacourt.myapplication.ui.OnMovieClick
+import com.lacourt.myapplication.ui.OnItemClick
 
 class MovieController(
-    private val onMovieClick: OnMovieClick
+    private val context: Context?,
+    private val onItemClick: OnItemClick
 ) : EpoxyController() {
 
     init {
         Log.d("clicklog", "initializing movieController")
     }
 
-    //    var movies: List<DbMovieDTO>? = null
-    var trendingAll: List<DbMovieDTO>? = null
-    var latestTv: List<DbMovieDTO>? = null
+
+    var topTrendingMovie: DbMovieDTO? = null
+    var trendingMovies: List<DbMovieDTO>? = null
     var trendingTv: List<DbMovieDTO>? = null
     var topRatedMovies: List<DbMovieDTO>? = null
     var topRatedTv: List<DbMovieDTO>? = null
@@ -30,14 +33,15 @@ class MovieController(
 //        requestModelBuild()
 //    }
 
-    fun submitAllTrending(newList: List<DbMovieDTO>) {
-        trendingAll = newList
+    fun submitTrendingMovies(newList: List<DbMovieDTO>) {
+        trendingMovies = newList
         requestModelBuild()
     }
 
-    fun submitLatestTv(newList: List<DbMovieDTO>) {
-        latestTv = newList
-        requestModelBuild()
+
+    fun submitTopTrendingMovie(newMovie: Details) {
+//        topTrendingMovie = newMovie
+//        requestModelBuild()
     }
 
     fun submitTrendingTv(newList: List<DbMovieDTO>) {
@@ -66,7 +70,9 @@ class MovieController(
     }
 
     override fun buildModels() {
+        /*
         val allTrendingModelList = ArrayList<MovieListModel_>()
+
         trendingAll?.forEach { movie ->
             allTrendingModelList.add(
                 MovieListModel_()
@@ -74,22 +80,22 @@ class MovieController(
                     .mMoviePoster(movie.poster_path)
                     .clickListener { model, parentView, clickedView, position ->
                         Log.d("clicklog", "onCreateView in all trending called")
-                        onMovieClick.onMovieClick(movie.id)
+                        onItemClick.onItemClick((onItemClick as Context).getString(R.string.details_type_movie), movie.id)
                     }
             )
         }
-//        val latestTvModelList = ArrayList<MovieListModel_>()
-//        latestTv?.forEach { movie ->
-//            latestTvModelList.add(
-//                MovieListModel_()
-//                    .id(movie.id)
-//                    .mMoviePoster(movie.poster_path)
-//                    .clickListener { model, parentView, clickedView, position ->
-//                        Log.d("clicklog", "onCreateView in all trending called")
-//                        onMovieClick.onMovieClick(movie.id)
-//                    }
-//            )
-//        }
+        val latestTvModelList = ArrayList<MovieListModel_>()
+        latestTv?.forEach { movie ->
+            latestTvModelList.add(
+                MovieListModel_()
+                    .id(movie.id)
+                    .mMoviePoster(movie.poster_path)
+                    .clickListener { model, parentView, clickedView, position ->
+                        Log.d("clicklog", "onCreateView in all trending called")
+                        onItemClick.onItemClick(movie.id)
+                    }
+            )
+        }
         val trendingTvModelList = ArrayList<MovieListModel_>()
         trendingTv?.forEach { movie ->
             trendingTvModelList.add(
@@ -98,10 +104,25 @@ class MovieController(
                     .mMoviePoster(movie.poster_path)
                     .clickListener { model, parentView, clickedView, position ->
                         Log.d("clicklog", "onCreateView in all trending called")
-                        onMovieClick.onMovieClick(movie.id)
+                        onItemClick.onItemClick((onItemClick as Context).getString(R.string.details_type_tv), movie.id)
                     }
             )
         }
+        */
+
+
+        val trendingMoviesModelList = ArrayList<MovieListModel_>()
+        trendingMovies?.forEach { movie ->
+            trendingMoviesModelList.add(
+                MovieListModel_()
+                    .id(movie.id)
+                    .mMoviePoster(movie.poster_path)
+                    .clickListener { model, parentView, clickedView, position ->
+                        callDetailsFragment(movie.id)
+                    }
+            )
+        }
+
         val topRatedMoviesModelList = ArrayList<MovieListModel_>()
         topRatedMovies?.forEach { movie ->
             topRatedMoviesModelList.add(
@@ -110,19 +131,7 @@ class MovieController(
                     .mMoviePoster(movie.poster_path)
                     .clickListener { model, parentView, clickedView, position ->
                         Log.d("clicklog", "onCreateView in all trending called")
-                        onMovieClick.onMovieClick(movie.id)
-                    }
-            )
-        }
-        val topRatedTvModelList = ArrayList<MovieListModel_>()
-        topRatedTv?.forEach { movie ->
-            topRatedTvModelList.add(
-                MovieListModel_()
-                    .id(movie.id)
-                    .mMoviePoster(movie.poster_path)
-                    .clickListener { model, parentView, clickedView, position ->
-                        Log.d("clicklog", "onCreateView in all trending called")
-                        onMovieClick.onMovieClick(movie.id)
+                        callDetailsFragment(movie.id)
                     }
             )
         }
@@ -135,13 +144,8 @@ class MovieController(
                     .mMoviePoster(movie.poster_path)
                     .clickListener { model, parentView, clickedView, position ->
                         Log.d("clicklog", "onCreateView in upcoming movies called")
-                        onMovieClick.onMovieClick(movie.id)
+                        callDetailsFragment(movie.id)
                     }
-
-//                    .cardClickListener { model, parentView, clickedView, position ->
-//                        Log.d("onclicklog", "onClickCalled")
-//                        onMovieClick.onMovieClick(movie.id)
-//                    }
             )
         }
         val popularMovieModelList = ArrayList<MovieListModel_>()
@@ -152,19 +156,19 @@ class MovieController(
                     .mMoviePoster(movie.poster_path)
                     .clickListener { model, parentView, clickedView, position ->
                         Log.d("clicklog", "onCreateView popular movies called")
-                        onMovieClick.onMovieClick(movie.id)
+                        callDetailsFragment(movie.id)
                     }
             )
         }
 
-        HeaderModel_()
-            .id(1)
-            .header("Trending")
-            .addTo(this)
-        CarouselModel_()
-            .id("trendingAll")
-            .models(allTrendingModelList)
-            .addTo(this)
+//        HeaderModel_()
+//            .id(1)
+//            .header("Trending")
+//            .addTo(this)
+//        CarouselModel_()
+//            .id("trendingAll")
+//            .models(allTrendingModelList)
+//            .addTo(this)
 
 //        HeaderModel_()
 //            .id(2)
@@ -175,31 +179,24 @@ class MovieController(
 //            .models(latestTvModelList)
 //            .addTo(this)
 
-        HeaderModel_()
-            .id(3)
-            .header("Trending shows")
-            .addTo(this)
-        CarouselModel_()
-            .id("trendingTv")
-            .models(topRatedTvModelList)
-            .addTo(this)
+//        HeaderModel_()
+//            .id(3)
+//            .header("Trending shows")
+//            .addTo(this)
+//        CarouselModel_()
+//            .id("trendingTv")
+//            .models(topRatedTvModelList)
+//            .addTo(this)
 
-        HeaderModel_()
-            .id(4)
-            .header("Critically acclaimed movies")
-            .addTo(this)
-        CarouselModel_()
-            .id("topRatedMovies")
-            .models(topRatedMoviesModelList)
-            .addTo(this)
+
 
         HeaderModel_()
             .id(5)
-            .header("Critically acclaimed shows")
+            .header("Trending")
             .addTo(this)
         CarouselModel_()
-            .id("topRatedShows")
-            .models(topRatedTvModelList)
+            .id("trendingMovies")
+            .models(trendingMoviesModelList)
             .addTo(this)
 
         HeaderModel_()
@@ -220,7 +217,22 @@ class MovieController(
             .models(popularMovieModelList)
             .addTo(this)
 
+        HeaderModel_()
+            .id(4)
+            .header("Critically acclaimed movies")
+            .addTo(this)
+        CarouselModel_()
+            .id("topRatedMovies")
+            .models(topRatedMoviesModelList)
+            .addTo(this)
+    }
 
+    private fun callDetailsFragment(id: Int){
+        if (id != 0) {
+            onItemClick.onItemClick(id)
+        } else {
+            Toast.makeText(context, "Sorry. Can not load this movie. :/", Toast.LENGTH_SHORT).show()
+        }
     }
 
 }

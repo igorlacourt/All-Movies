@@ -11,12 +11,12 @@
 //import androidx.annotation.Nullable
 //import com.airbnb.epoxy.EpoxyAttribute
 //import com.lacourt.myapplication.R
-//import com.lacourt.myapplication.ui.OnMovieClick
+//import com.lacourt.myapplication.ui.OnItemClick
 //import kotlinx.android.synthetic.main.movie_list_item.view.*
 //
 //
 //@EpoxyModelClass(layout = R.layout.movie_list_item)
-//abstract class MovieModelWithRender(val onMovieClick: OnMovieClick) : EpoxyModelWithHolder<MovieListModel.ViewHolder>() {
+//abstract class MovieModelWithRender(val onItemClick: OnItemClick) : EpoxyModelWithHolder<MovieListModel.ViewHolder>() {
 //
 //    @EpoxyAttribute
 //    var mMoviePoster: String? = null

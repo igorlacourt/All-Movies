@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.dto.DbMovieDTO
-import com.lacourt.myapplication.ui.OnMovieClick
+import com.lacourt.myapplication.ui.OnItemClick
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_list_item.view.*
 
 class MovieAdapter(
     private val context: Context?,
-    private val onMovieClick: OnMovieClick
+    private val onItemClick: OnItemClick
 ) : PagedListAdapter<DbMovieDTO, MovieViewHolder>(
     DIFF_CALLBACK
 ) {
@@ -40,7 +40,7 @@ class MovieAdapter(
                 .into(poster)
 
             cardView.setOnClickListener {
-                onMovieClick.onMovieClick(movieDTO.id)
+                onItemClick.onItemClick(movieDTO.id)
             }
         }
 

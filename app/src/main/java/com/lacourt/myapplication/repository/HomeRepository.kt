@@ -26,6 +26,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Function3
+import io.reactivex.functions.Function4
 import io.reactivex.functions.Function6
 import io.reactivex.functions.Function7
 import io.reactivex.schedulers.Schedulers
@@ -33,7 +34,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeRepository(private val application: Application): NetworkCallback<List<DbMovieDTO>> {
+class HomeRepository(private val application: Application) : NetworkCallback<Details> {
     private val config = PagedList.Config.Builder()
         .setInitialLoadSizeHint(50)
         .setPageSize(50)
@@ -51,90 +52,61 @@ class HomeRepository(private val application: Application): NetworkCallback<List
     private val moviesAscending: LiveData<PagedList<DbMovieDTO>> =
         movieDao.dateAsc().toLiveData(config)
 
-    val trendingAll = MutableLiveData<Resource<List<DbMovieDTO>>>()
-//    val latestTv = MediatorLiveData<Resource<List<DbMovieDTO>>>()
-    val trendingTv = MutableLiveData<Resource<List<DbMovieDTO>>>()
     val topRatedMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
-    val topRatedTv = MutableLiveData<Resource<List<DbMovieDTO>>>()
+    val trendingMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
     val upcomingMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
     val popularMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
+    val topTrendingMovie = MutableLiveData<Resource<Details>>()
+//    val topRatedTv = MutableLiveData<Resource<List<DbMovieDTO>>>()
+//    val trendingTv = MutableLiveData<Resource<List<DbMovieDTO>>>()
 
     /*Remember:
      1. that the returned list cannot be mutable
      2. the mutable livedata should be private(check in the video again)*/
     init {
 
+//        val trendingTvObservable = tmdbApi.getTrendingTv(AppConstants.LANGUAGE, 1)
+//        val topRatedTvObservable = tmdbApi.getTopRatedTv(AppConstants.LANGUAGE, 1)
+//        trendingTvObservable.subscribeOn(Schedulers.io()),
+//        topRatedTvObservable.subscribeOn(Schedulers.io()),
+//        trendingTvResponse:MovieResponseDTO,
+//        topRatedTvResponse:MovieResponseDTO,
+//        var map3 = MapperFunctions.movieResponseToDbMovieDTO(trendingTvResponse)
+//        var map5 = MapperFunctions.movieResponseToDbMovieDTO(topRatedTvResponse)
+//        trendingTv.postValue(Resource.success(map3))
+//        topRatedTv.postValue(Resource.success(map5))
+
         val tmdbApi = Apifactory.tmdbApi
-        val trendinAllObservale = tmdbApi.getTrendingAll(AppConstants.LANGUAGE, 1)
-//        val latestTvObservable = tmdbApi.getLatestTv(AppConstants.LANGUAGE, 1)
-        val trendingTvObservable = tmdbApi.getTrendingTv(AppConstants.LANGUAGE, 1)
-        val topRatedMoviesObservables = tmdbApi.getTopRatedMovies(AppConstants.LANGUAGE, 1)
-        val topRatedTvObservable = tmdbApi.getTopRatedTv(AppConstants.LANGUAGE, 1)
+        val trendinMoviesObservale = tmdbApi.getTrendingMovies(AppConstants.LANGUAGE, 1)
         val upcomingMoviesObservale = tmdbApi.getUpcomingMovies(AppConstants.LANGUAGE, 1)
         val popularMoviesObservale = tmdbApi.getPopularMovies(AppConstants.LANGUAGE, 1)
+        val topRatedMoviesObservables = tmdbApi.getTopRatedMovies(AppConstants.LANGUAGE, 1)
 
         Observable.zip(
-            trendinAllObservale.subscribeOn(Schedulers.io()),
-//            latestTvObservable.subscribeOn(Schedulers.io()),
-            trendingTvObservable.subscribeOn(Schedulers.io()),
-            topRatedMoviesObservables.subscribeOn(Schedulers.io()),
-            topRatedTvObservable.subscribeOn(Schedulers.io()),
+            trendinMoviesObservale.subscribeOn(Schedulers.io()),
             upcomingMoviesObservale.subscribeOn(Schedulers.io()),
             popularMoviesObservale.subscribeOn(Schedulers.io()),
+            topRatedMoviesObservables.subscribeOn(Schedulers.io()),
 
-            Function6{ trendingAllResponse: MovieResponseDTO,
-//                        latestTvResponse:MovieResponseDTO,
-                            trendingTvResponse:MovieResponseDTO,
-                            topRatedMoviesResponse:MovieResponseDTO,
-                            topRatedTvResponse:MovieResponseDTO,
-                            upcomingMoviesResponse:MovieResponseDTO,
-                            popularMoviesResponse:MovieResponseDTO ->
+            Function4 { trendingMoviesResponse: MovieResponseDTO,
+                             upcomingMoviesResponse: MovieResponseDTO,
+                             popularMoviesResponse: MovieResponseDTO,
+                             topRatedMoviesResponse: MovieResponseDTO ->
 
-                var map1 = MapperFunctions.movieResponseToDbMovieDTO(trendingAllResponse)
-//                var map2 = MapperFunctions.movieResponseToDbMovieDTO(latestTvResponse)
-                var map3 = MapperFunctions.movieResponseToDbMovieDTO(trendingTvResponse)
+                var map1 = MapperFunctions.movieResponseToDbMovieDTO(trendingMoviesResponse)
+                var map2 = MapperFunctions.movieResponseToDbMovieDTO(upcomingMoviesResponse)
+                var map3 = MapperFunctions.movieResponseToDbMovieDTO(popularMoviesResponse)
                 var map4 = MapperFunctions.movieResponseToDbMovieDTO(topRatedMoviesResponse)
-                var map5 = MapperFunctions.movieResponseToDbMovieDTO(topRatedTvResponse)
-                var map6 = MapperFunctions.movieResponseToDbMovieDTO(upcomingMoviesResponse)
-                var map7 = MapperFunctions.movieResponseToDbMovieDTO(popularMoviesResponse)
 
-                trendingAll.postValue(Resource.success(map1))
-//                latestTv.postValue(Resource.success(map2))
-                trendingTv.postValue(Resource.success(map3))
+                trendingMovies.postValue(Resource.success(map1))
+                upcomingMovies.postValue(Resource.success(map2))
+                popularMovies.postValue(Resource.success(map3))
                 topRatedMovies.postValue(Resource.success(map4))
-                topRatedTv.postValue(Resource.success(map5))
-                upcomingMovies.postValue(Resource.success(map6))
-                popularMovies.postValue(Resource.success(map7))
+
+//                fetchTopImageDetails(map4[0].id)
+
             })
             .subscribe()
-
-//            Observable.zip(
-//                trendinAllObservale.subscribeOn(Schedulers.io()),
-////                    .onErrorReturn{ },
-//                upcomingMoviesObservale.subscribeOn(Schedulers.io()),
-//                popularMoviesObservale.subscribeOn(Schedulers.io()),
-//                Function3 { trendingAllResponse: MovieResponseDTO, upcomingMoviesResponse:MovieResponseDTO, popularMoviesResponse:MovieResponseDTO ->
-//                    var map1 = MapperFunctions.movieResponseToDbMovieDTO(trendingAllResponse)
-//                    var map2 = MapperFunctions.movieResponseToDbMovieDTO(upcomingMoviesResponse)
-//                    var map3 = MapperFunctions.movieResponseToDbMovieDTO(popularMoviesResponse)
-//
-//                    trendingAll.postValue(Resource.success(map1))
-//                    upcomingMovies.postValue(Resource.success(map2))
-//                    popularMovies.postValue(Resource.success(map3))
-//            })
-//                .subscribe()
-
-//        NetworkCall<MovieResponseDTO, List<DbMovieDTO>>().makeCall(
-//            Apifactory.tmdbApi.getPopularMovies(AppConstants.LANGUAGE, 1),
-//            this,
-//            MapperFunctions::movieResponseToDbMovieDTO
-//        )
-//
-//        NetworkCall<MovieResponseDTO, List<DbMovieDTO>>().makeCall(
-//            Apifactory.tmdbApi.getTrendingAll(AppConstants.LANGUAGE, 1),
-//            this,
-//            MapperFunctions::movieResponseToDbMovieDTO
-//        )
 
         Log.d("callstest", "repository called")
         /*
@@ -162,7 +134,24 @@ class HomeRepository(private val application: Application): NetworkCallback<List
 //        }
     }
 
+    private fun fetchTopImageDetails(id: Int){
+//        Observable.just(Apifactory.tmdbApi.getDetails2(id))
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .doOnNext{
+//                topTrendingMovie.value = Resource.success(MapperFunctions.toDetails(it))
+//            }
 
+        NetworkCall<DetailsDTO, Details>().makeCall(
+            Apifactory.tmdbApi.getDetails(id),
+            this,
+            MapperFunctions::toDetails
+        )
+    }
+
+    override fun networkCallResult(callback: Resource<Details>) {
+        topTrendingMovie.value = callback
+    }
 
     /*
     fun rearrengeMovies(order: String) = when (order) {
@@ -179,7 +168,7 @@ class HomeRepository(private val application: Application): NetworkCallback<List
 
     @SuppressLint("CheckResult")
     fun fetchMovies() {
-       Observable.range(1, 10)
+        Observable.range(1, 10)
             .flatMap { page ->
                 moviesRequest(page)
                     ?.map {
@@ -190,15 +179,15 @@ class HomeRepository(private val application: Application): NetworkCallback<List
                             .subscribeOn(Schedulers.io())
                     }
             }
-           .doOnNext {
-               Log.d("rxjavalog", "doOnNext called, id = ${it.id}")
-               movieDao.insert(it)
-           }
-           .doOnComplete{
-               Log.d("rxjavalog", "doOnComplete called")
-           }
-           .doOnError { networkErrorToast() }
-           .subscribe()
+            .doOnNext {
+                Log.d("rxjavalog", "doOnNext called, id = ${it.id}")
+                movieDao.insert(it)
+            }
+            .doOnComplete {
+                Log.d("rxjavalog", "doOnComplete called")
+            }
+            .doOnError { networkErrorToast() }
+            .subscribe()
     }
 
     fun networkErrorToast() {
@@ -209,36 +198,7 @@ class HomeRepository(private val application: Application): NetworkCallback<List
         ).show()
     }
 
-    override fun networkCallResult(callback: Resource<List<DbMovieDTO>>) {
-        upcomingMovies.value = callback
-        popularMovies.value = callback
-        trendingAll.value = callback
 
-    }
-
-    override fun trendingAllCallback(callback: Resource<List<DbMovieDTO>>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun upcomingMoviesCallback(callback: Resource<List<DbMovieDTO>>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun popularMoviesCallback(callback: Resource<List<DbMovieDTO>>) {
-
-    }
-
-    override fun popularSeriesCallback(callback: Resource<List<DbMovieDTO>>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun topRatedMoviesCallback(callback: Resource<List<DbMovieDTO>>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun topRatedSeriesCallback(callback: Resource<List<DbMovieDTO>>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
 }
 

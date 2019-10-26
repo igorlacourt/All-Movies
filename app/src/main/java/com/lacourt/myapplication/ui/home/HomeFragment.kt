@@ -16,16 +16,16 @@ import com.airbnb.epoxy.EpoxyRecyclerView
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.epoxy.*
 import com.lacourt.myapplication.network.Resource
-import com.lacourt.myapplication.ui.OnMovieClick
+import com.lacourt.myapplication.ui.OnItemClick
 import com.lacourt.myapplication.viewmodel.HomeViewModel
 
 
-class HomeFragment : Fragment(), OnMovieClick {
+class HomeFragment : Fragment(), OnItemClick {
     private lateinit var homeViewModel: HomeViewModel
     //    private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerView: EpoxyRecyclerView
 
-    val movieController by lazy { MovieController(this) }
+    private val movieController by lazy { MovieController(context, this) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +45,7 @@ class HomeFragment : Fragment(), OnMovieClick {
         val progressBar: ProgressBar = root.findViewById(R.id.progress_circular)
         progressBar.visibility = View.VISIBLE
         recyclerView = root.findViewById(R.id.movie_list)
-//        val adapter = MovieAdapter(context, onMovieClick)
+//        val adapter = MovieAdapter(context, onItemClick)
 
         Log.d("clicklog", "before initialize movieController")
         val adapter = movieController.adapter
@@ -55,11 +55,11 @@ class HomeFragment : Fragment(), OnMovieClick {
 
         recyclerView.adapter = adapter
 
-        homeViewModel.trendingAll?.observe(this, Observer { response ->
+        homeViewModel.topTrendingMovie?.observe(this, Observer { response ->
             when (response.status) {
                 Resource.Status.SUCCESS -> {
                     response.data?.let {
-                        movieController.submitAllTrending(it)
+                        movieController.submitTopTrendingMovie(it)
                         recyclerView.setController(movieController)
                     }
                     progressBar.visibility = View.INVISIBLE
@@ -70,21 +70,21 @@ class HomeFragment : Fragment(), OnMovieClick {
                 }
             }
         })
-//        homeViewModel.latestTv?.observe(this, Observer { response ->
-//            when (response.status) {
-//                Resource.Status.SUCCESS -> {
-//                    response.data?.let {
-//                        movieController.submitLatestTv(it)
-//                        recyclerView.setController(movieController)
-//                    }
-//                    progressBar.visibility = View.INVISIBLE
-//                }
-//                Resource.Status.LOADING -> {
-//                }
-//                Resource.Status.ERROR -> {
-//                }
-//            }
-//        })
+        homeViewModel.trendingMovies?.observe(this, Observer { response ->
+            when (response.status) {
+                Resource.Status.SUCCESS -> {
+                    response.data?.let {
+                        movieController.submitTrendingMovies(it)
+                        recyclerView.setController(movieController)
+                    }
+                    progressBar.visibility = View.INVISIBLE
+                }
+                Resource.Status.LOADING -> {
+                }
+                Resource.Status.ERROR -> {
+                }
+            }
+        })
         homeViewModel.trendingTv?.observe(this, Observer { response ->
             when (response.status) {
                 Resource.Status.SUCCESS -> {
@@ -166,14 +166,10 @@ class HomeFragment : Fragment(), OnMovieClick {
         return root
     }
 
-    override fun onMovieClick(id: Int) {
-        if (id != 0) {
-            val homeToDetailsFragment =
-                HomeFragmentDirections.actionNavigationHomeToDetailsFragment(id)
-            findNavController().navigate(homeToDetailsFragment)
-        } else {
-            Toast.makeText(context, "Sorry. Can not load this movie. :/", Toast.LENGTH_SHORT).show()
-        }
+    override fun onItemClick(id: Int) {
+        val homeToDetailsFragment =
+            HomeFragmentDirections.actionNavigationHomeToDetailsFragment(id)
+        findNavController().navigate(homeToDetailsFragment)
     }
 
 }
