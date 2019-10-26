@@ -9,10 +9,12 @@ import com.lacourt.myapplication.dto.DbMovieDTO
 import com.lacourt.myapplication.ui.OnMovieClick
 
 class MovieController(
-    private val clickListener: (Int) -> Unit,
     private val onMovieClick: OnMovieClick
 ) : EpoxyController() {
 
+    init {
+        Log.d("clicklog", "initializing movieController")
+    }
     //    var movies: List<DbMovieDTO>? = null
     var allTrending: List<DbMovieDTO>? = null
     var upcomingMovies: List<DbMovieDTO>? = null
@@ -42,21 +44,26 @@ class MovieController(
         val allTrendingModelList = ArrayList<MovieListModel_>()
         allTrending?.forEach { movie ->
             allTrendingModelList.add(
-                MovieListModel_(onMovieClick)
+                MovieListModel_()
                     .id(movie.id)
                     .mMoviePoster(movie.poster_path)
-                    .clickListener(clickListener)
+                    .clickListener { model, parentView, clickedView, position ->
+                        Log.d("clicklog", "onCreateView in all trending called")
+                        onMovieClick.onMovieClick(movie.id)
+                    }
             )
         }
         val upcomingMovieModelList = ArrayList<MovieListModel_>()
         upcomingMovies?.forEach { movie ->
             upcomingMovieModelList.add(
-                MovieListModel_(onMovieClick)
+                MovieListModel_()
                     .id(movie.id)
                     .mMoviePoster(movie.poster_path)
-                    .clickListener {
-                        clickListener
+                    .clickListener { model, parentView, clickedView, position ->
+                        Log.d("clicklog", "onCreateView in upcoming movies called")
+                        onMovieClick.onMovieClick(movie.id)
                     }
+
 //                    .cardClickListener { model, parentView, clickedView, position ->
 //                        Log.d("onclicklog", "onClickCalled")
 //                        onMovieClick.onMovieClick(movie.id)
@@ -66,10 +73,13 @@ class MovieController(
         val popularMovieModelList = ArrayList<MovieListModel_>()
         popularMovies?.forEach { movie ->
             popularMovieModelList.add(
-                MovieListModel_(onMovieClick)
+                MovieListModel_()
                     .id(movie.id)
                     .mMoviePoster(movie.poster_path)
-                    .clickListener(clickListener)
+                    .clickListener { model, parentView, clickedView, position ->
+                        Log.d("clicklog", "onCreateView popular movies called")
+                        onMovieClick.onMovieClick(movie.id)
+                    }
             )
         }
         HeaderModel_()

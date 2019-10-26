@@ -1,15 +1,11 @@
 package com.lacourt.myapplication.network
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.lacourt.myapplication.AppConstants
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
-
 
 object Apifactory {
     //Creating Auth Interceptor to add api_key query in front of all the requests.

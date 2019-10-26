@@ -16,43 +16,34 @@ import kotlinx.android.synthetic.main.movie_list_item.view.*
 
 
 @EpoxyModelClass(layout = R.layout.movie_list_item)
-abstract class MovieListModel(val onMovieClick: OnMovieClick) : EpoxyModelWithHolder<MovieListModel.ViewHolder>() {
+abstract class MovieListModel : EpoxyModelWithHolder<MovieListModel.ViewHolder>() {
 
     @EpoxyAttribute
     var mMoviePoster: String? = null
 
-    @EpoxyAttribute(hash=false)
-    var clickListener: (Int) -> Unit = {}
-
-//    @EpoxyAttribute(hash = false)
-//    lateinit var clickListener: (Int) -> Unit
+    @EpoxyAttribute
+    lateinit var clickListener: View.OnClickListener
 
     override fun bind(@NonNull holder: ViewHolder) {
         super.bind(holder)
-        holder.renderView(mMoviePoster)
-        holder.setUpListener(clickListener)
-
+        val imagePath = mMoviePoster ?: ""
+        Picasso.get().load(AppConstants.TMDB_IMAGE_BASE_URL_W185 + imagePath)
+            .placeholder(R.drawable.clapperboard)
+            .into(holder.poster)
+        holder.cardView?.setOnClickListener(clickListener)
     }
 
     override fun shouldSaveViewState(): Boolean {
         return true
     }
 
-    class ViewHolder : BaseEpoxyHolder() {
-        fun setUpListener(clickListener: (Int) -> Unit){
-            clickListener.invoke(290859)
-        }
-
-        fun renderView(mMoviePoster: String?){
-            val url = "https://image.tmdb.org/t/p/w500"
-
-            val imagePath = mMoviePoster ?: ""
-            Picasso.get().load(AppConstants.TMDB_IMAGE_BASE_URL_W185 + imagePath)
-                .placeholder(R.drawable.clapperboard)
-                .into(itemView.iv_poster)
+    class ViewHolder : EpoxyHolder() {
+        var poster: ImageView? = null
+        var cardView: CardView? = null
+        override fun bindView(itemView: View) {
+            poster = itemView.findViewById(R.id.iv_poster)
+            cardView = itemView.findViewById(R.id.movie_card_view)
         }
     }
-
-
 
 }

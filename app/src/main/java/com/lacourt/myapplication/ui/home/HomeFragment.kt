@@ -12,13 +12,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.airbnb.epoxy.Carousel
-import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyRecyclerView
-import com.airbnb.epoxy.OnModelClickListener
 import com.lacourt.myapplication.R
-import com.lacourt.myapplication.dto.DbMovieDTO
 import com.lacourt.myapplication.epoxy.*
 import com.lacourt.myapplication.network.Resource
 import com.lacourt.myapplication.ui.OnMovieClick
@@ -26,27 +21,11 @@ import com.lacourt.myapplication.viewmodel.HomeViewModel
 
 
 class HomeFragment : Fragment(), OnMovieClick {
-    private val onMovieClick = this as OnMovieClick
     private lateinit var homeViewModel: HomeViewModel
     //    private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerView: EpoxyRecyclerView
 
-
-    val movieController by lazy { MovieController(clickListener, this) }
-
-
-    private val clickListener: ((Int) -> Unit) = { id ->
-        if (id != 0) {
-            Log.d("ae", id.toString())
-        }
-//            val homeToDetailsFragment =
-//                HomeFragmentDirections.actionNavigationHomeToDetailsFragment(id)
-//            findNavController().navigate(homeToDetailsFragment)
-//        } else {
-//            Toast.makeText(context, "Sorry. Can not load this movie. :/", Toast.LENGTH_SHORT).show()
-//        }
-    }
-
+    val movieController by lazy { MovieController(this) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,21 +46,14 @@ class HomeFragment : Fragment(), OnMovieClick {
         progressBar.visibility = View.VISIBLE
         recyclerView = root.findViewById(R.id.movie_list)
 //        val adapter = MovieAdapter(context, onMovieClick)
+
+        Log.d("clicklog", "before initialize movieController")
         val adapter = movieController.adapter
 
         var layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
 
         recyclerView.adapter = adapter
-/*
-        homeViewModel.upcomingMovies?.observe(this, Observer { pagedList ->
-            if (pagedList != null && pagedList.isNotEmpty()) {
-//                adapter.submitList(pagedList)
-                movieController.submitMovie(pagedList)
-                progressBar.visibility = View.INVISIBLE
-            }
-        })
-*/
 
         homeViewModel.upcomingMovies?.observe(this, Observer { response ->
             when (response.status) {
