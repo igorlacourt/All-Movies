@@ -18,21 +18,21 @@ class HomeViewModel(application: Application) : AndroidViewModel(application){
     var topTrendingMovie: LiveData<Resource<Details>>? = null
     var topRatedMovies: LiveData<Resource<List<DbMovieDTO>>>? = null
     var trendingMovies: LiveData<Resource<List<DbMovieDTO>>>? = null
-    var topRatedTv: LiveData<Resource<List<DbMovieDTO>>>? = null
     var upcomingMovies: LiveData<Resource<List<DbMovieDTO>>>? = null
     var popularMovies: LiveData<Resource<List<DbMovieDTO>>>? = null
-    var trendingTv: LiveData<Resource<List<DbMovieDTO>>>? = null
+//    var trendingTv: LiveData<Resource<List<DbMovieDTO>>>? = null
+//    var topRatedTv: LiveData<Resource<List<DbMovieDTO>>>? = null
 
     //    var latestTv: LiveData<Resource<List<DbMovieDTO>>>? = null
 
     init {
         Log.d("callstest", "homeViewModel init called.\n")
         homeRepository = HomeRepository(application)
+        topTrendingMovie = homeRepository?.topTrendingMovie
         topRatedMovies = homeRepository?.topRatedMovies
         upcomingMovies = homeRepository?.upcomingMovies
         popularMovies = homeRepository?.popularMovies
         trendingMovies = homeRepository?.trendingMovies
-        topTrendingMovie = homeRepository?.topTrendingMovie
 //        latestTv = homeRepository?.latestTv
 //        trendingTv = homeRepository?.trendingTv
 //        topRatedTv = homeRepository?.topRatedTv

@@ -70,6 +70,7 @@ class HomeFragment : Fragment(), OnItemClick {
                 }
             }
         })
+
         homeViewModel.trendingMovies?.observe(this, Observer { response ->
             when (response.status) {
                 Resource.Status.SUCCESS -> {
@@ -85,41 +86,12 @@ class HomeFragment : Fragment(), OnItemClick {
                 }
             }
         })
-        homeViewModel.trendingTv?.observe(this, Observer { response ->
-            when (response.status) {
-                Resource.Status.SUCCESS -> {
-                    response.data?.let {
-                        movieController.submitTrendingTv(it)
-                        recyclerView.setController(movieController)
-                    }
-                    progressBar.visibility = View.INVISIBLE
-                }
-                Resource.Status.LOADING -> {
-                }
-                Resource.Status.ERROR -> {
-                }
-            }
-        })
+
         homeViewModel.topRatedMovies?.observe(this, Observer { response ->
             when (response.status) {
                 Resource.Status.SUCCESS -> {
                     response.data?.let {
                         movieController.submitTopRatedMovies(it)
-                        recyclerView.setController(movieController)
-                    }
-                    progressBar.visibility = View.INVISIBLE
-                }
-                Resource.Status.LOADING -> {
-                }
-                Resource.Status.ERROR -> {
-                }
-            }
-        })
-        homeViewModel.topRatedTv?.observe(this, Observer { response ->
-            when (response.status) {
-                Resource.Status.SUCCESS -> {
-                    response.data?.let {
-                        movieController.submitTopRatedTv(it)
                         recyclerView.setController(movieController)
                     }
                     progressBar.visibility = View.INVISIBLE

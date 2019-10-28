@@ -20,7 +20,7 @@ class MovieController(
     }
 
 
-    var topTrendingMovie: DbMovieDTO? = null
+    var topTrendingMovie: Details? = null
     var trendingMovies: List<DbMovieDTO>? = null
     var trendingTv: List<DbMovieDTO>? = null
     var topRatedMovies: List<DbMovieDTO>? = null
@@ -28,10 +28,6 @@ class MovieController(
     var upcomingMovies: List<DbMovieDTO>? = null
     var popularMovies: List<DbMovieDTO>? = null
 
-//    fun submitMovie(newMovieList: List<DbMovieDTO>) {
-//        movies = newMovieList
-//        requestModelBuild()
-//    }
 
     fun submitTrendingMovies(newList: List<DbMovieDTO>) {
         trendingMovies = newList
@@ -40,8 +36,8 @@ class MovieController(
 
 
     fun submitTopTrendingMovie(newMovie: Details) {
-//        topTrendingMovie = newMovie
-//        requestModelBuild()
+        topTrendingMovie = newMovie
+        requestModelBuild()
     }
 
     fun submitTrendingTv(newList: List<DbMovieDTO>) {
@@ -109,8 +105,6 @@ class MovieController(
             )
         }
         */
-
-
         val trendingMoviesModelList = ArrayList<MovieListModel_>()
         trendingMovies?.forEach { movie ->
             trendingMoviesModelList.add(
@@ -122,7 +116,6 @@ class MovieController(
                     }
             )
         }
-
         val topRatedMoviesModelList = ArrayList<MovieListModel_>()
         topRatedMovies?.forEach { movie ->
             topRatedMoviesModelList.add(
@@ -135,7 +128,6 @@ class MovieController(
                     }
             )
         }
-
         val upcomingMovieModelList = ArrayList<MovieListModel_>()
         upcomingMovies?.forEach { movie ->
             upcomingMovieModelList.add(
@@ -188,7 +180,14 @@ class MovieController(
 //            .models(topRatedTvModelList)
 //            .addTo(this)
 
-
+        TopTrendingMovieModel_()
+            .id(5)
+            .backdropPath(topTrendingMovie?.backdrop_path)
+            .clickListener { model, parentView, clickedView, position ->
+                Log.d("clicklog", "onCreateView popular movies called")
+                topTrendingMovie?.id?.let { callDetailsFragment(it) }
+            }
+            .addTo(this)
 
         HeaderModel_()
             .id(5)

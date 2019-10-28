@@ -103,7 +103,7 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
                 popularMovies.postValue(Resource.success(map3))
                 topRatedMovies.postValue(Resource.success(map4))
 
-//                fetchTopImageDetails(map4[0].id)
+                fetchTopImageDetails(map1[0].id)
 
             })
             .subscribe()
