@@ -80,13 +80,13 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
         val trendinMoviesObservale = tmdbApi.getTrendingMovies(AppConstants.LANGUAGE, 1)
         val upcomingMoviesObservale = tmdbApi.getUpcomingMovies(AppConstants.LANGUAGE, 1)
         val popularMoviesObservale = tmdbApi.getPopularMovies(AppConstants.LANGUAGE, 1)
-        val topRatedMoviesObservables = tmdbApi.getTopRatedMovies(AppConstants.LANGUAGE, 1)
+        val topRatedMoviesObservable = tmdbApi.getTopRatedMovies(AppConstants.LANGUAGE, 1)
 
         Observable.zip(
             trendinMoviesObservale.subscribeOn(Schedulers.io()),
             upcomingMoviesObservale.subscribeOn(Schedulers.io()),
             popularMoviesObservale.subscribeOn(Schedulers.io()),
-            topRatedMoviesObservables.subscribeOn(Schedulers.io()),
+            topRatedMoviesObservable.subscribeOn(Schedulers.io()),
 
             Function4 { trendingMoviesResponse: MovieResponseDTO,
                              upcomingMoviesResponse: MovieResponseDTO,
@@ -141,12 +141,12 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
 //            .doOnNext{
 //                topTrendingMovie.value = Resource.success(MapperFunctions.toDetails(it))
 //            }
-
         NetworkCall<DetailsDTO, Details>().makeCall(
             Apifactory.tmdbApi.getDetails(id),
             this,
             MapperFunctions::toDetails
         )
+
     }
 
     override fun networkCallResult(callback: Resource<Details>) {

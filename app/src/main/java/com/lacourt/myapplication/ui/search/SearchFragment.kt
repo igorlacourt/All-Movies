@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.ui.OnItemClick
-import com.lacourt.myapplication.ui.mylist.MyListFragmentDirections
 import com.lacourt.myapplication.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
 
@@ -92,7 +91,7 @@ class SearchFragment : Fragment(), OnItemClick {
 
     override fun onItemClick(id: Int) {
         if (id != 0) {
-            val myListToDetailsFragment = MyListFragmentDirections.actionNavigationMyListToDetailsFragment(id)
+            val myListToDetailsFragment = SearchFragmentDirections.actionNavigationSearchToDetailsFragment(id)
             findNavController().navigate(myListToDetailsFragment)
         } else {
             Toast.makeText(context, "Sorry. Can not load this movie. :/", Toast.LENGTH_SHORT).show()

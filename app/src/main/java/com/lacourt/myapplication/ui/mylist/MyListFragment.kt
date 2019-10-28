@@ -66,7 +66,8 @@ class MyListFragment : Fragment(), OnItemClick {
     }
 
     override fun onItemClick(id: Int) {
-        val myListToDetailsFragment = MyListFragmentDirections.actionNavigationMyListToDetailsFragment(id)
+        val myListToDetailsFragment
+                = MyListFragmentDirections.actionNavigationMyListToDetailsFragment(id)
         findNavController().navigate(myListToDetailsFragment)
     }
 }
