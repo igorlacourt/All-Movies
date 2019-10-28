@@ -54,39 +54,12 @@
         app:layout_constraintVertical_bias="0.71"
         tool:text="Movie Title" />
 
-    <TextView
-        android:id="@+id/tv_genre_1"
-        android:layout_width="118dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_genres"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:gravity="center"
-        app:layout_constraintTop_toTopOf="@+id/tv_genre_2"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_genre_2"
-        app:layout_constraintEnd_toStartOf="@+id/tv_genre_2"
-        tool:text="Tv Genre 1" />
-
-    <TextView
-        android:id="@+id/tv_genre_2"
-        android:layout_width="118dp"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.86"
-        tool:text="Tv Genre 2" />
-
-    <TextView
-        android:id="@+id/tv_genre_3"
-        android:layout_width="118dp"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_genre_2"
-        app:layout_constraintTop_toTopOf="@+id/tv_genre_2"
-        app:layout_constraintStart_toEndOf="@+id/tv_genre_2"
-        tool:text="Tv Genre 3" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

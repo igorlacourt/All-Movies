@@ -12,8 +12,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.lacourt.myapplication.R
+import com.lacourt.myapplication.dto.GenreXDTO
 import com.lacourt.myapplication.epoxy.*
 import com.lacourt.myapplication.network.Resource
 import com.lacourt.myapplication.ui.OnItemClick
@@ -55,10 +57,18 @@ class HomeFragment : Fragment(), OnItemClick {
 
         recyclerView.adapter = adapter
 
+        var genres: RecyclerView = root.findViewById(R.id.rv_genres)
+        var genresLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        genres.layoutManager = genresLayoutManager
+        val genresAdapter = GenresAdapter(context, ArrayList())
+        genres.adapter = genresAdapter
+
         homeViewModel.topTrendingMovie?.observe(this, Observer { response ->
             when (response.status) {
                 Resource.Status.SUCCESS -> {
                     response.data?.let {
+                        if (it.genres != null)
+                            genresAdapter.setList(it.genres)
                         movieController.submitTopTrendingMovie(it)
                         recyclerView.setController(movieController)
                     }
