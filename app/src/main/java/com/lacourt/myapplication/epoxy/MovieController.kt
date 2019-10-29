@@ -8,6 +8,7 @@ import com.airbnb.epoxy.EpoxyController
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.dto.DbMovieDTO
+import com.lacourt.myapplication.dto.GenreXDTO
 import com.lacourt.myapplication.ui.OnItemClick
 
 class MovieController(
@@ -180,9 +181,17 @@ class MovieController(
 //            .models(topRatedTvModelList)
 //            .addTo(this)
 
-        TopTrendingMovieModel_()
+        var genresArrayList: ArrayList<GenreXDTO> = ArrayList()
+        topTrendingMovie?.genres?.forEach {
+            genresArrayList.add(it)
+        }
+
+
+
+        TopTrendingMovieModel_(context)
             .id(5)
             .backdropPath(topTrendingMovie?.backdrop_path)
+            .genres(genresArrayList)
             .clickListener { model, parentView, clickedView, position ->
                 Log.d("clicklog", "onCreateView popular movies called")
                 topTrendingMovie?.id?.let { callDetailsFragment(it) }

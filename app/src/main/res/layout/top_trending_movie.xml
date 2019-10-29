@@ -26,7 +26,7 @@
         app:layout_constraintStart_toStartOf="parent"
         tool:src="@drawable/clapperboard" />
 
-    <LinearLayout
+    <View
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="180dp"
@@ -37,10 +37,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-
-    </LinearLayout>
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
         android:id="@+id/tv_top_trending_movie_title"
@@ -55,7 +52,7 @@
         tool:text="Movie Title" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_genres"
+        android:id="@+id/genres_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
