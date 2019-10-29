@@ -57,18 +57,13 @@ class HomeFragment : Fragment(), OnItemClick {
 
         recyclerView.adapter = adapter
 
-        var genres: RecyclerView = root.findViewById(R.id.rv_genres)
-        var genresLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        genres.layoutManager = genresLayoutManager
-        val genresAdapter = GenresAdapter(context, ArrayList())
-        genres.adapter = genresAdapter
 
         homeViewModel.topTrendingMovie?.observe(this, Observer { response ->
             when (response.status) {
                 Resource.Status.SUCCESS -> {
                     response.data?.let {
                         if (it.genres != null)
-                            genresAdapter.setList(it.genres)
+//                            genresAdapter.setList(it.genres)
                         movieController.submitTopTrendingMovie(it)
                         recyclerView.setController(movieController)
                     }
