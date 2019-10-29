@@ -5,8 +5,10 @@ import android.util.Log
 import android.widget.Toast
 import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyController
+import com.lacourt.myapplication.R
 import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.dto.DbMovieDTO
+import com.lacourt.myapplication.dto.GenreXDTO
 import com.lacourt.myapplication.ui.OnItemClick
 
 class MovieController(
@@ -16,12 +18,10 @@ class MovieController(
 
     init {
         Log.d("clicklog", "initializing movieController")
-        Log.d("genreslog", "MovieController, init{ ... } called")
     }
 
-    var topTrendingMovie: Details? = null
-    var topTrendingMovieGenres: ArrayList<String> = ArrayList()
 
+    var topTrendingMovie: Details? = null
     var trendingMovies: List<DbMovieDTO>? = null
     var trendingTv: List<DbMovieDTO>? = null
     var topRatedMovies: List<DbMovieDTO>? = null
@@ -29,10 +29,12 @@ class MovieController(
     var upcomingMovies: List<DbMovieDTO>? = null
     var popularMovies: List<DbMovieDTO>? = null
 
+
     fun submitTrendingMovies(newList: List<DbMovieDTO>) {
         trendingMovies = newList
         requestModelBuild()
     }
+
 
     fun submitTopTrendingMovie(newMovie: Details) {
         topTrendingMovie = newMovie
@@ -65,6 +67,45 @@ class MovieController(
     }
 
     override fun buildModels() {
+        /*
+        val allTrendingModelList = ArrayList<MovieListModel_>()
+
+        trendingAll?.forEach { movie ->
+            allTrendingModelList.add(
+                MovieListModel_()
+                    .id(movie.id)
+                    .mMoviePoster(movie.poster_path)
+                    .clickListener { model, parentView, clickedView, position ->
+                        Log.d("clicklog", "onCreateView in all trending called")
+                        onItemClick.onItemClick((onItemClick as Context).getString(R.string.details_type_movie), movie.id)
+                    }
+            )
+        }
+        val latestTvModelList = ArrayList<MovieListModel_>()
+        latestTv?.forEach { movie ->
+            latestTvModelList.add(
+                MovieListModel_()
+                    .id(movie.id)
+                    .mMoviePoster(movie.poster_path)
+                    .clickListener { model, parentView, clickedView, position ->
+                        Log.d("clicklog", "onCreateView in all trending called")
+                        onItemClick.onItemClick(movie.id)
+                    }
+            )
+        }
+        val trendingTvModelList = ArrayList<MovieListModel_>()
+        trendingTv?.forEach { movie ->
+            trendingTvModelList.add(
+                MovieListModel_()
+                    .id(movie.id)
+                    .mMoviePoster(movie.poster_path)
+                    .clickListener { model, parentView, clickedView, position ->
+                        Log.d("clicklog", "onCreateView in all trending called")
+                        onItemClick.onItemClick((onItemClick as Context).getString(R.string.details_type_tv), movie.id)
+                    }
+            )
+        }
+        */
         val trendingMoviesModelList = ArrayList<MovieListModel_>()
         trendingMovies?.forEach { movie ->
             trendingMoviesModelList.add(
@@ -113,21 +154,49 @@ class MovieController(
             )
         }
 
-        Log.d("genreslog", "MovieController, buildModels called")
-//        val genresList = arrayListOf("elem1","elem2","elem3","elem4")
-//        Log.d("genreslog", "MovieController, genresList created, genreList.size = ${genresList.size}")
-        topTrendingMovie?.genres?.let {
-            TopTrendingMovieModel_(context)
-                .id(5)
-                .backdropPath(topTrendingMovie?.backdrop_path)
-                .title()
-                .genresList(it)
-                .clickListener { model, parentView, clickedView, position ->
-                    Log.d("clicklog", "onCreateView popular movies called")
-                    topTrendingMovie?.id?.let { callDetailsFragment(it) }
-                }
-                .addTo(this)
+//        HeaderModel_()
+//            .id(1)
+//            .header("Trending")
+//            .addTo(this)
+//        CarouselModel_()
+//            .id("trendingAll")
+//            .models(allTrendingModelList)
+//            .addTo(this)
+
+//        HeaderModel_()
+//            .id(2)
+//            .header("Latest tv shows")
+//            .addTo(this)
+//        CarouselModel_()
+//            .id("latestTv")
+//            .models(latestTvModelList)
+//            .addTo(this)
+
+//        HeaderModel_()
+//            .id(3)
+//            .header("Trending shows")
+//            .addTo(this)
+//        CarouselModel_()
+//            .id("trendingTv")
+//            .models(topRatedTvModelList)
+//            .addTo(this)
+
+        var genresArrayList: ArrayList<GenreXDTO> = ArrayList()
+        topTrendingMovie?.genres?.forEach {
+            genresArrayList.add(it)
         }
+
+
+
+        TopTrendingMovieModel_(context)
+            .id(5)
+            .backdropPath(topTrendingMovie?.backdrop_path)
+            .genres(genresArrayList)
+            .clickListener { model, parentView, clickedView, position ->
+                Log.d("clicklog", "onCreateView popular movies called")
+                topTrendingMovie?.id?.let { callDetailsFragment(it) }
+            }
+            .addTo(this)
 
         HeaderModel_()
             .id(5)
@@ -166,7 +235,7 @@ class MovieController(
             .addTo(this)
     }
 
-    private fun callDetailsFragment(id: Int) {
+    private fun callDetailsFragment(id: Int){
         if (id != 0) {
             onItemClick.onItemClick(id)
         } else {
