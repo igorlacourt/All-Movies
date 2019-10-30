@@ -166,17 +166,19 @@ class DetailsFragment : Fragment() {
             detail_title.text = title
             detail_overview.text = overview
             release_year.text = release_date
-            classification.text =
-            runtime?.let {
-                val date = Date(it.toLong())
-                val format = SimpleDateFormat("yyyy.MM.dd HH:mm")
-                tv_duration.text = format.format(date)
-            }
+            tv_duration.text = convertDuration(runtime)
+            tv_rate_details.text = "${vote_average.toString()} vote average"
 
             progressBar.visibility = View.INVISIBLE
         }
 
     }
+
+    private fun convertDuration(timeSeconds: Int?) = timeSeconds?.let {
+        val minutes = (it % 60)
+        val hours = (it / 60)
+        "${hours}h ${minutes}m"
+    } ?: ""
 
 //    companion object {
 //        /**

@@ -16,4 +16,5 @@
     <color name="genreTerrorColor">#2E2E2E</color>
     <color name="genreDocumentaryColor">#7E7E7E</color>
     <color name="genreFamilyColor">#009688</color>
+    <color name="releaseYearColor">#727272</color>
 </resources>

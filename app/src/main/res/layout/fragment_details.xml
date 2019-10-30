@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.details.DetailsActivity"
+    tools:context=".ui.details.DetailsFragment"
     android:background="@color/colorPrimaryDark">
 
     <ImageView
@@ -24,6 +24,8 @@
         android:layout_marginTop="15dp"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:gravity="start"
+        android:layout_gravity="start"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detail_backdrop"
@@ -34,13 +36,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:layout_marginTop="20dp"
         android:gravity="start|left"
         android:textSize="14sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/release_year"
-        app:layout_constraintTop_toBottomOf="@+id/detail_title"
+        app:layout_constraintStart_toStartOf="@+id/tv_rate_details"
+        app:layout_constraintTop_toBottomOf="@+id/tv_rate_details"
         tools:text="Detail overview Detail overview Detail overview Detail overview Detail overview Detail overview " />
 
 
@@ -76,8 +77,11 @@
         android:id="@+id/release_year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/detail_title"
-        app:layout_constraintTop_toBottomOf="@+id/detail_title"
+        android:textSize="12sp"
+        android:textColor="@color/releaseYearColor"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_rate_details"
+        app:layout_constraintStart_toEndOf="@+id/tv_rate_details"
+        app:layout_constraintTop_toTopOf="@+id/tv_rate_details"
         tools:text="0000" />
 
     <ProgressBar
@@ -91,75 +95,28 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/classification"
+        android:id="@+id/tv_rate_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
-        android:layout_margin="4dp"
-        tools:text="10"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="@+id/release_year"
-        app:layout_constraintStart_toEndOf="@+id/release_year" />
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintStart_toStartOf="@+id/detail_title"
+        app:layout_constraintTop_toBottomOf="@+id/detail_title"
+        tools:text="10" />
 
     <TextView
         android:id="@+id/tv_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="1h30"
-        app:layout_constraintStart_toEndOf="@+id/classification"
-        app:layout_constraintTop_toTopOf="@+id/classification"
-        app:layout_constraintBottom_toBottomOf="@+id/classification" />
-    <!--    <TextView-->
-    <!--        android:id="@+id/title"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_margin="4dp"-->
-    <!--        android:ellipsize="end"-->
-    <!--        android:gravity="center"-->
-    <!--        android:maxLines="2"-->
-    <!--        android:minLines="2"-->
-    <!--        android:textSize="12sp"-->
-    <!--        android:textStyle="bold"-->
-    <!--        android:paddingStart="4dp"-->
-    <!--        android:paddingLeft="4dp"-->
-    <!--        android:paddingEnd="4dp"-->
-    <!--        android:paddingRight="4dp"-->
-    <!--        android:layout_marginBottom="4dp"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/iv_poster"-->
-    <!--        tools:text="MovieDTO Title MovieDTO Title MovieDTO Title MovieDTO Title MovieDTO Title MovieDTO Title MovieDTO Title"-->
-    <!--        />-->
-
-    <!--    <TextView-->
-    <!--        android:id="@+id/rating"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginStart="8dp"-->
-    <!--        android:layout_marginLeft="8dp"-->
-    <!--        android:gravity="center"-->
-    <!--        android:textSize="10sp"-->
-    <!--        android:textStyle="bold"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toStartOf="@+id/genre_date"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        tools:text="7.7" />-->
-
-    <!--    <TextView-->
-    <!--        android:id="@+id/genre_date"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_gravity="center"-->
-    <!--        android:layout_marginStart="4dp"-->
-    <!--        android:layout_marginLeft="4dp"-->
-    <!--        android:layout_marginEnd="8dp"-->
-    <!--        android:layout_marginRight="8dp"-->
-    <!--        android:ellipsize="end"-->
-    <!--        android:gravity="center"-->
-    <!--        android:maxLines="1"-->
-    <!--        android:textSize="12sp"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toEndOf="@+id/rating"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/title"-->
-    <!--        tools:text="0000, Action" />-->
+        android:textSize="12sp"
+        android:textColor="@color/releaseYearColor"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintStart_toEndOf="@+id/release_year"
+        app:layout_constraintTop_toTopOf="@+id/release_year"
+        app:layout_constraintBottom_toBottomOf="@+id/release_year" />
 </androidx.constraintlayout.widget.ConstraintLayout>
