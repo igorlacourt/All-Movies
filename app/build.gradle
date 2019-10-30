@@ -135,8 +135,8 @@ dependencies {
     implementation 'xyz.peridy.shimmer:shimmerlayout:1.1'
 
     //Epoxy
-    implementation 'com.airbnb.android:epoxy:3.8.0'
-    kapt 'com.airbnb.android:epoxy-processor:3.8.0'
+    implementation 'com.airbnb.android:epoxy:3.8.0'//3.6.0'//3.7.0'//3.8.0'
+    kapt 'com.airbnb.android:epoxy-processor:3.8.0'//3.6.0'//3.7.0'//3.8.0'
 //    implementation 'com.airbnb.android:epoxy-databinding:3.8.0'
 
     // epoxy

@@ -16,7 +16,8 @@
     <ImageView
         android:id="@+id/iv_top_trending_movie"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="420dp"
+        android:scaleType="centerCrop"
         android:clickable="false"
         android:focusable="false"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -29,7 +30,7 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="250dp"
         android:background="@drawable/top_trending_gradient_shape"
         android:clickable="false"
         android:focusable="false"

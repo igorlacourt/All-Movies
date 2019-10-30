@@ -50,6 +50,8 @@ class HomeFragment : Fragment(), OnItemClick {
 //        val adapter = MovieAdapter(context, onItemClick)
 
         Log.d("clicklog", "before initialize movieController")
+        Log.d("genreslog", "HomeFragment, onCreateView() called")
+
         val adapter = movieController.adapter
 
         var layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

@@ -53,11 +53,11 @@ abstract class TopTrendingMovieModel(val context: Context?) : EpoxyModelWithHold
 
     override fun bind(holder: ViewHolder) {
         super.bind(holder)
-        Picasso.get().load(AppConstants.TMDB_IMAGE_BASE_URL_W500 + backdropPath)
+        Picasso.get().load(AppConstants.TMDB_IMAGE_BASE_URL_ORIGINAL + backdropPath)
             .placeholder(R.drawable.clapperboard)
             .into(holder.image)
         holder.framaLayout?.setOnClickListener(clickListener)
-//        holder.title?.text = title
+        holder.title?.text = title
 
 //        genresList.forEach { genre ->
 //            var count = 1
@@ -75,14 +75,34 @@ abstract class TopTrendingMovieModel(val context: Context?) : EpoxyModelWithHold
             holder.genres?.append(genresList[i].name)
             if(i < genresList.size - 1){
                 Log.d("genreslog", "TopTrendingMovieModel, if is true, index = $i")
-                val s = " • ".toSpannable()
-                s[0..1] = ForegroundColorSpan(Color.RED)
+                val s = "  •  ".toSpannable()
+
+                var color = context?.resources?.getColor(R.color.genreFamilyColor)
+                genresList.map {
+                    when(it.name){
+                        "Drama" -> color = context?.resources?.getColor(R.color.genreDramaColor)
+                        "Action" -> color = context?.resources?.getColor(R.color.genreActionColor)
+                        "Western" -> color = context?.resources?.getColor(R.color.genreWesternColor)
+                        "Thriller" -> color = context?.resources?.getColor(R.color.genreThrillerColor)
+                        "War" -> color = context?.resources?.getColor(R.color.genreWarColor)
+                        "Horror" -> color = context?.resources?.getColor(R.color.genreHorrorColor)
+                        "Terror" -> color = context?.resources?.getColor(R.color.genreTerrorColor)
+                        "Documentary" -> color = context?.resources?.getColor(R.color.genreDocumentaryColor)
+                    }
+                }
+
+                if (color != null)
+                    s[0..5] = ForegroundColorSpan(color!!)
+                else
+                    s[0..5] = ForegroundColorSpan(Color.GRAY)
+
                 holder.genres?.append(s)
             }
         }
+
 //        genresList.forEach { genre ->
 ////            var count = 1
-//            holder.genres?.append(genre)
+//            holder.genres?.append(genre.name)
 ////            count++
 //            if(genresList.indexOf(genre) != genresList.count()) {
 //                val s = " • ".toSpannable()
