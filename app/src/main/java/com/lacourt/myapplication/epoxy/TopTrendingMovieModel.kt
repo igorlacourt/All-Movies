@@ -20,7 +20,8 @@ import com.lacourt.myapplication.dto.GenreXDTO
 import com.squareup.picasso.Picasso
 
 @EpoxyModelClass(layout = R.layout.top_trending_movie)
-abstract class TopTrendingMovieModel(val context: Context?) : EpoxyModelWithHolder<TopTrendingMovieModel.ViewHolder>() {
+abstract class TopTrendingMovieModel(val context: Context?) :
+    EpoxyModelWithHolder<TopTrendingMovieModel.ViewHolder>() {
 
     @EpoxyAttribute
     var backdropPath: String? = null
@@ -34,23 +35,6 @@ abstract class TopTrendingMovieModel(val context: Context?) : EpoxyModelWithHold
     @EpoxyAttribute
     lateinit var title: String
 
-//    private fun buildModels(): List<EpoxyModel<*>> {
-//        val models = ArrayList<EpoxyHolder<*>>()
-//        for(){
-//
-//        }
-//        models.add(ImageButtonModel_()
-//            .id("add")
-//            .imageRes(R.drawable.ic_add_circle)
-//            .clickListener({ model, parentView, clickedView, position ->
-//                callbacks
-//                    .onAddColorToCarouselClicked(carousel)
-//            })
-//        )
-//
-//        return models
-//    }
-
     override fun bind(holder: ViewHolder) {
         super.bind(holder)
         Picasso.get().load(AppConstants.TMDB_IMAGE_BASE_URL_ORIGINAL + backdropPath)
@@ -58,36 +42,34 @@ abstract class TopTrendingMovieModel(val context: Context?) : EpoxyModelWithHold
             .into(holder.image)
         holder.framaLayout?.setOnClickListener(clickListener)
         holder.title?.text = title
+        holder.genres?.text = ""
 
-//        genresList.forEach { genre ->
-//            var count = 1
-//            holder.genres?.append(genre)
-//            count++
-//            if(count != genresList.count()) {
-//                val s = "•".toSpannable()
-//                s[0..1] = ForegroundColorSpan(Color.RED)
-//                holder.genres?.append(s)
-//            }
         Log.d("genreslog", "TopTrendingMovieModel, bind(called)")
 
-        for(i in 0 until genresList.size){
+        for (i in 0 until genresList.size) {
             Log.d("genreslog", "TopTrendingMovieModel, for called, index = $i")
             holder.genres?.append(genresList[i].name)
-            if(i < genresList.size - 1){
+            if (i < genresList.size - 1) {
                 Log.d("genreslog", "TopTrendingMovieModel, if is true, index = $i")
                 val s = "  •  ".toSpannable()
 
                 var color = context?.resources?.getColor(R.color.genreFamilyColor)
                 genresList.map {
-                    when(it.name){
+                    when (it.name) {
                         "Drama" -> color = context?.resources?.getColor(R.color.genreDramaColor)
-                        "Action" -> color = context?.resources?.getColor(R.color.genreActionColor)
-                        "Western" -> color = context?.resources?.getColor(R.color.genreWesternColor)
-                        "Thriller" -> color = context?.resources?.getColor(R.color.genreThrillerColor)
+                        "Action" -> color =
+                            context?.resources?.getColor(R.color.genreActionColor)
+                        "Western" -> color =
+                            context?.resources?.getColor(R.color.genreWesternColor)
+                        "Thriller" -> color =
+                            context?.resources?.getColor(R.color.genreThrillerColor)
                         "War" -> color = context?.resources?.getColor(R.color.genreWarColor)
-                        "Horror" -> color = context?.resources?.getColor(R.color.genreHorrorColor)
-                        "Terror" -> color = context?.resources?.getColor(R.color.genreTerrorColor)
-                        "Documentary" -> color = context?.resources?.getColor(R.color.genreDocumentaryColor)
+                        "Horror" -> color =
+                            context?.resources?.getColor(R.color.genreHorrorColor)
+                        "Terror" -> color =
+                            context?.resources?.getColor(R.color.genreTerrorColor)
+                        "Documentary" -> color =
+                            context?.resources?.getColor(R.color.genreDocumentaryColor)
                     }
                 }
 
@@ -99,33 +81,14 @@ abstract class TopTrendingMovieModel(val context: Context?) : EpoxyModelWithHold
                 holder.genres?.append(s)
             }
         }
-
-//        genresList.forEach { genre ->
-////            var count = 1
-//            holder.genres?.append(genre.name)
-////            count++
-//            if(genresList.indexOf(genre) != genresList.count()) {
-//                val s = " • ".toSpannable()
-//                s[0..1] = ForegroundColorSpan(Color.RED)
-//                holder.genres?.append(s)
-//            }
-//
-//
-//        }
-
-//        var genres: RecyclerView = root.findViewById(R.id.rv_genres)
-//        var genresLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-//        genres.layoutManager = genresLayoutManager
-//        val genresAdapter = GenresAdapter(context, ArrayList())
-//        genres.adapter = genresAdapter
     }
 
-    class ViewHolder: EpoxyHolder() {
+    class ViewHolder : EpoxyHolder() {
         var image: ImageView? = null
         var framaLayout: ConstraintLayout? = null
         var title: TextView? = null
         var genres: TextView? = null
-//        var recyclerView: RecyclerView? = null
+        //        var recyclerView: RecyclerView? = null
         override fun bindView(itemView: View) {
             image = itemView.findViewById(R.id.iv_top_trending_movie)
             framaLayout = itemView.findViewById(R.id.ly_top_trending_movie)

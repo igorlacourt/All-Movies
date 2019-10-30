@@ -18,6 +18,7 @@ class MovieController(
 
     init {
         Log.d("clicklog", "initializing movieController")
+        Log.d("genreslog", "MovieController, init called")
     }
 
 
@@ -67,6 +68,7 @@ class MovieController(
     }
 
     override fun buildModels() {
+        Log.d("genreslog", "MovieController, buildModels called")
         val trendingMoviesModelList = ArrayList<MovieListModel_>()
         trendingMovies?.forEach { movie ->
             trendingMoviesModelList.add(
@@ -119,7 +121,7 @@ class MovieController(
         topTrendingMovie?.genres?.let {
             topTrendingMovie?.title?.let { it1 ->
                 TopTrendingMovieModel_(context)
-                    .id(5)
+                    .id("topTrendingMovie")
                     .backdropPath(topTrendingMovie?.backdrop_path)
                     .genresList(it)
                     .title(it1)
@@ -132,7 +134,7 @@ class MovieController(
         }
 
         HeaderModel_()
-            .id(5)
+            .id(2)
             .header("Trending")
             .addTo(this)
         CarouselModel_()
@@ -141,7 +143,7 @@ class MovieController(
             .addTo(this)
 
         HeaderModel_()
-            .id(6)
+            .id(3)
             .header("Upcoming movies")
             .addTo(this)
         CarouselModel_()
@@ -150,7 +152,7 @@ class MovieController(
             .addTo(this)
 
         HeaderModel_()
-            .id(7)
+            .id(4)
             .header("Popular movies")
             .addTo(this)
         CarouselModel_()
@@ -159,7 +161,7 @@ class MovieController(
             .addTo(this)
 
         HeaderModel_()
-            .id(4)
+            .id(5)
             .header("Critically acclaimed movies")
             .addTo(this)
         CarouselModel_()
