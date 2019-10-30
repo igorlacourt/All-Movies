@@ -11,12 +11,12 @@ object MapperFunctions {
 
     fun movieResponseToDbMovieDTO(input: MovieResponseDTO): List<DbMovieDTO> {
         return input.results.map { movieDTO ->
-           DbMovieDTO(
-               movieDTO.id,
-               movieDTO.poster_path,
-               movieDTO.release_date,
-               movieDTO.vote_average
-           )
+            DbMovieDTO(
+                movieDTO.id,
+                movieDTO.poster_path,
+                movieDTO.release_date,
+                movieDTO.vote_average
+            )
 
         }
     }
@@ -30,6 +30,7 @@ object MapperFunctions {
                 overview,
                 poster_path,
                 release_date,
+                runtime,
                 title,
                 vote_average
             )

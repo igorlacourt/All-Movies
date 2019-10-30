@@ -9,6 +9,7 @@ data class Details(
     val overview: String?,
     val poster_path: String?,
     var release_date: String?,
+    var runtime: Int?,
     val title: String?,
     val vote_average: Double?
 ){

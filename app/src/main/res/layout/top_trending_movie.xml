@@ -38,10 +38,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-
-    </LinearLayout>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tv_top_trending_movie_title"
@@ -68,5 +65,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tool:layout_editor_absoluteY="22dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

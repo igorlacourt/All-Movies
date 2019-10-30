@@ -28,6 +28,8 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_details.*
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 private const val PARAM_ID = "param_id"
@@ -164,6 +166,13 @@ class DetailsFragment : Fragment() {
             detail_title.text = title
             detail_overview.text = overview
             release_year.text = release_date
+            classification.text =
+            runtime?.let {
+                val date = Date(it.toLong())
+                val format = SimpleDateFormat("yyyy.MM.dd HH:mm")
+                tv_duration.text = format.format(date)
+            }
+
             progressBar.visibility = View.INVISIBLE
         }
 

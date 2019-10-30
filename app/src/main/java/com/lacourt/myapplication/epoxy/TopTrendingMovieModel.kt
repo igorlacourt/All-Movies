@@ -57,26 +57,17 @@ abstract class TopTrendingMovieModel(val context: Context?) :
                 genresList.map {
                     when (it.name) {
                         "Drama" -> color = context?.resources?.getColor(R.color.genreDramaColor)
-                        "Action" -> color =
-                            context?.resources?.getColor(R.color.genreActionColor)
-                        "Western" -> color =
-                            context?.resources?.getColor(R.color.genreWesternColor)
-                        "Thriller" -> color =
-                            context?.resources?.getColor(R.color.genreThrillerColor)
+                        "Action" -> color = context?.resources?.getColor(R.color.genreActionColor)
+                        "Western" -> color = context?.resources?.getColor(R.color.genreWesternColor)
+                        "Thriller" -> color = context?.resources?.getColor(R.color.genreThrillerColor)
                         "War" -> color = context?.resources?.getColor(R.color.genreWarColor)
-                        "Horror" -> color =
-                            context?.resources?.getColor(R.color.genreHorrorColor)
-                        "Terror" -> color =
-                            context?.resources?.getColor(R.color.genreTerrorColor)
-                        "Documentary" -> color =
-                            context?.resources?.getColor(R.color.genreDocumentaryColor)
+                        "Horror" -> color = context?.resources?.getColor(R.color.genreHorrorColor)
+                        "Terror" -> color = context?.resources?.getColor(R.color.genreTerrorColor)
+                        "Documentary" -> color = context?.resources?.getColor(R.color.genreDocumentaryColor)
                     }
                 }
 
-                if (color != null)
-                    s[0..5] = ForegroundColorSpan(color!!)
-                else
-                    s[0..5] = ForegroundColorSpan(Color.GRAY)
+                s[0..5] = color?.let{ ForegroundColorSpan(it)} ?: ForegroundColorSpan(Color.GRAY)
 
                 holder.genres?.append(s)
             }
