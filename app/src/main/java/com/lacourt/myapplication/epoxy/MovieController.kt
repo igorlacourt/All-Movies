@@ -21,7 +21,6 @@ class MovieController(
         Log.d("genreslog", "MovieController, init called")
     }
 
-
     var topTrendingMovie: Details? = null
     var trendingMovies: List<DbMovieDTO>? = null
     var topRatedMovies: List<DbMovieDTO>? = null
@@ -29,9 +28,10 @@ class MovieController(
     var popularMovies: List<DbMovieDTO>? = null
     var topRatedTv: List<DbMovieDTO>? = null
     var trendingTv: List<DbMovieDTO>? = null
-
+    var error: Boolean = false
 
     fun submitTrendingMovies(newList: List<DbMovieDTO>, error: Boolean) {
+        this.error = error
         trendingMovies = newList
         requestModelBuild()
     }
@@ -133,41 +133,49 @@ class MovieController(
             }
         }
 
-        HeaderModel_()
-            .id(2)
-            .header("Trending")
-            .addTo(this)
-        CarouselModel_()
-            .id("trendingMovies")
-            .models(trendingMoviesModelList)
-            .addTo(this)
+        if(error){
+            ErrorHomeModel_()
+                .id(1)
+                .message("Error Loading data : P")
+                .addTo(this)
+        } else {
+            HeaderModel_()
+                .id(2)
+                .header("Trending")
+                .addTo(this)
+            CarouselModel_()
+                .id("trendingMovies")
+                .models(trendingMoviesModelList)
+                .addTo(this)
 
-        HeaderModel_()
-            .id(3)
-            .header("Upcoming movies")
-            .addTo(this)
-        CarouselModel_()
-            .id("upcomingMovies")
-            .models(upcomingMovieModelList)
-            .addTo(this)
+            HeaderModel_()
+                .id(3)
+                .header("Upcoming movies")
+                .addTo(this)
+            CarouselModel_()
+                .id("upcomingMovies")
+                .models(upcomingMovieModelList)
+                .addTo(this)
 
-        HeaderModel_()
-            .id(4)
-            .header("Popular movies")
-            .addTo(this)
-        CarouselModel_()
-            .id("popularMovies")
-            .models(popularMovieModelList)
-            .addTo(this)
+            HeaderModel_()
+                .id(4)
+                .header("Popular movies")
+                .addTo(this)
+            CarouselModel_()
+                .id("popularMovies")
+                .models(popularMovieModelList)
+                .addTo(this)
 
-        HeaderModel_()
-            .id(5)
-            .header("Critically acclaimed movies")
-            .addTo(this)
-        CarouselModel_()
-            .id("topRatedMovies")
-            .models(topRatedMoviesModelList)
-            .addTo(this)
+            HeaderModel_()
+                .id(5)
+                .header("Critically acclaimed movies")
+                .addTo(this)
+            CarouselModel_()
+                .id("topRatedMovies")
+                .models(topRatedMoviesModelList)
+                .addTo(this)
+        }
+
     }
 
     private fun callDetailsFragment(id: Int) {
