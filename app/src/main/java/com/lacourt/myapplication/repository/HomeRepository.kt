@@ -12,6 +12,7 @@ import androidx.paging.toLiveData
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.database.AppDatabase
 import com.lacourt.myapplication.domainMappers.MapperFunctions
+import com.lacourt.myapplication.domainMappers.mapToDomain
 import com.lacourt.myapplication.domainMappers.not_used_interfaces.Mapper
 import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.dto.*
@@ -19,6 +20,7 @@ import com.lacourt.myapplication.network.Apifactory
 import com.lacourt.myapplication.network.NetworkCall
 import com.lacourt.myapplication.network.NetworkCallback
 import com.lacourt.myapplication.network.Resource
+import com.lacourt.myapplication.network.Error
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.Single
@@ -32,7 +34,10 @@ import io.reactivex.functions.Function7
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.HttpException
 import retrofit2.Response
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 class HomeRepository(private val application: Application) : NetworkCallback<Details> {
     private val config = PagedList.Config.Builder()
@@ -57,8 +62,6 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
     val upcomingMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
     val popularMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
     val topTrendingMovie = MutableLiveData<Resource<Details>>()
-//    val topRatedTv = MutableLiveData<Resource<List<DbMovieDTO>>>()
-//    val trendingTv = MutableLiveData<Resource<List<DbMovieDTO>>>()
 
     /*Remember:
      1. that the returned list cannot be mutable
@@ -91,6 +94,7 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
 //        }
     }
 
+    @SuppressLint("CheckResult")
     private fun fetchMoviesLists() {
         val tmdbApi = Apifactory.tmdbApi
         val trendinMoviesObservale = tmdbApi.getTrendingMovies(AppConstants.LANGUAGE, 1)
@@ -109,10 +113,15 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
                         popularMoviesResponse: MovieResponseDTO,
                         topRatedMoviesResponse: MovieResponseDTO ->
 
-                var map1 = MapperFunctions.movieResponseToDbMovieDTO(trendingMoviesResponse)
-                var map2 = MapperFunctions.movieResponseToDbMovieDTO(upcomingMoviesResponse)
-                var map3 = MapperFunctions.movieResponseToDbMovieDTO(popularMoviesResponse)
-                var map4 = MapperFunctions.movieResponseToDbMovieDTO(topRatedMoviesResponse)
+                //                var map1 = MapperFunctions.movieResponseToDbMovieDTO(trendingMoviesResponse)
+//                var map2 = MapperFunctions.movieResponseToDbMovieDTO(upcomingMoviesResponse)
+//                var map3 = MapperFunctions.movieResponseToDbMovieDTO(popularMoviesResponse)
+//                var map4 = MapperFunctions.movieResponseToDbMovieDTO(topRatedMoviesResponse)
+
+                val map1 = trendingMoviesResponse.mapToDomain()
+                val map2 = upcomingMoviesResponse.mapToDomain()
+                val map3 = popularMoviesResponse.mapToDomain()
+                val map4 = topRatedMoviesResponse.mapToDomain()
 
                 trendingMovies.postValue(Resource.success(map1))
                 upcomingMovies.postValue(Resource.success(map2))
@@ -122,10 +131,27 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
                 fetchTopImageDetails(map1[0].id)
 
             })
+            .doOnError {
+                (it as HttpException)
+                trendingMovies.postValue(Resource.error(Error(it.code(), it.message())))
+//                upcomingMovies.postValue(Resource.error(map2))
+//                popularMovies.postValue(Resource.error(map3))
+//                topRatedMovies.postValue(Resource.error(map4))
+            }
             .subscribe()
     }
 
-    private fun fetchTopImageDetails(id: Int){
+//    fun <T> Observable<T>.mapNetworkErrors(): Observable<T> =
+//        this.doOnError { error ->
+//            when (error) {
+//                is SocketTimeoutException -> Observable.error(NoNetworkException(error))
+//                is UnknownHostException -> Observable.error(ServerUnreachableException(error))
+//                is HttpException -> Observable.error(HttpCallFailureException(error))
+//                else -> Observable.error(error)
+//            }
+//        }
+
+    private fun fetchTopImageDetails(id: Int) {
 //        Observable.just(Apifactory.tmdbApi.getDetails2(id))
 //            .subscribeOn(Schedulers.io())
 //            .observeOn(AndroidSchedulers.mainThread())
@@ -188,7 +214,6 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
             Toast.LENGTH_SHORT
         ).show()
     }
-
 
 
 }

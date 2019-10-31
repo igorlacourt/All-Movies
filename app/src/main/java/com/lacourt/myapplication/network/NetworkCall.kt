@@ -13,7 +13,7 @@ open class NetworkCall<T, R> {
 
             override fun onFailure(call: Call<T>, t: Throwable) {
                 callback.networkCallResult(Resource.error(
-                    Error(0, "No response", t.message)
+                    Error(0, t.message)
                 ))
                 t.printStackTrace()
                 Log.d(
@@ -35,7 +35,7 @@ open class NetworkCall<T, R> {
                     )
                 } else {
                     callback.networkCallResult(Resource.error(
-                        Error(response.code(), response.message(), response.errorBody().toString())
+                        Error(response.code(), response.message())
                     ))
                     Log.d(
                         "calltest",

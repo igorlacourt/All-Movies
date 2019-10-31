@@ -7,6 +7,17 @@ import com.lacourt.myapplication.dto.DetailsDTO
 import com.lacourt.myapplication.dto.MovieDTO
 import com.lacourt.myapplication.dto.MovieResponseDTO
 
+fun MovieResponseDTO.mapToDomain() : List<DbMovieDTO> {
+    return this.results.map { movieDTO ->
+        DbMovieDTO(
+            movieDTO.id,
+            movieDTO.poster_path,
+            movieDTO.release_date,
+            movieDTO.vote_average
+        )
+    }
+}
+
 object MapperFunctions {
 
     fun movieResponseToDbMovieDTO(input: MovieResponseDTO): List<DbMovieDTO> {
