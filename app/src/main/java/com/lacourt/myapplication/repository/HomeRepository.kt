@@ -131,14 +131,34 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
                 fetchTopImageDetails(map1[0].id)
 
             })
-            .doOnError {
-                (it as HttpException)
-                trendingMovies.postValue(Resource.error(Error(it.code(), it.message())))
-//                upcomingMovies.postValue(Resource.error(map2))
-//                popularMovies.postValue(Resource.error(map3))
-//                topRatedMovies.postValue(Resource.error(map4))
-            }
-            .subscribe()
+            .subscribe({}, { error ->
+                when (error) {
+                    is SocketTimeoutException ->
+                    {
+                        trendingMovies.postValue(
+                            Resource.error(Error(408, "SocketTimeoutException"))
+                        )
+                    }
+                    is UnknownHostException ->
+                    {
+                        trendingMovies.postValue(
+                            Resource.error(Error(99, "UnknownHostException"))
+                        )
+                    }
+                    is HttpException ->
+                    {
+                        trendingMovies.postValue(
+                            Resource.error(Error(error.code(), error.message()))
+                        )
+                    }
+                    else ->
+                        trendingMovies.postValue(
+                            Resource.error(
+                                Error(0, error.message)
+                            )
+                        )
+                }
+            })
     }
 
 //    fun <T> Observable<T>.mapNetworkErrors(): Observable<T> =
@@ -177,34 +197,34 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
     }.also { currentOrder = order }
     */
 
-    fun moviesRequest(page: Int): Observable<MovieResponseDTO>? =
-        Apifactory.tmdbApi.getPopularMovies(AppConstants.LANGUAGE, page)
-            .subscribeOn(Schedulers.io())
-            ?.observeOn(AndroidSchedulers.mainThread())
+//    fun moviesRequest(page: Int): Observable<MovieResponseDTO>? =
+//        Apifactory.tmdbApi.getPopularMovies(AppConstants.LANGUAGE, page)
+//            .subscribeOn(Schedulers.io())
+//            ?.observeOn(AndroidSchedulers.mainThread())
 
 
     @SuppressLint("CheckResult")
     fun fetchMovies() {
-        Observable.range(1, 10)
-            .flatMap { page ->
-                moviesRequest(page)
-                    ?.map {
-                        MapperFunctions.toListOfDbMovieDTO(it.results)
-                    }
-                    ?.flatMap {
-                        Observable.fromIterable(it)
-                            .subscribeOn(Schedulers.io())
-                    }
-            }
-            .doOnNext {
-                Log.d("rxjavalog", "doOnNext called, id = ${it.id}")
-                movieDao.insert(it)
-            }
-            .doOnComplete {
-                Log.d("rxjavalog", "doOnComplete called")
-            }
-            .doOnError { networkErrorToast() }
-            .subscribe()
+//        Observable.range(1, 10)
+//            .flatMap { page ->
+//                moviesRequest(page)
+//                    ?.map {
+//                        MapperFunctions.toListOfDbMovieDTO(it.results)
+//                    }
+//                    ?.flatMap {
+//                        Observable.fromIterable(it)
+//                            .subscribeOn(Schedulers.io())
+//                    }
+//            }
+//            .doOnNext {
+//                Log.d("rxjavalog", "doOnNext called, id = ${it.id}")
+//                movieDao.insert(it)
+//            }
+//            .doOnComplete {
+//                Log.d("rxjavalog", "doOnComplete called")
+//            }
+//            .doOnError { networkErrorToast() }
+//            .subscribe()
     }
 
     fun networkErrorToast() {

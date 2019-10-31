@@ -4,6 +4,7 @@ import com.lacourt.myapplication.dto.DetailsDTO
 import com.lacourt.myapplication.dto.GenreResponseDTO
 import com.lacourt.myapplication.dto.MovieResponseDTO
 import io.reactivex.Observable
+import io.reactivex.Single
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

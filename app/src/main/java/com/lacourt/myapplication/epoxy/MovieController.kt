@@ -31,7 +31,7 @@ class MovieController(
     var trendingTv: List<DbMovieDTO>? = null
 
 
-    fun submitTrendingMovies(newList: List<DbMovieDTO>) {
+    fun submitTrendingMovies(newList: List<DbMovieDTO>, error: Boolean) {
         trendingMovies = newList
         requestModelBuild()
     }
