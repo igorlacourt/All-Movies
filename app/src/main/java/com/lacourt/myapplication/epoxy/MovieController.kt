@@ -29,7 +29,18 @@ class MovieController(
     var popularMovies: List<DbMovieDTO>? = null
     var topRatedTv: List<DbMovieDTO>? = null
     var trendingTv: List<DbMovieDTO>? = null
+
+    var listsOfMovies: List<List<DbMovieDTO>?>? = null
     var error: Error? = null
+
+    fun submitListsOfMovies(newListsOfMovies: List<List<DbMovieDTO>?>, error: Error?) {
+        Log.d("errorBoolean", "submitListOfMovies, error = $error")
+        error?.let {
+            this.error = it
+        }
+        listsOfMovies = newListsOfMovies
+        requestModelBuild()
+    }
 
     fun submitTrendingMovies(newList: List<DbMovieDTO>?, error: Error?) {
         Log.d("errorBoolean", "submitTrendingMovies, error = $error")
@@ -39,7 +50,6 @@ class MovieController(
         newList?.let { trendingMovies = it }
         requestModelBuild()
     }
-
 
     fun submitTopTrendingMovie(newMovie: Details) {
         topTrendingMovie = newMovie
@@ -75,6 +85,7 @@ class MovieController(
         Log.d("genreslog", "MovieController, buildModels called")
         Log.d("errorBoolean", "buildModels, error = ${this.error}")
 
+        /*
         val trendingMoviesModelList = ArrayList<MovieListModel_>()
         trendingMovies?.forEach { movie ->
             trendingMoviesModelList.add(
@@ -122,7 +133,55 @@ class MovieController(
                     }
             )
         }
+        */
 
+        val trendingMoviesModelList = ArrayList<MovieListModel_>()
+        listsOfMovies?.get(0)?.forEach { movie ->
+            trendingMoviesModelList.add(
+                MovieListModel_()
+                    .id(movie.id)
+                    .mMoviePoster(movie.poster_path)
+                    .clickListener { model, parentView, clickedView, position ->
+                        callDetailsFragment(movie.id)
+                    }
+            )
+        }
+        val upcomingMovieModelList = ArrayList<MovieListModel_>()
+        listsOfMovies?.get(1)?.forEach { movie ->
+            upcomingMovieModelList.add(
+                MovieListModel_()
+                    .id(movie.id)
+                    .mMoviePoster(movie.poster_path)
+                    .clickListener { model, parentView, clickedView, position ->
+                        Log.d("clicklog", "onCreateView in upcoming movies called")
+                        callDetailsFragment(movie.id)
+                    }
+            )
+        }
+        val popularMovieModelList = ArrayList<MovieListModel_>()
+        listsOfMovies?.get(2)?.forEach { movie ->
+            popularMovieModelList.add(
+                MovieListModel_()
+                    .id(movie.id)
+                    .mMoviePoster(movie.poster_path)
+                    .clickListener { model, parentView, clickedView, position ->
+                        Log.d("clicklog", "onCreateView popular movies called")
+                        callDetailsFragment(movie.id)
+                    }
+            )
+        }
+        val topRatedMoviesModelList = ArrayList<MovieListModel_>()
+        listsOfMovies?.get(3)?.forEach { movie ->
+            topRatedMoviesModelList.add(
+                MovieListModel_()
+                    .id(movie.id)
+                    .mMoviePoster(movie.poster_path)
+                    .clickListener { model, parentView, clickedView, position ->
+                        Log.d("clicklog", "onCreateView in all trending called")
+                        callDetailsFragment(movie.id)
+                    }
+            )
+        }
 
         topTrendingMovie?.genres?.let {
             topTrendingMovie?.title?.let { it1 ->

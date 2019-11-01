@@ -20,10 +20,8 @@ class HomeViewModel(application: Application) : AndroidViewModel(application){
     var trendingMovies: LiveData<Resource<List<DbMovieDTO>>>? = null
     var upcomingMovies: LiveData<Resource<List<DbMovieDTO>>>? = null
     var popularMovies: LiveData<Resource<List<DbMovieDTO>>>? = null
-//    var trendingTv: LiveData<Resource<List<DbMovieDTO>>>? = null
-//    var topRatedTv: LiveData<Resource<List<DbMovieDTO>>>? = null
 
-    //    var latestTv: LiveData<Resource<List<DbMovieDTO>>>? = null
+    var listsOfMovies: LiveData<Resource<List<List<DbMovieDTO>>>?>? = null
 
     init {
         Log.d("callstest", "homeViewModel init called.\n")
@@ -33,9 +31,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application){
         upcomingMovies = homeRepository?.upcomingMovies
         popularMovies = homeRepository?.popularMovies
         trendingMovies = homeRepository?.trendingMovies
-//        latestTv = homeRepository?.latestTv
-//        trendingTv = homeRepository?.trendingTv
-//        topRatedTv = homeRepository?.topRatedTv
+
+        listsOfMovies = homeRepository?.listsOfMovies
+
     }
 
     fun rearrengeMovies(order: String) {

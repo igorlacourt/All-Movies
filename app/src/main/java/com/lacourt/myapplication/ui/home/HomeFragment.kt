@@ -59,6 +59,22 @@ class HomeFragment : Fragment(), OnItemClick {
 
         recyclerView.adapter = adapter
 
+        homeViewModel.listsOfMovies?.observe(this, Observer { response ->
+            when (response?.status) {
+                Resource.Status.SUCCESS -> {
+                    response.data?.let {
+                        movieController.submitListsOfMovies(it, null)
+                        recyclerView.setController(movieController)
+                    }
+                    progressBar.visibility = View.INVISIBLE
+                }
+                Resource.Status.LOADING -> {
+                }
+                Resource.Status.ERROR -> {
+                }
+            }
+        })
+
         homeViewModel.topTrendingMovie?.observe(this, Observer { response ->
             when (response.status) {
                 Resource.Status.SUCCESS -> {

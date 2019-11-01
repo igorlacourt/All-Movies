@@ -59,6 +59,8 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
     val popularMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
     val topRatedMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
 
+    val listsOfMovies = MutableLiveData<Resource<List<List<DbMovieDTO>>>>()
+
     /*Remember:
      1. that the returned list cannot be mutable
      2. the mutable livedata should be private(check in the video again)*/
@@ -109,17 +111,25 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
                         popularMoviesResponse: MovieResponseDTO,
                         topRatedMoviesResponse: MovieResponseDTO ->
 
-                val map1 = trendingMoviesResponse.mapToDomain()
-                val map2 = upcomingMoviesResponse.mapToDomain()
-                val map3 = popularMoviesResponse.mapToDomain()
-                val map4 = topRatedMoviesResponse.mapToDomain()
+                val list1 = trendingMoviesResponse.mapToDomain()
+                val list2 = upcomingMoviesResponse.mapToDomain()
+                val list3 = popularMoviesResponse.mapToDomain()
+                val list4 = topRatedMoviesResponse.mapToDomain()
 
-                trendingMovies.postValue(Resource.success(map1))
-                upcomingMovies.postValue(Resource.success(map2))
-                popularMovies.postValue(Resource.success(map3))
-                topRatedMovies.postValue(Resource.success(map4))
+                trendingMovies.postValue(Resource.success(list1))
+                upcomingMovies.postValue(Resource.success(list2))
+                popularMovies.postValue(Resource.success(list3))
+                topRatedMovies.postValue(Resource.success(list4))
 
-                fetchTopImageDetails(map1[0].id)
+                val resultList: MutableList<List<DbMovieDTO>> = ArrayList()
+                resultList[0] = list1
+                resultList[1] = list1
+                resultList[2] = list2
+                resultList[3] = list3
+
+                listsOfMovies.postValue(Resource.success(resultList))
+
+                fetchTopImageDetails(list1[0].id)
 
             })
             .subscribe({}, { error ->

@@ -22,7 +22,6 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
     internal var movie: MutableLiveData<Resource<Details>>? = null
     var isInDatabase: LiveData<Boolean> = repository.isInDatabase
 
-
     fun isInMyList(id: Int?): Boolean {
         if (id == null)
             return false
