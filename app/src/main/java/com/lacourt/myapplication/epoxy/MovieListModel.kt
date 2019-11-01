@@ -10,7 +10,6 @@ import com.lacourt.myapplication.AppConstants
 import com.airbnb.epoxy.EpoxyAttribute
 import com.lacourt.myapplication.R
 
-
 @EpoxyModelClass(layout = R.layout.movie_list_item)
 abstract class MovieListModel : EpoxyModelWithHolder<MovieListModel.ViewHolder>() {
 

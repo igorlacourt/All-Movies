@@ -59,7 +59,6 @@ class HomeFragment : Fragment(), OnItemClick {
 
         recyclerView.adapter = adapter
 
-
         homeViewModel.topTrendingMovie?.observe(this, Observer { response ->
             when (response.status) {
                 Resource.Status.SUCCESS -> {
@@ -82,7 +81,7 @@ class HomeFragment : Fragment(), OnItemClick {
             when (response.status) {
                 Resource.Status.SUCCESS -> {
                     response.data?.let {
-                        movieController.submitTrendingMovies(it, false)
+                        movieController.submitTrendingMovies(it, null)
                         recyclerView.setController(movieController)
                     }
                     progressBar.visibility = View.INVISIBLE
@@ -90,8 +89,10 @@ class HomeFragment : Fragment(), OnItemClick {
                 Resource.Status.LOADING -> {
                 }
                 Resource.Status.ERROR -> {
+                    Log.d("errorBoolean", "HomeFragment, Resource.Status.ERROR")
+                    movieController.submitTrendingMovies(null, response.error)
                     Toast.makeText(context, "${response.error?.message}, ${response.error?.cd}", Toast.LENGTH_LONG).show()
-                    response.data?.let { movieController.submitTrendingMovies(it, true) }
+                    progressBar.visibility = View.INVISIBLE
                 }
             }
         })

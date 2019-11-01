@@ -23,4 +23,6 @@ abstract class HeaderModel : EpoxyModelWithHolder<HeaderModel.ViewHolder>() {
         }
     }
 
+
+
 }

@@ -16,11 +16,7 @@ import com.lacourt.myapplication.domainMappers.mapToDomain
 import com.lacourt.myapplication.domainMappers.not_used_interfaces.Mapper
 import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.dto.*
-import com.lacourt.myapplication.network.Apifactory
-import com.lacourt.myapplication.network.NetworkCall
-import com.lacourt.myapplication.network.NetworkCallback
-import com.lacourt.myapplication.network.Resource
-import com.lacourt.myapplication.network.Error
+import com.lacourt.myapplication.network.*
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.Single
@@ -57,11 +53,11 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
     private val moviesAscending: LiveData<PagedList<DbMovieDTO>> =
         movieDao.dateAsc().toLiveData(config)
 
-    val topRatedMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
+    val topTrendingMovie = MutableLiveData<Resource<Details>>()
     val trendingMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
     val upcomingMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
     val popularMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
-    val topTrendingMovie = MutableLiveData<Resource<Details>>()
+    val topRatedMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
 
     /*Remember:
      1. that the returned list cannot be mutable
@@ -113,11 +109,6 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
                         popularMoviesResponse: MovieResponseDTO,
                         topRatedMoviesResponse: MovieResponseDTO ->
 
-                //                var map1 = MapperFunctions.movieResponseToDbMovieDTO(trendingMoviesResponse)
-//                var map2 = MapperFunctions.movieResponseToDbMovieDTO(upcomingMoviesResponse)
-//                var map3 = MapperFunctions.movieResponseToDbMovieDTO(popularMoviesResponse)
-//                var map4 = MapperFunctions.movieResponseToDbMovieDTO(topRatedMoviesResponse)
-
                 val map1 = trendingMoviesResponse.mapToDomain()
                 val map2 = upcomingMoviesResponse.mapToDomain()
                 val map3 = popularMoviesResponse.mapToDomain()
@@ -135,18 +126,21 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
                 when (error) {
                     is SocketTimeoutException ->
                     {
+                        Log.d("errorBoolean", "HomeRepository, is SocketTimeoutException")
                         trendingMovies.postValue(
                             Resource.error(Error(408, "SocketTimeoutException"))
                         )
                     }
                     is UnknownHostException ->
                     {
+                        Log.d("errorBoolean", "HomeRepository, is UnknownHostException")
                         trendingMovies.postValue(
                             Resource.error(Error(99, "UnknownHostException"))
                         )
                     }
                     is HttpException ->
                     {
+                        Log.d("errorBoolean", "HomeRepository, is HttpException")
                         trendingMovies.postValue(
                             Resource.error(Error(error.code(), error.message()))
                         )

@@ -9,6 +9,7 @@ import com.lacourt.myapplication.R
 import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.dto.DbMovieDTO
 import com.lacourt.myapplication.dto.GenreXDTO
+import com.lacourt.myapplication.network.Error
 import com.lacourt.myapplication.ui.OnItemClick
 
 class MovieController(
@@ -28,11 +29,14 @@ class MovieController(
     var popularMovies: List<DbMovieDTO>? = null
     var topRatedTv: List<DbMovieDTO>? = null
     var trendingTv: List<DbMovieDTO>? = null
-    var error: Boolean = false
+    var error: Error? = null
 
-    fun submitTrendingMovies(newList: List<DbMovieDTO>, error: Boolean) {
-        this.error = error
-        trendingMovies = newList
+    fun submitTrendingMovies(newList: List<DbMovieDTO>?, error: Error?) {
+        Log.d("errorBoolean", "submitTrendingMovies, error = $error")
+        error?.let {
+            this.error = it
+        }
+        newList?.let { trendingMovies = it }
         requestModelBuild()
     }
 
@@ -69,6 +73,8 @@ class MovieController(
 
     override fun buildModels() {
         Log.d("genreslog", "MovieController, buildModels called")
+        Log.d("errorBoolean", "buildModels, error = ${this.error}")
+
         val trendingMoviesModelList = ArrayList<MovieListModel_>()
         trendingMovies?.forEach { movie ->
             trendingMoviesModelList.add(
@@ -133,12 +139,16 @@ class MovieController(
             }
         }
 
-        if(error){
+        if (error != null) {
+            val message = errorMessage()
+            Log.d("errorBoolean", "buildModels, if(error)  = ${this.error}")
             ErrorHomeModel_()
                 .id(1)
-                .message("Error Loading data : P")
+                .message(message)
                 .addTo(this)
+            Log.d("errorBoolean", "buildModels, ErrorHomeModel created")
         } else {
+            Log.d("errorBoolean", "buildModels, if(error)  = ${this.error}")
             HeaderModel_()
                 .id(2)
                 .header("Trending")
@@ -174,8 +184,15 @@ class MovieController(
                 .id("topRatedMovies")
                 .models(topRatedMoviesModelList)
                 .addTo(this)
-        }
 
+            Log.d("errorBoolean", "buildModels, CarouselModels created")
+        }
+    }
+
+    private fun errorMessage() = when (error!!.cd) {
+        408 -> "Timeout. Your internet maybe too slow. Check your connection and try again."
+        99 -> "Error. Check your connection and try again."
+        else -> "Error. Please, try again latter."
     }
 
     private fun callDetailsFragment(id: Int) {
