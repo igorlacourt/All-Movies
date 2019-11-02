@@ -30,16 +30,17 @@ class MovieController(
     var topRatedTv: List<DbMovieDTO>? = null
     var trendingTv: List<DbMovieDTO>? = null
 
-    var listsOfMovies: List<List<DbMovieDTO>?>? = null
+    var listsOfMovies: List<Collection<DbMovieDTO>?>? = null
     var error: Error? = null
 
-    fun submitListsOfMovies(newListsOfMovies: List<List<DbMovieDTO>?>, error: Error?) {
+    fun submitListsOfMovies(newListsOfMovies: List<Collection<DbMovieDTO>?>, error: Error?) {
         Log.d("errorBoolean", "submitListOfMovies, error = $error")
         error?.let {
             this.error = it
         }
         listsOfMovies = newListsOfMovies
-        requestModelBuild()
+        Log.d("listsLog", "MovieController, listsOfMovies.size = ${listsOfMovies?.size}")
+//        requestModelBuild()
     }
 
     fun submitTrendingMovies(newList: List<DbMovieDTO>?, error: Error?) {
@@ -53,31 +54,6 @@ class MovieController(
 
     fun submitTopTrendingMovie(newMovie: Details) {
         topTrendingMovie = newMovie
-        requestModelBuild()
-    }
-
-    fun submitTrendingTv(newList: List<DbMovieDTO>) {
-        trendingTv = newList
-        requestModelBuild()
-    }
-
-    fun submitTopRatedMovies(newList: List<DbMovieDTO>) {
-        topRatedMovies = newList
-        requestModelBuild()
-    }
-
-    fun submitTopRatedTv(newList: List<DbMovieDTO>) {
-        topRatedTv = newList
-        requestModelBuild()
-    }
-
-    fun submitUpcomingMovies(newList: List<DbMovieDTO>) {
-        upcomingMovies = newList
-        requestModelBuild()
-    }
-
-    fun submitPopularMovies(newList: List<DbMovieDTO>) {
-        popularMovies = newList
         requestModelBuild()
     }
 

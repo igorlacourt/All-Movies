@@ -7,7 +7,7 @@ import com.lacourt.myapplication.dto.DetailsDTO
 import com.lacourt.myapplication.dto.MovieDTO
 import com.lacourt.myapplication.dto.MovieResponseDTO
 
-fun MovieResponseDTO.mapToDomain() : List<DbMovieDTO> {
+fun MovieResponseDTO.mapToDomain() : Collection<DbMovieDTO> {
     return this.results.map { movieDTO ->
         DbMovieDTO(
             movieDTO.id,

@@ -15,11 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.lacourt.myapplication.R
+import com.lacourt.myapplication.dto.DbMovieDTO
 import com.lacourt.myapplication.dto.GenreXDTO
 import com.lacourt.myapplication.epoxy.*
 import com.lacourt.myapplication.network.Resource
 import com.lacourt.myapplication.ui.OnItemClick
 import com.lacourt.myapplication.viewmodel.HomeViewModel
+
+
 
 
 class HomeFragment : Fragment(), OnItemClick {
@@ -40,6 +43,27 @@ class HomeFragment : Fragment(), OnItemClick {
 //        var shimmerContainer = container?.findViewById<ShimmerFrameLayout>(R.id.shimmer_view_container)
 //        shimmerContainer?.visibility = View.VISIBLE
 //        shimmerContainer?.startShimmer()
+
+        var list1 = ArrayList<DbMovieDTO>()
+        for(i in 0 until 21){
+            list1.add(DbMovieDTO(i, "", "", 0.0))
+        }
+        var resultList = ArrayList<ArrayList<DbMovieDTO>>()
+//        resultList[0] = ArrayList()
+//        resultList[1] = ArrayList()
+//        resultList[2] = ArrayList()
+//        resultList[3] = ArrayList()
+
+        resultList.add(list1)
+        resultList.add(list1)
+        resultList.add(list1)
+        resultList.add(list1)
+
+        val listOfLists = ArrayList<ArrayList<String>>()
+        val singleList = ArrayList<String>()
+        singleList.add("hello")
+        singleList.add("world")
+        listOfLists.add(singleList)
 
         homeViewModel =
             ViewModelProviders.of(this).get(HomeViewModel::class.java)
@@ -62,6 +86,7 @@ class HomeFragment : Fragment(), OnItemClick {
         homeViewModel.listsOfMovies?.observe(this, Observer { response ->
             when (response?.status) {
                 Resource.Status.SUCCESS -> {
+                    Log.d("listsLog", "HomeFragment, response size = ${response?.data?.size}")
                     response.data?.let {
                         movieController.submitListsOfMovies(it, null)
                         recyclerView.setController(movieController)
@@ -92,7 +117,7 @@ class HomeFragment : Fragment(), OnItemClick {
                 }
             }
         })
-
+/*
         homeViewModel.trendingMovies?.observe(this, Observer { response ->
             when (response.status) {
                 Resource.Status.SUCCESS -> {
@@ -160,7 +185,7 @@ class HomeFragment : Fragment(), OnItemClick {
                 }
             }
         })
-
+*/
         return root
     }
 

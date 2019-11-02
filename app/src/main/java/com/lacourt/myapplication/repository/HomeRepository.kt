@@ -59,7 +59,7 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
     val popularMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
     val topRatedMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
 
-    val listsOfMovies = MutableLiveData<Resource<List<List<DbMovieDTO>>>>()
+    val listsOfMovies = MutableLiveData<Resource<List<Collection<DbMovieDTO>>>>()
 
     /*Remember:
      1. that the returned list cannot be mutable
@@ -116,51 +116,54 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
                 val list3 = popularMoviesResponse.mapToDomain()
                 val list4 = topRatedMoviesResponse.mapToDomain()
 
-                trendingMovies.postValue(Resource.success(list1))
-                upcomingMovies.postValue(Resource.success(list2))
-                popularMovies.postValue(Resource.success(list3))
-                topRatedMovies.postValue(Resource.success(list4))
+                var resultList = ArrayList<Collection<DbMovieDTO>>()
+                resultList.add(list1)
+                resultList.add(list2)
+                resultList.add(list3)
+                resultList.add(list4)
 
-                val resultList: MutableList<List<DbMovieDTO>> = ArrayList()
-                resultList[0] = list1
-                resultList[1] = list1
-                resultList[2] = list2
-                resultList[3] = list3
+                Log.d("listsLog", "HomeRepository, resultList.size = ${resultList.size}")
 
                 listsOfMovies.postValue(Resource.success(resultList))
 
-                fetchTopImageDetails(list1[0].id)
+                fetchTopImageDetails(list1.elementAt(0).id)
 
             })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({}, { error ->
                 when (error) {
-                    is SocketTimeoutException ->
-                    {
+                    is SocketTimeoutException -> {
                         Log.d("errorBoolean", "HomeRepository, is SocketTimeoutException")
+                        Log.d("listsLog", "HomeRepository, is SocketTimeoutException")
                         trendingMovies.postValue(
                             Resource.error(Error(408, "SocketTimeoutException"))
                         )
                     }
-                    is UnknownHostException ->
-                    {
+                    is UnknownHostException -> {
                         Log.d("errorBoolean", "HomeRepository, is UnknownHostException")
+                        Log.d("listsLog", "HomeRepository, is UnknownHostException")
                         trendingMovies.postValue(
                             Resource.error(Error(99, "UnknownHostException"))
                         )
                     }
-                    is HttpException ->
-                    {
+                    is HttpException -> {
                         Log.d("errorBoolean", "HomeRepository, is HttpException")
+                        Log.d("listsLog", "HomeRepository, is HttpException")
                         trendingMovies.postValue(
                             Resource.error(Error(error.code(), error.message()))
                         )
                     }
-                    else ->
+                    else -> {
+                        Log.d("errorBoolean", "HomeRepository, is Another Error")
+                        Log.d("listsLog", "HomeRepository, is Another Error")
                         trendingMovies.postValue(
                             Resource.error(
                                 Error(0, error.message)
                             )
                         )
+                    }
+
                 }
             })
     }
@@ -176,18 +179,11 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
 //        }
 
     private fun fetchTopImageDetails(id: Int) {
-//        Observable.just(Apifactory.tmdbApi.getDetails2(id))
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .doOnNext{
-//                topTrendingMovie.value = Resource.success(MapperFunctions.toDetails(it))
-//            }
         NetworkCall<DetailsDTO, Details>().makeCall(
             Apifactory.tmdbApi.getDetails(id),
             this,
             MapperFunctions::toDetails
         )
-
     }
 
     override fun networkCallResult(callback: Resource<Details>) {
