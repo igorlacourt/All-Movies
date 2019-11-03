@@ -67,7 +67,9 @@ interface TmdbApi {
     @GET("movie/{id}")//@GET("movie/{id}")
     fun getDetails(
         @Path("id")
-        id: Int
+        id: Int,
+        @Query("append_to_response")
+        append: String
     ): Call<DetailsDTO>
 
     //    https://api.themoviedb.org/3/tv/latest?api_key=<<api_key>>&language=en-US

@@ -1,5 +1,6 @@
 package com.lacourt.myapplication.test_retrofit_call_kotlin
 
+import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.dto.DetailsDTO
 import com.lacourt.myapplication.network.TmdbApi
 import retrofit2.Call
@@ -9,7 +10,7 @@ import retrofit2.Response
 class UserRepository(var apiServices: TmdbApi):BaseRepository(){
 
     fun getDetails(id: Int, callBack: Callback<DetailsDTO>) {
-        apiServices.getDetails(575452).makeCall {
+        apiServices.getDetails(575452, AppConstants.VIDEOS).makeCall {
             onResponseSuccess = {
 //             it.body().
             }

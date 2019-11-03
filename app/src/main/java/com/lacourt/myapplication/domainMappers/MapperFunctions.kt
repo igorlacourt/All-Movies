@@ -43,7 +43,8 @@ object MapperFunctions {
                 release_date,
                 runtime,
                 title,
-                vote_average
+                vote_average,
+                videos?.results
             )
         }
     }

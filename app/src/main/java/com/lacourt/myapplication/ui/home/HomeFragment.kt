@@ -100,10 +100,10 @@ class HomeFragment : Fragment(), OnItemClick {
             }
         })
 
-        homeViewModel.topTrendingMovie?.observe(this, Observer { response ->
-            when (response.status) {
+        homeViewModel.topTrendingMovie?.observe(this, Observer { details ->
+            when (details.status) {
                 Resource.Status.SUCCESS -> {
-                    response.data?.let {
+                    details.data?.let {
                         if (it.genres != null)
 //                            genresAdapter.setList(it.genres)
                         movieController.submitTopTrendingMovie(it)

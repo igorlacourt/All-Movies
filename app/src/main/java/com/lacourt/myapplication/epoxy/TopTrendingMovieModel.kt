@@ -35,6 +35,12 @@ abstract class TopTrendingMovieModel(val context: Context?) :
     lateinit var clickListener: View.OnClickListener
 
     @EpoxyAttribute
+    lateinit var trailerClickListener: View.OnClickListener
+
+    @EpoxyAttribute
+    lateinit var myListClickListener: View.OnClickListener
+
+    @EpoxyAttribute
     lateinit var genresList: List<GenreXDTO>
 
     @EpoxyAttribute
@@ -67,24 +73,27 @@ abstract class TopTrendingMovieModel(val context: Context?) :
                         "Drama" -> color = context?.resources?.getColor(R.color.genreDramaColor)
                         "Action" -> color = context?.resources?.getColor(R.color.genreActionColor)
                         "Western" -> color = context?.resources?.getColor(R.color.genreWesternColor)
-                        "Thriller" -> color = context?.resources?.getColor(R.color.genreThrillerColor)
+                        "Thriller" -> color =
+                            context?.resources?.getColor(R.color.genreThrillerColor)
                         "War" -> color = context?.resources?.getColor(R.color.genreWarColor)
                         "Horror" -> color = context?.resources?.getColor(R.color.genreHorrorColor)
                         "Terror" -> color = context?.resources?.getColor(R.color.genreTerrorColor)
-                        "Documentary" -> color = context?.resources?.getColor(R.color.genreDocumentaryColor)
+                        "Documentary" -> color =
+                            context?.resources?.getColor(R.color.genreDocumentaryColor)
                     }
                 }
 
-                s[0..5] = color?.let{ ForegroundColorSpan(it)} ?: ForegroundColorSpan(Color.GRAY)
+                s[0..5] = color?.let { ForegroundColorSpan(it) } ?: ForegroundColorSpan(Color.GRAY)
 
                 holder.genres?.append(s)
 
-//
+                holder.trailerButton?.setOnClickListener(trailerClickListener)
+                holder.myListButton?.setOnClickListener(myListClickListener)
+
 //                val sstr = SpannableString("▶ Trailer")
 //                sstr.setSpan(RelativeSizeSpan(2f), 0, 2, 0) // set size
 //
 //                holder.button?.text = sstr
-//                holder.button?.setOnClickListener(clickListener)
             }
         }
     }
@@ -94,15 +103,16 @@ abstract class TopTrendingMovieModel(val context: Context?) :
         var framaLayout: ConstraintLayout? = null
         var title: TextView? = null
         var genres: TextView? = null
-//        var button: LinearLayout? = null
-        //        var recyclerView: RecyclerView? = null
+        var trailerButton: ConstraintLayout? = null
+        var myListButton: ConstraintLayout? = null
+
         override fun bindView(itemView: View) {
             image = itemView.findViewById(R.id.iv_top_trending_movie)
             framaLayout = itemView.findViewById(R.id.ly_top_trending_movie)
             title = itemView.findViewById(R.id.tv_top_trending_movie_title)
             genres = itemView.findViewById(R.id.tv_genres)
-//            button = itemView.findViewById(R.id.btn_top_trending_trailer)
-//            recyclerView = itemView.findViewById(R.id.rv_genres)
+            trailerButton = itemView.findViewById(R.id.btn_top_trending_trailer)
+            myListButton = itemView.findViewById(R.id.btn_top_trending_my_list)
         }
     }
 

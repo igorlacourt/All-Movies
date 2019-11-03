@@ -22,6 +22,7 @@ import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.domainMappers.MapperFunctions
 import com.lacourt.myapplication.domainmodel.Details
+import com.lacourt.myapplication.domainmodel.openYoutube
 import com.lacourt.myapplication.network.Resource
 import com.lacourt.myapplication.viewmodel.DetailsViewModel
 import com.squareup.picasso.Callback
@@ -47,6 +48,7 @@ class DetailsFragment : Fragment() {
     lateinit var viewModel: DetailsViewModel
     lateinit var progressBar: ProgressBar
     lateinit var wishListButton: ImageView
+    lateinit var backdropImageView: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,11 +57,13 @@ class DetailsFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_details, container, false)
         wishListButton = view.findViewById(R.id.wish_list_btn)
+        backdropImageView = view.findViewById(R.id.detail_backdrop)
         progressBar = view.findViewById(R.id.details_progress_bar)
         progressBar.visibility = View.VISIBLE
 
         val id = arguments?.getInt("id") ?: 0
 
+        var details: Details? = null
 
         viewModel =
             ViewModelProviders.of(this).get(DetailsViewModel::class.java)
@@ -100,6 +104,7 @@ class DetailsFragment : Fragment() {
         viewModel.movie?.observe(this, Observer {
             when (it?.status) {
                 Resource.Status.SUCCESS -> {
+                    details = it.data
                     displayDetails(it.data)
                 }
                 Resource.Status.LOADING -> {
@@ -111,6 +116,12 @@ class DetailsFragment : Fragment() {
                 }
             }
         })
+
+        backdropImageView.setOnClickListener {
+            details?.let {
+                it.openYoutube(context)
+            }
+        }
 
         wishListButton.setOnClickListener {
             Log.d("log_is_inserted", "Button clicked")

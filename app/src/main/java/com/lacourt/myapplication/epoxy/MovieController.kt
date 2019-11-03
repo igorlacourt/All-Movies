@@ -11,6 +11,11 @@ import com.lacourt.myapplication.dto.DbMovieDTO
 import com.lacourt.myapplication.dto.GenreXDTO
 import com.lacourt.myapplication.network.Error
 import com.lacourt.myapplication.ui.OnItemClick
+import androidx.core.content.ContextCompat.startActivity
+import android.content.Intent
+import android.net.Uri
+import com.lacourt.myapplication.domainmodel.openYoutube
+
 
 class MovieController(
     private val context: Context?,
@@ -159,21 +164,6 @@ class MovieController(
             )
         }
 
-        topTrendingMovie?.genres?.let {
-            topTrendingMovie?.title?.let { it1 ->
-                TopTrendingMovieModel_(context)
-                    .id("topTrendingMovie")
-                    .backdropPath(topTrendingMovie?.backdrop_path)
-                    .genresList(it)
-                    .title(it1)
-                    .clickListener { model, parentView, clickedView, position ->
-                        Log.d("clicklog", "onCreateView popular movies called")
-                        topTrendingMovie?.id?.let { callDetailsFragment(it) }
-                    }
-                    .addTo(this)
-            }
-        }
-
         if (error != null) {
             val message = errorMessage()
             Log.d("errorBoolean", "buildModels, if(error)  = ${this.error}")
@@ -183,6 +173,29 @@ class MovieController(
                 .addTo(this)
             Log.d("errorBoolean", "buildModels, ErrorHomeModel created")
         } else {
+            topTrendingMovie?.genres?.let {
+                topTrendingMovie?.title?.let { it1 ->
+                    TopTrendingMovieModel_(context)
+                        .id("topTrendingMovie")
+                        .backdropPath(topTrendingMovie?.backdrop_path)
+                        .genresList(it)
+                        .title(it1)
+                        .trailerClickListener { model, parentView, clickedView, position ->
+                            topTrendingMovie?.let {
+                                it.openYoutube(context)
+                            }
+                        }
+                        .myListClickListener { model, parentView, clickedView, position ->
+
+                        }
+                        .clickListener { model, parentView, clickedView, position ->
+                            Log.d("clicklog", "onCreateView popular movies called")
+                            topTrendingMovie?.id?.let { callDetailsFragment(it) }
+                        }
+                        .addTo(this)
+                }
+            }
+
             Log.d("errorBoolean", "buildModels, if(error)  = ${this.error}")
             HeaderModel_()
                 .id(2)

@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.database.AppDatabase
 import com.lacourt.myapplication.database.DatabaseCallback
 import com.lacourt.myapplication.database.MyListDao
@@ -36,7 +37,7 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
     fun getDetails(id: Int) {
         Log.d("calltest", "getDetails called")
         NetworkCall<DetailsDTO, Details>().makeCall(
-            Apifactory.tmdbApi.getDetails(id),
+            Apifactory.tmdbApi.getDetails(id, AppConstants.VIDEOS),
             this,
             ::toDetails
         )

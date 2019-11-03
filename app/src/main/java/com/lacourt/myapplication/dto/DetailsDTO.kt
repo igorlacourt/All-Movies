@@ -1,5 +1,7 @@
 package com.lacourt.myapplication.dto
 
+import com.google.gson.annotations.Expose
+
 data class DetailsDTO(
     val adult: Boolean,
     val backdrop_path: String,
@@ -25,5 +27,6 @@ data class DetailsDTO(
     val title: String,
     val video: Boolean,
     val vote_average: Double,
-    val vote_count: Int
+    val vote_count: Int,
+    val videos: VideosDTO?
 )

@@ -74,6 +74,8 @@
         layout="@layout/button_top_trending_trailer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:focusable="true"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
@@ -81,7 +83,7 @@
         app:layout_constraintVertical_bias="0.93" />
 
     <include
-        android:id="@+id/btn_my_list"
+        android:id="@+id/btn_top_trending_my_list"
         layout="@layout/button_my_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

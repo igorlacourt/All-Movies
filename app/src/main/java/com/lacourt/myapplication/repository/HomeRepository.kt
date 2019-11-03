@@ -180,7 +180,7 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
 
     private fun fetchTopImageDetails(id: Int) {
         NetworkCall<DetailsDTO, Details>().makeCall(
-            Apifactory.tmdbApi.getDetails(id),
+            Apifactory.tmdbApi.getDetails(id, AppConstants.VIDEOS),
             this,
             MapperFunctions::toDetails
         )

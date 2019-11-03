@@ -50,4 +50,9 @@ data class MovieDTO(
 
     @Expose
     val vote_count: Int?
+
 ) : Serializable
+
+
+
+
