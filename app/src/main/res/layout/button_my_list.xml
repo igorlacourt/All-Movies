@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:clickable="true">
+
+    <ImageView
+        android:id="@+id/wish_list_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:clickable="false"
+        app:layout_constraintBottom_toTopOf="@+id/tv_my_list_details"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:srcCompat="@drawable/ic_add_white_36dp" />
+
+    <TextView
+        android:id="@+id/tv_my_list_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/my_list_at_details"
+        android:textSize="10sp"
+        android:textColor="#CECECE"
+        android:focusable="false"
+        android:clickable="false"
+        app:layout_constraintLeft_toLeftOf="@+id/wish_list_btn"
+        app:layout_constraintStart_toStartOf="@+id/wish_list_btn"
+        app:layout_constraintRight_toRightOf="@+id/wish_list_btn"
+        app:layout_constraintEnd_toEndOf="@+id/wish_list_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wish_list_btn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

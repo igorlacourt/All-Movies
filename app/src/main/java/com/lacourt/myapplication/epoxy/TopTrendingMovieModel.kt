@@ -84,7 +84,7 @@ abstract class TopTrendingMovieModel(val context: Context?) :
 //                sstr.setSpan(RelativeSizeSpan(2f), 0, 2, 0) // set size
 //
 //                holder.button?.text = sstr
-                holder.button?.setOnClickListener(clickListener)
+//                holder.button?.setOnClickListener(clickListener)
             }
         }
     }
@@ -94,14 +94,14 @@ abstract class TopTrendingMovieModel(val context: Context?) :
         var framaLayout: ConstraintLayout? = null
         var title: TextView? = null
         var genres: TextView? = null
-        var button: LinearLayout? = null
+//        var button: LinearLayout? = null
         //        var recyclerView: RecyclerView? = null
         override fun bindView(itemView: View) {
             image = itemView.findViewById(R.id.iv_top_trending_movie)
             framaLayout = itemView.findViewById(R.id.ly_top_trending_movie)
             title = itemView.findViewById(R.id.tv_top_trending_movie_title)
             genres = itemView.findViewById(R.id.tv_genres)
-            button = itemView.findViewById(R.id.btn_top_trending_trailer)
+//            button = itemView.findViewById(R.id.btn_top_trending_trailer)
 //            recyclerView = itemView.findViewById(R.id.rv_genres)
         }
     }
