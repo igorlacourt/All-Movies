@@ -18,4 +18,6 @@
     <color name="genreDocumentaryColor">#7E7E7E</color>
     <color name="genreFamilyColor">#009688</color>
     <color name="releaseYearColor">#727272</color>
+    <color name="trailerButtonColor">#F0F0F0</color>
+    <color name="trailerButtonTextColor">#111111</color>
 </resources>

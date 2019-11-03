@@ -16,4 +16,26 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="details_type_movie">movie</string>
     <string name="details_type_tv">tv</string>
+<!--    <string name="top_trending_button_play_trailer"><![CDATA[<h2>▶</h2> Trailer]]></string>-->
+    <string name="top_trending_button_play_trailer">Trailer</string>
+    <string name="html">
+        <![CDATA[
+        <h1>Main Title</h1>
+        <h2>A sub-title</h2>
+        <p>This is some html. Look, here\'s an <u>underline</u>.</p>
+        <p>Look, this is <em>emphasized.</em> And here\'s some <b>bold</b>.</p>
+        <p>This is a UL list:
+        <ul>
+        <li>One</li>
+        <li>Two</li>
+        <li>Three</li>
+        </ul>
+        <p>This is an OL list:
+        <ol>
+        <li>One</li>
+        <li>Two</li>
+        <li>Three</li>
+        </ol>
+        ]]>
+    </string>
 </resources>

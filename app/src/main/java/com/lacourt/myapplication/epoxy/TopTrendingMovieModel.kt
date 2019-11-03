@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -18,6 +19,10 @@ import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.dto.GenreXDTO
 import com.squareup.picasso.Picasso
+import android.text.style.RelativeSizeSpan
+import android.text.SpannableString
+import android.widget.LinearLayout
+
 
 @EpoxyModelClass(layout = R.layout.top_trending_movie)
 abstract class TopTrendingMovieModel(val context: Context?) :
@@ -34,6 +39,9 @@ abstract class TopTrendingMovieModel(val context: Context?) :
 
     @EpoxyAttribute
     lateinit var title: String
+
+    @EpoxyAttribute
+    lateinit var button: LinearLayout
 
     override fun bind(holder: ViewHolder) {
         super.bind(holder)
@@ -70,6 +78,13 @@ abstract class TopTrendingMovieModel(val context: Context?) :
                 s[0..5] = color?.let{ ForegroundColorSpan(it)} ?: ForegroundColorSpan(Color.GRAY)
 
                 holder.genres?.append(s)
+
+//
+//                val sstr = SpannableString("▶ Trailer")
+//                sstr.setSpan(RelativeSizeSpan(2f), 0, 2, 0) // set size
+//
+//                holder.button?.text = sstr
+                holder.button?.setOnClickListener(clickListener)
             }
         }
     }
@@ -79,12 +94,14 @@ abstract class TopTrendingMovieModel(val context: Context?) :
         var framaLayout: ConstraintLayout? = null
         var title: TextView? = null
         var genres: TextView? = null
+        var button: LinearLayout? = null
         //        var recyclerView: RecyclerView? = null
         override fun bindView(itemView: View) {
             image = itemView.findViewById(R.id.iv_top_trending_movie)
             framaLayout = itemView.findViewById(R.id.ly_top_trending_movie)
             title = itemView.findViewById(R.id.tv_top_trending_movie_title)
             genres = itemView.findViewById(R.id.tv_genres)
+            button = itemView.findViewById(R.id.btn_top_trending_trailer)
 //            recyclerView = itemView.findViewById(R.id.rv_genres)
         }
     }
