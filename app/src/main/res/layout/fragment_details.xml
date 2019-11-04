@@ -1,138 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
-    tools:context=".ui.details.DetailsFragment">
+    android:fillViewport="true" >
 
-    <ImageView
-        android:id="@+id/detail_backdrop"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
-        android:scaleType="centerCrop"
-        android:src="@drawable/clapperboard"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark"
+        tools:context=".ui.details.DetailsFragment">
 
-    <TextView
-        android:id="@+id/detail_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:gravity="start"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/detail_backdrop"
-        app:layout_constraintTop_toBottomOf="@+id/detail_backdrop"
-        tools:text="Detail Title Detail Title Detail Title Detail Title " />
+        <ImageView
+            android:id="@+id/detail_backdrop"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:scaleType="centerCrop"
+            android:src="@drawable/clapperboard"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/detail_overview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:gravity="start|left"
-        android:textSize="14sp"
-        android:textStyle="normal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tv_rate_details"
-        app:layout_constraintTop_toBottomOf="@+id/tv_rate_details"
-        tools:text="Detail overview Detail overview Detail overview Detail overview Detail overview Detail overview " />
+        <ImageView
+            android:id="@+id/play_symbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/detail_backdrop"
+            app:layout_constraintEnd_toEndOf="@+id/detail_backdrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/detail_backdrop"
+            app:srcCompat="@drawable/ic_play_circle_outline_white_96dp" />
 
+        <TextView
+            android:id="@+id/detail_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:gravity="start"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/detail_backdrop"
+            app:layout_constraintTop_toBottomOf="@+id/detail_backdrop"
+            tools:text="Detail Title Detail Title Detail Title Detail Title " />
 
-    <TextView
-        android:id="@+id/elenco_direcao"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12sp"
-        app:layout_constraintLeft_toLeftOf="@+id/detail_overview"
-        app:layout_constraintStart_toStartOf="@+id/detail_overview"
-        app:layout_constraintTop_toBottomOf="@+id/detail_overview"
-        tools:text="Elenco: Whinderson Nunes" />
+        <TextView
+            android:id="@+id/tv_rate_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/detail_title"
+            app:layout_constraintTop_toBottomOf="@+id/detail_title"
+            tools:text="10" />
 
-    <ImageView
-        android:id="@+id/wish_list_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@+id/elenco_direcao"
-        app:layout_constraintStart_toStartOf="@+id/elenco_direcao"
-        app:layout_constraintTop_toBottomOf="@+id/elenco_direcao"
-        app:srcCompat="@drawable/ic_playlist_add_black_48dp" />
+        <TextView
+            android:id="@+id/release_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:textColor="@color/releaseYearColor"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_rate_details"
+            app:layout_constraintStart_toEndOf="@+id/tv_rate_details"
+            app:layout_constraintTop_toTopOf="@+id/tv_rate_details"
+            tools:text="0000" />
 
-    <ImageView
-        android:id="@+id/play_symbol"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/detail_backdrop"
-        app:layout_constraintEnd_toEndOf="@+id/detail_backdrop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/detail_backdrop"
-        app:srcCompat="@drawable/ic_play_circle_outline_white_96dp" />
+        <TextView
+            android:id="@+id/tv_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:textColor="@color/releaseYearColor"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/release_year"
+            app:layout_constraintStart_toEndOf="@+id/release_year"
+            app:layout_constraintTop_toTopOf="@+id/release_year"
+            tools:text="1h30" />
 
-    <TextView
-        android:id="@+id/tv_my_list_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/my_list_at_details"
-        app:layout_constraintEnd_toEndOf="@+id/wish_list_btn"
-        app:layout_constraintStart_toStartOf="@+id/wish_list_btn"
-        app:layout_constraintTop_toBottomOf="@id/wish_list_btn" />
+        <TextView
+            android:id="@+id/detail_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:gravity="start|left"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_rate_details"
+            app:layout_constraintTop_toBottomOf="@+id/tv_rate_details"
+            tools:text="Detail overview Detail overview Detail overview Detail overview Detail overview Detail overview " />
 
-    <TextView
-        android:id="@+id/release_year"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:textColor="@color/releaseYearColor"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_rate_details"
-        app:layout_constraintStart_toEndOf="@+id/tv_rate_details"
-        app:layout_constraintTop_toTopOf="@+id/tv_rate_details"
-        tools:text="0000" />
+        <TextView
+            android:id="@+id/elenco_direcao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="@+id/detail_overview"
+            app:layout_constraintStart_toStartOf="@+id/detail_overview"
+            app:layout_constraintTop_toBottomOf="@+id/detail_overview"
+            tools:text="Elenco: Whinderson Nunes" />
 
-    <ProgressBar
-        android:id="@+id/details_progress_bar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/wish_list_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintLeft_toLeftOf="@+id/elenco_direcao"
+            app:layout_constraintStart_toStartOf="@+id/elenco_direcao"
+            app:layout_constraintTop_toBottomOf="@+id/elenco_direcao"
+            app:srcCompat="@drawable/ic_playlist_add_black_48dp" />
 
-    <TextView
-        android:id="@+id/tv_rate_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:textColor="@color/colorAccent"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/detail_title"
-        app:layout_constraintTop_toBottomOf="@+id/detail_title"
-        tools:text="10" />
+        <TextView
+            android:id="@+id/tv_my_list_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/my_list_at_details"
+            app:layout_constraintEnd_toEndOf="@+id/wish_list_btn"
+            app:layout_constraintStart_toStartOf="@+id/wish_list_btn"
+            app:layout_constraintTop_toBottomOf="@id/wish_list_btn" />
 
-    <TextView
-        android:id="@+id/tv_duration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:textColor="@color/releaseYearColor"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/release_year"
-        app:layout_constraintStart_toEndOf="@+id/release_year"
-        app:layout_constraintTop_toTopOf="@+id/release_year"
-        tools:text="1h30" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+<!--        android:gravity="center"-->
+<!--        android:stretchMode="spacingWidthUniform"-->
+<!--        android:columnWidth="100dp"-->
+<!--        android:horizontalSpacing="10dp"-->
+<!--        android:numColumns="auto_fit"-->
+<!--        android:verticalSpacing="24dp"-->
+
+        <GridView
+            android:id="@+id/grid_view_recommended"
+            android:layout_width="match_parent"
+            android:layout_height="1000dp"
+            android:numColumns="3"
+            android:columnWidth="100dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_my_list_details" />
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+
+        <ProgressBar
+            android:id="@+id/details_progress_bar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

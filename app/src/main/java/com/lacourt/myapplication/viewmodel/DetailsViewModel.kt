@@ -12,7 +12,9 @@ import com.lacourt.myapplication.R
 import com.lacourt.myapplication.database.DatabaseCallback
 import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.domainmodel.MyListItem
+import com.lacourt.myapplication.dto.DbMovieDTO
 import com.lacourt.myapplication.dto.DetailsDTO
+import com.lacourt.myapplication.dto.Result
 import com.lacourt.myapplication.repository.DetailsRepository
 import com.lacourt.myapplication.network.Resource
 
@@ -20,6 +22,7 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
     val app : Application = application
     private val repository: DetailsRepository = DetailsRepository(application)
     internal var movie: MutableLiveData<Resource<Details>>? = null
+    internal var recommendedMovies: MutableLiveData<Resource<List<DbMovieDTO>>> = repository.recommendedMovies
     var isInDatabase: LiveData<Boolean> = repository.isInDatabase
 
     fun isInMyList(id: Int?): Boolean {
@@ -37,6 +40,7 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
         Log.d("calltest", "fetchDetails called")
         movie = repository.movie
         repository.getDetails(id)
+        repository.getRecommendedMovies(id)
     }
 
     fun delete(id: Int){

@@ -19,7 +19,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.lacourt.myapplication.AppConstants
 
-import com.lacourt.myapplication.R
 import com.lacourt.myapplication.domainMappers.MapperFunctions
 import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.domainmodel.openYoutube
@@ -29,12 +28,8 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_details.*
 import java.lang.Exception
-import java.text.SimpleDateFormat
-import java.util.*
-
-
-private const val PARAM_ID = "param_id"
-
+import android.widget.GridView
+import com.lacourt.myapplication.R
 
 /**
  * A simple [Fragment] subclass.
@@ -61,6 +56,10 @@ class DetailsFragment : Fragment() {
         progressBar = view.findViewById(R.id.details_progress_bar)
         progressBar.visibility = View.VISIBLE
 
+        val gridView = view.findViewById<GridView>(R.id.grid_view_recommended)
+        val recommendedMoviesAdapter = RecommendedMoviesAdapter(context, null)
+        gridView.adapter = recommendedMoviesAdapter
+
         val id = arguments?.getInt("id") ?: 0
 
         var details: Details? = null
@@ -68,6 +67,13 @@ class DetailsFragment : Fragment() {
         viewModel =
             ViewModelProviders.of(this).get(DetailsViewModel::class.java)
 
+        viewModel.recommendedMovies?.observe(this, Observer { resource ->
+            when (resource.status) {
+                Resource.Status.SUCCESS -> {resource?.data?.let { recommendedMoviesAdapter.setList(it)}}
+                Resource.Status.LOADING -> {}
+                Resource.Status.ERROR -> {}
+            }
+        })
 
         viewModel.isInDatabase.observe(this, Observer { isInDatabase ->
             Log.d("log_is_inserted", "onChanged()")
@@ -146,6 +152,7 @@ class DetailsFragment : Fragment() {
                 viewModel.movie?.value?.data?.id?.let { id -> viewModel.delete(id) }
             }
         }
+
         return view
     }
 

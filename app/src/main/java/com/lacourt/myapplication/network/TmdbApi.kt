@@ -3,6 +3,7 @@ package com.lacourt.myapplication.network
 import com.lacourt.myapplication.dto.DetailsDTO
 import com.lacourt.myapplication.dto.GenreResponseDTO
 import com.lacourt.myapplication.dto.MovieResponseDTO
+import com.lacourt.myapplication.dto.RecommendationsResponseDTO
 import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.Call
@@ -48,7 +49,7 @@ interface TmdbApi {
     ): Call<MovieResponseDTO>
 
     //    https://api.themoviedb.org/3/movie/287947/recommendations?api_key=fef98cf6bd829f53836bb7d92b02d6ef&language=en-US&page=1
-    @GET("movie/{id}")
+    @GET("movie/{id}/recommendations")
     fun getRecommendations(
         @Path("id")
         id: Int,
@@ -56,7 +57,7 @@ interface TmdbApi {
         language: String,
         @Query("page")
         page: Int
-    ): Observable<MovieResponseDTO>
+    ): Single<MovieResponseDTO>
 
     @GET("movie/{id}")//@GET("movie/{id}")
     fun getDetails2(

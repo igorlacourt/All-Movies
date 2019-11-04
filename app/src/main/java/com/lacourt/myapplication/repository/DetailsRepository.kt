@@ -10,28 +10,38 @@ import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.database.AppDatabase
 import com.lacourt.myapplication.database.DatabaseCallback
 import com.lacourt.myapplication.database.MyListDao
+import com.lacourt.myapplication.domainMappers.MapperFunctions
 import com.lacourt.myapplication.domainMappers.MapperFunctions.toDetails
 import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.domainmodel.MyListItem
+import com.lacourt.myapplication.dto.DbMovieDTO
 import com.lacourt.myapplication.dto.DetailsDTO
+import com.lacourt.myapplication.dto.MovieResponseDTO
+import com.lacourt.myapplication.dto.RecommendationsResponseDTO
+import com.lacourt.myapplication.dto.Result
 import com.lacourt.myapplication.network.Apifactory
 import com.lacourt.myapplication.test_retrofit_call_kotlin.BaseRepository
 import com.lacourt.myapplication.network.NetworkCallback
 import com.lacourt.myapplication.network.NetworkCall
 import com.lacourt.myapplication.network.Resource
+import io.reactivex.*
 
-import io.reactivex.Completable
-import io.reactivex.CompletableObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Action
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
+import org.reactivestreams.Subscriber
+import org.reactivestreams.Subscription
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class DetailsRepository(application: Application) : BaseRepository(), NetworkCallback<Details> {
     private val myListDao =
         AppDatabase.getDatabase(application)?.MyListDao()
     var movie: MutableLiveData<Resource<Details>> = MutableLiveData()
+    var recommendedMovies: MutableLiveData<Resource<List<DbMovieDTO>>> = MutableLiveData()
     var isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getDetails(id: Int) {
@@ -42,6 +52,43 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
             ::toDetails
         )
 
+    }
+
+    fun getRecommendedMovies(id: Int) {
+//        Apifactory.tmdbApi.getRecommendations(id, AppConstants.LANGUAGE, 1)
+//            .enqueue(object : Callback<RecommendationsResponseDTO>{
+//                override fun onFailure(call: Call<RecommendationsResponseDTO>, t: Throwable) {
+//                    val error = t.toString()
+//                }
+//
+//                override fun onResponse(
+//                    call: Call<RecommendationsResponseDTO>,
+//                    response: Response<RecommendationsResponseDTO>
+//                ) {
+//                   if(response.isSuccessful){
+//                       val i = response.body()
+//                       val list = i?.results
+//                   }
+//                }
+//
+//            })
+        Apifactory.tmdbApi.getRecommendations(id, AppConstants.LANGUAGE, 1)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : SingleObserver<MovieResponseDTO> {
+                override fun onSuccess(t: MovieResponseDTO) {
+                    recommendedMovies.value = Resource.success(MapperFunctions.movieResponseToDbMovieDTO(t))
+                }
+
+                override fun onSubscribe(d: Disposable) {
+
+                }
+
+                override fun onError(e: Throwable) {
+
+                }
+
+            })
     }
 
     fun insert(myListItem: MyListItem) {
@@ -72,7 +119,10 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
 
     @SuppressLint("CheckResult")
     override fun networkCallResult(callback: Resource<Details>) {
-        Log.d("log_is_inserted", "DetailsRepository, networkCallResult() called, movie = ${callback.data?.title}")
+        Log.d(
+            "log_is_inserted",
+            "DetailsRepository, networkCallResult() called, movie = ${callback.data?.title}"
+        )
         movie.value = callback
         val id: Int? = callback.data?.id
         Log.d("log_is_inserted", "DetailsRepository, networkCallResult() called, id = $id")
@@ -81,14 +131,17 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
             myListDao?.getById(id)
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
-                ?.doOnNext{
+                ?.doOnNext {
                     isInDatabase.value = true
-                    Log.d("log_is_inserted", "DetailsRepository, getById(), doOnNext called, isInDatabase.value = ${isInDatabase.value}")
+                    Log.d(
+                        "log_is_inserted",
+                        "DetailsRepository, getById(), doOnNext called, isInDatabase.value = ${isInDatabase.value}"
+                    )
                 }
                 ?.subscribe()
         }
 //            ?.subscribe {
-                //databaseCallback.onUsersLoaded(users);
+        //databaseCallback.onUsersLoaded(users);
 //            }
 
         Log.d(
@@ -97,3 +150,4 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
         )
     }
 }
+
