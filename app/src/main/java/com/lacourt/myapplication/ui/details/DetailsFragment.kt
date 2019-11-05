@@ -29,7 +29,13 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_details.*
 import java.lang.Exception
 import android.widget.GridView
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.R
+import com.lacourt.myapplication.dto.DbMovieDTO
+import com.lacourt.myapplication.ui.OnItemClick
+import com.lacourt.myapplication.ui.home.MovieAdapter
 
 /**
  * A simple [Fragment] subclass.
@@ -39,7 +45,7 @@ import com.lacourt.myapplication.R
  * Use the [DetailsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class DetailsFragment : Fragment() {
+class DetailsFragment : Fragment(), OnItemClick {
     lateinit var viewModel: DetailsViewModel
     lateinit var progressBar: ProgressBar
     lateinit var wishListButton: ImageView
@@ -56,9 +62,15 @@ class DetailsFragment : Fragment() {
         progressBar = view.findViewById(R.id.details_progress_bar)
         progressBar.visibility = View.VISIBLE
 
-        val gridView = view.findViewById<GridView>(R.id.grid_view_recommended)
-        val recommendedMoviesAdapter = RecommendedMoviesAdapter(context, null)
-        gridView.adapter = recommendedMoviesAdapter
+        var recyclerView = view.findViewById<RecyclerView>(R.id.rv_recommended)
+        val adapter = RecommendedAdapter(context, this, ArrayList())
+        var layoutManager = object: GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false){
+            override fun canScrollVertically(): Boolean {
+                return false
+            }
+        }
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = adapter
 
         val id = arguments?.getInt("id") ?: 0
 
@@ -69,9 +81,16 @@ class DetailsFragment : Fragment() {
 
         viewModel.recommendedMovies?.observe(this, Observer { resource ->
             when (resource.status) {
-                Resource.Status.SUCCESS -> {resource?.data?.let { recommendedMoviesAdapter.setList(it)}}
-                Resource.Status.LOADING -> {}
-                Resource.Status.ERROR -> {}
+                Resource.Status.SUCCESS -> {
+                    resource?.data?.let { movies ->
+                        adapter.setList(movies)
+//                        recommendedMoviesAdapter.setList(movies)
+                    }
+                }
+                Resource.Status.LOADING -> {
+                }
+                Resource.Status.ERROR -> {
+                }
             }
         })
 
@@ -197,6 +216,10 @@ class DetailsFragment : Fragment() {
         val hours = (it / 60)
         "${hours}h ${minutes}m"
     } ?: ""
+
+    override fun onItemClick(id: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
 //    companion object {
 //        /**

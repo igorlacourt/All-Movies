@@ -16,10 +16,16 @@ import kotlinx.android.synthetic.main.movie_list_item.view.*
 
 class MovieAdapter(
     private val context: Context?,
-    private val onItemClick: OnItemClick
-) : PagedListAdapter<DbMovieDTO, MovieViewHolder>(
-    DIFF_CALLBACK
-) {
+    private val onItemClick: OnItemClick,
+    private var movies: List<DbMovieDTO>
+) : PagedListAdapter<DbMovieDTO, MovieViewHolder>(DIFF_CALLBACK) {
+
+    fun setMovies(newMovies: List<DbMovieDTO>?) {
+        newMovies?.let {
+            movies = it
+        }
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         return MovieViewHolder(

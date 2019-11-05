@@ -44,27 +44,6 @@ class HomeFragment : Fragment(), OnItemClick {
 //        shimmerContainer?.visibility = View.VISIBLE
 //        shimmerContainer?.startShimmer()
 
-        var list1 = ArrayList<DbMovieDTO>()
-        for(i in 0 until 21){
-            list1.add(DbMovieDTO(i, "", "", 0.0))
-        }
-        var resultList = ArrayList<ArrayList<DbMovieDTO>>()
-//        resultList[0] = ArrayList()
-//        resultList[1] = ArrayList()
-//        resultList[2] = ArrayList()
-//        resultList[3] = ArrayList()
-
-        resultList.add(list1)
-        resultList.add(list1)
-        resultList.add(list1)
-        resultList.add(list1)
-
-        val listOfLists = ArrayList<ArrayList<String>>()
-        val singleList = ArrayList<String>()
-        singleList.add("hello")
-        singleList.add("world")
-        listOfLists.add(singleList)
-
         homeViewModel =
             ViewModelProviders.of(this).get(HomeViewModel::class.java)
 
