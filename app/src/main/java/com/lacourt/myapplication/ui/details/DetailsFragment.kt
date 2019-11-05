@@ -3,6 +3,7 @@ package com.lacourt.myapplication.ui.details
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -34,8 +35,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.dto.DbMovieDTO
+import com.lacourt.myapplication.ui.MoviePosterItemDecorator
 import com.lacourt.myapplication.ui.OnItemClick
 import com.lacourt.myapplication.ui.home.MovieAdapter
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 /**
  * A simple [Fragment] subclass.
@@ -64,12 +68,15 @@ class DetailsFragment : Fragment(), OnItemClick {
 
         var recyclerView = view.findViewById<RecyclerView>(R.id.rv_recommended)
         val adapter = RecommendedAdapter(context, this, ArrayList())
-        var layoutManager = object: GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false){
-            override fun canScrollVertically(): Boolean {
-                return false
+        var layoutManager =
+            object : GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false) {
+                override fun canScrollVertically(): Boolean {
+                    return false
+                }
             }
-        }
         recyclerView.layoutManager = layoutManager
+//        recyclerView.addItemDecoration(MoviePosterItemDecorator(50))
+
         recyclerView.adapter = adapter
 
         val id = arguments?.getInt("id") ?: 0
@@ -174,6 +181,24 @@ class DetailsFragment : Fragment(), OnItemClick {
 
         return view
     }
+
+//    fun numberOfColumns(imageWidth: Int): Int {
+//        var displayMetrics = DisplayMetrics()
+//        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics)
+//        // You can change this divider to adjust the size of the poster
+//        var screenWidth = displayMetrics.widthPixels
+//        var screenHeight: Double = displayMetrics.heightPixels
+//
+//        var imageHeight = (2 * imageWidth)
+//        var percentage = screenHeight / imageHeight
+//        var width = percentage * imageWidth
+//
+//        var nColumns: Double = screenWidth / width as Int
+//        var bdColums: BigDecimal = BigDecimal(nColumns).setScale(0, RoundingMode.HALF_EVEN)
+//
+//        if (bdColums.doubleValue() < 2) return 2
+//        return bdColums.doubleValue() as Int
+//    }
 
     fun displayDetails(details: Details?) {
         details?.apply {

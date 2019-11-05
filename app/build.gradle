@@ -139,8 +139,5 @@ dependencies {
     kapt 'com.airbnb.android:epoxy-processor:3.8.0'//3.6.0'//3.7.0'//3.8.0'
 //    implementation 'com.airbnb.android:epoxy-databinding:3.8.0'
 
-    // epoxy
-//    implementation 'com.airbnb.android:epoxy:3.3.0'
-//    implementation 'com.airbnb.android:epoxy-databinding:3.3.0'
-//    kapt 'com.airbnb.android:epoxy-processor:3.3.0'
+//    implementation 'com.google.android:flexbox:1.0.0'
 }
