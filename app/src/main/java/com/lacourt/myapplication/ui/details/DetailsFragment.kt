@@ -38,6 +38,7 @@ import com.lacourt.myapplication.dto.DbMovieDTO
 import com.lacourt.myapplication.ui.MoviePosterItemDecorator
 import com.lacourt.myapplication.ui.OnItemClick
 import com.lacourt.myapplication.ui.home.MovieAdapter
+import com.lacourt.myapplication.ui.search.SearchFragmentDirections
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -226,7 +227,12 @@ class DetailsFragment : Fragment(), OnItemClick {
     } ?: ""
 
     override fun onItemClick(id: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (id != 0) {
+            val detailsToDetailsFragment = DetailsFragmentDirections.actionDetailsFragmentSelf(id)
+            findNavController().navigate(detailsToDetailsFragment)
+        } else {
+            Toast.makeText(context, "Sorry. Can not load this movie. :/", Toast.LENGTH_SHORT).show()
+        }
     }
 
 //    companion object {

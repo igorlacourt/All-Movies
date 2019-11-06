@@ -69,6 +69,9 @@ class RecommendedAdapter(
             }
         }
 
+        holder.cardView.setOnClickListener {
+            onItemClick.onItemClick(list[position].id)
+        }
     }
 
     fun setList(list: List<DbMovieDTO>) {
