@@ -68,12 +68,13 @@ class DetailsFragment : Fragment(), OnItemClick {
 
         var recyclerView = view.findViewById<RecyclerView>(R.id.rv_recommended)
         val adapter = RecommendedAdapter(context, this, ArrayList())
-        var layoutManager =
-            object : GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false) {
-                override fun canScrollVertically(): Boolean {
-                    return false
-                }
-            }
+//        var layoutManager =
+//            object : GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false) {
+//                override fun canScrollVertically(): Boolean {
+//                    return false
+//                }
+//            }
+        var layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
 //        recyclerView.addItemDecoration(MoviePosterItemDecorator(50))
 
@@ -181,24 +182,6 @@ class DetailsFragment : Fragment(), OnItemClick {
 
         return view
     }
-
-//    fun numberOfColumns(imageWidth: Int): Int {
-//        var displayMetrics = DisplayMetrics()
-//        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics)
-//        // You can change this divider to adjust the size of the poster
-//        var screenWidth = displayMetrics.widthPixels
-//        var screenHeight: Double = displayMetrics.heightPixels
-//
-//        var imageHeight = (2 * imageWidth)
-//        var percentage = screenHeight / imageHeight
-//        var width = percentage * imageWidth
-//
-//        var nColumns: Double = screenWidth / width as Int
-//        var bdColums: BigDecimal = BigDecimal(nColumns).setScale(0, RoundingMode.HALF_EVEN)
-//
-//        if (bdColums.doubleValue() < 2) return 2
-//        return bdColums.doubleValue() as Int
-//    }
 
     fun displayDetails(details: Details?) {
         details?.apply {

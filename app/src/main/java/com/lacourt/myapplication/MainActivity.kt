@@ -3,6 +3,7 @@ package com.lacourt.myapplication
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.Toolbar
@@ -30,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         toolbar.visibility = View.INVISIBLE
 
         Log.d("callstest", "MainActivity onCreate called\n")
-
+        // get device dimensions
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 

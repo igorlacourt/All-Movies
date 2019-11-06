@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -33,6 +35,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/detail_backdrop"
             app:srcCompat="@drawable/ic_play_circle_outline_white_96dp" />
+
         <ProgressBar
             android:id="@+id/details_progress_bar"
             style="?android:attr/progressBarStyle"
@@ -42,6 +45,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/detail_title"
             android:layout_width="wrap_content"
@@ -137,12 +141,6 @@
             app:layout_constraintStart_toStartOf="@+id/wish_list_btn"
             app:layout_constraintTop_toBottomOf="@id/wish_list_btn" />
 
-        <!--        android:gravity="center"-->
-        <!--        android:stretchMode="spacingWidthUniform"-->
-        <!--        android:columnWidth="100dp"-->
-        <!--        android:horizontalSpacing="10dp"-->
-        <!--        android:numColumns="auto_fit"-->
-        <!--        android:verticalSpacing="24dp"-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_recommended"
@@ -154,21 +152,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_my_list_details" />
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-
-<!--                <GridView-->
-<!--                    android:id="@+id/grid_view_recommended"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:gravity="top"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintLeft_toLeftOf="parent"-->
-<!--                    app:layout_constraintRight_toRightOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toBottomOf="@+id/tv_my_list_details" />-->
-        <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>
