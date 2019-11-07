@@ -75,6 +75,9 @@ class HomeFragment : Fragment(), OnItemClick {
                 Resource.Status.LOADING -> {
                 }
                 Resource.Status.ERROR -> {
+                    movieController.submitTrendingMovies(null, response.error)
+                    Toast.makeText(context, "${response.error?.message}, ${response.error?.cd}", Toast.LENGTH_LONG).show()
+                    progressBar.visibility = View.INVISIBLE
                 }
             }
         })
@@ -93,6 +96,7 @@ class HomeFragment : Fragment(), OnItemClick {
                 Resource.Status.LOADING -> {
                 }
                 Resource.Status.ERROR -> {
+
                 }
             }
         })

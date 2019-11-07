@@ -136,21 +136,21 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
                     is SocketTimeoutException -> {
                         Log.d("errorBoolean", "HomeRepository, is SocketTimeoutException")
                         Log.d("listsLog", "HomeRepository, is SocketTimeoutException")
-                        trendingMovies.postValue(
+                        listsOfMovies.postValue(
                             Resource.error(Error(408, "SocketTimeoutException"))
                         )
                     }
                     is UnknownHostException -> {
                         Log.d("errorBoolean", "HomeRepository, is UnknownHostException")
                         Log.d("listsLog", "HomeRepository, is UnknownHostException")
-                        trendingMovies.postValue(
+                        listsOfMovies.postValue(
                             Resource.error(Error(99, "UnknownHostException"))
                         )
                     }
                     is HttpException -> {
                         Log.d("errorBoolean", "HomeRepository, is HttpException")
                         Log.d("listsLog", "HomeRepository, is HttpException")
-                        trendingMovies.postValue(
+                        listsOfMovies.postValue(
                             Resource.error(Error(error.code(), error.message()))
                         )
                     }

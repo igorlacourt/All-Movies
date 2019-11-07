@@ -21,4 +21,6 @@
     <color name="trailerButtonColor">#F0F0F0</color>
     <color name="trailerButtonPressedColor">#999999</color>
     <color name="trailerButtonTextColor">#111111</color>
+    <color name="errorRetryButtonColor">#8D8D8D</color>
+    <color name="errorMessageColor">#D3D3D3</color>
 </resources>

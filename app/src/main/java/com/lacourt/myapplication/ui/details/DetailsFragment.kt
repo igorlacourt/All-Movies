@@ -194,11 +194,11 @@ class DetailsFragment : Fragment(), OnItemClick {
                 .placeholder(R.drawable.clapperboard)
                 .into(detail_backdrop, object : Callback {
                     override fun onSuccess() {
-                        Toast.makeText(
+                        context?.let { Toast.makeText(
                             context,
                             "Image loaded",
                             Toast.LENGTH_LONG
-                        ).show()
+                        ).show() }
                     }
 
                     override fun onError(e: Exception?) {
