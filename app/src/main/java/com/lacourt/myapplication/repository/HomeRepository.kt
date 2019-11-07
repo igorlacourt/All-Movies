@@ -55,9 +55,6 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
 
     val topTrendingMovie = MutableLiveData<Resource<Details>>()
     val trendingMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
-    val upcomingMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
-    val popularMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
-    val topRatedMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
 
     val listsOfMovies = MutableLiveData<Resource<List<Collection<DbMovieDTO>>>>()
 
@@ -92,8 +89,14 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
 //        }
     }
 
+    fun refresh(){
+        Log.d("refresh", "HomeRepository, refresh()")
+        fetchMoviesLists()
+    }
+
     @SuppressLint("CheckResult")
     private fun fetchMoviesLists() {
+        Log.d("refresh", "HomeRepository, fetchMoviesLists()")
         val tmdbApi = Apifactory.tmdbApi
         val trendinMoviesObservale = tmdbApi.getTrendingMovies(AppConstants.LANGUAGE, 1)
         val upcomingMoviesObservale = tmdbApi.getUpcomingMovies(AppConstants.LANGUAGE, 1)
@@ -122,6 +125,7 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
                 resultList.add(list3)
                 resultList.add(list4)
 
+                Log.d("refresh", "HomeRepository, resultList.size = ${resultList.size}")
                 Log.d("listsLog", "HomeRepository, resultList.size = ${resultList.size}")
 
                 listsOfMovies.postValue(Resource.success(resultList))
@@ -136,28 +140,28 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
                     is SocketTimeoutException -> {
                         Log.d("errorBoolean", "HomeRepository, is SocketTimeoutException")
                         Log.d("listsLog", "HomeRepository, is SocketTimeoutException")
-                        listsOfMovies.postValue(
+                        topTrendingMovie.postValue(
                             Resource.error(Error(408, "SocketTimeoutException"))
                         )
                     }
                     is UnknownHostException -> {
                         Log.d("errorBoolean", "HomeRepository, is UnknownHostException")
                         Log.d("listsLog", "HomeRepository, is UnknownHostException")
-                        listsOfMovies.postValue(
+                        topTrendingMovie.postValue(
                             Resource.error(Error(99, "UnknownHostException"))
                         )
                     }
                     is HttpException -> {
                         Log.d("errorBoolean", "HomeRepository, is HttpException")
                         Log.d("listsLog", "HomeRepository, is HttpException")
-                        listsOfMovies.postValue(
+                        topTrendingMovie.postValue(
                             Resource.error(Error(error.code(), error.message()))
                         )
                     }
                     else -> {
                         Log.d("errorBoolean", "HomeRepository, is Another Error")
                         Log.d("listsLog", "HomeRepository, is Another Error")
-                        trendingMovies.postValue(
+                        topTrendingMovie.postValue(
                             Resource.error(
                                 Error(0, error.message)
                             )

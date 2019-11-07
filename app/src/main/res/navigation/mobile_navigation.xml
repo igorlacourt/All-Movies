@@ -12,7 +12,10 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_navigation_home_to_detailsFragment"
-            app:destination="@id/detailsFragment" />
+            app:destination="@id/detailsFragment"
+            app:enterAnim="@transition/slide_in_right"
+            app:popExitAnim="@transition/slide_out_right"
+            app:popEnterAnim="@transition/pop_enter_stay"/>
     </fragment>
 
     <fragment
@@ -22,7 +25,9 @@
         tools:layout="@layout/fragment_dashboard" >
         <action
             android:id="@+id/action_navigation_my_list_to_detailsFragment"
-            app:destination="@id/detailsFragment" />
+            app:destination="@id/detailsFragment"
+            app:enterAnim="@transition/slide_in_right"
+            app:popExitAnim="@transition/slide_out_right" />
     </fragment>
 
     <fragment

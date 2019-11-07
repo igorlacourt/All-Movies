@@ -55,28 +55,15 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
     }
 
     fun getRecommendedMovies(id: Int) {
-//        Apifactory.tmdbApi.getRecommendations(id, AppConstants.LANGUAGE, 1)
-//            .enqueue(object : Callback<RecommendationsResponseDTO>{
-//                override fun onFailure(call: Call<RecommendationsResponseDTO>, t: Throwable) {
-//                    val error = t.toString()
-//                }
-//
-//                override fun onResponse(
-//                    call: Call<RecommendationsResponseDTO>,
-//                    response: Response<RecommendationsResponseDTO>
-//                ) {
-//                   if(response.isSuccessful){
-//                       val i = response.body()
-//                       val list = i?.results
-//                   }
-//                }
-//
-//            })
         Apifactory.tmdbApi.getRecommendations(id, AppConstants.LANGUAGE, 1)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : SingleObserver<MovieResponseDTO> {
                 override fun onSuccess(t: MovieResponseDTO) {
+                    val last = t.results.size - 1
+                    val beforeLast = t.results.size - 2
+                    t.results.removeAt(last)
+                    t.results.removeAt(beforeLast)
                     recommendedMovies.value = Resource.success(MapperFunctions.movieResponseToDbMovieDTO(t))
                 }
 
@@ -140,9 +127,6 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
                 }
                 ?.subscribe()
         }
-//            ?.subscribe {
-        //databaseCallback.onUsersLoaded(users);
-//            }
 
         Log.d(
             "calltest",

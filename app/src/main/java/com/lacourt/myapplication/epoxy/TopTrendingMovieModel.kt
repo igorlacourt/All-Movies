@@ -89,11 +89,6 @@ abstract class TopTrendingMovieModel(val context: Context?) :
 
                 holder.trailerButton?.setOnClickListener(trailerClickListener)
                 holder.myListButton?.setOnClickListener(myListClickListener)
-
-//                val sstr = SpannableString("▶ Trailer")
-//                sstr.setSpan(RelativeSizeSpan(2f), 0, 2, 0) // set size
-//
-//                holder.button?.text = sstr
             }
         }
     }

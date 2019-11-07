@@ -16,10 +16,14 @@ import android.content.Intent
 import android.net.Uri
 import com.lacourt.myapplication.domainmodel.openYoutube
 
+interface OnRecreate {
+    fun refresh()
+}
 
 class MovieController(
     private val context: Context?,
-    private val onItemClick: OnItemClick
+    private val onItemClick: OnItemClick,
+    private val onRecrateFragment: OnRecreate
 ) : EpoxyController() {
 
     init {
@@ -29,23 +33,25 @@ class MovieController(
 
     var topTrendingMovie: Details? = null
     var trendingMovies: List<DbMovieDTO>? = null
-    var topRatedMovies: List<DbMovieDTO>? = null
-    var upcomingMovies: List<DbMovieDTO>? = null
-    var popularMovies: List<DbMovieDTO>? = null
-    var topRatedTv: List<DbMovieDTO>? = null
-    var trendingTv: List<DbMovieDTO>? = null
 
     var listsOfMovies: List<Collection<DbMovieDTO>?>? = null
     var error: Error? = null
 
-    fun submitListsOfMovies(newListsOfMovies: List<Collection<DbMovieDTO>?>, error: Error?) {
+    fun submitListsOfMovies(newListsOfMovies: List<Collection<DbMovieDTO>?>?, error: Error?) {
         Log.d("errorBoolean", "submitListOfMovies, error = $error")
-        error?.let {
-            this.error = it
-        }
+        Log.d("refresh", "HomeFragment, tsubmitListsOfMovies, error = ${error?.cd}")
+        Log.d("refresh", "HomeFragment, tsubmitListsOfMovies, list.size = ${newListsOfMovies?.size}")
+
         listsOfMovies = newListsOfMovies
         Log.d("listsLog", "MovieController, listsOfMovies.size = ${listsOfMovies?.size}")
-//        requestModelBuild()
+    }
+
+    fun submitTopTrendingMovie(newMovie: Details?, error: Error?) {
+        topTrendingMovie = newMovie
+        Log.d("refresh", "HomeFragment, submitTopTrendingMovie, error = ${error?.cd}")
+        Log.d("refresh", "HomeFragment, submitTopTrendingMovie, list.size = ${newMovie?.title}")
+        this.error = error
+        requestModelBuild()
     }
 
     fun submitTrendingMovies(newList: List<DbMovieDTO>?, error: Error?) {
@@ -57,64 +63,12 @@ class MovieController(
         requestModelBuild()
     }
 
-    fun submitTopTrendingMovie(newMovie: Details) {
-        topTrendingMovie = newMovie
-        requestModelBuild()
-    }
+
 
     override fun buildModels() {
         Log.d("genreslog", "MovieController, buildModels called")
         Log.d("errorBoolean", "buildModels, error = ${this.error}")
-
-        /*
-        val trendingMoviesModelList = ArrayList<MovieListModel_>()
-        trendingMovies?.forEach { movie ->
-            trendingMoviesModelList.add(
-                MovieListModel_()
-                    .id(movie.id)
-                    .mMoviePoster(movie.poster_path)
-                    .clickListener { model, parentView, clickedView, position ->
-                        callDetailsFragment(movie.id)
-                    }
-            )
-        }
-        val topRatedMoviesModelList = ArrayList<MovieListModel_>()
-        topRatedMovies?.forEach { movie ->
-            topRatedMoviesModelList.add(
-                MovieListModel_()
-                    .id(movie.id)
-                    .mMoviePoster(movie.poster_path)
-                    .clickListener { model, parentView, clickedView, position ->
-                        Log.d("clicklog", "onCreateView in all trending called")
-                        callDetailsFragment(movie.id)
-                    }
-            )
-        }
-        val upcomingMovieModelList = ArrayList<MovieListModel_>()
-        upcomingMovies?.forEach { movie ->
-            upcomingMovieModelList.add(
-                MovieListModel_()
-                    .id(movie.id)
-                    .mMoviePoster(movie.poster_path)
-                    .clickListener { model, parentView, clickedView, position ->
-                        Log.d("clicklog", "onCreateView in upcoming movies called")
-                        callDetailsFragment(movie.id)
-                    }
-            )
-        }
-        val popularMovieModelList = ArrayList<MovieListModel_>()
-        popularMovies?.forEach { movie ->
-            popularMovieModelList.add(
-                MovieListModel_()
-                    .id(movie.id)
-                    .mMoviePoster(movie.poster_path)
-                    .clickListener { model, parentView, clickedView, position ->
-                        Log.d("clicklog", "onCreateView popular movies called")
-                        callDetailsFragment(movie.id)
-                    }
-            )
-        }
-        */
+        Log.d("refresh", "buildModels, error = ${this.error}")
 
         val trendingMoviesModelList = ArrayList<MovieListModel_>()
         listsOfMovies?.get(0)?.forEach { movie ->
@@ -170,6 +124,9 @@ class MovieController(
             ErrorHomeModel_()
                 .id(1)
                 .message(message)
+                .clickListener{model, parentView, clickedView, position ->
+                    onRecrateFragment.refresh()
+                }
                 .addTo(this)
             Log.d("errorBoolean", "buildModels, ErrorHomeModel created")
         } else {
@@ -238,9 +195,9 @@ class MovieController(
     }
 
     private fun errorMessage() = when (error!!.cd) {
-        408 -> "Timeout. Your internet maybe too slow. Check your connection and try again."
-        99 -> "Error. Check your connection and try again."
-        else -> "Error. Please, try again latter."
+        408 -> "\"Timeout. Your internet may be too slow. Check your connection and try again\""
+        99 -> "\"Error. Check your connection and try again\""
+        else -> "\"Error. Please, try again latter\""
     }
 
     private fun callDetailsFragment(id: Int) {

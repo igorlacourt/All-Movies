@@ -22,15 +22,16 @@ import com.lacourt.myapplication.network.Resource
 import com.lacourt.myapplication.ui.OnItemClick
 import com.lacourt.myapplication.viewmodel.HomeViewModel
 
-
-
-
-class HomeFragment : Fragment(), OnItemClick {
+class HomeFragment : Fragment(), OnItemClick, OnRecreate {
     private lateinit var homeViewModel: HomeViewModel
-    //    private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerView: EpoxyRecyclerView
 
-    private val movieController by lazy { MovieController(context, this) }
+    private val recreate = this as OnRecreate
+    private val itemClick = this as OnItemClick
+
+    private val movieController by lazy { MovieController(context, itemClick, recreate) }
+
+    var progressBar: ProgressBar? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,17 +41,14 @@ class HomeFragment : Fragment(), OnItemClick {
         Log.d("callstest", "onCreateView called\n")
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
-//        var shimmerContainer = container?.findViewById<ShimmerFrameLayout>(R.id.shimmer_view_container)
-//        shimmerContainer?.visibility = View.VISIBLE
-//        shimmerContainer?.startShimmer()
+        Log.d("refreshLog", "onCreateView() called")
 
         homeViewModel =
             ViewModelProviders.of(this).get(HomeViewModel::class.java)
 
-        val progressBar: ProgressBar = root.findViewById(R.id.progress_circular)
-        progressBar.visibility = View.VISIBLE
+        progressBar = root.findViewById(R.id.progress_circular)
+        progressBar?.visibility = View.VISIBLE
         recyclerView = root.findViewById(R.id.movie_list)
-//        val adapter = MovieAdapter(context, onItemClick)
 
         Log.d("clicklog", "before initialize movieController")
         Log.d("genreslog", "HomeFragment, onCreateView() called")
@@ -67,17 +65,17 @@ class HomeFragment : Fragment(), OnItemClick {
                 Resource.Status.SUCCESS -> {
                     Log.d("listsLog", "HomeFragment, response size = ${response?.data?.size}")
                     response.data?.let {
+                        Log.d("refresh", "HomeFragment, listsOfMovies?.observe, success response = ${response.data.size}")
                         movieController.submitListsOfMovies(it, null)
                         recyclerView.setController(movieController)
                     }
-                    progressBar.visibility = View.INVISIBLE
                 }
                 Resource.Status.LOADING -> {
                 }
                 Resource.Status.ERROR -> {
-                    movieController.submitTrendingMovies(null, response.error)
+                    Log.d("refresh", "HomeFragment, listsOfMovies?.observe, fail, response = ${response.error?.cd}")
+                    movieController.submitListsOfMovies(null, response.error)
                     Toast.makeText(context, "${response.error?.message}, ${response.error?.cd}", Toast.LENGTH_LONG).show()
-                    progressBar.visibility = View.INVISIBLE
                 }
             }
         })
@@ -87,88 +85,24 @@ class HomeFragment : Fragment(), OnItemClick {
                 Resource.Status.SUCCESS -> {
                     details.data?.let {
                         if (it.genres != null)
-//                            genresAdapter.setList(it.genres)
-                        movieController.submitTopTrendingMovie(it)
+                            Log.d("refresh", "HomeFragment, topTrendingMovie?.observe, success, response = ${it.title}")
+                        movieController.submitTopTrendingMovie(it, null)
                         recyclerView.setController(movieController)
+                        progressBar?.visibility = View.INVISIBLE
                     }
-                    progressBar.visibility = View.INVISIBLE
+                    progressBar?.visibility = View.INVISIBLE
                 }
                 Resource.Status.LOADING -> {
+                    progressBar?.visibility = View.VISIBLE
                 }
                 Resource.Status.ERROR -> {
-
-                }
-            }
-        })
-/*
-        homeViewModel.trendingMovies?.observe(this, Observer { response ->
-            when (response.status) {
-                Resource.Status.SUCCESS -> {
-                    response.data?.let {
-                        movieController.submitTrendingMovies(it, null)
-                        recyclerView.setController(movieController)
-                    }
-                    progressBar.visibility = View.INVISIBLE
-                }
-                Resource.Status.LOADING -> {
-                }
-                Resource.Status.ERROR -> {
-                    Log.d("errorBoolean", "HomeFragment, Resource.Status.ERROR")
-                    movieController.submitTrendingMovies(null, response.error)
-                    Toast.makeText(context, "${response.error?.message}, ${response.error?.cd}", Toast.LENGTH_LONG).show()
-                    progressBar.visibility = View.INVISIBLE
+                    Log.d("refresh", "HomeFragment, topTrendingMovie?.observe, fail, response = ${details.error?.cd}")
+                    movieController.submitTopTrendingMovie(null, details.error)
+                    progressBar?.visibility = View.INVISIBLE
                 }
             }
         })
 
-        homeViewModel.topRatedMovies?.observe(this, Observer { response ->
-            when (response.status) {
-                Resource.Status.SUCCESS -> {
-                    response.data?.let {
-                        movieController.submitTopRatedMovies(it)
-                        recyclerView.setController(movieController)
-                    }
-                    progressBar.visibility = View.INVISIBLE
-                }
-                Resource.Status.LOADING -> {
-                }
-                Resource.Status.ERROR -> {
-                }
-            }
-        })
-
-        homeViewModel.upcomingMovies?.observe(this, Observer { response ->
-            when (response.status) {
-                Resource.Status.SUCCESS -> {
-                    response.data?.let {
-                        movieController.submitUpcomingMovies(it)
-                        recyclerView.setController(movieController)
-                    }
-                    progressBar.visibility = View.INVISIBLE
-                }
-                Resource.Status.LOADING -> {
-                }
-                Resource.Status.ERROR -> {
-                }
-            }
-        })
-
-        homeViewModel.popularMovies?.observe(this, Observer { response ->
-            when (response.status) {
-                Resource.Status.SUCCESS -> {
-                    response.data?.let {
-                        movieController.submitPopularMovies(it)
-                        recyclerView.setController(movieController)
-                    }
-                    progressBar.visibility = View.INVISIBLE
-                }
-                Resource.Status.LOADING -> {
-                }
-                Resource.Status.ERROR -> {
-                }
-            }
-        })
-*/
         return root
     }
 
@@ -178,10 +112,13 @@ class HomeFragment : Fragment(), OnItemClick {
         findNavController().navigate(homeToDetailsFragment)
     }
 
+
+    override fun refresh() {
+        Log.d("refresh", "HomeFragment, refresh() called")
+
+        homeViewModel.refresh()
+        progressBar?.visibility = View.VISIBLE
+        Log.d("refresh", "HomeFragment, refresh()")
+    }
+
 }
-//        (recyclerView.adapter as MovieAdapter).registerAdapterDataObserver(object :
-//            RecyclerView.AdapterDataObserver() {
-//            override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
-//                recyclerView.scrollToPosition(0)
-//            }
-//        })
