@@ -19,6 +19,7 @@ import com.lacourt.myapplication.domainMappers.not_used_interfaces.Mapper
 import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.domainmodel.MyListItem
 import com.lacourt.myapplication.dto.*
+import com.lacourt.myapplication.isInDatabase
 import com.lacourt.myapplication.network.*
 import io.reactivex.Observable
 import io.reactivex.Observer
@@ -55,6 +56,8 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
 
     private val myListDao =
         AppDatabase.getDatabase(application)?.MyListDao()
+
+    private var isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
 
     /*Remember:
      1. that the returned list cannot be mutable
@@ -168,6 +171,8 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
 //        }
 
     private fun fetchTopImageDetails(id: Int) {
+        myListDao.isInDatabase(id, isInDatabase)
+
         NetworkCall<DetailsDTO, Details>().makeCall(
             Apifactory.tmdbApi.getDetails(id, AppConstants.VIDEOS),
             this,

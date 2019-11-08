@@ -54,7 +54,7 @@ class MovieController(
         requestModelBuild()
     }
 
-    fun submitIsIndatabase(newIsInDatabase: Boolean) {
+    fun submitIsInDatabase(newIsInDatabase: Boolean) {
         isInDatabase = newIsInDatabase
         requestModelBuild()
     }
