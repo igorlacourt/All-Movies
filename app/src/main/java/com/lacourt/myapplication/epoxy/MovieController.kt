@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat.startActivity
 import android.content.Intent
 import android.net.Uri
 import android.view.View
+import androidx.core.content.res.ResourcesCompat
 import com.lacourt.myapplication.openYoutube
 import com.lacourt.myapplication.viewmodel.HomeViewModel
 
@@ -40,7 +41,10 @@ class MovieController(
     fun submitListsOfMovies(newListsOfMovies: List<Collection<DbMovieDTO>?>?, error: Error?) {
         Log.d("errorBoolean", "submitListOfMovies, error = $error")
         Log.d("refresh", "HomeFragment, tsubmitListsOfMovies, error = ${error?.cd}")
-        Log.d("refresh", "HomeFragment, tsubmitListsOfMovies, list.size = ${newListsOfMovies?.size}")
+        Log.d(
+            "refresh",
+            "HomeFragment, tsubmitListsOfMovies, list.size = ${newListsOfMovies?.size}"
+        )
 
         listsOfMovies = newListsOfMovies
         Log.d("listsLog", "MovieController, listsOfMovies.size = ${listsOfMovies?.size}")
@@ -67,8 +71,6 @@ class MovieController(
         newList?.let { trendingMovies = it }
         requestModelBuild()
     }
-
-
 
     override fun buildModels() {
         Log.d("genreslog", "MovieController, buildModels called")
@@ -129,40 +131,67 @@ class MovieController(
             ErrorHomeModel_()
                 .id(1)
                 .message(message)
-                .clickListener{model, parentView, clickedView, position ->
+                .clickListener { model, parentView, clickedView, position ->
                     viewModel.refresh()
                 }
                 .addTo(this)
             Log.d("errorBoolean", "buildModels, ErrorHomeModel created")
         } else {
-            topTrendingMovie?.genres?.let {
-                topTrendingMovie?.title?.let { it1 ->
-                    TopTrendingMovieModel_(context)
+            if (topTrendingMovie != null) {
+                if (topTrendingMovie!!.genres != null && topTrendingMovie!!.title != null) {
+                    var topTrendingMovieModel = TopTrendingMovieModel_(context)
                         .id("topTrendingMovie")
                         .backdropPath(topTrendingMovie?.backdrop_path)
-                        .genresList(it)
-                        .title(it1)
+                        .genresList(topTrendingMovie!!.genres!!)
+                        .title(topTrendingMovie!!.title!!)
                         .trailerClickListener { model, parentView, clickedView, position ->
                             topTrendingMovie?.let {
                                 it.openYoutube(context)
                             }
                         }
                         .myListClickListener { model, parentView, clickedView, position ->
-                            if(isInDatabase == false){
-                                parentView.image?.setImageResource()
-                                viewModel.insert(topTrendingMovie?.id)
+                            if (!isInDatabase) {
+//                                parentView.image?.setImageResource()
+//                                viewModel.insert(topTrendingMovie?.id)
                             } else {
-                                viewModel.delete(topTrendingMovie?.id)
-                                parentView.image?.setImageResource()
+//                                viewModel.delete(topTrendingMovie?.id)
+//                                parentView.image?.setImageResource()
                             }
                         }
                         .clickListener { model, parentView, clickedView, position ->
                             Log.d("clicklog", "onCreateView popular movies called")
                             topTrendingMovie?.id?.let { callDetailsFragment(it) }
                         }
-                        .addTo(this)
+
+
+                    if (context != null) {
+                        if (isInDatabase) {
+                            topTrendingMovieModel.myListIcon()
+                                .setImageDrawable(
+                                    ResourcesCompat.getDrawable(
+                                        context.resources,
+                                        R.drawable.ic_check_mark_24dp,
+                                        null
+                                    )
+                                )
+                        } else {
+                            topTrendingMovieModel.myListIcon()
+                                .setImageDrawable(
+                                    ResourcesCompat.getDrawable(
+                                        context.resources,
+                                        R.drawable.wish_list_btn_24dp,
+                                        null
+                                    )
+                                )
+                        }
+
+                    }
+
+                    topTrendingMovieModel.addTo(this)
                 }
             }
+
+
 
             Log.d("errorBoolean", "buildModels, if(error)  = ${this.error}")
             HeaderModel_()

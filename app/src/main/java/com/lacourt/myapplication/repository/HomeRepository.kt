@@ -57,7 +57,7 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
     private val myListDao =
         AppDatabase.getDatabase(application)?.MyListDao()
 
-    private var isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
+    var isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
 
     /*Remember:
      1. that the returned list cannot be mutable

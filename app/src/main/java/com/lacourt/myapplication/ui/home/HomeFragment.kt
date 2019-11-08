@@ -99,6 +99,11 @@ class HomeFragment : Fragment(), OnItemClick {
             }
         })
 
+        viewModel.isInDatabase?.observe(this, Observer { isInDatabase ->
+            movieController.submitIsInDatabase(isInDatabase)
+            recyclerView.setController(movieController)
+        })
+
         return root
     }
 

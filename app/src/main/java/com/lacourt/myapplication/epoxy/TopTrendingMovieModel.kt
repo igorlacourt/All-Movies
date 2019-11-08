@@ -47,7 +47,10 @@ abstract class TopTrendingMovieModel(val context: Context?) :
     lateinit var title: String
 
     @EpoxyAttribute
-    lateinit var button: LinearLayout
+    lateinit var myListButton: ConstraintLayout
+
+    @EpoxyAttribute
+    lateinit var myListIcon: ImageView
 
     override fun bind(holder: ViewHolder) {
         super.bind(holder)
@@ -100,6 +103,7 @@ abstract class TopTrendingMovieModel(val context: Context?) :
         var genres: TextView? = null
         var trailerButton: ConstraintLayout? = null
         var myListButton: ConstraintLayout? = null
+        var myListIcon: ImageView? = null
 
         override fun bindView(itemView: View) {
             image = itemView.findViewById(R.id.iv_top_trending_movie)
@@ -108,6 +112,7 @@ abstract class TopTrendingMovieModel(val context: Context?) :
             genres = itemView.findViewById(R.id.tv_genres)
             trailerButton = itemView.findViewById(R.id.btn_top_trending_trailer)
             myListButton = itemView.findViewById(R.id.btn_top_trending_my_list)
+            myListIcon = itemView.findViewById(R.id.wish_list_btn)
         }
     }
 
