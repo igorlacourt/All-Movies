@@ -14,7 +14,7 @@ import com.lacourt.myapplication.ui.OnItemClick
 import androidx.core.content.ContextCompat.startActivity
 import android.content.Intent
 import android.net.Uri
-import com.lacourt.myapplication.domainmodel.openYoutube
+import com.lacourt.myapplication.openYoutube
 
 interface OnRecreate {
     fun refresh()

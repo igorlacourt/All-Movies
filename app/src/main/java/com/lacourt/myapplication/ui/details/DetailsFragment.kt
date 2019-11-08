@@ -22,7 +22,6 @@ import com.lacourt.myapplication.AppConstants
 
 import com.lacourt.myapplication.domainMappers.MapperFunctions
 import com.lacourt.myapplication.domainmodel.Details
-import com.lacourt.myapplication.domainmodel.openYoutube
 import com.lacourt.myapplication.network.Resource
 import com.lacourt.myapplication.viewmodel.DetailsViewModel
 import com.squareup.picasso.Callback
@@ -35,6 +34,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.dto.DbMovieDTO
+import com.lacourt.myapplication.openYoutube
 import com.lacourt.myapplication.ui.MoviePosterItemDecorator
 import com.lacourt.myapplication.ui.OnItemClick
 import com.lacourt.myapplication.ui.home.MovieAdapter

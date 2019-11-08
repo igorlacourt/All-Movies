@@ -2,14 +2,18 @@ package com.lacourt.myapplication.repository
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.lacourt.myapplication.AppConstants
+import com.lacourt.myapplication.R
 import com.lacourt.myapplication.database.AppDatabase
 import com.lacourt.myapplication.database.DatabaseCallback
 import com.lacourt.myapplication.database.MyListDao
+import com.lacourt.myapplication.deleteByIdExt
 import com.lacourt.myapplication.domainMappers.MapperFunctions
 import com.lacourt.myapplication.domainMappers.MapperFunctions.toDetails
 import com.lacourt.myapplication.domainmodel.Details
@@ -19,6 +23,7 @@ import com.lacourt.myapplication.dto.DetailsDTO
 import com.lacourt.myapplication.dto.MovieResponseDTO
 import com.lacourt.myapplication.dto.RecommendationsResponseDTO
 import com.lacourt.myapplication.dto.Result
+import com.lacourt.myapplication.isInDatabase
 import com.lacourt.myapplication.network.Apifactory
 import com.lacourt.myapplication.test_retrofit_call_kotlin.BaseRepository
 import com.lacourt.myapplication.network.NetworkCallback
@@ -43,6 +48,7 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
     var movie: MutableLiveData<Resource<Details>> = MutableLiveData()
     var recommendedMovies: MutableLiveData<Resource<List<DbMovieDTO>>> = MutableLiveData()
     var isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
+    val context: Context = application
 
     fun getDetails(id: Int) {
         Log.d("calltest", "getDetails called")
@@ -51,7 +57,6 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
             this,
             ::toDetails
         )
-
     }
 
     fun getRecommendedMovies(id: Int) {
@@ -60,11 +65,14 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : SingleObserver<MovieResponseDTO> {
                 override fun onSuccess(t: MovieResponseDTO) {
-                    val last = t.results.size - 1
-                    val beforeLast = t.results.size - 2
-                    t.results.removeAt(last)
-                    t.results.removeAt(beforeLast)
-                    recommendedMovies.value = Resource.success(MapperFunctions.movieResponseToDbMovieDTO(t))
+                    if(t.results.size == 20){
+                        val last = t.results.size - 1
+                        val beforeLast = t.results.size - 2
+                        t.results.removeAt(last)
+                        t.results.removeAt(beforeLast)
+                    }
+                    recommendedMovies.value =
+                        Resource.success(MapperFunctions.movieResponseToDbMovieDTO(t))
                 }
 
                 override fun onSubscribe(d: Disposable) {
@@ -85,23 +93,7 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
 
     fun delete(id: Int) {
         Log.d("log_is_inserted", "DetailsRepository, delete() called")
-        Completable.fromAction { myListDao?.deleteById(id) }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : CompletableObserver {
-                override fun onComplete() {
-                    Log.d("log_is_inserted", "DetailsRepository, delete(), onComplete() called")
-                    isInDatabase.value = false
-                }
-
-                override fun onSubscribe(d: Disposable) {
-
-                }
-
-                override fun onError(e: Throwable) {
-                    Log.d("log_is_inserted", "DetailsRepository, delete(), onError() called")
-                }
-            })
+        myListDao.deleteByIdExt(context, id, isInDatabase)
     }
 
     @SuppressLint("CheckResult")
@@ -110,23 +102,27 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
             "log_is_inserted",
             "DetailsRepository, networkCallResult() called, movie = ${callback.data?.title}"
         )
+
+        myListDao.isInDatabase(callback.data?.id, isInDatabase)
+
         movie.value = callback
-        val id: Int? = callback.data?.id
-        Log.d("log_is_inserted", "DetailsRepository, networkCallResult() called, id = $id")
-        if (id != null) {
-            isInDatabase.value = false
-            myListDao?.getById(id)
-                ?.subscribeOn(Schedulers.io())
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.doOnNext {
-                    isInDatabase.value = true
-                    Log.d(
-                        "log_is_inserted",
-                        "DetailsRepository, getById(), doOnNext called, isInDatabase.value = ${isInDatabase.value}"
-                    )
-                }
-                ?.subscribe()
-        }
+
+//        val id: Int? = callback.data?.id
+//        Log.d("log_is_inserted", "DetailsRepository, networkCallResult() called, id = $id")
+//        if (id != null) {
+//            isInDatabase.value = false
+//            myListDao?.getById(id)
+//                ?.subscribeOn(Schedulers.io())
+//                ?.observeOn(AndroidSchedulers.mainThread())
+//                ?.doOnNext {
+//                    isInDatabase.value = true
+//                    Log.d(
+//                        "log_is_inserted",
+//                        "DetailsRepository, getById(), doOnNext called, isInDatabase.value = ${isInDatabase.value}"
+//                    )
+//                }
+//                ?.subscribe()
+//        }
 
         Log.d(
             "calltest",
@@ -134,4 +130,9 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
         )
     }
 }
+
+
+
+
+
 

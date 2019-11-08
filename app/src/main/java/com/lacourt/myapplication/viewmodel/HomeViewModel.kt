@@ -32,8 +32,6 @@ class HomeViewModel(application: Application) : AndroidViewModel(application){
     fun refresh(){
         Log.d("refresh", "HomeViewMmodel, refresh()")
         homeRepository?.refresh()
-//        topTrendingMovie = homeRepository?.topTrendingMovie
-//        listsOfMovies = homeRepository?.listsOfMovies
         Log.d("listsLog", "HomeViewModel, resultList.size = ${listsOfMovies?.value?.data?.size}")
     }
 

@@ -36,25 +36,16 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 class HomeRepository(private val application: Application) : NetworkCallback<Details> {
-    private val config = PagedList.Config.Builder()
-        .setInitialLoadSizeHint(50)
-        .setPageSize(50)
-        .setEnablePlaceholders(false)
-        .build()
-
-    private var currentOrder = AppConstants.DATE_DESC
+//    private val config = PagedList.Config.Builder()
+//        .setInitialLoadSizeHint(50)
+//        .setPageSize(50)
+//        .setEnablePlaceholders(false)
+//        .build()
 
     private val movieDao =
-        AppDatabase.getDatabase(application)!!.MovieDao() //Not sure if it should be here.
-
-    private val moviesDescending: LiveData<PagedList<DbMovieDTO>> =
-        movieDao.dateDesc().toLiveData(config)
-
-    private val moviesAscending: LiveData<PagedList<DbMovieDTO>> =
-        movieDao.dateAsc().toLiveData(config)
+        AppDatabase.getDatabase(application)?.MovieDao()
 
     val topTrendingMovie = MutableLiveData<Resource<Details>>()
-    val trendingMovies = MutableLiveData<Resource<List<DbMovieDTO>>>()
 
     val listsOfMovies = MutableLiveData<Resource<List<Collection<DbMovieDTO>>>>()
 
@@ -64,29 +55,7 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
     init {
         fetchMoviesLists()
         Log.d("callstest", "repository called")
-        /*
-        movies.addSource(moviesDescending) { result ->
-            if (currentOrder == AppConstants.DATE_DESC) {
-                Log.d("callstest", "addSource(moviesDescending)")
-                result?.let { movies.value = it }
-            }
-        }
-
-        movies.addSource(moviesAscending) {result ->
-            if (currentOrder == AppConstants.DATE_ASC) {
-                Log.d("callstest", "addSource(moviesAscending)")
-                result.let { movies.value = it }
-            }
-        }
-*/
-        movieDao.deleteAll()
-//        fetchMovies()
-//        val count = movieDao.getCount()
-        //TODO mudar para 100 de novo
-//        if (count < 20) {
-//            if (count > 0)
-//                movieDao.deleteAll()
-//        }
+        movieDao?.deleteAll()
     }
 
     fun refresh(){
@@ -193,19 +162,6 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
     override fun networkCallResult(callback: Resource<Details>) {
         topTrendingMovie.value = callback
     }
-
-    /*
-    fun rearrengeMovies(order: String) = when (order) {
-        AppConstants.DATE_ASC -> moviesAscending.value?.let { popularMovies.value = it }
-        else -> moviesDescending.value?.let { popularMovies.value = it }
-    }.also { currentOrder = order }
-    */
-
-//    fun moviesRequest(page: Int): Observable<MovieResponseDTO>? =
-//        Apifactory.tmdbApi.getPopularMovies(AppConstants.LANGUAGE, page)
-//            .subscribeOn(Schedulers.io())
-//            ?.observeOn(AndroidSchedulers.mainThread())
-
 
     @SuppressLint("CheckResult")
     fun fetchMovies() {
