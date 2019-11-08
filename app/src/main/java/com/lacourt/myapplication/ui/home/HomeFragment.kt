@@ -12,24 +12,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.lacourt.myapplication.R
-import com.lacourt.myapplication.dto.DbMovieDTO
-import com.lacourt.myapplication.dto.GenreXDTO
 import com.lacourt.myapplication.epoxy.*
 import com.lacourt.myapplication.network.Resource
 import com.lacourt.myapplication.ui.OnItemClick
 import com.lacourt.myapplication.viewmodel.HomeViewModel
 
-class HomeFragment : Fragment(), OnItemClick, OnRecreate {
-    private lateinit var homeViewModel: HomeViewModel
+class HomeFragment : Fragment(), OnItemClick {
+    private lateinit var viewModel: HomeViewModel
     private lateinit var recyclerView: EpoxyRecyclerView
 
-    private val recreate = this as OnRecreate
     private val itemClick = this as OnItemClick
 
-    private val movieController by lazy { MovieController(context, itemClick, recreate) }
+    private val movieController by lazy { MovieController(context, itemClick, viewModel) }
 
     var progressBar: ProgressBar? = null
 
@@ -43,7 +39,7 @@ class HomeFragment : Fragment(), OnItemClick, OnRecreate {
 
         Log.d("refreshLog", "onCreateView() called")
 
-        homeViewModel =
+        viewModel =
             ViewModelProviders.of(this).get(HomeViewModel::class.java)
 
         progressBar = root.findViewById(R.id.progress_circular)
@@ -60,7 +56,7 @@ class HomeFragment : Fragment(), OnItemClick, OnRecreate {
 
         recyclerView.adapter = adapter
 
-        homeViewModel.listsOfMovies?.observe(this, Observer { response ->
+        viewModel.listsOfMovies?.observe(this, Observer { response ->
             when (response?.status) {
                 Resource.Status.SUCCESS -> {
                     Log.d("listsLog", "HomeFragment, response size = ${response?.data?.size}")
@@ -80,7 +76,7 @@ class HomeFragment : Fragment(), OnItemClick, OnRecreate {
             }
         })
 
-        homeViewModel.topTrendingMovie?.observe(this, Observer { details ->
+        viewModel.topTrendingMovie?.observe(this, Observer { details ->
             when (details.status) {
                 Resource.Status.SUCCESS -> {
                     details.data?.let {
@@ -113,10 +109,10 @@ class HomeFragment : Fragment(), OnItemClick, OnRecreate {
     }
 
 
-    override fun refresh() {
+    fun refresh() {
         Log.d("refresh", "HomeFragment, refresh() called")
 
-        homeViewModel.refresh()
+        viewModel.refresh()
         progressBar?.visibility = View.VISIBLE
         Log.d("refresh", "HomeFragment, refresh()")
     }

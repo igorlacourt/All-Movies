@@ -2,6 +2,7 @@ package com.lacourt.myapplication.repository
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
@@ -11,10 +12,12 @@ import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.database.AppDatabase
+import com.lacourt.myapplication.deleteByIdExt
 import com.lacourt.myapplication.domainMappers.MapperFunctions
 import com.lacourt.myapplication.domainMappers.mapToDomain
 import com.lacourt.myapplication.domainMappers.not_used_interfaces.Mapper
 import com.lacourt.myapplication.domainmodel.Details
+import com.lacourt.myapplication.domainmodel.MyListItem
 import com.lacourt.myapplication.dto.*
 import com.lacourt.myapplication.network.*
 import io.reactivex.Observable
@@ -41,6 +44,7 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
 //        .setPageSize(50)
 //        .setEnablePlaceholders(false)
 //        .build()
+    private val context: Context = application
 
     private val movieDao =
         AppDatabase.getDatabase(application)?.MovieDao()
@@ -48,6 +52,9 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
     val topTrendingMovie = MutableLiveData<Resource<Details>>()
 
     val listsOfMovies = MutableLiveData<Resource<List<Collection<DbMovieDTO>>>>()
+
+    private val myListDao =
+        AppDatabase.getDatabase(application)?.MyListDao()
 
     /*Remember:
      1. that the returned list cannot be mutable
@@ -141,6 +148,15 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
             })
     }
 
+    fun insert(myListItem: MyListItem) {
+        Log.d("log_is_inserted", "DetailsRepository, insert() called")
+        myListDao?.insert(myListItem)
+    }
+
+    fun delete(id: Int) {
+        Log.d("log_is_inserted", "DetailsRepository, delete() called")
+        myListDao.deleteByIdExt(context, id, isInDatabase)
+    }
 //    fun <T> Observable<T>.mapNetworkErrors(): Observable<T> =
 //        this.doOnError { error ->
 //            when (error) {

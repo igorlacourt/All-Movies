@@ -14,16 +14,14 @@ import com.lacourt.myapplication.ui.OnItemClick
 import androidx.core.content.ContextCompat.startActivity
 import android.content.Intent
 import android.net.Uri
+import android.view.View
 import com.lacourt.myapplication.openYoutube
-
-interface OnRecreate {
-    fun refresh()
-}
+import com.lacourt.myapplication.viewmodel.HomeViewModel
 
 class MovieController(
     private val context: Context?,
     private val onItemClick: OnItemClick,
-    private val onRecrateFragment: OnRecreate
+    private val viewModel: HomeViewModel
 ) : EpoxyController() {
 
     init {
@@ -36,6 +34,8 @@ class MovieController(
 
     var listsOfMovies: List<Collection<DbMovieDTO>?>? = null
     var error: Error? = null
+
+    var isInDatabase: Boolean = false
 
     fun submitListsOfMovies(newListsOfMovies: List<Collection<DbMovieDTO>?>?, error: Error?) {
         Log.d("errorBoolean", "submitListOfMovies, error = $error")
@@ -51,6 +51,11 @@ class MovieController(
         Log.d("refresh", "HomeFragment, submitTopTrendingMovie, error = ${error?.cd}")
         Log.d("refresh", "HomeFragment, submitTopTrendingMovie, list.size = ${newMovie?.title}")
         this.error = error
+        requestModelBuild()
+    }
+
+    fun submitIsIndatabase(newIsInDatabase: Boolean) {
+        isInDatabase = newIsInDatabase
         requestModelBuild()
     }
 
@@ -125,7 +130,7 @@ class MovieController(
                 .id(1)
                 .message(message)
                 .clickListener{model, parentView, clickedView, position ->
-                    onRecrateFragment.refresh()
+                    viewModel.refresh()
                 }
                 .addTo(this)
             Log.d("errorBoolean", "buildModels, ErrorHomeModel created")
@@ -143,7 +148,13 @@ class MovieController(
                             }
                         }
                         .myListClickListener { model, parentView, clickedView, position ->
-
+                            if(isInDatabase == false){
+                                parentView.image?.setImageResource()
+                                viewModel.insert(topTrendingMovie?.id)
+                            } else {
+                                viewModel.delete(topTrendingMovie?.id)
+                                parentView.image?.setImageResource()
+                            }
                         }
                         .clickListener { model, parentView, clickedView, position ->
                             Log.d("clicklog", "onCreateView popular movies called")
