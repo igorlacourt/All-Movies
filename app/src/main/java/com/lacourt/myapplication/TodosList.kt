@@ -5,7 +5,7 @@ package com.lacourt.myapplication
 //TODO 2. Make Apifacry's Retrofit a singleton
 //TODO 3. Set epoxy pagedList for My List
 //TODO 4. Check if DbMovieDTO is named correctly
-//TODO 5. Load backdrop when there's no poster path in Details object to be presented in DetailsFragment
+//TODO 5. Load backdrop when there's no poster path in DomainDetails object to be presented in DetailsFragment
 //TODO 6. Transform DetailsActivity in DetailsFragment
 //TODO 7. Check if it should be lateinit modifier for variables like recyclerview in MyListFragment and other classes
 //TODO 8. Change item layout's width maybe it's better to set a fixed height, wrap_content width, and use matrix instead of centerCrop scaleType

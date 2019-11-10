@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.ui.OnItemClick
+import com.lacourt.myapplication.ui.details.GridAdapter
 import com.lacourt.myapplication.ui.home.MovieAdapter
 import com.lacourt.myapplication.viewmodel.MyListViewModel
 import kotlinx.android.synthetic.main.fragment_mylist.*
@@ -25,7 +26,7 @@ class MyListFragment : Fragment(), OnItemClick {
     private val onItemClick = this as OnItemClick
     private lateinit var recyclerView: RecyclerView
     private lateinit var myListViewModel: MyListViewModel
-    private lateinit var adapter: MyListAdapter
+    private lateinit var adapter: GridAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,11 +36,11 @@ class MyListFragment : Fragment(), OnItemClick {
         val root = inflater.inflate(R.layout.fragment_mylist, container, false)
         val progressBar: ProgressBar = root.findViewById(R.id.my_list_progress_circular)
 
-        var emptyList = root.findViewById<TextView>(R.id.edt_my_list_empty)
+        val emptyList = root.findViewById<TextView>(R.id.edt_my_list_empty)
         emptyList.visibility = View.VISIBLE
 
         progressBar.visibility = View.VISIBLE
-        adapter = MyListAdapter(activity?.applicationContext, onItemClick, ArrayList())
+        adapter = GridAdapter(context, onItemClick, ArrayList())
         recyclerView = root.findViewById(R.id.my_list_list)
 
         setUpRecyclerView()
@@ -60,8 +61,7 @@ class MyListFragment : Fragment(), OnItemClick {
 
     private fun setUpRecyclerView() {
         recyclerView.computeVerticalScrollOffset()
-        var layoutManager = GridLayoutManager(context, 3)
-        recyclerView.layoutManager = layoutManager
+        recyclerView.layoutManager = GridLayoutManager(context, 3)
         recyclerView.adapter = adapter
     }
 

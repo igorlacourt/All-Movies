@@ -1,11 +1,7 @@
 package com.lacourt.myapplication.ui.details
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,34 +9,24 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.AppConstants
-
-import com.lacourt.myapplication.domainMappers.MapperFunctions
-import com.lacourt.myapplication.domainmodel.Details
+import com.lacourt.myapplication.R
+import com.lacourt.myapplication.domainMappers.toMyListItem
+import com.lacourt.myapplication.domainmodel.DomainDetails
 import com.lacourt.myapplication.network.Resource
+import com.lacourt.myapplication.openYoutube
+import com.lacourt.myapplication.ui.OnItemClick
 import com.lacourt.myapplication.viewmodel.DetailsViewModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_details.*
-import java.lang.Exception
-import android.widget.GridView
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.lacourt.myapplication.R
-import com.lacourt.myapplication.dto.DbMovieDTO
-import com.lacourt.myapplication.openYoutube
-import com.lacourt.myapplication.ui.MoviePosterItemDecorator
-import com.lacourt.myapplication.ui.OnItemClick
-import com.lacourt.myapplication.ui.home.MovieAdapter
-import com.lacourt.myapplication.ui.search.SearchFragmentDirections
-import java.math.BigDecimal
-import java.math.RoundingMode
 
 /**
  * A simple [Fragment] subclass.
@@ -68,7 +54,7 @@ class DetailsFragment : Fragment(), OnItemClick {
         progressBar.visibility = View.VISIBLE
 
         var recyclerView = view.findViewById<RecyclerView>(R.id.rv_recommended)
-        val adapter = RecommendedAdapter(context, this, ArrayList())
+        val adapter = GridAdapter(context, this, ArrayList())
 //        var layoutManager =
 //            object : GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false) {
 //                override fun canScrollVertically(): Boolean {
@@ -83,12 +69,12 @@ class DetailsFragment : Fragment(), OnItemClick {
 
         val id = arguments?.getInt("id") ?: 0
 
-        var details: Details? = null
+        var domainDetails: DomainDetails? = null
 
         viewModel =
             ViewModelProviders.of(this).get(DetailsViewModel::class.java)
 
-        viewModel.recommendedMovies?.observe(this, Observer { resource ->
+        viewModel.recommendedMovies.observe(this, Observer { resource ->
             when (resource.status) {
                 Resource.Status.SUCCESS -> {
                     resource?.data?.let { movies ->
@@ -138,7 +124,7 @@ class DetailsFragment : Fragment(), OnItemClick {
         viewModel.movie?.observe(this, Observer {
             when (it?.status) {
                 Resource.Status.SUCCESS -> {
-                    details = it.data
+                    domainDetails = it.data
                     displayDetails(it.data)
                 }
                 Resource.Status.LOADING -> {
@@ -152,7 +138,7 @@ class DetailsFragment : Fragment(), OnItemClick {
         })
 
         backdropImageView.setOnClickListener {
-            details?.let {
+            domainDetails?.let {
                 it.openYoutube(context)
             }
         }
@@ -163,11 +149,12 @@ class DetailsFragment : Fragment(), OnItemClick {
                 Log.d("log_is_inserted", "isInDatabase false")
                 val itemData = viewModel.movie?.value?.data
                 if (itemData?.id != null) {
-                    viewModel.insert(
-                        MapperFunctions.toMyListItem(
-                            itemData
-                        )
-                    )
+                    viewModel.insert(itemData.toMyListItem())
+//                    viewModel.insert(
+//                        MapperFunctions.toMyListItem(
+//                            itemData
+//                        )
+//                    )
                 } else {
                     Toast.makeText(
                         context,
@@ -184,21 +171,17 @@ class DetailsFragment : Fragment(), OnItemClick {
         return view
     }
 
-    fun displayDetails(details: Details?) {
-        details?.apply {
+    fun displayDetails(domainDetails: DomainDetails?) {
+        domainDetails?.apply {
             var imagePath = backdrop_path ?: poster_path
             Log.d("calltest", "onChange, response = $this")
 
             Picasso.get()
                 .load("${AppConstants.TMDB_IMAGE_BASE_URL_W500}$imagePath")
-                .placeholder(R.drawable.clapperboard)
+                .placeholder(R.drawable.placeholder)
                 .into(detail_backdrop, object : Callback {
                     override fun onSuccess() {
-                        context?.let { Toast.makeText(
-                            context,
-                            "Image loaded",
-                            Toast.LENGTH_LONG
-                        ).show() }
+
                     }
 
                     override fun onError(e: Exception?) {
@@ -228,8 +211,9 @@ class DetailsFragment : Fragment(), OnItemClick {
 
     override fun onItemClick(id: Int) {
         if (id != 0) {
-            val detailsToDetailsFragment = DetailsFragmentDirections.actionDetailsFragmentSelf(id)
-            findNavController().navigate(detailsToDetailsFragment)
+            val detailsToDetails =
+                DetailsFragmentDirections.actionDetailsFragmentSelf(id)
+            findNavController().navigate(detailsToDetails)
         } else {
             Toast.makeText(context, "Sorry. Can not load this movie. :/", Toast.LENGTH_SHORT).show()
         }

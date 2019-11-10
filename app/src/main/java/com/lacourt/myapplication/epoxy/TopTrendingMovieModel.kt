@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -19,13 +18,11 @@ import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.dto.GenreXDTO
 import com.squareup.picasso.Picasso
-import android.text.style.RelativeSizeSpan
-import android.text.SpannableString
-import android.widget.LinearLayout
+import androidx.core.content.res.ResourcesCompat
 
 
 @EpoxyModelClass(layout = R.layout.top_trending_movie)
-abstract class TopTrendingMovieModel(val context: Context?) :
+abstract class TopTrendingMovieModel(val context: Context?, val isInDatabase: Boolean) :
     EpoxyModelWithHolder<TopTrendingMovieModel.ViewHolder>() {
 
     @EpoxyAttribute
@@ -50,14 +47,13 @@ abstract class TopTrendingMovieModel(val context: Context?) :
     lateinit var myListButton: ConstraintLayout
 
     @EpoxyAttribute
-    lateinit var myListIcon: ImageView
+    var myListIcon: ImageView? = null
 
     override fun bind(holder: ViewHolder) {
         super.bind(holder)
         Picasso.get().load(AppConstants.TMDB_IMAGE_BASE_URL_ORIGINAL + backdropPath)
-            .placeholder(R.drawable.clapperboard)
+            .placeholder(R.drawable.placeholder)
             .into(holder.image)
-        holder.framaLayout?.setOnClickListener(clickListener)
         holder.title?.text = title
         holder.genres?.text = ""
 
@@ -92,27 +88,54 @@ abstract class TopTrendingMovieModel(val context: Context?) :
 
                 holder.trailerButton?.setOnClickListener(trailerClickListener)
                 holder.myListButton?.setOnClickListener(myListClickListener)
+                holder.learnMoreButton?.setOnClickListener(clickListener)
+                holder.frameLayout?.setOnClickListener(clickListener)
+
+                if (context != null) {
+                    if (isInDatabase)
+                        holder.myListIcon?.setImageDrawable(
+                            ResourcesCompat.getDrawable(
+                                context.resources,
+                                R.drawable.ic_check_mark_24dp,
+                                null
+                            )
+                        )
+                    else
+                        holder.myListIcon?.setImageDrawable(
+                            ResourcesCompat.getDrawable(
+                                context.resources,
+                                R.drawable.wish_list_btn_24dp,
+                                null
+                            )
+                        )
+                }
+
+
             }
+
         }
     }
 
+
     class ViewHolder : EpoxyHolder() {
         var image: ImageView? = null
-        var framaLayout: ConstraintLayout? = null
+        var frameLayout: ConstraintLayout? = null
         var title: TextView? = null
         var genres: TextView? = null
         var trailerButton: ConstraintLayout? = null
         var myListButton: ConstraintLayout? = null
         var myListIcon: ImageView? = null
+        var learnMoreButton: ConstraintLayout? = null
 
         override fun bindView(itemView: View) {
             image = itemView.findViewById(R.id.iv_top_trending_movie)
-            framaLayout = itemView.findViewById(R.id.ly_top_trending_movie)
+            frameLayout = itemView.findViewById(R.id.ly_top_trending_movie)
             title = itemView.findViewById(R.id.tv_top_trending_movie_title)
             genres = itemView.findViewById(R.id.tv_genres)
             trailerButton = itemView.findViewById(R.id.btn_top_trending_trailer)
             myListButton = itemView.findViewById(R.id.btn_top_trending_my_list)
             myListIcon = itemView.findViewById(R.id.wish_list_btn)
+            learnMoreButton = itemView.findViewById(R.id.btn_learn_more)
         }
     }
 

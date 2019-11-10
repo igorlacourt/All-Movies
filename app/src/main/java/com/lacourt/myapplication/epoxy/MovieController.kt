@@ -5,17 +5,11 @@ import android.util.Log
 import android.widget.Toast
 import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyController
-import com.lacourt.myapplication.R
-import com.lacourt.myapplication.domainmodel.Details
+import com.lacourt.myapplication.domainmodel.DomainDetails
 import com.lacourt.myapplication.dto.DbMovieDTO
-import com.lacourt.myapplication.dto.GenreXDTO
 import com.lacourt.myapplication.network.Error
 import com.lacourt.myapplication.ui.OnItemClick
-import androidx.core.content.ContextCompat.startActivity
-import android.content.Intent
-import android.net.Uri
-import android.view.View
-import androidx.core.content.res.ResourcesCompat
+import com.lacourt.myapplication.domainMappers.toMyListItem
 import com.lacourt.myapplication.openYoutube
 import com.lacourt.myapplication.viewmodel.HomeViewModel
 
@@ -30,7 +24,7 @@ class MovieController(
         Log.d("genreslog", "MovieController, init called")
     }
 
-    var topTrendingMovie: Details? = null
+    var topTrendingMovie: DomainDetails? = null
     var trendingMovies: List<DbMovieDTO>? = null
 
     var listsOfMovies: List<Collection<DbMovieDTO>?>? = null
@@ -50,7 +44,7 @@ class MovieController(
         Log.d("listsLog", "MovieController, listsOfMovies.size = ${listsOfMovies?.size}")
     }
 
-    fun submitTopTrendingMovie(newMovie: Details?, error: Error?) {
+    fun submitTopTrendingMovie(newMovie: DomainDetails?, error: Error?) {
         topTrendingMovie = newMovie
         Log.d("refresh", "HomeFragment, submitTopTrendingMovie, error = ${error?.cd}")
         Log.d("refresh", "HomeFragment, submitTopTrendingMovie, list.size = ${newMovie?.title}")
@@ -61,6 +55,7 @@ class MovieController(
     fun submitIsInDatabase(newIsInDatabase: Boolean) {
         isInDatabase = newIsInDatabase
         requestModelBuild()
+        Log.d("mylistclick", "MovieController, submitIsInDatabase, newIsInDatabase = $newIsInDatabase")
     }
 
     fun submitTrendingMovies(newList: List<DbMovieDTO>?, error: Error?) {
@@ -76,6 +71,7 @@ class MovieController(
         Log.d("genreslog", "MovieController, buildModels called")
         Log.d("errorBoolean", "buildModels, error = ${this.error}")
         Log.d("refresh", "buildModels, error = ${this.error}")
+        Log.d("mylistclick", "MovieController, buildModels called")
 
         val trendingMoviesModelList = ArrayList<MovieListModel_>()
         listsOfMovies?.get(0)?.forEach { movie ->
@@ -139,7 +135,7 @@ class MovieController(
         } else {
             if (topTrendingMovie != null) {
                 if (topTrendingMovie!!.genres != null && topTrendingMovie!!.title != null) {
-                    var topTrendingMovieModel = TopTrendingMovieModel_(context)
+                    val topTrendingMovieModel = TopTrendingMovieModel_(context, isInDatabase)
                         .id("topTrendingMovie")
                         .backdropPath(topTrendingMovie?.backdrop_path)
                         .genresList(topTrendingMovie!!.genres!!)
@@ -150,45 +146,62 @@ class MovieController(
                             }
                         }
                         .myListClickListener { model, parentView, clickedView, position ->
-                            if (!isInDatabase) {
-//                                parentView.image?.setImageResource()
-//                                viewModel.insert(topTrendingMovie?.id)
-                            } else {
-//                                viewModel.delete(topTrendingMovie?.id)
-//                                parentView.image?.setImageResource()
+                            if (isInDatabase){
+                                Log.d("mylistclick", "MovieController, myListClickListener, isInDatabase = $isInDatabase")
+                                topTrendingMovie?.id?.let { viewModel.delete(it) }
                             }
+                            else{
+                                Log.d("mylistclick", "MovieController, myListClickListener, isInDatabase = $isInDatabase")
+                                viewModel.insert(topTrendingMovie!!.toMyListItem())
+                            }
+
                         }
                         .clickListener { model, parentView, clickedView, position ->
                             Log.d("clicklog", "onCreateView popular movies called")
                             topTrendingMovie?.id?.let { callDetailsFragment(it) }
                         }
 
-
-                    if (context != null) {
-                        if (isInDatabase) {
-                            topTrendingMovieModel.myListIcon()
-                                .setImageDrawable(
-                                    ResourcesCompat.getDrawable(
-                                        context.resources,
-                                        R.drawable.ic_check_mark_24dp,
-                                        null
-                                    )
-                                )
-                        } else {
-                            topTrendingMovieModel.myListIcon()
-                                .setImageDrawable(
-                                    ResourcesCompat.getDrawable(
-                                        context.resources,
-                                        R.drawable.wish_list_btn_24dp,
-                                        null
-                                    )
-                                )
-                        }
-
-                    }
-
+//                    if (context != null) {
+//                        val icon = ImageView(context)
+//                        if (isInDatabase) {
+//                            icon.setImageDrawable(
+//                                ResourcesCompat.getDrawable(
+//                                    context.resources,
+//                                    R.drawable.ic_check_mark_24dp,
+//                                    null
+//                                )
+//                            )
+//                            topTrendingMovieModel.myListIcon?.setImageDrawable(
+//                                ResourcesCompat.getDrawable(
+//                                    context.resources,
+//                                    R.drawable.ic_check_mark_24dp,
+//                                    null
+//                                )
+//                            )
+////                            topTrendingMovieModel.myListIcon(icon)
+//
+//                        } else {
+//                            icon.setImageDrawable(
+//                                ResourcesCompat.getDrawable(
+//                                    context.resources,
+//                                    R.drawable.wish_list_btn_24dp,
+//                                    null
+//                                )
+//                            )
+//                            topTrendingMovieModel.myListIcon?.setImageDrawable(
+//                                ResourcesCompat.getDrawable(
+//                                    context.resources,
+//                                    R.drawable.wish_list_btn_24dp,
+//                                    null
+//                                )
+//                            )
+////                            topTrendingMovieModel.myListIcon(icon)
+//
+//                        }
+//                    }
                     topTrendingMovieModel.addTo(this)
                 }
+
             }
 
 
@@ -244,8 +257,11 @@ class MovieController(
         if (id != 0) {
             onItemClick.onItemClick(id)
         } else {
-            Toast.makeText(context, "Sorry. Can not load this movie. :/", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Sorry. Can not load this movie. :/", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
 }
+
+

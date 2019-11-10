@@ -5,41 +5,26 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.PagedList
-import androidx.paging.toLiveData
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.database.AppDatabase
 import com.lacourt.myapplication.deleteByIdExt
 import com.lacourt.myapplication.domainMappers.MapperFunctions
 import com.lacourt.myapplication.domainMappers.mapToDomain
-import com.lacourt.myapplication.domainMappers.not_used_interfaces.Mapper
-import com.lacourt.myapplication.domainmodel.Details
+import com.lacourt.myapplication.domainmodel.DomainDetails
 import com.lacourt.myapplication.domainmodel.MyListItem
 import com.lacourt.myapplication.dto.*
 import com.lacourt.myapplication.isInDatabase
 import com.lacourt.myapplication.network.*
 import io.reactivex.Observable
-import io.reactivex.Observer
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Function3
 import io.reactivex.functions.Function4
-import io.reactivex.functions.Function6
-import io.reactivex.functions.Function7
 import io.reactivex.schedulers.Schedulers
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.HttpException
-import retrofit2.Response
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
-class HomeRepository(private val application: Application) : NetworkCallback<Details> {
+class HomeRepository(private val application: Application) : NetworkCallback<DomainDetails> {
 //    private val config = PagedList.Config.Builder()
 //        .setInitialLoadSizeHint(50)
 //        .setPageSize(50)
@@ -50,7 +35,7 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
     private val movieDao =
         AppDatabase.getDatabase(application)?.MovieDao()
 
-    val topTrendingMovie = MutableLiveData<Resource<Details>>()
+    val topTrendingMovie = MutableLiveData<Resource<DomainDetails>>()
 
     val listsOfMovies = MutableLiveData<Resource<List<Collection<DbMovieDTO>>>>()
 
@@ -146,18 +131,19 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
                             )
                         )
                     }
-
                 }
             })
     }
 
     fun insert(myListItem: MyListItem) {
-        Log.d("log_is_inserted", "DetailsRepository, insert() called")
+        Log.d("log_is_inserted", "HomeRepository, insert() called")
+        Log.d("mylistclick", "HomeRepository, insert() called, myListItem.id = ${myListItem.id}")
         myListDao?.insert(myListItem)
     }
 
     fun delete(id: Int) {
-        Log.d("log_is_inserted", "DetailsRepository, delete() called")
+        Log.d("log_is_inserted", "HomeRepository, delete() called")
+        Log.d("mylistclick", "HomeRepository, delete() called, id = $id")
         myListDao.deleteByIdExt(context, id, isInDatabase)
     }
 //    fun <T> Observable<T>.mapNetworkErrors(): Observable<T> =
@@ -171,17 +157,17 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
 //        }
 
     private fun fetchTopImageDetails(id: Int) {
-        myListDao.isInDatabase(id, isInDatabase)
 
-        NetworkCall<DetailsDTO, Details>().makeCall(
+        NetworkCall<DetailsDTO, DomainDetails>().makeCall(
             Apifactory.tmdbApi.getDetails(id, AppConstants.VIDEOS),
             this,
             MapperFunctions::toDetails
         )
     }
 
-    override fun networkCallResult(callback: Resource<Details>) {
+    override fun networkCallResult(callback: Resource<DomainDetails>) {
         topTrendingMovie.value = callback
+        myListDao.isInDatabase(callback.data?.id, isInDatabase)
     }
 
     @SuppressLint("CheckResult")

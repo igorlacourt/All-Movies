@@ -4,55 +4,39 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.lacourt.myapplication.AppConstants
-import com.lacourt.myapplication.R
 import com.lacourt.myapplication.database.AppDatabase
-import com.lacourt.myapplication.database.DatabaseCallback
-import com.lacourt.myapplication.database.MyListDao
 import com.lacourt.myapplication.deleteByIdExt
-import com.lacourt.myapplication.domainMappers.MapperFunctions
 import com.lacourt.myapplication.domainMappers.MapperFunctions.toDetails
-import com.lacourt.myapplication.domainmodel.Details
+import com.lacourt.myapplication.domainMappers.toDomiainMovie
+import com.lacourt.myapplication.domainmodel.DomainDetails
+import com.lacourt.myapplication.domainmodel.DomainMovie
 import com.lacourt.myapplication.domainmodel.MyListItem
-import com.lacourt.myapplication.dto.DbMovieDTO
 import com.lacourt.myapplication.dto.DetailsDTO
 import com.lacourt.myapplication.dto.MovieResponseDTO
-import com.lacourt.myapplication.dto.RecommendationsResponseDTO
-import com.lacourt.myapplication.dto.Result
 import com.lacourt.myapplication.isInDatabase
 import com.lacourt.myapplication.network.Apifactory
-import com.lacourt.myapplication.test_retrofit_call_kotlin.BaseRepository
-import com.lacourt.myapplication.network.NetworkCallback
 import com.lacourt.myapplication.network.NetworkCall
+import com.lacourt.myapplication.network.NetworkCallback
 import com.lacourt.myapplication.network.Resource
-import io.reactivex.*
-
+import com.lacourt.myapplication.test_retrofit_call_kotlin.BaseRepository
+import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Action
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
-import org.reactivestreams.Subscriber
-import org.reactivestreams.Subscription
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class DetailsRepository(application: Application) : BaseRepository(), NetworkCallback<Details> {
+class DetailsRepository(application: Application) : BaseRepository(), NetworkCallback<DomainDetails> {
     private val myListDao =
         AppDatabase.getDatabase(application)?.MyListDao()
-    var movie: MutableLiveData<Resource<Details>> = MutableLiveData()
-    var recommendedMovies: MutableLiveData<Resource<List<DbMovieDTO>>> = MutableLiveData()
+    var movie: MutableLiveData<Resource<DomainDetails>> = MutableLiveData()
+    var recommendedMovies: MutableLiveData<Resource<List<DomainMovie>>> = MutableLiveData()
     var isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
     val context: Context = application
 
     fun getDetails(id: Int) {
         Log.d("calltest", "getDetails called")
-        NetworkCall<DetailsDTO, Details>().makeCall(
+        NetworkCall<DetailsDTO, DomainDetails>().makeCall(
             Apifactory.tmdbApi.getDetails(id, AppConstants.VIDEOS),
             this,
             ::toDetails
@@ -72,7 +56,7 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
                         t.results.removeAt(beforeLast)
                     }
                     recommendedMovies.value =
-                        Resource.success(MapperFunctions.movieResponseToDbMovieDTO(t))
+                        Resource.success(t.toDomiainMovie())
                 }
 
                 override fun onSubscribe(d: Disposable) {
@@ -97,7 +81,7 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
     }
 
     @SuppressLint("CheckResult")
-    override fun networkCallResult(callback: Resource<Details>) {
+    override fun networkCallResult(callback: Resource<DomainDetails>) {
         Log.d(
             "log_is_inserted",
             "DetailsRepository, networkCallResult() called, movie = ${callback.data?.title}"

@@ -7,7 +7,6 @@ import android.graphics.Point
 import android.graphics.drawable.Drawable
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.Display
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,15 +14,15 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.R
-import com.lacourt.myapplication.dto.DbMovieDTO
+import com.lacourt.myapplication.domainmodel.DomainMovie
 import com.lacourt.myapplication.ui.OnItemClick
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_list_item.view.*
 
-class RecommendedAdapter(
+class GridAdapter(
     private val context: Context?,
     private val onItemClick: OnItemClick,
-    private var list: ArrayList<DbMovieDTO>
+    private var list: ArrayList<DomainMovie>
 ) : RecyclerView.Adapter<RecommendedHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecommendedHolder {
@@ -52,7 +51,7 @@ class RecommendedAdapter(
         holder.apply {
            Picasso.get()
                 .load("${AppConstants.TMDB_IMAGE_BASE_URL_W185}${list[position].poster_path}")
-                .placeholder(R.drawable.clapperboard)
+                .placeholder(R.drawable.placeholder)
                 .into(poster)
 
             cardView.setOnClickListener {
@@ -70,11 +69,15 @@ class RecommendedAdapter(
         }
 
         holder.cardView.setOnClickListener {
-            onItemClick.onItemClick(list[position].id)
+            list[position].id?.let {
+                onItemClick.onItemClick(list[position].id!!)
+                onItemClick.onItemClick(list[position].id!!)
+            }
+
         }
     }
 
-    fun setList(list: List<DbMovieDTO>) {
+    fun setList(list: List<DomainMovie>) {
         Log.d("grid-log", "setList() called")
         this.list.clear()
         this.list.addAll(list)

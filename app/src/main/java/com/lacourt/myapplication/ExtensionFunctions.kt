@@ -7,14 +7,14 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.lacourt.myapplication.database.MyListDao
-import com.lacourt.myapplication.domainmodel.Details
+import com.lacourt.myapplication.domainmodel.DomainDetails
 import io.reactivex.Completable
 import io.reactivex.CompletableObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-fun Details.openYoutube(context: Context?) {
+fun DomainDetails.openYoutube(context: Context?) {
     if (context != null) {
         if (!this.videos.isNullOrEmpty() && !this.videos[0].key.isNullOrEmpty()) {
             val webIntent = Intent(
@@ -40,8 +40,9 @@ fun MyListDao?.deleteByIdExt(context: Context, id: Int?, isInDatabase: MutableLi
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : CompletableObserver {
                 override fun onComplete() {
-                    isInDatabase.value = false
+                    isInDatabase.postValue(false)
                     Log.d("log_is_inserted", "DetailsRepository, delete(), onComplete() called")
+                    Log.d("mylistclick", "ExtensionFunctions, deleteByIdExt(), onComplete() called")
                 }
 
                 override fun onSubscribe(d: Disposable) {
@@ -50,21 +51,23 @@ fun MyListDao?.deleteByIdExt(context: Context, id: Int?, isInDatabase: MutableLi
 
                 override fun onError(e: Throwable) {
                     Log.d("log_is_inserted", "DetailsRepository, delete(), onError() called")
+                    Log.d("mylistclick", "ExtensionFunctions, deleteByIdExt(), onError() called")
                 }
             })
     } else {
         Toast.makeText(context, context.getString(R.string.database_item_not_removed), Toast.LENGTH_SHORT).show()
+        Log.d("mylistclick", "ExtensionFunctions, deleteByIdExt(),id or myListDao is null")
     }
 }
 
 fun MyListDao?.isInDatabase(id: Int?, isInDatabase: MutableLiveData<Boolean>) {
-    isInDatabase.value = false
+    isInDatabase.postValue(false)
     if (id != null && this != null) {
         this.getById(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             ?.doOnNext {
-                isInDatabase.value = true
+                isInDatabase.postValue(true)
                 Log.d(
                     "log_is_inserted",
                     "ExtensionFunction.IsInDatabase(), getById(), doOnNext called, isInDatabase.value = $isInDatabase"

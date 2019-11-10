@@ -5,17 +5,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.lacourt.myapplication.database.AppDatabase
+import com.lacourt.myapplication.domainmodel.DomainMovie
 import com.lacourt.myapplication.domainmodel.MyListItem
+import com.lacourt.myapplication.repository.MyListRepository
 
 class MyListViewModel(application: Application) : AndroidViewModel(application) {
     val repository = MyListRepository(application)
-    val myList: LiveData<List<MyListItem>> = repository.myList
+    val myList: LiveData<List<DomainMovie>> = repository.myList
 }
 
-class MyListRepository(application: Application) {
-    private val myListDao =
-        AppDatabase.getDatabase(application)!!.MyListDao()
-    val myList = MutableLiveData<List<MyListItem>>().apply {
-        value = myListDao.all()
-    }
-}

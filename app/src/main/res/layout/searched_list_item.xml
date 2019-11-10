@@ -14,7 +14,7 @@
         android:clickable="false"
         android:focusable="false"
         android:scaleType="centerCrop"
-        android:src="@drawable/clapperboard"
+        android:src="@drawable/placeholder"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

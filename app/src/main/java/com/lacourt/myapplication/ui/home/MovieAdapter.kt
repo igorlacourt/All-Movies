@@ -42,7 +42,7 @@ class MovieAdapter(
 
         holder.apply {
             Picasso.get().load("${AppConstants.TMDB_IMAGE_BASE_URL_W185}${movieDTO!!.poster_path}")
-                .placeholder(R.drawable.clapperboard)
+                .placeholder(R.drawable.placeholder)
                 .into(poster)
 
             cardView.setOnClickListener {

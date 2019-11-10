@@ -12,10 +12,7 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_navigation_home_to_detailsFragment"
-            app:destination="@id/detailsFragment"
-            app:enterAnim="@transition/slide_in_right"
-            app:popExitAnim="@transition/slide_out_right"
-            app:popEnterAnim="@transition/pop_enter_stay"/>
+            app:destination="@id/detailsFragment" />
     </fragment>
 
     <fragment
@@ -25,9 +22,7 @@
         tools:layout="@layout/fragment_dashboard" >
         <action
             android:id="@+id/action_navigation_my_list_to_detailsFragment"
-            app:destination="@id/detailsFragment"
-            app:enterAnim="@transition/slide_in_right"
-            app:popExitAnim="@transition/slide_out_right" />
+            app:destination="@id/detailsFragment" />
     </fragment>
 
     <fragment
@@ -43,15 +38,17 @@
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.lacourt.myapplication.ui.details.DetailsFragment"
-        android:label="DetailsFragment" >
+        android:label="DetailsFragment"
+        tools:layout="@layout/fragment_details">
         <argument
             android:name="id"
             app:argType="integer" />
         <action
             android:id="@+id/action_detailsFragment_self"
-            app:destination="@id/detailsFragment"
-            app:enterAnim="@transition/slide_in_right"
-            app:popExitAnim="@transition/slide_out_right" />
+            app:destination="@id/detailsFragment" />
+        <!--        app:launchSingleTop="true"-->
+<!--        app:popUpTo="@+id/nav_host_fragment"-->
+<!--        app:popUpToInclusive="true"-->
     </fragment>
 
 </navigation>

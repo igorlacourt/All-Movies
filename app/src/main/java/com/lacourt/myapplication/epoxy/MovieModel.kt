@@ -26,7 +26,7 @@ abstract class MovieModel : EpoxyModelWithHolder<MovieModel.MovieHolder>() {
         fun renderMovie(movie: DbMovieDTO){
 
             Picasso.get().load("${AppConstants.TMDB_IMAGE_BASE_URL_W185}${movie.poster_path}")
-                .placeholder(R.drawable.clapperboard)
+                .placeholder(R.drawable.placeholder)
                 .into(itemView.iv_poster)
 
         }

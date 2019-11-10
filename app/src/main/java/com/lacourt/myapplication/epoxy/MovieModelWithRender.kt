@@ -48,7 +48,7 @@
 //
 //            val imagePath = mMoviePoster ?: ""
 //            Picasso.get().load(AppConstants.TMDB_IMAGE_BASE_URL_W185 + imagePath)
-//                .placeholder(R.drawable.clapperboard)
+//                .placeholder(R.drawable.placeholder)
 //                .into(itemView.iv_poster)
 //        }
 //    }

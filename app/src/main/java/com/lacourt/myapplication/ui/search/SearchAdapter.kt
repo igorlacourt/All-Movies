@@ -33,7 +33,7 @@ class SearchAdapter(private val context: Context?,
         holder.apply {
             title.text = list[position].title
             Picasso.get().load("${AppConstants.TMDB_IMAGE_BASE_URL_W185}${list[position].backdrop_path}")
-                .placeholder(R.drawable.clapperboard)
+                .placeholder(R.drawable.placeholder)
                 .into(backdrop)
 
             itemLayout.setOnClickListener {

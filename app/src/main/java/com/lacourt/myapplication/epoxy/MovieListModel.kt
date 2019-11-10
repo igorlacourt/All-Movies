@@ -23,7 +23,7 @@ abstract class MovieListModel : EpoxyModelWithHolder<MovieListModel.ViewHolder>(
         super.bind(holder)
         val imagePath = mMoviePoster ?: ""
         Picasso.get().load(AppConstants.TMDB_IMAGE_BASE_URL_W185 + imagePath)
-            .placeholder(R.drawable.clapperboard)
+            .placeholder(R.drawable.placeholder)
             .into(holder.poster)
         holder.cardView?.setOnClickListener(clickListener)
     }
