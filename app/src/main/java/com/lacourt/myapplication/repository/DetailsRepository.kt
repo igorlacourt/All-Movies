@@ -9,8 +9,8 @@ import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.database.AppDatabase
 import com.lacourt.myapplication.deleteByIdExt
 import com.lacourt.myapplication.domainMappers.MapperFunctions.toDetails
-import com.lacourt.myapplication.domainMappers.toDomiainMovie
-import com.lacourt.myapplication.domainmodel.DomainDetails
+import com.lacourt.myapplication.domainMappers.toDomainMovie
+import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.domainmodel.DomainMovie
 import com.lacourt.myapplication.domainmodel.MyListItem
 import com.lacourt.myapplication.dto.DetailsDTO
@@ -26,17 +26,17 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class DetailsRepository(application: Application) : BaseRepository(), NetworkCallback<DomainDetails> {
+class DetailsRepository(application: Application) : BaseRepository(), NetworkCallback<Details> {
     private val myListDao =
         AppDatabase.getDatabase(application)?.MyListDao()
-    var movie: MutableLiveData<Resource<DomainDetails>> = MutableLiveData()
+    var movie: MutableLiveData<Resource<Details>> = MutableLiveData()
     var recommendedMovies: MutableLiveData<Resource<List<DomainMovie>>> = MutableLiveData()
     var isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
     val context: Context = application
 
     fun getDetails(id: Int) {
         Log.d("calltest", "getDetails called")
-        NetworkCall<DetailsDTO, DomainDetails>().makeCall(
+        NetworkCall<DetailsDTO, Details>().makeCall(
             Apifactory.tmdbApi.getDetails(id, AppConstants.VIDEOS),
             this,
             ::toDetails
@@ -56,7 +56,7 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
                         t.results.removeAt(beforeLast)
                     }
                     recommendedMovies.value =
-                        Resource.success(t.toDomiainMovie())
+                        Resource.success(t.toDomainMovie() as List)
                 }
 
                 override fun onSubscribe(d: Disposable) {
@@ -81,7 +81,7 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
     }
 
     @SuppressLint("CheckResult")
-    override fun networkCallResult(callback: Resource<DomainDetails>) {
+    override fun networkCallResult(callback: Resource<Details>) {
         Log.d(
             "log_is_inserted",
             "DetailsRepository, networkCallResult() called, movie = ${callback.data?.title}"

@@ -10,8 +10,9 @@ import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.database.AppDatabase
 import com.lacourt.myapplication.deleteByIdExt
 import com.lacourt.myapplication.domainMappers.MapperFunctions
-import com.lacourt.myapplication.domainMappers.mapToDomain
-import com.lacourt.myapplication.domainmodel.DomainDetails
+import com.lacourt.myapplication.domainMappers.toDomainMovie
+import com.lacourt.myapplication.domainmodel.Details
+import com.lacourt.myapplication.domainmodel.DomainMovie
 import com.lacourt.myapplication.domainmodel.MyListItem
 import com.lacourt.myapplication.dto.*
 import com.lacourt.myapplication.isInDatabase
@@ -24,8 +25,8 @@ import retrofit2.HttpException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
-class HomeRepository(private val application: Application) : NetworkCallback<DomainDetails> {
-//    private val config = PagedList.Config.Builder()
+class HomeRepository(private val application: Application) : NetworkCallback<Details> {
+    //    private val config = PagedList.Config.Builder()
 //        .setInitialLoadSizeHint(50)
 //        .setPageSize(50)
 //        .setEnablePlaceholders(false)
@@ -35,9 +36,9 @@ class HomeRepository(private val application: Application) : NetworkCallback<Dom
     private val movieDao =
         AppDatabase.getDatabase(application)?.MovieDao()
 
-    val topTrendingMovie = MutableLiveData<Resource<DomainDetails>>()
+    val topTrendingMovie = MutableLiveData<Resource<Details>>()
 
-    val listsOfMovies = MutableLiveData<Resource<List<Collection<DbMovieDTO>>>>()
+    val listsOfMovies = MutableLiveData<Resource<List<Collection<DomainMovie>>>>()
 
     private val myListDao =
         AppDatabase.getDatabase(application)?.MyListDao()
@@ -53,7 +54,7 @@ class HomeRepository(private val application: Application) : NetworkCallback<Dom
         movieDao?.deleteAll()
     }
 
-    fun refresh(){
+    fun refresh() {
         Log.d("refresh", "HomeRepository, refresh()")
         fetchMoviesLists()
     }
@@ -78,12 +79,12 @@ class HomeRepository(private val application: Application) : NetworkCallback<Dom
                         popularMoviesResponse: MovieResponseDTO,
                         topRatedMoviesResponse: MovieResponseDTO ->
 
-                val list1 = trendingMoviesResponse.mapToDomain()
-                val list2 = upcomingMoviesResponse.mapToDomain()
-                val list3 = popularMoviesResponse.mapToDomain()
-                val list4 = topRatedMoviesResponse.mapToDomain()
+                val list1 = trendingMoviesResponse.toDomainMovie()
+                val list2 = upcomingMoviesResponse.toDomainMovie()
+                val list3 = popularMoviesResponse.toDomainMovie()
+                val list4 = topRatedMoviesResponse.toDomainMovie()
 
-                var resultList = ArrayList<Collection<DbMovieDTO>>()
+                var resultList = ArrayList<Collection<DomainMovie>>()
                 resultList.add(list1)
                 resultList.add(list2)
                 resultList.add(list3)
@@ -141,7 +142,7 @@ class HomeRepository(private val application: Application) : NetworkCallback<Dom
         myListDao?.insert(myListItem)
     }
 
-    fun delete(id: Int) {
+    fun delete(id: Int?) {
         Log.d("log_is_inserted", "HomeRepository, delete() called")
         Log.d("mylistclick", "HomeRepository, delete() called, id = $id")
         myListDao.deleteByIdExt(context, id, isInDatabase)
@@ -156,16 +157,16 @@ class HomeRepository(private val application: Application) : NetworkCallback<Dom
 //            }
 //        }
 
-    private fun fetchTopImageDetails(id: Int) {
-
-        NetworkCall<DetailsDTO, DomainDetails>().makeCall(
-            Apifactory.tmdbApi.getDetails(id, AppConstants.VIDEOS),
-            this,
-            MapperFunctions::toDetails
-        )
+    private fun fetchTopImageDetails(id: Int?) {
+        if (id != null)
+            NetworkCall<DetailsDTO, Details>().makeCall(
+                Apifactory.tmdbApi.getDetails(id, AppConstants.VIDEOS),
+                this,
+                MapperFunctions::toDetails
+            )
     }
 
-    override fun networkCallResult(callback: Resource<DomainDetails>) {
+    override fun networkCallResult(callback: Resource<Details>) {
         topTrendingMovie.value = callback
         myListDao.isInDatabase(callback.data?.id, isInDatabase)
     }

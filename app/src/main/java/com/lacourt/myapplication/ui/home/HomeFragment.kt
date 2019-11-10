@@ -100,7 +100,6 @@ class HomeFragment : Fragment(), OnItemClick {
         })
 
         viewModel.isInDatabase?.observe(this, Observer { isInDatabase ->
-            Log.d("mylistclick", "HomeFragment, isInDatabase?.observe, IsInDatabase = $isInDatabase")
             movieController.submitIsInDatabase(isInDatabase)
             recyclerView.setController(movieController)
         })

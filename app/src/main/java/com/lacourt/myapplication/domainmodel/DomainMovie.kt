@@ -1,8 +1,7 @@
 package com.lacourt.myapplication.domainmodel
-
 import com.google.gson.annotations.Expose
 
-data class DomainMovie(
+data class DomainMovie  (
     val id: Int?,
 
     @Expose

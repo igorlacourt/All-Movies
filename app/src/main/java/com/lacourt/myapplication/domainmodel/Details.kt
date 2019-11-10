@@ -8,7 +8,7 @@ import com.lacourt.myapplication.R
 import com.lacourt.myapplication.dto.GenreXDTO
 import com.lacourt.myapplication.dto.VideoDTO
 
-data class DomainDetails(
+data class Details(
     val backdrop_path: String?,
     val genres: List<GenreXDTO>?,
     val id: Int?,

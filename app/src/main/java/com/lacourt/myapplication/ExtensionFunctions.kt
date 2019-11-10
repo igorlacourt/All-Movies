@@ -7,14 +7,14 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.lacourt.myapplication.database.MyListDao
-import com.lacourt.myapplication.domainmodel.DomainDetails
+import com.lacourt.myapplication.domainmodel.Details
 import io.reactivex.Completable
 import io.reactivex.CompletableObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-fun DomainDetails.openYoutube(context: Context?) {
+fun Details.openYoutube(context: Context?) {
     if (context != null) {
         if (!this.videos.isNullOrEmpty() && !this.videos[0].key.isNullOrEmpty()) {
             val webIntent = Intent(

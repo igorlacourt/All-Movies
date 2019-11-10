@@ -16,8 +16,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.R
+import com.lacourt.myapplication.ui.GridAdapter
 import com.lacourt.myapplication.ui.OnItemClick
-import com.lacourt.myapplication.ui.details.GridAdapter
 import com.lacourt.myapplication.ui.home.MovieAdapter
 import com.lacourt.myapplication.viewmodel.MyListViewModel
 import kotlinx.android.synthetic.main.fragment_mylist.*

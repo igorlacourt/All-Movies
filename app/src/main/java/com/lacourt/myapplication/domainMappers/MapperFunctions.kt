@@ -1,6 +1,6 @@
 package com.lacourt.myapplication.domainMappers
 
-import com.lacourt.myapplication.domainmodel.DomainDetails
+import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.domainmodel.DomainMovie
 import com.lacourt.myapplication.domainmodel.MyListItem
 import com.lacourt.myapplication.dto.DbMovieDTO
@@ -8,19 +8,7 @@ import com.lacourt.myapplication.dto.DetailsDTO
 import com.lacourt.myapplication.dto.MovieDTO
 import com.lacourt.myapplication.dto.MovieResponseDTO
 
-
-fun MovieResponseDTO.mapToDomain() : Collection<DbMovieDTO> {
-    return this.results.map { movieDTO ->
-        DbMovieDTO(
-            movieDTO.id,
-            movieDTO.poster_path,
-            movieDTO.release_date,
-            movieDTO.vote_average
-        )
-    }
-}
-
-fun DomainDetails.toMyListItem(): MyListItem {
+fun Details.toMyListItem(): MyListItem? {
     return with(this) {
         MyListItem(
             id,
@@ -29,25 +17,36 @@ fun DomainDetails.toMyListItem(): MyListItem {
             vote_average
         )
     }
+
 }
 
-fun MovieResponseDTO.toDomiainMovie(): List<DomainMovie> {
+fun List<MyListItem>.toDomainMovie(): List<DomainMovie>? {
+    return this.map { myListItem ->
+        DomainMovie(
+            myListItem.id,
+            myListItem.poster_path
+        )
+    }
+
+}
+
+fun MovieResponseDTO.toDomainMovie(): Collection<DomainMovie> {
     return this.results.map { movieDTO ->
         DomainMovie(
             movieDTO.id,
             movieDTO.poster_path
         )
-
     }
 }
 
-fun List<MyListItem>.toDomiainMovie(): List<DomainMovie> {
-    return this.map { movieDTO ->
-        DomainMovie(
+fun MovieResponseDTO.mapToDomain(): Collection<DbMovieDTO> {
+    return this.results.map { movieDTO ->
+        DbMovieDTO(
             movieDTO.id,
-            movieDTO.poster_path
+            movieDTO.poster_path,
+            movieDTO.release_date,
+            movieDTO.vote_average
         )
-
     }
 }
 
@@ -65,9 +64,9 @@ object MapperFunctions {
         }
     }
 
-    fun toDetails(input: DetailsDTO): DomainDetails {
+    fun toDetails(input: DetailsDTO): Details {
         return with(input) {
-            DomainDetails(
+            Details(
                 backdrop_path,
                 genres,
                 id,
@@ -82,17 +81,16 @@ object MapperFunctions {
         }
     }
 
-
-//    fun toMyListItem(input: DomainDetails): MyListItem {
-//        return with(input) {
-//            MyListItem(
-//                id,
-//                poster_path,
-//                release_date,
-//                vote_average
-//            )
-//        }
-//    }
+    fun toMyListItem(input: Details): MyListItem {
+        return with(input) {
+            MyListItem(
+                id,
+                poster_path,
+                release_date,
+                vote_average
+            )
+        }
+    }
 
     fun toListOfDbMovieDTO(networkMoviesList: List<MovieDTO>): List<DbMovieDTO> {
         return networkMoviesList.map {

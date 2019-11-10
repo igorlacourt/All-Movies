@@ -5,11 +5,12 @@ import android.util.Log
 import android.widget.Toast
 import com.airbnb.epoxy.CarouselModel_
 import com.airbnb.epoxy.EpoxyController
-import com.lacourt.myapplication.domainmodel.DomainDetails
+import com.lacourt.myapplication.domainMappers.toMyListItem
+import com.lacourt.myapplication.domainmodel.Details
+import com.lacourt.myapplication.domainmodel.DomainMovie
 import com.lacourt.myapplication.dto.DbMovieDTO
 import com.lacourt.myapplication.network.Error
 import com.lacourt.myapplication.ui.OnItemClick
-import com.lacourt.myapplication.domainMappers.toMyListItem
 import com.lacourt.myapplication.openYoutube
 import com.lacourt.myapplication.viewmodel.HomeViewModel
 
@@ -24,15 +25,15 @@ class MovieController(
         Log.d("genreslog", "MovieController, init called")
     }
 
-    var topTrendingMovie: DomainDetails? = null
+    var topTrendingMovie: Details? = null
     var trendingMovies: List<DbMovieDTO>? = null
 
-    var listsOfMovies: List<Collection<DbMovieDTO>?>? = null
+    var listsOfMovies: List<Collection<DomainMovie>?>? = null
     var error: Error? = null
 
     var isInDatabase: Boolean = false
 
-    fun submitListsOfMovies(newListsOfMovies: List<Collection<DbMovieDTO>?>?, error: Error?) {
+    fun submitListsOfMovies(newListsOfMovies: List<Collection<DomainMovie>?>?, error: Error?) {
         Log.d("errorBoolean", "submitListOfMovies, error = $error")
         Log.d("refresh", "HomeFragment, tsubmitListsOfMovies, error = ${error?.cd}")
         Log.d(
@@ -44,7 +45,7 @@ class MovieController(
         Log.d("listsLog", "MovieController, listsOfMovies.size = ${listsOfMovies?.size}")
     }
 
-    fun submitTopTrendingMovie(newMovie: DomainDetails?, error: Error?) {
+    fun submitTopTrendingMovie(newMovie: Details?, error: Error?) {
         topTrendingMovie = newMovie
         Log.d("refresh", "HomeFragment, submitTopTrendingMovie, error = ${error?.cd}")
         Log.d("refresh", "HomeFragment, submitTopTrendingMovie, list.size = ${newMovie?.title}")
@@ -80,7 +81,7 @@ class MovieController(
                     .id(movie.id)
                     .mMoviePoster(movie.poster_path)
                     .clickListener { model, parentView, clickedView, position ->
-                        callDetailsFragment(movie.id)
+                        movie.id?.let { callDetailsFragment(it) }
                     }
             )
         }
@@ -92,7 +93,7 @@ class MovieController(
                     .mMoviePoster(movie.poster_path)
                     .clickListener { model, parentView, clickedView, position ->
                         Log.d("clicklog", "onCreateView in upcoming movies called")
-                        callDetailsFragment(movie.id)
+                        movie.id?.let { callDetailsFragment(it) }
                     }
             )
         }
@@ -104,7 +105,7 @@ class MovieController(
                     .mMoviePoster(movie.poster_path)
                     .clickListener { model, parentView, clickedView, position ->
                         Log.d("clicklog", "onCreateView popular movies called")
-                        callDetailsFragment(movie.id)
+                        movie.id?.let { callDetailsFragment(it) }
                     }
             )
         }
@@ -116,7 +117,7 @@ class MovieController(
                     .mMoviePoster(movie.poster_path)
                     .clickListener { model, parentView, clickedView, position ->
                         Log.d("clicklog", "onCreateView in all trending called")
-                        callDetailsFragment(movie.id)
+                        movie.id?.let { callDetailsFragment(it) }
                     }
             )
         }
@@ -141,9 +142,7 @@ class MovieController(
                         .genresList(topTrendingMovie!!.genres!!)
                         .title(topTrendingMovie!!.title!!)
                         .trailerClickListener { model, parentView, clickedView, position ->
-                            topTrendingMovie?.let {
-                                it.openYoutube(context)
-                            }
+                            topTrendingMovie?.openYoutube(context)
                         }
                         .myListClickListener { model, parentView, clickedView, position ->
                             if (isInDatabase){
@@ -152,7 +151,7 @@ class MovieController(
                             }
                             else{
                                 Log.d("mylistclick", "MovieController, myListClickListener, isInDatabase = $isInDatabase")
-                                viewModel.insert(topTrendingMovie!!.toMyListItem())
+                                topTrendingMovie!!.toMyListItem()?.let { viewModel.insert(it) }
                             }
 
                         }
