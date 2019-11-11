@@ -76,8 +76,7 @@ class DetailsFragment : Fragment(), OnItemClick {
 //                    return false
 //                }
 //            }
-        var layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
-        recyclerView.layoutManager = layoutManager
+        recyclerView.layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
 //        recyclerView.addItemDecoration(MoviePosterItemDecorator(50))
 
         recyclerView.adapter = adapter
@@ -89,7 +88,7 @@ class DetailsFragment : Fragment(), OnItemClick {
         viewModel =
             ViewModelProviders.of(this).get(DetailsViewModel::class.java)
 
-        viewModel.recommendedMovies?.observe(this, Observer { resource ->
+        viewModel.recommendedMovies.observe(this, Observer { resource ->
             when (resource.status) {
                 Resource.Status.SUCCESS -> {
                     resource?.data?.let { movies ->
@@ -153,9 +152,7 @@ class DetailsFragment : Fragment(), OnItemClick {
         })
 
         backdropImageView.setOnClickListener {
-            details?.let {
-                it.openYoutube(context)
-            }
+            details?.openYoutube(context)
         }
 
         wishListButton.setOnClickListener {
@@ -187,7 +184,7 @@ class DetailsFragment : Fragment(), OnItemClick {
 
     fun displayDetails(details: Details?) {
         details?.apply {
-            var imagePath = backdrop_path ?: poster_path
+            val imagePath = backdrop_path ?: poster_path
             Log.d("calltest", "onChange, response = $this")
 
             Picasso.get()
@@ -225,6 +222,7 @@ class DetailsFragment : Fragment(), OnItemClick {
 
     override fun onItemClick(id: Int) {
         if (id != 0) {
+            Log.d("clickgrid", "HomeFragment, onItemClick, id = $id")
             val detailsToDetailsFragment = DetailsFragmentDirections.actionDetailsFragmentSelf(id)
             findNavController().navigate(detailsToDetailsFragment)
         } else {

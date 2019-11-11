@@ -57,6 +57,7 @@ class RecommendedAdapter(
 
             cardView.setOnClickListener {
                 val id = list[position].id
+                Log.d("clickgrid", "RecommandedAdapter, setOnClickListener, id = $id")
                 if (id != null)
                     onItemClick.onItemClick(id)
                 else
@@ -69,9 +70,6 @@ class RecommendedAdapter(
             }
         }
 
-        holder.cardView.setOnClickListener {
-            onItemClick.onItemClick(list[position].id)
-        }
     }
 
     fun setList(list: List<DbMovieDTO>) {

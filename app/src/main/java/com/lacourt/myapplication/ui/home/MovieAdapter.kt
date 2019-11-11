@@ -1,6 +1,7 @@
 package com.lacourt.myapplication.ui.home
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,6 +47,7 @@ class MovieAdapter(
                 .into(poster)
 
             cardView.setOnClickListener {
+                Log.d("clickgrid", "MovieAdapter, setOnClickListener, id = ${movies[position].id}")
                 onItemClick.onItemClick(movieDTO.id)
             }
         }

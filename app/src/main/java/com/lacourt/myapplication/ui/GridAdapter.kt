@@ -55,25 +55,20 @@ class GridAdapter(
 
             cardView.setOnClickListener {
                 val id = list[position].id
-                if (id != null)
+                if (id != null) {
+                    Log.d("clickgrid", "GridAdapter, setOnClickListener, id = $id")
                     onItemClick.onItemClick(id)
-                else
+                }
+                else {
                     Toast.makeText(
                         context,
                         "Sorry. Can not load this movie. :/",
                         Toast.LENGTH_SHORT
                     ).show()
-
+                }
             }
         }
 
-        holder.cardView.setOnClickListener {
-            list[position].id?.let {
-                onItemClick.onItemClick(list[position].id!!)
-                onItemClick.onItemClick(list[position].id!!)
-            }
-
-        }
     }
 
     fun setList(list: List<DomainMovie>) {

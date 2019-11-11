@@ -37,6 +37,7 @@ class SearchAdapter(private val context: Context?,
                 .into(backdrop)
 
             itemLayout.setOnClickListener {
+                Log.d("clickgrid", "SearchAdapter, setOnClickListener, id = ${list[position].id}")
                 onItemClick.onItemClick(list[position].id)
             }
         }

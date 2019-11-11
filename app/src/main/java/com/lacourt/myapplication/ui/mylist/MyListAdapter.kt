@@ -1,6 +1,7 @@
 package com.lacourt.myapplication.ui.mylist
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,6 +41,7 @@ class MyListAdapter(
 
             cardView.setOnClickListener {
                 val id = list[position].id
+                Log.d("clickgrid", "MyListAdapter, setOnClickListener, id = $id")
                 if(id != null)
                     onItemClick.onItemClick(id)
                 else
