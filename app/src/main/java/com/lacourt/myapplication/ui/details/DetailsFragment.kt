@@ -9,9 +9,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -28,7 +27,6 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_details.*
 import java.lang.Exception
-import android.widget.GridView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -42,6 +40,7 @@ import com.lacourt.myapplication.ui.home.MovieAdapter
 import com.lacourt.myapplication.ui.search.SearchFragmentDirections
 import java.math.BigDecimal
 import java.math.RoundingMode
+import kotlin.math.floor
 
 /**
  * A simple [Fragment] subclass.
@@ -56,6 +55,7 @@ class DetailsFragment : Fragment(), OnItemClick {
     lateinit var progressBar: ProgressBar
     lateinit var wishListButton: ImageView
     lateinit var backdropImageView: ImageView
+    lateinit var voteAverage: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,6 +63,7 @@ class DetailsFragment : Fragment(), OnItemClick {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_details, container, false)
+        voteAverage = view.findViewById(R.id.tv_vote_average)
         wishListButton = view.findViewById(R.id.wish_list_btn)
         backdropImageView = view.findViewById(R.id.detail_backdrop)
         progressBar = view.findViewById(R.id.details_progress_bar)
@@ -76,7 +77,8 @@ class DetailsFragment : Fragment(), OnItemClick {
 //                    return false
 //                }
 //            }
-        recyclerView.layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager =
+            GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
 //        recyclerView.addItemDecoration(MoviePosterItemDecorator(50))
 
         recyclerView.adapter = adapter
@@ -207,11 +209,31 @@ class DetailsFragment : Fragment(), OnItemClick {
             detail_overview.text = overview
             release_year.text = release_date
             tv_duration.text = convertDuration(runtime)
-            tv_rate_details.text = "${vote_average.toString()} vote average"
-
+            setVoteAverageColor(tv_vote_average, vote_average)
             progressBar.visibility = View.INVISIBLE
         }
 
+    }
+
+    private fun setVoteAverageColor(tv: TextView, avg: Double?) {
+        if (avg != null) {
+            var color = R.color.avg0until4
+            val vote: Int = floor(avg).toInt()
+            when(vote) {
+                10 -> color = R.color.avg8until10
+                9 -> color = R.color.avg8until10
+                8 -> color = R.color.avg8until10
+                7 -> color = R.color.avg6until8
+                6 -> color = R.color.avg6until8
+                5 -> color = R.color.avg4until6
+                4 -> color = R.color.avg4until6
+                3 -> color = R.color.avg0until4
+                2 -> color = R.color.avg0until4
+                1 -> color = R.color.avg0until4
+            }
+            tv.text = "${avg.toString()} vote average"
+            context?.let { tv.setTextColor(ContextCompat.getColor(it, color)) }
+        }
     }
 
     private fun convertDuration(timeSeconds: Int?) = timeSeconds?.let {

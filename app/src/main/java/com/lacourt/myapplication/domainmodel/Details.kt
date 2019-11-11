@@ -49,8 +49,10 @@ data class Details(
             }
         }
 
+
         if (trailer == null)
-            trailer = videos?.get(0)
+            if (!videos.isNullOrEmpty())
+                trailer = videos.get(0)
 
         return trailer
     }

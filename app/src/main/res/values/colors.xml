@@ -23,4 +23,11 @@
     <color name="trailerButtonTextColor">#111111</color>
     <color name="errorRetryButtonColor">#8D8D8D</color>
     <color name="errorMessageColor">#D3D3D3</color>
+
+    <color name="avg8until10">#12AA00</color>
+    <color name="avg6until8">#83BB00</color>
+    <color name="avg4until6">#E4B811</color>
+    <color name="avg0until4">#DD5733</color>
+
+
 </resources>
