@@ -16,6 +16,9 @@ package com.lacourt.myapplication
 //TODO 13. Implement Navigation
 //TODO 14. Implement backwards navigation for home an mylist fragments (when click back the app closes instead of back to the one was being displayed before)
 
+
+//Rent sites: Google Play Movies, Amazon Movies, iTunes Movie Rentals, Vudu, Yahoo Movies
+
 //TODO adding and removing from "my list"
 //1. in DetailsActivity's onCreate
 //2. Check if there is a movie with same id in 'my_list' table

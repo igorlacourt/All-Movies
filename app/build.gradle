@@ -21,6 +21,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -137,10 +138,10 @@ dependencies {
 
     //Epoxy
     implementation 'com.airbnb.android:epoxy:3.8.0'//3.6.0'//3.7.0'//3.8.0'
-    kapt 'com.airbnb.android:epoxy-processor:3.8.0'//3.6.0'//3.7.0'//3.8.0'
-//    implementation 'com.airbnb.android:epoxy-databinding:3.8.0'
+    kapt 'com.airbnb.android:epoxy-processor:3.8.0'
 
-//    implementation 'com.google.android:flexbox:1.0.0'
+    //Jsoup
+    implementation 'org.jsoup:jsoup:1.12.1'
 
-
+    implementation 'com.android.support:multidex:1.0.3'
 }
