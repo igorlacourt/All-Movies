@@ -3,10 +3,7 @@ package com.lacourt.myapplication.domainMappers
 import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.domainmodel.DomainMovie
 import com.lacourt.myapplication.domainmodel.MyListItem
-import com.lacourt.myapplication.dto.DbMovieDTO
-import com.lacourt.myapplication.dto.DetailsDTO
-import com.lacourt.myapplication.dto.MovieDTO
-import com.lacourt.myapplication.dto.MovieResponseDTO
+import com.lacourt.myapplication.dto.*
 
 fun Details.toMyListItem(): MyListItem? {
     return with(this) {
@@ -76,7 +73,8 @@ object MapperFunctions {
                 runtime,
                 title,
                 vote_average,
-                videos?.results
+                videos?.results,
+                casts
             )
         }
     }

@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.R
+import com.lacourt.myapplication.dto.CastsDTO
 import com.lacourt.myapplication.dto.DbMovieDTO
 import com.lacourt.myapplication.openYoutube
 import com.lacourt.myapplication.ui.GridAdapter
@@ -211,8 +212,16 @@ class DetailsFragment : Fragment(), OnItemClick {
             tv_duration.text = convertDuration(runtime)
             setVoteAverageColor(tv_vote_average, vote_average)
             progressBar.visibility = View.INVISIBLE
+            setCastAndDirector(tv_cast, casts)
         }
 
+    }
+
+    private fun setCastAndDirector(tvCast: TextView, castAndDirector: CastsDTO?){
+        castAndDirector?.cast?.forEach {
+            tvCast.append("${it.name}, ")
+        }
+        castAndDirector?.crew?.let { tvCast.append(it[0].name) }
     }
 
     private fun setVoteAverageColor(tv: TextView, avg: Double?) {

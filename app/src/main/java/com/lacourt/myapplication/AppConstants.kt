@@ -13,4 +13,5 @@ object AppConstants{
     const val DATE_ASC = "ASC"
     const val DATE_DESC = "DESC"
     const val VIDEOS = "videos"
+    const val VIDEOS_AND_CASTS = "videos,casts"
 }

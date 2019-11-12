@@ -92,7 +92,7 @@
                 tools:text="Detail overview Detail overview Detail overview Detail overview Detail overview Detail overview " />
 
             <TextView
-                android:id="@+id/elenco_direcao"
+                android:id="@+id/tv_cast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
@@ -105,9 +105,9 @@
                 android:id="@+id/wish_list_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="@+id/elenco_direcao"
-                app:layout_constraintStart_toStartOf="@+id/elenco_direcao"
-                app:layout_constraintTop_toBottomOf="@+id/elenco_direcao"
+                app:layout_constraintLeft_toLeftOf="@+id/tv_cast"
+                app:layout_constraintStart_toStartOf="@+id/tv_cast"
+                app:layout_constraintTop_toBottomOf="@+id/tv_cast"
                 app:srcCompat="@drawable/ic_playlist_add_black_48dp" />
 
             <TextView

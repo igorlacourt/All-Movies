@@ -28,5 +28,6 @@ data class DetailsDTO(
     val video: Boolean,
     val vote_average: Double,
     val vote_count: Int,
-    val videos: VideosDTO?
+    val videos: VideosDTO?,
+    val casts: CastsDTO?
 )

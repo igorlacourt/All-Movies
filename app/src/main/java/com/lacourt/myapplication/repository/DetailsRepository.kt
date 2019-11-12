@@ -37,7 +37,7 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
     fun getDetails(id: Int) {
         Log.d("calltest", "getDetails called")
         NetworkCall<DetailsDTO, Details>().makeCall(
-            Apifactory.tmdbApi.getDetails(id, AppConstants.VIDEOS),
+            Apifactory.tmdbApi.getDetails(id, AppConstants.VIDEOS_AND_CASTS),
             this,
             ::toDetails
         )
