@@ -38,17 +38,14 @@ data class Details(
 
     fun formatCasts() {
         if (!casts?.cast.isNullOrEmpty()){
-            for (i in casts?.cast!!.size - 1 downTo 4){
+            for (i in casts?.cast!!.size - 1 downTo 3){
                 casts.cast.removeAt(i)
             }
         }
 
         var director: CrewDTO? = null
         if(!casts?.crew.isNullOrEmpty()){
-            var i = 0
             casts?.crew?.forEach { crew ->
-                Log.d("dirlog", "forEach, $i")
-                i++
                 var job = crew.job?.toLowerCase()
                 if (director == null && job == "director" ) {
                     director = crew

@@ -3,6 +3,7 @@ package com.lacourt.myapplication.ui.details
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.util.DisplayMetrics
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,6 +13,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.text.bold
+import androidx.core.text.toSpannable
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation.findNavController
@@ -212,23 +215,43 @@ class DetailsFragment : Fragment(), OnItemClick {
             tv_duration.text = convertDuration(runtime)
             setVoteAverageColor(tv_vote_average, vote_average)
             progressBar.visibility = View.INVISIBLE
-            setCastAndDirector(tv_cast, casts)
+            setCast(tv_cast, casts)
+            setDirector(tv_director, casts)
         }
 
     }
 
-    private fun setCastAndDirector(tvCast: TextView, castAndDirector: CastsDTO?){
-        castAndDirector?.cast?.forEach {
-            tvCast.append("${it.name}, ")
+    private fun setCast(tvCast: TextView, castAndDirector: CastsDTO?) {
+        var builder = SpannableStringBuilder()
+
+        builder.bold { append("Cast: ") }
+        if (!castAndDirector?.cast.isNullOrEmpty()) {
+            for (i in 0 until castAndDirector?.cast!!.size){
+                if (i == castAndDirector.cast.size - 1)
+                    builder.append("${castAndDirector.cast[i].name}")
+                else
+                    builder.append("${castAndDirector.cast[i].name}, ")
+            }
         }
-        castAndDirector?.crew?.let { tvCast.append(it[0].name) }
+
+
+        tvCast.text = builder
+    }
+
+    private fun setDirector(tvDir: TextView, castAndDirector: CastsDTO?) {
+        var builder = SpannableStringBuilder()
+
+        builder.bold { append("Director: ") }
+        builder.append("${castAndDirector?.crew?.get(0)?.name}")
+
+        tvDir.text = builder
     }
 
     private fun setVoteAverageColor(tv: TextView, avg: Double?) {
         if (avg != null) {
             var color = R.color.avg0until4
             val vote: Int = floor(avg).toInt()
-            when(vote) {
+            when (vote) {
                 10 -> color = R.color.avg8until10
                 9 -> color = R.color.avg8until10
                 8 -> color = R.color.avg8until10
