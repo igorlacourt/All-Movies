@@ -26,12 +26,18 @@ class MovieController(
     }
 
     var topTrendingMovie: Details? = null
-    var trendingMovies: List<DbMovieDTO>? = null
 
     var listsOfMovies: List<Collection<DomainMovie>?>? = null
     var error: Error? = null
 
     var isInDatabase: Boolean = false
+
+    var trendingMoviesModelList: ArrayList<MovieListModel_>? = null
+    var upcomingMovieModelList: ArrayList<MovieListModel_>? = null
+    var popularMovieModelList: ArrayList<MovieListModel_>? = null
+    var topRatedMoviesModelList: ArrayList<MovieListModel_>? = null
+
+    var lastDrawedCarousel: CarouselModel_? = null
 
     fun submitListsOfMovies(newListsOfMovies: List<Collection<DomainMovie>?>?, error: Error?) {
         Log.d("errorBoolean", "submitListOfMovies, error = $error")
@@ -56,16 +62,10 @@ class MovieController(
     fun submitIsInDatabase(newIsInDatabase: Boolean) {
         isInDatabase = newIsInDatabase
         requestModelBuild()
-        Log.d("mylistclick", "MovieController, submitIsInDatabase, newIsInDatabase = $newIsInDatabase")
-    }
-
-    fun submitTrendingMovies(newList: List<DbMovieDTO>?, error: Error?) {
-        Log.d("errorBoolean", "submitTrendingMovies, error = $error")
-        error?.let {
-            this.error = it
-        }
-        newList?.let { trendingMovies = it }
-        requestModelBuild()
+        Log.d(
+            "mylistclick",
+            "MovieController, submitIsInDatabase, newIsInDatabase = $newIsInDatabase"
+        )
     }
 
     override fun buildModels() {
@@ -74,9 +74,9 @@ class MovieController(
         Log.d("refresh", "buildModels, error = ${this.error}")
         Log.d("mylistclick", "MovieController, buildModels called")
 
-        val trendingMoviesModelList = ArrayList<MovieListModel_>()
+        trendingMoviesModelList = ArrayList<MovieListModel_>()
         listsOfMovies?.get(0)?.forEach { movie ->
-            trendingMoviesModelList.add(
+            trendingMoviesModelList?.add(
                 MovieListModel_()
                     .id(movie.id)
                     .mMoviePoster(movie.poster_path)
@@ -85,9 +85,9 @@ class MovieController(
                     }
             )
         }
-        val upcomingMovieModelList = ArrayList<MovieListModel_>()
+        upcomingMovieModelList = ArrayList<MovieListModel_>()
         listsOfMovies?.get(1)?.forEach { movie ->
-            upcomingMovieModelList.add(
+            upcomingMovieModelList?.add(
                 MovieListModel_()
                     .id(movie.id)
                     .mMoviePoster(movie.poster_path)
@@ -97,9 +97,9 @@ class MovieController(
                     }
             )
         }
-        val popularMovieModelList = ArrayList<MovieListModel_>()
+        popularMovieModelList = ArrayList<MovieListModel_>()
         listsOfMovies?.get(2)?.forEach { movie ->
-            popularMovieModelList.add(
+            popularMovieModelList?.add(
                 MovieListModel_()
                     .id(movie.id)
                     .mMoviePoster(movie.poster_path)
@@ -109,9 +109,9 @@ class MovieController(
                     }
             )
         }
-        val topRatedMoviesModelList = ArrayList<MovieListModel_>()
+        topRatedMoviesModelList = ArrayList<MovieListModel_>()
         listsOfMovies?.get(3)?.forEach { movie ->
-            topRatedMoviesModelList.add(
+            topRatedMoviesModelList?.add(
                 MovieListModel_()
                     .id(movie.id)
                     .mMoviePoster(movie.poster_path)
@@ -123,127 +123,113 @@ class MovieController(
         }
 
         if (error != null) {
-            val message = errorMessage()
-            Log.d("errorBoolean", "buildModels, if(error)  = ${this.error}")
-            ErrorHomeModel_()
-                .id(1)
-                .message(message)
-                .clickListener { model, parentView, clickedView, position ->
-                    viewModel.refresh()
-                }
-                .addTo(this)
-            Log.d("errorBoolean", "buildModels, ErrorHomeModel created")
+            drawErrorScreen()
         } else {
-            if (topTrendingMovie != null) {
-                if (topTrendingMovie!!.genres != null && topTrendingMovie!!.title != null) {
-                    val topTrendingMovieModel = TopTrendingMovieModel_(context, isInDatabase)
-                        .id("topTrendingMovie")
-                        .backdropPath(topTrendingMovie?.backdrop_path)
-                        .genresList(topTrendingMovie!!.genres!!)
-                        .title(topTrendingMovie!!.title!!)
-                        .trailerClickListener { model, parentView, clickedView, position ->
-                            topTrendingMovie?.openYoutube(context)
-                        }
-                        .myListClickListener { model, parentView, clickedView, position ->
-                            if (isInDatabase){
-                                Log.d("mylistclick", "MovieController, myListClickListener, isInDatabase = $isInDatabase")
-                                topTrendingMovie?.id?.let { viewModel.delete(it) }
-                            }
-                            else{
-                                Log.d("mylistclick", "MovieController, myListClickListener, isInDatabase = $isInDatabase")
-                                topTrendingMovie!!.toMyListItem()?.let { viewModel.insert(it) }
-                            }
-
-                        }
-                        .clickListener { model, parentView, clickedView, position ->
-                            Log.d("clicklog", "onCreateView popular movies called")
-                            topTrendingMovie?.id?.let { callDetailsFragment(it) }
-                        }
-
-//                    if (context != null) {
-//                        val icon = ImageView(context)
-//                        if (isInDatabase) {
-//                            icon.setImageDrawable(
-//                                ResourcesCompat.getDrawable(
-//                                    context.resources,
-//                                    R.drawable.ic_check_mark_24dp,
-//                                    null
-//                                )
-//                            )
-//                            topTrendingMovieModel.myListIcon?.setImageDrawable(
-//                                ResourcesCompat.getDrawable(
-//                                    context.resources,
-//                                    R.drawable.ic_check_mark_24dp,
-//                                    null
-//                                )
-//                            )
-////                            topTrendingMovieModel.myListIcon(icon)
-//
-//                        } else {
-//                            icon.setImageDrawable(
-//                                ResourcesCompat.getDrawable(
-//                                    context.resources,
-//                                    R.drawable.wish_list_btn_24dp,
-//                                    null
-//                                )
-//                            )
-//                            topTrendingMovieModel.myListIcon?.setImageDrawable(
-//                                ResourcesCompat.getDrawable(
-//                                    context.resources,
-//                                    R.drawable.wish_list_btn_24dp,
-//                                    null
-//                                )
-//                            )
-////                            topTrendingMovieModel.myListIcon(icon)
-//
-//                        }
-//                    }
-                    topTrendingMovieModel.addTo(this)
-                }
-
-            }
-
-
-
-            Log.d("errorBoolean", "buildModels, if(error)  = ${this.error}")
-            HeaderModel_()
-                .id(2)
-                .header("Trending")
-                .addTo(this)
-            CarouselModel_()
-                .id("trendingMovies")
-                .models(trendingMoviesModelList)
-                .addTo(this)
-
-            HeaderModel_()
-                .id(3)
-                .header("Upcoming movies")
-                .addTo(this)
-            CarouselModel_()
-                .id("upcomingMovies")
-                .models(upcomingMovieModelList)
-                .addTo(this)
-
-            HeaderModel_()
-                .id(4)
-                .header("Popular movies")
-                .addTo(this)
-            CarouselModel_()
-                .id("popularMovies")
-                .models(popularMovieModelList)
-                .addTo(this)
-
-            HeaderModel_()
-                .id(5)
-                .header("Critically acclaimed movies")
-                .addTo(this)
-            CarouselModel_()
-                .id("topRatedMovies")
-                .models(topRatedMoviesModelList)
-                .addTo(this)
-
+            drawToptrendingMovie()
+            drawCarousels()
             Log.d("errorBoolean", "buildModels, CarouselModels created")
         }
+    }
+
+    private fun drawCarousels() {
+        Log.d("errorBoolean", "buildModels, if(error)  = ${this.error}")
+        HeaderModel_()
+            .id(2)
+            .header("Trending")
+            .addTo(this)
+
+        trendingMoviesModelList?.let {
+            CarouselModel_()
+                .id("trendingMovies")
+                .models(it)
+                .addTo(this)
+        }
+
+        HeaderModel_()
+            .id(3)
+            .header("Upcoming movies")
+            .addTo(this)
+        upcomingMovieModelList?.let {
+            CarouselModel_()
+                .id("upcomingMovies")
+                .models(it)
+                .addTo(this)
+        }
+
+        HeaderModel_()
+            .id(4)
+            .header("Popular movies")
+            .addTo(this)
+        popularMovieModelList?.let {
+            CarouselModel_()
+                .id("popularMovies")
+                .models(it)
+                .addTo(this)
+        }
+
+        HeaderModel_()
+            .id(5)
+            .header("Critically acclaimed movies")
+            .addTo(this)
+        topRatedMoviesModelList?.let {
+            lastDrawedCarousel = CarouselModel_()
+                .id("topRatedMovies")
+                .models(it)
+
+            lastDrawedCarousel
+                ?.addTo(this)
+        }
+    }
+
+    private fun drawToptrendingMovie() {
+        if (topTrendingMovie != null) {
+            if (topTrendingMovie!!.genres != null && topTrendingMovie!!.title != null) {
+                val topTrendingMovieModel = TopTrendingMovieModel_(context, isInDatabase)
+                    .id("topTrendingMovie")
+                    .backdropPath(topTrendingMovie?.backdrop_path)
+                    .genresList(topTrendingMovie!!.genres!!)
+                    .title(topTrendingMovie!!.title!!)
+                    .trailerClickListener { model, parentView, clickedView, position ->
+                        topTrendingMovie?.openYoutube(context)
+                    }
+                    .myListClickListener { model, parentView, clickedView, position ->
+                        if (isInDatabase) {
+                            Log.d(
+                                "mylistclick",
+                                "MovieController, myListClickListener, isInDatabase = $isInDatabase"
+                            )
+                            topTrendingMovie?.id?.let { viewModel.delete(it) }
+                        } else {
+                            Log.d(
+                                "mylistclick",
+                                "MovieController, myListClickListener, isInDatabase = $isInDatabase"
+                            )
+                            topTrendingMovie!!.toMyListItem()?.let { viewModel.insert(it) }
+                        }
+
+                    }
+                    .clickListener { model, parentView, clickedView, position ->
+                        Log.d("clicklog", "onCreateView popular movies called")
+                        topTrendingMovie?.id?.let { callDetailsFragment(it) }
+                    }
+
+                topTrendingMovieModel.addTo(this)
+            }
+
+        }
+    }
+
+    private fun drawErrorScreen() {
+        val message = errorMessage()
+        Log.d("errorBoolean", "buildModels, if(error)  = ${this.error}")
+        ErrorHomeModel_()
+            .id(1)
+            .message(message)
+            .clickListener { model, parentView, clickedView, position ->
+                viewModel.refresh()
+            }
+            .addTo(this)
+        Log.d("errorBoolean", "buildModels, ErrorHomeModel created")
     }
 
     private fun errorMessage() = when (error!!.cd) {

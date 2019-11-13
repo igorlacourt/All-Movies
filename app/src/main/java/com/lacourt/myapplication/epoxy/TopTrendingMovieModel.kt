@@ -59,6 +59,34 @@ abstract class TopTrendingMovieModel(val context: Context?, val isInDatabase: Bo
 
         Log.d("genreslog", "TopTrendingMovieModel, bind(called)")
 
+        drawGenres(holder)
+        drawMyListIcon(holder)
+        setListeners(holder)
+
+    }
+
+    fun drawMyListIcon(holder: ViewHolder) {
+        if (context != null) {
+            if (isInDatabase)
+                holder.myListIcon?.setImageDrawable(
+                    ResourcesCompat.getDrawable(
+                        context.resources,
+                        R.drawable.ic_check_mark_24dp,
+                        null
+                    )
+                )
+            else
+                holder.myListIcon?.setImageDrawable(
+                    ResourcesCompat.getDrawable(
+                        context.resources,
+                        R.drawable.wish_list_btn_24dp,
+                        null
+                    )
+                )
+        }
+    }
+
+    fun drawGenres(holder: ViewHolder){
         for (i in 0 until genresList.size) {
             Log.d("genreslog", "TopTrendingMovieModel, for called, index = $i")
             holder.genres?.append(genresList[i].name)
@@ -85,37 +113,17 @@ abstract class TopTrendingMovieModel(val context: Context?, val isInDatabase: Bo
                 s[0..5] = color?.let { ForegroundColorSpan(it) } ?: ForegroundColorSpan(Color.GRAY)
 
                 holder.genres?.append(s)
-
-                holder.trailerButton?.setOnClickListener(trailerClickListener)
-                holder.myListButton?.setOnClickListener(myListClickListener)
-                holder.learnMoreButton?.setOnClickListener(clickListener)
-                holder.frameLayout?.setOnClickListener(clickListener)
-
-                if (context != null) {
-                    if (isInDatabase)
-                        holder.myListIcon?.setImageDrawable(
-                            ResourcesCompat.getDrawable(
-                                context.resources,
-                                R.drawable.ic_check_mark_24dp,
-                                null
-                            )
-                        )
-                    else
-                        holder.myListIcon?.setImageDrawable(
-                            ResourcesCompat.getDrawable(
-                                context.resources,
-                                R.drawable.wish_list_btn_24dp,
-                                null
-                            )
-                        )
-                }
-
-
             }
 
         }
     }
 
+    fun setListeners(holder: ViewHolder){
+        holder.trailerButton?.setOnClickListener(trailerClickListener)
+        holder.myListButton?.setOnClickListener(myListClickListener)
+        holder.learnMoreButton?.setOnClickListener(clickListener)
+        holder.frameLayout?.setOnClickListener(clickListener)
+    }
 
     class ViewHolder : EpoxyHolder() {
         var image: ImageView? = null
