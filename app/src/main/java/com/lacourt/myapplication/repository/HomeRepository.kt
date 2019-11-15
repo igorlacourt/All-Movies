@@ -37,13 +37,12 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
         AppDatabase.getDatabase(application)?.MovieDao()
 
     val topTrendingMovie = MutableLiveData<Resource<Details>>()
-
     val listsOfMovies = MutableLiveData<Resource<List<Collection<DomainMovie>>>>()
-
     private val myListDao =
         AppDatabase.getDatabase(application)?.MyListDao()
 
     var isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
+    var isLoading: MutableLiveData<Boolean> = MutableLiveData()
 
     /*Remember:
      1. that the returned list cannot be mutable
@@ -61,6 +60,7 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
 
     @SuppressLint("CheckResult")
     private fun fetchMoviesLists() {
+        isLoading.value = true
         Log.d("refresh", "HomeRepository, fetchMoviesLists()")
         val tmdbApi = Apifactory.tmdbApi
         val trendinMoviesObservale = tmdbApi.getTrendingMovies(AppConstants.LANGUAGE, 1)
@@ -133,6 +133,7 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
                         )
                     }
                 }
+                isLoading.value = false
             })
     }
 
@@ -147,15 +148,6 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
         Log.d("mylistclick", "HomeRepository, delete() called, id = $id")
         myListDao.deleteByIdExt(context, id, isInDatabase)
     }
-//    fun <T> Observable<T>.mapNetworkErrors(): Observable<T> =
-//        this.doOnError { error ->
-//            when (error) {
-//                is SocketTimeoutException -> Observable.error(NoNetworkException(error))
-//                is UnknownHostException -> Observable.error(ServerUnreachableException(error))
-//                is HttpException -> Observable.error(HttpCallFailureException(error))
-//                else -> Observable.error(error)
-//            }
-//        }
 
     private fun fetchTopImageDetails(id: Int?) {
         if (id != null)
@@ -169,30 +161,7 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
     override fun networkCallResult(callback: Resource<Details>) {
         topTrendingMovie.value = callback
         myListDao.isInDatabase(callback.data?.id, isInDatabase)
-    }
-
-    @SuppressLint("CheckResult")
-    fun fetchMovies() {
-//        Observable.range(1, 10)
-//            .flatMap { page ->
-//                moviesRequest(page)
-//                    ?.map {
-//                        MapperFunctions.toListOfDbMovieDTO(it.results)
-//                    }
-//                    ?.flatMap {
-//                        Observable.fromIterable(it)
-//                            .subscribeOn(Schedulers.io())
-//                    }
-//            }
-//            .doOnNext {
-//                Log.d("rxjavalog", "doOnNext called, id = ${it.id}")
-//                movieDao.insert(it)
-//            }
-//            .doOnComplete {
-//                Log.d("rxjavalog", "doOnComplete called")
-//            }
-//            .doOnError { networkErrorToast() }
-//            .subscribe()
+        isLoading.value = false
     }
 
     fun networkErrorToast() {

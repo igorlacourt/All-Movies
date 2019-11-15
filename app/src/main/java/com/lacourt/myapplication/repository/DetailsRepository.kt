@@ -32,6 +32,7 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
     var movie: MutableLiveData<Resource<Details>> = MutableLiveData()
     var recommendedMovies: MutableLiveData<Resource<List<DomainMovie>>> = MutableLiveData()
     var isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
+    var isLoading: MutableLiveData<Boolean> = MutableLiveData()
     val context: Context = application
 
     fun getDetails(id: Int) {

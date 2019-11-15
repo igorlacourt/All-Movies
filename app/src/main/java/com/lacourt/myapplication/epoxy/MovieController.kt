@@ -8,7 +8,6 @@ import com.airbnb.epoxy.EpoxyController
 import com.lacourt.myapplication.domainMappers.toMyListItem
 import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.domainmodel.DomainMovie
-import com.lacourt.myapplication.dto.DbMovieDTO
 import com.lacourt.myapplication.network.Error
 import com.lacourt.myapplication.ui.OnItemClick
 import com.lacourt.myapplication.openYoutube
@@ -20,17 +19,10 @@ class MovieController(
     private val viewModel: HomeViewModel
 ) : EpoxyController() {
 
-    init {
-        Log.d("clicklog", "initializing movieController")
-        Log.d("genreslog", "MovieController, init called")
-    }
-
     var topTrendingMovie: Details? = null
 
     var listsOfMovies: List<Collection<DomainMovie>?>? = null
     var error: Error? = null
-
-    var isInDatabase: Boolean = false
 
     var trendingMoviesModelList: ArrayList<MovieListModel_>? = null
     var upcomingMovieModelList: ArrayList<MovieListModel_>? = null
@@ -38,6 +30,15 @@ class MovieController(
     var topRatedMoviesModelList: ArrayList<MovieListModel_>? = null
 
     var lastDrawedCarousel: CarouselModel_? = null
+
+    var isInDatabase: Boolean = false
+    var isLoading: Boolean = true
+
+    init {
+        Log.d("clicklog", "initializing movieController")
+        Log.d("genreslog", "MovieController, init called")
+        requestModelBuild()
+    }
 
     fun submitListsOfMovies(newListsOfMovies: List<Collection<DomainMovie>?>?, error: Error?) {
         Log.d("errorBoolean", "submitListOfMovies, error = $error")
@@ -53,10 +54,17 @@ class MovieController(
 
     fun submitTopTrendingMovie(newMovie: Details?, error: Error?) {
         topTrendingMovie = newMovie
-        Log.d("refresh", "HomeFragment, submitTopTrendingMovie, error = ${error?.cd}")
-        Log.d("refresh", "HomeFragment, submitTopTrendingMovie, list.size = ${newMovie?.title}")
+        Log.d("refresh", "MovieController, submitTopTrendingMovie, error = ${error?.cd}")
+        Log.d("refresh", "MovieController, submitTopTrendingMovie, list.size = ${newMovie?.title}")
         this.error = error
         requestModelBuild()
+    }
+
+    fun submitIsLoading(newIsLoading: Boolean){
+        isLoading = newIsLoading
+        requestModelBuild()
+        Log.d("loadingmore", "MovieController, submitTopTrendingMovie, error = $error")
+        Log.d("loadingmore", "MovieController, submitTopTrendingMovie, isLoading = $isLoading")
     }
 
     fun submitIsInDatabase(newIsInDatabase: Boolean) {
@@ -73,6 +81,8 @@ class MovieController(
         Log.d("errorBoolean", "buildModels, error = ${this.error}")
         Log.d("refresh", "buildModels, error = ${this.error}")
         Log.d("mylistclick", "MovieController, buildModels called")
+
+        drawLoadingScreen()
 
         trendingMoviesModelList = ArrayList<MovieListModel_>()
         listsOfMovies?.get(0)?.forEach { movie ->
@@ -124,11 +134,19 @@ class MovieController(
 
         if (error != null) {
             drawErrorScreen()
-        } else {
+        }
+        else if (!isLoading){
             drawToptrendingMovie()
             drawCarousels()
             Log.d("errorBoolean", "buildModels, CarouselModels created")
         }
+    }
+
+    private fun drawLoadingScreen() {
+        Log.d("loadingmore", "MovieController, buildModels, isLoading = $isLoading")
+        LoadingHomeModel_()
+            .id("loading")
+            .addIf(isLoading, this)
     }
 
     private fun drawCarousels() {

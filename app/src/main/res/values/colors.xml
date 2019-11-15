@@ -28,6 +28,7 @@
     <color name="avg6until8">#83BB00</color>
     <color name="avg4until6">#E4B811</color>
     <color name="avg0until4">#DD5733</color>
+    <color name="shimmer_background">#303030</color>
 
 
 </resources>

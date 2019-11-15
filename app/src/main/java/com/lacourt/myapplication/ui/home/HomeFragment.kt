@@ -27,8 +27,6 @@ class HomeFragment : Fragment(), OnItemClick {
 
     private val movieController by lazy { MovieController(context, itemClick, viewModel) }
 
-    var progressBar: ProgressBar? = null
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,8 +40,6 @@ class HomeFragment : Fragment(), OnItemClick {
         viewModel =
             ViewModelProviders.of(this).get(HomeViewModel::class.java)
 
-        progressBar = root.findViewById(R.id.progress_circular)
-        progressBar?.visibility = View.VISIBLE
         recyclerView = root.findViewById(R.id.movie_list)
 
         Log.d("clicklog", "before initialize movieController")
@@ -63,7 +59,8 @@ class HomeFragment : Fragment(), OnItemClick {
                     response.data?.let {
                         Log.d("refresh", "HomeFragment, listsOfMovies?.observe, success response = ${response.data.size}")
                         movieController.submitListsOfMovies(it, null)
-                        recyclerView.setController(movieController)
+//                        movieController.requestModelBuild()
+//                        recyclerView.setController(movieController)
                     }
                 }
                 Resource.Status.LOADING -> {
@@ -83,25 +80,29 @@ class HomeFragment : Fragment(), OnItemClick {
                         if (it.genres != null)
                             Log.d("refresh", "HomeFragment, topTrendingMovie?.observe, success, response = ${it.title}")
                         movieController.submitTopTrendingMovie(it, null)
-                        recyclerView.setController(movieController)
-                        progressBar?.visibility = View.INVISIBLE
+//                        movieController.requestModelBuild()
+//                        recyclerView.setController(movieController)
                     }
-                    progressBar?.visibility = View.INVISIBLE
                 }
                 Resource.Status.LOADING -> {
-                    progressBar?.visibility = View.VISIBLE
                 }
                 Resource.Status.ERROR -> {
                     Log.d("refresh", "HomeFragment, topTrendingMovie?.observe, fail, response = ${details.error?.cd}")
                     movieController.submitTopTrendingMovie(null, details.error)
-                    progressBar?.visibility = View.INVISIBLE
                 }
             }
         })
 
         viewModel.isInDatabase?.observe(this, Observer { isInDatabase ->
             movieController.submitIsInDatabase(isInDatabase)
-            recyclerView.setController(movieController)
+//            movieController.requestModelBuild()
+//            recyclerView.setController(movieController)
+        })
+
+        viewModel.isLoading?.observe(this, Observer { isLoading ->
+            movieController.submitIsLoading(isLoading)
+//            movieController.requestModelBuild()
+//            recyclerView.setController(movieController)
         })
 
         return root
@@ -111,15 +112,6 @@ class HomeFragment : Fragment(), OnItemClick {
         val homeToDetailsFragment =
             HomeFragmentDirections.actionNavigationHomeToDetailsFragment(id)
         findNavController().navigate(homeToDetailsFragment)
-    }
-
-
-    fun refresh() {
-        Log.d("refresh", "HomeFragment, refresh() called")
-
-        viewModel.refresh()
-        progressBar?.visibility = View.VISIBLE
-        Log.d("refresh", "HomeFragment, refresh()")
     }
 
 }
