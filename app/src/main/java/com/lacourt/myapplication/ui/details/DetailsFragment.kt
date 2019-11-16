@@ -56,7 +56,7 @@ import kotlin.math.floor
  */
 class DetailsFragment : Fragment(), OnItemClick {
     lateinit var viewModel: DetailsViewModel
-    lateinit var progressBar: ProgressBar
+    lateinit var progressBar: FrameLayout
     lateinit var wishListButton: ImageView
     lateinit var backdropImageView: ImageView
     lateinit var voteAverage: TextView
