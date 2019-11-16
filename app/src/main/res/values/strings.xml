@@ -22,5 +22,6 @@
 
     <string name="no_video_to_show">No video to show</string>
     <string name="error_try_again_btn">Try again</string>
-    <string name="database_item_not_removed">Could not remove from database</string>
+    <string name="database_item_not_removed">Could not remove from My List</string>
+    <string name="database_item_not_inserted">Could not add to My List</string>
 </resources>

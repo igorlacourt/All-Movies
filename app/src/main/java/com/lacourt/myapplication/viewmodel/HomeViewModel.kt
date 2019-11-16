@@ -33,6 +33,10 @@ class HomeViewModel(application: Application) : AndroidViewModel(application){
         Log.d("listsLog", "HomeViewModel, resultList.size = ${listsOfMovies?.value?.data?.size}")
     }
 
+    fun isIndatabase(id: Int?){
+        repository?.isInDatabase(id)
+    }
+
     fun refresh(){
         Log.d("refresh", "HomeViewMmodel, refresh()")
         repository?.refresh()

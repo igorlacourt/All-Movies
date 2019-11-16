@@ -60,6 +60,9 @@ class DetailsFragment : Fragment(), OnItemClick {
     lateinit var wishListButton: ImageView
     lateinit var backdropImageView: ImageView
     lateinit var voteAverage: TextView
+    lateinit var emptyRecomendations: TextView
+
+    var movieId: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,6 +75,8 @@ class DetailsFragment : Fragment(), OnItemClick {
         backdropImageView = view.findViewById(R.id.detail_backdrop)
         progressBar = view.findViewById(R.id.details_progress_bar)
         progressBar.visibility = View.VISIBLE
+        emptyRecomendations = view.findViewById(R.id.tv_recommended_empty)
+        emptyRecomendations.visibility = View.VISIBLE
 
         var recyclerView = view.findViewById<RecyclerView>(R.id.rv_recommended)
         val adapter = GridAdapter(context, this, ArrayList())
@@ -98,6 +103,12 @@ class DetailsFragment : Fragment(), OnItemClick {
             when (resource.status) {
                 Resource.Status.SUCCESS -> {
                     resource?.data?.let { movies ->
+                        if (movies.isNullOrEmpty())
+                            emptyRecomendations.visibility = View.VISIBLE
+                        else
+                            emptyRecomendations.visibility = View.INVISIBLE
+
+                        Log.d("recnull", "visibility = ${emptyRecomendations.visibility}")
                         adapter.setList(movies)
 //                        recommendedMoviesAdapter.setList(movies)
                     }
@@ -144,6 +155,7 @@ class DetailsFragment : Fragment(), OnItemClick {
         viewModel.movie?.observe(this, Observer {
             when (it?.status) {
                 Resource.Status.SUCCESS -> {
+                    movieId = it.data?.id
                     details = it.data
                     displayDetails(it.data)
                 }
@@ -188,6 +200,11 @@ class DetailsFragment : Fragment(), OnItemClick {
         return view
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.isIndatabase(movieId)
+    }
+
     fun displayDetails(details: Details?) {
         details?.apply {
             val imagePath = backdrop_path ?: poster_path
@@ -226,7 +243,7 @@ class DetailsFragment : Fragment(), OnItemClick {
 
         builder.bold { append("Cast: ") }
         if (!castAndDirector?.cast.isNullOrEmpty()) {
-            for (i in 0 until castAndDirector?.cast!!.size){
+            for (i in 0 until castAndDirector?.cast!!.size) {
                 if (i == castAndDirector.cast.size - 1)
                     builder.append("${castAndDirector.cast[i].name}")
                 else

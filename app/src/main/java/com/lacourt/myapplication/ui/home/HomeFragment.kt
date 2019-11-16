@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.lacourt.myapplication.R
+import com.lacourt.myapplication.domainmodel.DomainMovie
 import com.lacourt.myapplication.epoxy.*
 import com.lacourt.myapplication.network.Resource
 import com.lacourt.myapplication.ui.OnItemClick
@@ -26,6 +27,8 @@ class HomeFragment : Fragment(), OnItemClick {
     private val itemClick = this as OnItemClick
 
     private val movieController by lazy { MovieController(context, itemClick, viewModel) }
+
+    private var topTrendingMovieId: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -79,6 +82,7 @@ class HomeFragment : Fragment(), OnItemClick {
                     details.data?.let {
                         if (it.genres != null)
                             Log.d("refresh", "HomeFragment, topTrendingMovie?.observe, success, response = ${it.title}")
+                        topTrendingMovieId = details.data.id
                         movieController.submitTopTrendingMovie(it, null)
 //                        movieController.requestModelBuild()
 //                        recyclerView.setController(movieController)
@@ -106,6 +110,11 @@ class HomeFragment : Fragment(), OnItemClick {
         })
 
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.isIndatabase(topTrendingMovieId)
     }
 
     override fun onItemClick(id: Int) {

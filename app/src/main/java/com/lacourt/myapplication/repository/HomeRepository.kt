@@ -8,13 +8,14 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.database.AppDatabase
-import com.lacourt.myapplication.deleteByIdExt
+import com.lacourt.myapplication.deleteById
 import com.lacourt.myapplication.domainMappers.MapperFunctions
 import com.lacourt.myapplication.domainMappers.toDomainMovie
 import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.domainmodel.DomainMovie
 import com.lacourt.myapplication.domainmodel.MyListItem
 import com.lacourt.myapplication.dto.*
+import com.lacourt.myapplication.insertItem
 import com.lacourt.myapplication.isInDatabase
 import com.lacourt.myapplication.network.*
 import io.reactivex.Observable
@@ -140,13 +141,13 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
     fun insert(myListItem: MyListItem) {
         Log.d("log_is_inserted", "HomeRepository, insert() called")
         Log.d("mylistclick", "HomeRepository, insert() called, myListItem.id = ${myListItem.id}")
-        myListDao?.insert(myListItem)
+        myListDao?.insertItem(context, myListItem, isInDatabase)
     }
 
     fun delete(id: Int?) {
         Log.d("log_is_inserted", "HomeRepository, delete() called")
         Log.d("mylistclick", "HomeRepository, delete() called, id = $id")
-        myListDao.deleteByIdExt(context, id, isInDatabase)
+        myListDao.deleteById(context, id, isInDatabase)
     }
 
     private fun fetchTopImageDetails(id: Int?) {
@@ -160,8 +161,12 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
 
     override fun networkCallResult(callback: Resource<Details>) {
         topTrendingMovie.value = callback
-        myListDao.isInDatabase(callback.data?.id, isInDatabase)
+        isInDatabase(callback.data?.id)
         isLoading.value = false
+    }
+
+    fun isInDatabase(id: Int?) {
+        id?.let { myListDao.isInDatabase(id, isInDatabase) }
     }
 
     fun networkErrorToast() {

@@ -246,7 +246,7 @@ class MovieController(
             .clickListener { model, parentView, clickedView, position ->
                 viewModel.refresh()
             }
-            .addTo(this)
+            .addIf(!isLoading, this)
         Log.d("errorBoolean", "buildModels, ErrorHomeModel created")
     }
 

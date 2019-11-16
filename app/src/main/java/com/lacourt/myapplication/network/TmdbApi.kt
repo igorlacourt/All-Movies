@@ -59,6 +59,16 @@ interface TmdbApi {
         page: Int
     ): Single<MovieResponseDTO>
 
+    @GET("movie/{id}/similar")
+    fun getSimilar(
+        @Path("id")
+        id: Int,
+        @Query("language")
+        language: String,
+        @Query("page")
+        page: Int
+    ): Single<MovieResponseDTO>
+
     @GET("movie/{id}")//@GET("movie/{id}")
     fun getDetails2(
         @Path("id")
