@@ -85,11 +85,16 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
                 val list3 = popularMoviesResponse.toDomainMovie()
                 val list4 = topRatedMoviesResponse.toDomainMovie()
 
+
+//                removeRepeated(list3 as ArrayList)
+
+
                 var resultList = ArrayList<Collection<DomainMovie>>()
                 resultList.add(list1)
                 resultList.add(list2)
                 resultList.add(list3)
                 resultList.add(list4)
+
 
                 Log.d("refresh", "HomeRepository, resultList.size = ${resultList.size}")
                 Log.d("listsLog", "HomeRepository, resultList.size = ${resultList.size}")
@@ -101,6 +106,7 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
             })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete {  }
             .subscribe({}, { error ->
                 when (error) {
                     is SocketTimeoutException -> {
@@ -136,6 +142,15 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
                 }
                 isLoading.value = false
             })
+    }
+
+    private fun removeRepeated(popular: ArrayList<DomainMovie>) {
+        for(i in 0 until popular.size) {
+            popular.forEach {upcoming ->
+                if(popular.elementAt(i).id == upcoming.id)
+                    popular.removeAt(i)
+            }
+        }
     }
 
     fun insert(myListItem: MyListItem) {

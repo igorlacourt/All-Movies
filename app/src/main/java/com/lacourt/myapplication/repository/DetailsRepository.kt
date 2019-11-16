@@ -47,15 +47,21 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
     }
 
     fun getRecommendedMovies(id: Int) {
+        //  This checked was inserted for changing the id of frozen2 to the id of Frozen1 because the similar results were
+        //displaying unappropriated results for children
+        var checkedId: Int
+        checkedId = id
+        if(checkedId == 330457) {
+            checkedId = 109445
+        }
         val disposable = CompositeDisposable()
-        Apifactory.tmdbApi.getRecommendations(id, AppConstants.LANGUAGE, 1)
+        Apifactory.tmdbApi.getRecommendations(checkedId, AppConstants.LANGUAGE, 1)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : SingleObserver<MovieResponseDTO> {
                 override fun onSuccess(t: MovieResponseDTO) {
-
                     if(t.results.size  < 3){
-                        getSimilar(id)
+                        getSimilar(checkedId)
                     } else {
                         if (t.results.size == 20) {
                             val last = t.results.size - 1
