@@ -24,8 +24,11 @@ import com.lacourt.myapplication.ui.OnItemClick
 import com.lacourt.myapplication.viewmodel.HomeViewModel
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-
-
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
+import androidx.core.os.HandlerCompat.postDelayed
+import android.os.Handler
+import kotlinx.android.synthetic.main.top_trending_movie.*
 
 
 class HomeFragment : Fragment(), OnItemClick {
@@ -38,6 +41,9 @@ class HomeFragment : Fragment(), OnItemClick {
 
     private var topTrendingMovieId: Int? = null
 
+    private var homeToolbar: ConstraintLayout? = null
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,18 +52,9 @@ class HomeFragment : Fragment(), OnItemClick {
         Log.d("callstest", "onCreateView called\n")
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
+        homeToolbar = root.findViewById<ConstraintLayout>(R.id.home_toolbar)
+
         Log.d("refreshLog", "onCreateView() called")
-
-//        var homeToolbar = root.findViewById<ConstraintLayout>(R.id.home_toolbar)
-
-//        root
-//        root.setOnScrollChangeListener { view, i, i, i, i ->
-//
-//        }
-//
-//        root.setOnScrollChangeListener(object : AnimationInfo {
-//
-//        })
 
         viewModel =
             ViewModelProviders.of(this).get(HomeViewModel::class.java)
@@ -79,7 +76,10 @@ class HomeFragment : Fragment(), OnItemClick {
                 Resource.Status.SUCCESS -> {
                     Log.d("listsLog", "HomeFragment, response size = ${response?.data?.size}")
                     response.data?.let {
-                        Log.d("refresh", "HomeFragment, listsOfMovies?.observe, success response = ${response.data.size}")
+                        Log.d(
+                            "refresh",
+                            "HomeFragment, listsOfMovies?.observe, success response = ${response.data.size}"
+                        )
                         movieController.submitListsOfMovies(it, null)
 //                        movieController.requestModelBuild()
 //                        recyclerView.setController(movieController)
@@ -88,9 +88,16 @@ class HomeFragment : Fragment(), OnItemClick {
                 Resource.Status.LOADING -> {
                 }
                 Resource.Status.ERROR -> {
-                    Log.d("refresh", "HomeFragment, listsOfMovies?.observe, fail, response = ${response.error?.cd}")
+                    Log.d(
+                        "refresh",
+                        "HomeFragment, listsOfMovies?.observe, fail, response = ${response.error?.cd}"
+                    )
                     movieController.submitListsOfMovies(null, response.error)
-                    Toast.makeText(context, "${response.error?.message}, ${response.error?.cd}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        context,
+                        "${response.error?.message}, ${response.error?.cd}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         })
@@ -100,7 +107,10 @@ class HomeFragment : Fragment(), OnItemClick {
                 Resource.Status.SUCCESS -> {
                     details.data?.let {
                         if (it.genres != null)
-                            Log.d("refresh", "HomeFragment, topTrendingMovie?.observe, success, response = ${it.title}")
+                            Log.d(
+                                "refresh",
+                                "HomeFragment, topTrendingMovie?.observe, success, response = ${it.title}"
+                            )
                         topTrendingMovieId = details.data.id
                         movieController.submitTopTrendingMovie(it, null)
 //                        movieController.requestModelBuild()
@@ -110,7 +120,10 @@ class HomeFragment : Fragment(), OnItemClick {
                 Resource.Status.LOADING -> {
                 }
                 Resource.Status.ERROR -> {
-                    Log.d("refresh", "HomeFragment, topTrendingMovie?.observe, fail, response = ${details.error?.cd}")
+                    Log.d(
+                        "refresh",
+                        "HomeFragment, topTrendingMovie?.observe, fail, response = ${details.error?.cd}"
+                    )
                     movieController.submitTopTrendingMovie(null, details.error)
                 }
             }
@@ -126,6 +139,8 @@ class HomeFragment : Fragment(), OnItemClick {
             movieController.submitIsLoading(isLoading)
 //            movieController.requestModelBuild()
 //            recyclerView.setController(movieController)
+
+
         })
 
         return root
@@ -134,6 +149,51 @@ class HomeFragment : Fragment(), OnItemClick {
     override fun onResume() {
         super.onResume()
         viewModel.isIndatabase(topTrendingMovieId)
+
+        homeToolbar?.y = 0.0f
+        homeToolbar?.visibility = View.VISIBLE
+
+        var initY: Int? = null
+        var delta: Int = 0
+        if (homeToolbar != null && homeToolbar?.isVisible != null) {
+            recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (initY == null) {
+                        initY = dy
+                        homeToolbar!!.y = 0.0f
+                    }
+                    delta = initY!! - dy
+
+                    Log.d("myoffset", "delta = $delta")
+                    Log.d("myoffset", "homeToolbar.y = ${homeToolbar!!.y}")
+
+                    if (delta < 0) {
+                        if (homeToolbar!!.y < -homeToolbar!!.height) {
+                            homeToolbar!!.y = -homeToolbar!!.height.toFloat()
+                        } else {
+                            homeToolbar!!.y = homeToolbar!!.y + (delta / 2)
+                        }
+                    } else {
+                        if (homeToolbar!!.y < 0.0f) {
+                            homeToolbar!!.y = homeToolbar!!.y + (delta / 2)
+                        } else {
+                            homeToolbar!!.y = 0.0f
+                        }
+                    }
+                    Log.d("myoffset", "homeToolbar.y - (delta / 4) = ${homeToolbar!!.y}")
+                }
+
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                }
+            })
+        }
+
+    }
+
+    private fun toolbarBehavior() {
+
     }
 
     override fun onItemClick(id: Int) {
