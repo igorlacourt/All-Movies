@@ -29,6 +29,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.core.os.HandlerCompat.postDelayed
 import android.os.Handler
 import kotlinx.android.synthetic.main.top_trending_movie.*
+import android.view.MotionEvent
+
+
+
+
 
 
 class HomeFragment : Fragment(), OnItemClick {
@@ -43,16 +48,15 @@ class HomeFragment : Fragment(), OnItemClick {
 
     private var homeToolbar: ConstraintLayout? = null
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         Log.d("callstest", "onCreateView called\n")
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
+         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
-        homeToolbar = root.findViewById<ConstraintLayout>(R.id.home_toolbar)
+        homeToolbar = root?.findViewById<ConstraintLayout>(R.id.home_toolbar)
 
         Log.d("refreshLog", "onCreateView() called")
 
@@ -137,6 +141,7 @@ class HomeFragment : Fragment(), OnItemClick {
 
         viewModel.isLoading?.observe(this, Observer { isLoading ->
             movieController.submitIsLoading(isLoading)
+
 //            movieController.requestModelBuild()
 //            recyclerView.setController(movieController)
 
@@ -150,49 +155,55 @@ class HomeFragment : Fragment(), OnItemClick {
         super.onResume()
         viewModel.isIndatabase(topTrendingMovieId)
 
-        homeToolbar?.y = 0.0f
-        homeToolbar?.visibility = View.VISIBLE
-
-        var initY: Int? = null
-        var delta: Int = 0
-        if (homeToolbar != null && homeToolbar?.isVisible != null) {
-            recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    if (initY == null) {
-                        initY = dy
-                        homeToolbar!!.y = 0.0f
-                    }
-                    delta = initY!! - dy
-
-                    Log.d("myoffset", "delta = $delta")
-                    Log.d("myoffset", "homeToolbar.y = ${homeToolbar!!.y}")
-
-                    if (delta < 0) {
-                        if (homeToolbar!!.y < -homeToolbar!!.height) {
-                            homeToolbar!!.y = -homeToolbar!!.height.toFloat()
-                        } else {
-                            homeToolbar!!.y = homeToolbar!!.y + (delta / 2)
-                        }
-                    } else {
-                        if (homeToolbar!!.y < 0.0f) {
-                            homeToolbar!!.y = homeToolbar!!.y + (delta / 2)
-                        } else {
-                            homeToolbar!!.y = 0.0f
-                        }
-                    }
-                    Log.d("myoffset", "homeToolbar.y - (delta / 4) = ${homeToolbar!!.y}")
-                }
-
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    super.onScrollStateChanged(recyclerView, newState)
-                }
-            })
-        }
 
     }
 
-    private fun toolbarBehavior() {
+    private fun setTranparentToolbar() {
+
+        homeToolbar?.y = 0.0f
+        homeToolbar?.visibility = View.VISIBLE
+        val handler = Handler()
+        handler.postDelayed({
+            var initY: Int? = null
+            var delta: Int = 0
+            if (homeToolbar != null && homeToolbar?.isVisible != null) {
+                recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+                        if (initY == null) {
+                            initY = 0//recyclerView.y.toInt()
+                        }
+                        delta = initY!! - dy
+
+                        homeToolbar!!.y -= dy
+
+
+                        Log.d("myoffset", "recyclerView.y = ${recyclerView.top}")
+                        Log.d("myoffset", "initY = $initY")
+                        Log.d("myoffset", "dy = $dy")
+                        Log.d("myoffset", "homeToolbar.y = ${homeToolbar!!.y}")
+
+                        if (delta < 0) {
+                            if (homeToolbar!!.y < -homeToolbar!!.height) {
+                                homeToolbar!!.y = -homeToolbar!!.height.toFloat()
+                            } else {
+                                homeToolbar!!.y = homeToolbar!!.y + (delta / 2)
+                            }
+                        } else {
+                            if (homeToolbar!!.y < 0.0f) {
+                                homeToolbar!!.y = homeToolbar!!.y + (delta / 2)
+                            } else {
+                                homeToolbar!!.y = 0.0f
+                            }
+                        }
+                    }
+
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        super.onScrollStateChanged(recyclerView, newState)
+                    }
+                })
+            }
+        }, 5000)
 
     }
 

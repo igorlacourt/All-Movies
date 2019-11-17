@@ -14,6 +14,16 @@
     app:layout_constraintTop_toTopOf="parent">
 
     <ImageView
+        android:id="@+id/img_tmdb_credit"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_top_trending_movie"
+        app:srcCompat="@drawable/ic_powered_by_tmdb" />
+
+    <ImageView
         android:id="@+id/iv_top_trending_movie"
         android:layout_width="match_parent"
         android:layout_height="448dp"
