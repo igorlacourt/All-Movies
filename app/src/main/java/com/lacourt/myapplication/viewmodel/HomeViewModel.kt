@@ -19,6 +19,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application){
     var listsOfMovies: LiveData<Resource<List<Collection<DomainMovie>>>?>? = null
 
     var isInDatabase: LiveData<Boolean>? = null
+    var isLoading: LiveData<Boolean>? = null
 
     init {
         Log.d("callstest", "homeViewModel init called.\n")
@@ -28,7 +29,12 @@ class HomeViewModel(application: Application) : AndroidViewModel(application){
         listsOfMovies = repository?.listsOfMovies
 
         isInDatabase = repository?.isInDatabase
+        isLoading = repository?.isLoading
         Log.d("listsLog", "HomeViewModel, resultList.size = ${listsOfMovies?.value?.data?.size}")
+    }
+
+    fun isIndatabase(id: Int?){
+        repository?.isInDatabase(id)
     }
 
     fun refresh(){

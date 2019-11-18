@@ -10,8 +10,10 @@ import com.lacourt.myapplication.domainmodel.MyListItem
 class MyListRepository(application: Application) {
     private val myListDao =
         AppDatabase.getDatabase(application)!!.MyListDao()
-    val myList = MutableLiveData<List<DomainMovie>>().apply {
-        value = myListDao.all().toDomainMovie()
+    val myList = MutableLiveData<List<DomainMovie>>()
+
+    fun getList(){
+        myList.value = myListDao.all().toDomainMovie()
     }
 }
 

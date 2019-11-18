@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.fragment_mylist.*
 class MyListFragment : Fragment(), OnItemClick {
     private val onItemClick = this as OnItemClick
     private lateinit var recyclerView: RecyclerView
-    private lateinit var myListViewModel: MyListViewModel
+    private lateinit var viewModel: MyListViewModel
     private lateinit var adapter: GridAdapter
 
     override fun onCreateView(
@@ -44,19 +44,27 @@ class MyListFragment : Fragment(), OnItemClick {
         recyclerView = root.findViewById(R.id.my_list_list)
 
         setUpRecyclerView()
-        myListViewModel =
+        viewModel =
             ViewModelProviders.of(this).get(MyListViewModel::class.java)
-        myListViewModel.myList.observe(this, Observer { list ->
+        viewModel.myList.observe(this, Observer { list ->
             Log.d("receivertest", "onChange, list.size = ${list.size}")
             adapter.setList(list)
 
-            if (!list.isNullOrEmpty())
+            if (list.isNullOrEmpty())
+                emptyList.visibility = View.VISIBLE
+            else{
                 emptyList.visibility = View.INVISIBLE
+            }
 
             progressBar.visibility = View.INVISIBLE
         })
 
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getList()
     }
 
     private fun setUpRecyclerView() {

@@ -8,7 +8,6 @@ import com.airbnb.epoxy.EpoxyController
 import com.lacourt.myapplication.domainMappers.toMyListItem
 import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.domainmodel.DomainMovie
-import com.lacourt.myapplication.dto.DbMovieDTO
 import com.lacourt.myapplication.network.Error
 import com.lacourt.myapplication.ui.OnItemClick
 import com.lacourt.myapplication.openYoutube
@@ -20,17 +19,10 @@ class MovieController(
     private val viewModel: HomeViewModel
 ) : EpoxyController() {
 
-    init {
-        Log.d("clicklog", "initializing movieController")
-        Log.d("genreslog", "MovieController, init called")
-    }
-
     var topTrendingMovie: Details? = null
 
     var listsOfMovies: List<Collection<DomainMovie>?>? = null
     var error: Error? = null
-
-    var isInDatabase: Boolean = false
 
     var trendingMoviesModelList: ArrayList<MovieListModel_>? = null
     var upcomingMovieModelList: ArrayList<MovieListModel_>? = null
@@ -39,7 +31,14 @@ class MovieController(
 
     var lastDrawedCarousel: CarouselModel_? = null
 
-    var isMyListPressed = false
+    var isInDatabase: Boolean = false
+    var isLoading: Boolean = true
+
+    init {
+        Log.d("clicklog", "initializing movieController")
+        Log.d("genreslog", "MovieController, init called")
+        requestModelBuild()
+    }
 
     fun submitListsOfMovies(newListsOfMovies: List<Collection<DomainMovie>?>?, error: Error?) {
         Log.d("errorBoolean", "submitListOfMovies, error = $error")
@@ -55,12 +54,19 @@ class MovieController(
 
     fun submitTopTrendingMovie(newMovie: Details?, error: Error?) {
         topTrendingMovie = newMovie
-        Log.d("refresh", "HomeFragment, submitTopTrendingMovie, error = ${error?.cd}")
-        Log.d("refresh", "HomeFragment, submitTopTrendingMovie, list.size = ${newMovie?.title}")
+        Log.d("refresh", "MovieController, submitTopTrendingMovie, error = ${error?.cd}")
+        Log.d("refresh", "MovieController, submitTopTrendingMovie, list.size = ${newMovie?.title}")
         this.error = error
         requestModelBuild()
     }
-    var topTrendingMovieModel: TopTrendingMovieModel_? = null
+
+    fun submitIsLoading(newIsLoading: Boolean){
+        isLoading = newIsLoading
+        requestModelBuild()
+        Log.d("loadingmore", "MovieController, submitTopTrendingMovie, error = $error")
+        Log.d("loadingmore", "MovieController, submitTopTrendingMovie, isLoading = $isLoading")
+    }
+
     fun submitIsInDatabase(newIsInDatabase: Boolean) {
         isInDatabase = newIsInDatabase
         requestModelBuild()
@@ -76,18 +82,8 @@ class MovieController(
         Log.d("refresh", "buildModels, error = ${this.error}")
         Log.d("mylistclick", "MovieController, buildModels called")
 
-       buildCarousels()
+        drawLoadingScreen()
 
-        if (error != null) {
-            drawErrorScreen()
-        } else {
-            drawTopTrendingMovie()
-            drawCarousels()
-            Log.d("errorBoolean", "buildModels, CarouselModels created")
-        }
-    }
-
-    private fun buildCarousels() {
         trendingMoviesModelList = ArrayList<MovieListModel_>()
         listsOfMovies?.get(0)?.forEach { movie ->
             trendingMoviesModelList?.add(
@@ -135,11 +131,26 @@ class MovieController(
                     }
             )
         }
+
+        if (error != null) {
+            drawErrorScreen()
+        }
+        else if (!isLoading){
+            drawToptrendingMovie()
+            drawCarousels()
+            Log.d("errorBoolean", "buildModels, CarouselModels created")
+        }
+    }
+
+    private fun drawLoadingScreen() {
+        Log.d("loadingmore", "MovieController, buildModels, isLoading = $isLoading")
+        LoadingHomeModel_()
+            .id("loading")
+            .addIf(isLoading, this)
     }
 
     private fun drawCarousels() {
         Log.d("errorBoolean", "buildModels, if(error)  = ${this.error}")
-
         HeaderModel_()
             .id(2)
             .header("Trending")
@@ -179,20 +190,19 @@ class MovieController(
             .header("Critically acclaimed movies")
             .addTo(this)
         topRatedMoviesModelList?.let {
-            CarouselModel_()
+            lastDrawedCarousel = CarouselModel_()
                 .id("topRatedMovies")
                 .models(it)
+
+            lastDrawedCarousel
                 ?.addTo(this)
-
         }
-
     }
 
-    private fun drawTopTrendingMovie() {
-
+    private fun drawToptrendingMovie() {
         if (topTrendingMovie != null) {
             if (topTrendingMovie!!.genres != null && topTrendingMovie!!.title != null) {
-                topTrendingMovieModel = TopTrendingMovieModel_(context, isInDatabase)
+                val topTrendingMovieModel = TopTrendingMovieModel_(context, isInDatabase)
                     .id("topTrendingMovie")
                     .backdropPath(topTrendingMovie?.backdrop_path)
                     .genresList(topTrendingMovie!!.genres!!)
@@ -201,14 +211,12 @@ class MovieController(
                         topTrendingMovie?.openYoutube(context)
                     }
                     .myListClickListener { model, parentView, clickedView, position ->
-                        isMyListPressed = true
                         if (isInDatabase) {
                             Log.d(
                                 "mylistclick",
                                 "MovieController, myListClickListener, isInDatabase = $isInDatabase"
                             )
                             topTrendingMovie?.id?.let { viewModel.delete(it) }
-
                         } else {
                             Log.d(
                                 "mylistclick",
@@ -223,7 +231,7 @@ class MovieController(
                         topTrendingMovie?.id?.let { callDetailsFragment(it) }
                     }
 
-                topTrendingMovieModel?.addTo(this)
+                topTrendingMovieModel.addTo(this)
             }
 
         }
@@ -238,7 +246,7 @@ class MovieController(
             .clickListener { model, parentView, clickedView, position ->
                 viewModel.refresh()
             }
-            .addTo(this)
+            .addIf(!isLoading, this)
         Log.d("errorBoolean", "buildModels, ErrorHomeModel created")
     }
 

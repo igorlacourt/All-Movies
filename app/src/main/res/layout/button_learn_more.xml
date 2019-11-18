@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/learn_more_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:focusable="false"
         android:clickable="false"
         app:layout_constraintBottom_toTopOf="@+id/tv_learn_more"
@@ -26,7 +26,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/learn_more"
-        android:textSize="10sp"
+        android:textSize="@dimen/small_text_size"
+        android:textColor="#CECECE"
         android:layout_marginTop="4dp"
         android:focusable="false"
         android:clickable="false"

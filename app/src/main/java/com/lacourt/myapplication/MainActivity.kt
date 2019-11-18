@@ -17,9 +17,6 @@ import com.lacourt.myapplication.ui.mylist.MyListFragment
 import com.lacourt.myapplication.ui.home.HomeFragment
 import android.view.MenuItem
 import androidx.annotation.NonNull
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -49,28 +46,8 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        //JSOUP
-        MyAsyncTask().execute()
-
-
-
-
-
     }
-    public class MyAsyncTask: AsyncTask<Void, Void, Void>() {
-        var text: String? = null
 
-        override fun doInBackground(vararg params: Void?): Void? {
-            var doc: Document  = Jsoup.connect("https://www.google.com/search?client=firefox-b-d&ei=6tLJXZf3NvGz5OUP8c6r6AM&q=amazon+hobbs+and+shaw+rent+itunes+%24&oq=amazon+hobbs+and+shaw+rent+itunes+%24&gs_l=psy-ab.3...2102.2102..2333...0.3..0.191.191.0j1......0....1..gws-wiz.......0i71.0SXi9V0Qc8U&ved=0ahUKEwiXlOO0jePlAhXxGbkGHXHnCj0Q4dUDCAo&uact=5").get()
-            Log.d("jsouplog", "${doc.text()}")
-            return null
-        }
-
-        override fun onPostExecute(result: Void?) {
-            super.onPostExecute(result)
-
-        }
-    }
     /*     onActivityResult replaces myListFragment with itself for updating
      the list in realtime when coming back from search coming from details.  */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

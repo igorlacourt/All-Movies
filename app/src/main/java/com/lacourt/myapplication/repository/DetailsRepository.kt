@@ -7,7 +7,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.database.AppDatabase
-import com.lacourt.myapplication.deleteByIdExt
+import com.lacourt.myapplication.deleteById
 import com.lacourt.myapplication.domainMappers.MapperFunctions.toDetails
 import com.lacourt.myapplication.domainMappers.toDomainMovie
 import com.lacourt.myapplication.domainmodel.Details
@@ -15,6 +15,7 @@ import com.lacourt.myapplication.domainmodel.DomainMovie
 import com.lacourt.myapplication.domainmodel.MyListItem
 import com.lacourt.myapplication.dto.DetailsDTO
 import com.lacourt.myapplication.dto.MovieResponseDTO
+import com.lacourt.myapplication.insertItem
 import com.lacourt.myapplication.isInDatabase
 import com.lacourt.myapplication.network.Apifactory
 import com.lacourt.myapplication.network.NetworkCall
@@ -23,6 +24,7 @@ import com.lacourt.myapplication.network.Resource
 import com.lacourt.myapplication.test_retrofit_call_kotlin.BaseRepository
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
@@ -32,6 +34,7 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
     var movie: MutableLiveData<Resource<Details>> = MutableLiveData()
     var recommendedMovies: MutableLiveData<Resource<List<DomainMovie>>> = MutableLiveData()
     var isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
+    var isLoading: MutableLiveData<Boolean> = MutableLiveData()
     val context: Context = application
 
     fun getDetails(id: Int) {
@@ -44,12 +47,53 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
     }
 
     fun getRecommendedMovies(id: Int) {
-        Apifactory.tmdbApi.getRecommendations(id, AppConstants.LANGUAGE, 1)
+        //  This checked was inserted for changing the id of frozen2 to the id of Frozen1 because the similar results were
+        //displaying unappropriated results for children
+        var checkedId: Int
+        checkedId = id
+        if(checkedId == 330457) {
+            checkedId = 109445
+        }
+        val disposable = CompositeDisposable()
+        Apifactory.tmdbApi.getRecommendations(checkedId, AppConstants.LANGUAGE, 1)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : SingleObserver<MovieResponseDTO> {
                 override fun onSuccess(t: MovieResponseDTO) {
-                    if(t.results.size == 20){
+                    if(t.results.size  < 3){
+                        getSimilar(checkedId)
+                    } else {
+                        if (t.results.size == 20) {
+                            val last = t.results.size - 1
+                            val beforeLast = t.results.size - 2
+                            t.results.removeAt(last)
+                            t.results.removeAt(beforeLast)
+                        }
+                        recommendedMovies.value =
+                            Resource.success(t.toDomainMovie() as List)
+                    }
+                    disposable.dispose()
+                }
+
+                override fun onSubscribe(d: Disposable) {
+                    disposable.add(d)
+                }
+
+                override fun onError(e: Throwable) {
+                    disposable.dispose()
+                }
+            })
+    }
+
+    fun getSimilar(id: Int) {
+        val disposable = CompositeDisposable()
+        Apifactory.tmdbApi.getSimilar(id, AppConstants.LANGUAGE, 1)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : SingleObserver<MovieResponseDTO> {
+                override fun onSuccess(t: MovieResponseDTO) {
+
+                    if (t.results.size == 20) {
                         val last = t.results.size - 1
                         val beforeLast = t.results.size - 2
                         t.results.removeAt(last)
@@ -57,27 +101,32 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
                     }
                     recommendedMovies.value =
                         Resource.success(t.toDomainMovie() as List)
+
+                    disposable.dispose()
                 }
 
                 override fun onSubscribe(d: Disposable) {
-
+                    disposable.add(d)
                 }
 
                 override fun onError(e: Throwable) {
-
+                    disposable.dispose()
                 }
-
             })
+    }
+
+    fun isInDatabase(id: Int?) {
+        id?.let { myListDao.isInDatabase(id, isInDatabase) }
     }
 
     fun insert(myListItem: MyListItem) {
         Log.d("log_is_inserted", "DetailsRepository, insert() called")
-        myListDao?.insert(myListItem)
+        myListDao?.insertItem(context, myListItem, isInDatabase)
     }
 
     fun delete(id: Int) {
         Log.d("log_is_inserted", "DetailsRepository, delete() called")
-        myListDao.deleteByIdExt(context, id, isInDatabase)
+        myListDao.deleteById(context, id, isInDatabase)
     }
 
     @SuppressLint("CheckResult")

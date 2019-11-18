@@ -16,15 +16,21 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-import com.lacourt.myapplication.R
 import com.lacourt.myapplication.ui.OnItemClick
 import com.lacourt.myapplication.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
+import androidx.core.content.ContextCompat.getSystemService
+import android.content.Context
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import com.lacourt.myapplication.R
 
 class SearchFragment : Fragment(), OnItemClick {
     private lateinit var viewModel: SearchViewModel
     private lateinit var recyclerView: RecyclerView
     private var progressBar: ProgressBar? = null
+    private lateinit var edtSearch: EditText
     private lateinit var adapter: SearchAdapter
 
     companion object {
@@ -40,15 +46,15 @@ class SearchFragment : Fragment(), OnItemClick {
 
         val type: String? = arguments?.getString("item_type", null)
 
+        edtSearch = view.findViewById(R.id.edt_search)
         progressBar = view.findViewById(R.id.search_progress_bar)
         progressBar?.visibility = View.INVISIBLE
         viewModel = ViewModelProviders.of(this).get(SearchViewModel::class.java)
-        adapter = SearchAdapter(context,this, ArrayList())
+        adapter = SearchAdapter(context, this, ArrayList())
 
         recyclerView = view.findViewById(R.id.searched_list)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
-        progressBar?.visibility = View.VISIBLE
 
         return view
     }
@@ -56,20 +62,25 @@ class SearchFragment : Fragment(), OnItemClick {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        showKeyBoard()
+
         viewModel.searchResult.observe(this, Observer { resultList ->
             adapter.setList(resultList)
-            progressBar?.visibility = View.INVISIBLE
-
-            if (resultList == null || resultList.isEmpty()) {
-                Log.d("searchlog", "observe, resultList.size = ${resultList.size}")
+            if (resultList.isNullOrEmpty())
                 search_no_results.visibility = View.VISIBLE
-            } else {
-                Log.d("searchlog", "observe, resultList.size = ${resultList.size}")
+            else
                 search_no_results.visibility = View.INVISIBLE
-            }
+
+            progressBar?.visibility = View.INVISIBLE
         })
 
         edt_search.addTextChangedListener(searchTextWatcher())
+    }
+
+    private fun showKeyBoard() {
+        edtSearch.requestFocus()
+        val imgr = activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imgr.showSoftInput(edtSearch, InputMethodManager.SHOW_IMPLICIT)
     }
 
     fun searchTextWatcher() = object : TextWatcher {
@@ -91,7 +102,8 @@ class SearchFragment : Fragment(), OnItemClick {
 
     override fun onItemClick(id: Int) {
         if (id != 0) {
-            val myListToDetailsFragment = SearchFragmentDirections.actionNavigationSearchToDetailsFragment(id)
+            val myListToDetailsFragment =
+                SearchFragmentDirections.actionNavigationSearchToDetailsFragment(id)
             findNavController().navigate(myListToDetailsFragment)
         } else {
             Toast.makeText(context, "Sorry. Can not load this movie. :/", Toast.LENGTH_SHORT).show()

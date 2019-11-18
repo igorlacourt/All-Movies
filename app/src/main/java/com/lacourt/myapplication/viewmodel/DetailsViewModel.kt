@@ -32,9 +32,8 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
         return true
     }
 
-    fun insert(myListItem: MyListItem) {
-        Log.d("log_is_inserted", "DetailsViewModel, insert() called")
-        repository.insert(myListItem)
+    fun isIndatabase(id: Int?){
+        repository?.isInDatabase(id)
     }
 
     fun getDetails(id: Int) {
@@ -44,9 +43,13 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
         repository.getRecommendedMovies(id)
     }
 
+    fun insert(myListItem: MyListItem) {
+        Log.d("log_is_inserted", "DetailsViewModel, insert() called")
+        repository.insert(myListItem)
+    }
+
     fun delete(id: Int){
         Log.d("log_is_inserted", "DetailsViewModel, delete() called")
-
         repository.delete(id)
     }
 

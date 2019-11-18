@@ -8,13 +8,14 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.database.AppDatabase
-import com.lacourt.myapplication.deleteByIdExt
+import com.lacourt.myapplication.deleteById
 import com.lacourt.myapplication.domainMappers.MapperFunctions
 import com.lacourt.myapplication.domainMappers.toDomainMovie
 import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.domainmodel.DomainMovie
 import com.lacourt.myapplication.domainmodel.MyListItem
 import com.lacourt.myapplication.dto.*
+import com.lacourt.myapplication.insertItem
 import com.lacourt.myapplication.isInDatabase
 import com.lacourt.myapplication.network.*
 import io.reactivex.Observable
@@ -37,13 +38,12 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
         AppDatabase.getDatabase(application)?.MovieDao()
 
     val topTrendingMovie = MutableLiveData<Resource<Details>>()
-
     val listsOfMovies = MutableLiveData<Resource<List<Collection<DomainMovie>>>>()
-
     private val myListDao =
         AppDatabase.getDatabase(application)?.MyListDao()
 
     var isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
+    var isLoading: MutableLiveData<Boolean> = MutableLiveData()
 
     /*Remember:
      1. that the returned list cannot be mutable
@@ -61,6 +61,7 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
 
     @SuppressLint("CheckResult")
     private fun fetchMoviesLists() {
+        isLoading.value = true
         Log.d("refresh", "HomeRepository, fetchMoviesLists()")
         val tmdbApi = Apifactory.tmdbApi
         val trendinMoviesObservale = tmdbApi.getTrendingMovies(AppConstants.LANGUAGE, 1)
@@ -84,11 +85,16 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
                 val list3 = popularMoviesResponse.toDomainMovie()
                 val list4 = topRatedMoviesResponse.toDomainMovie()
 
+
+//                removeRepeated(list3 as ArrayList)
+
+
                 var resultList = ArrayList<Collection<DomainMovie>>()
                 resultList.add(list1)
                 resultList.add(list2)
                 resultList.add(list3)
                 resultList.add(list4)
+
 
                 Log.d("refresh", "HomeRepository, resultList.size = ${resultList.size}")
                 Log.d("listsLog", "HomeRepository, resultList.size = ${resultList.size}")
@@ -100,6 +106,7 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
             })
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete {  }
             .subscribe({}, { error ->
                 when (error) {
                     is SocketTimeoutException -> {
@@ -133,29 +140,30 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
                         )
                     }
                 }
+                isLoading.value = false
             })
+    }
+
+    private fun removeRepeated(popular: ArrayList<DomainMovie>) {
+        for(i in 0 until popular.size) {
+            popular.forEach {upcoming ->
+                if(popular.elementAt(i).id == upcoming.id)
+                    popular.removeAt(i)
+            }
+        }
     }
 
     fun insert(myListItem: MyListItem) {
         Log.d("log_is_inserted", "HomeRepository, insert() called")
         Log.d("mylistclick", "HomeRepository, insert() called, myListItem.id = ${myListItem.id}")
-        myListDao?.insert(myListItem)
+        myListDao?.insertItem(context, myListItem, isInDatabase)
     }
 
     fun delete(id: Int?) {
         Log.d("log_is_inserted", "HomeRepository, delete() called")
         Log.d("mylistclick", "HomeRepository, delete() called, id = $id")
-        myListDao.deleteByIdExt(context, id, isInDatabase)
+        myListDao.deleteById(context, id, isInDatabase)
     }
-//    fun <T> Observable<T>.mapNetworkErrors(): Observable<T> =
-//        this.doOnError { error ->
-//            when (error) {
-//                is SocketTimeoutException -> Observable.error(NoNetworkException(error))
-//                is UnknownHostException -> Observable.error(ServerUnreachableException(error))
-//                is HttpException -> Observable.error(HttpCallFailureException(error))
-//                else -> Observable.error(error)
-//            }
-//        }
 
     private fun fetchTopImageDetails(id: Int?) {
         if (id != null)
@@ -168,31 +176,12 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
 
     override fun networkCallResult(callback: Resource<Details>) {
         topTrendingMovie.value = callback
-        myListDao.isInDatabase(callback.data?.id, isInDatabase)
+        isInDatabase(callback.data?.id)
+        isLoading.value = false
     }
 
-    @SuppressLint("CheckResult")
-    fun fetchMovies() {
-//        Observable.range(1, 10)
-//            .flatMap { page ->
-//                moviesRequest(page)
-//                    ?.map {
-//                        MapperFunctions.toListOfDbMovieDTO(it.results)
-//                    }
-//                    ?.flatMap {
-//                        Observable.fromIterable(it)
-//                            .subscribeOn(Schedulers.io())
-//                    }
-//            }
-//            .doOnNext {
-//                Log.d("rxjavalog", "doOnNext called, id = ${it.id}")
-//                movieDao.insert(it)
-//            }
-//            .doOnComplete {
-//                Log.d("rxjavalog", "doOnComplete called")
-//            }
-//            .doOnError { networkErrorToast() }
-//            .subscribe()
+    fun isInDatabase(id: Int?) {
+        id?.let { myListDao.isInDatabase(id, isInDatabase) }
     }
 
     fun networkErrorToast() {

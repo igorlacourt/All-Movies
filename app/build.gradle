@@ -133,15 +133,9 @@ dependencies {
     //Shimmer layout
     implementation 'com.facebook.shimmer:shimmer:0.5.0@aar'
 
-    //Another Shimmer
-    implementation 'xyz.peridy.shimmer:shimmerlayout:1.1'
-
     //Epoxy
     implementation 'com.airbnb.android:epoxy:3.8.0'//3.6.0'//3.7.0'//3.8.0'
     kapt 'com.airbnb.android:epoxy-processor:3.8.0'
-
-    //Jsoup
-    implementation 'org.jsoup:jsoup:1.12.1'
 
     implementation 'com.android.support:multidex:1.0.3'
 }

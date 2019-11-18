@@ -12,5 +12,8 @@ import com.lacourt.myapplication.repository.MyListRepository
 class MyListViewModel(application: Application) : AndroidViewModel(application) {
     val repository = MyListRepository(application)
     val myList: LiveData<List<DomainMovie>> = repository.myList
+    fun getList(){
+        repository.getList()
+    }
 }
 
