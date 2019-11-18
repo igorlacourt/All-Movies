@@ -39,6 +39,8 @@ class MovieController(
 
     var lastDrawedCarousel: CarouselModel_? = null
 
+    var isMyListPressed = false
+
     fun submitListsOfMovies(newListsOfMovies: List<Collection<DomainMovie>?>?, error: Error?) {
         Log.d("errorBoolean", "submitListOfMovies, error = $error")
         Log.d("refresh", "HomeFragment, tsubmitListsOfMovies, error = ${error?.cd}")
@@ -58,7 +60,7 @@ class MovieController(
         this.error = error
         requestModelBuild()
     }
-
+    var topTrendingMovieModel: TopTrendingMovieModel_? = null
     fun submitIsInDatabase(newIsInDatabase: Boolean) {
         isInDatabase = newIsInDatabase
         requestModelBuild()
@@ -74,6 +76,18 @@ class MovieController(
         Log.d("refresh", "buildModels, error = ${this.error}")
         Log.d("mylistclick", "MovieController, buildModels called")
 
+       buildCarousels()
+
+        if (error != null) {
+            drawErrorScreen()
+        } else {
+            drawTopTrendingMovie()
+            drawCarousels()
+            Log.d("errorBoolean", "buildModels, CarouselModels created")
+        }
+    }
+
+    private fun buildCarousels() {
         trendingMoviesModelList = ArrayList<MovieListModel_>()
         listsOfMovies?.get(0)?.forEach { movie ->
             trendingMoviesModelList?.add(
@@ -121,18 +135,11 @@ class MovieController(
                     }
             )
         }
-
-        if (error != null) {
-            drawErrorScreen()
-        } else {
-            drawToptrendingMovie()
-            drawCarousels()
-            Log.d("errorBoolean", "buildModels, CarouselModels created")
-        }
     }
 
     private fun drawCarousels() {
         Log.d("errorBoolean", "buildModels, if(error)  = ${this.error}")
+
         HeaderModel_()
             .id(2)
             .header("Trending")
@@ -172,19 +179,20 @@ class MovieController(
             .header("Critically acclaimed movies")
             .addTo(this)
         topRatedMoviesModelList?.let {
-            lastDrawedCarousel = CarouselModel_()
+            CarouselModel_()
                 .id("topRatedMovies")
                 .models(it)
-
-            lastDrawedCarousel
                 ?.addTo(this)
+
         }
+
     }
 
-    private fun drawToptrendingMovie() {
+    private fun drawTopTrendingMovie() {
+
         if (topTrendingMovie != null) {
             if (topTrendingMovie!!.genres != null && topTrendingMovie!!.title != null) {
-                val topTrendingMovieModel = TopTrendingMovieModel_(context, isInDatabase)
+                topTrendingMovieModel = TopTrendingMovieModel_(context, isInDatabase)
                     .id("topTrendingMovie")
                     .backdropPath(topTrendingMovie?.backdrop_path)
                     .genresList(topTrendingMovie!!.genres!!)
@@ -193,12 +201,14 @@ class MovieController(
                         topTrendingMovie?.openYoutube(context)
                     }
                     .myListClickListener { model, parentView, clickedView, position ->
+                        isMyListPressed = true
                         if (isInDatabase) {
                             Log.d(
                                 "mylistclick",
                                 "MovieController, myListClickListener, isInDatabase = $isInDatabase"
                             )
                             topTrendingMovie?.id?.let { viewModel.delete(it) }
+
                         } else {
                             Log.d(
                                 "mylistclick",
@@ -213,7 +223,7 @@ class MovieController(
                         topTrendingMovie?.id?.let { callDetailsFragment(it) }
                     }
 
-                topTrendingMovieModel.addTo(this)
+                topTrendingMovieModel?.addTo(this)
             }
 
         }
