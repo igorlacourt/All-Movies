@@ -25,7 +25,6 @@ import org.junit.runner.RunWith
  * Test class showcasing some {@link RecyclerViewActions} from Espresso.
  */
 @RunWith(AndroidJUnit4::class)
-@LargeTest
 class MoviesListTest {
 
     private val ITEM_BELOW_THE_FOLD = 40
@@ -42,7 +41,7 @@ class MoviesListTest {
         val scenario = launchFragmentInContainer<HomeFragment>()
         scenario.moveToState(Lifecycle.State.RESUMED)
 
-        scenario.onFragment {
+        scenario.onFragment { homeFragment ->
             mIdlingResource = IdlingResourceManager.getIdlingResource()
             IdlingRegistry.getInstance().register(mIdlingResource)
         }
@@ -55,11 +54,12 @@ class MoviesListTest {
         }
     }
 
-//    @Test
-//    fun recyclerviewIsDisplayed() {
-//        onView(withId(R.id.movie_list))
-//            .check(matches(isDisplayed()))
-//    }
+    @Test
+    fun recyclerviewIsDisplayed() {
+        Thread.sleep(10000)
+        onView(withId(R.id.movie_list))
+            .check(matches(isDisplayed()))
+    }
 //
 //
 //    @Test

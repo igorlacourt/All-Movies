@@ -30,6 +30,7 @@ import androidx.core.os.HandlerCompat.postDelayed
 import android.os.Handler
 import androidx.annotation.NonNull
 import androidx.annotation.VisibleForTesting
+import androidx.fragment.app.DialogFragment
 import androidx.test.espresso.IdlingResource
 import com.lacourt.myapplication.indlingresource.IdlingResourceManager
 import com.lacourt.myapplication.indlingresource.SimpleIdlingResource
@@ -46,7 +47,7 @@ class HomeFragment : Fragment(), OnItemClick {
 
     private var topTrendingMovieId: Int? = null
 
-
+    var testString = "Test String"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,8 +56,6 @@ class HomeFragment : Fragment(), OnItemClick {
     ): View? {
         Log.d("callstest", "onCreateView called\n")
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-
-
 
         Log.d("refreshLog", "onCreateView() called")
 
@@ -143,7 +142,6 @@ class HomeFragment : Fragment(), OnItemClick {
     override fun onResume() {
         super.onResume()
         viewModel.isIndatabase(topTrendingMovieId)
-        IdlingResourceManager.getIdlingResource().setIdleState(isIdleNow = true)
     }
 
     override fun onItemClick(id: Int) {
