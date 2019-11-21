@@ -7,9 +7,9 @@ import org.mockito.Mockito
 import java.util.ArrayList
 
 class MockitoSpyTest {
-//    @Test
-//    fun testSpyMethod() {
-//
+    @Test
+    fun testSpyMethod() {
+
 //        val spyList = Mockito.spy(Person())
 //
 //        spyList.add("hello world")
@@ -17,7 +17,7 @@ class MockitoSpyTest {
 //        Mockito.verify(spyList).add("hello world")
 //
 //        assertEquals(1, spyList.size.toLong())
-//
-//    }
+
+    }
 }
 

@@ -1,7 +1,6 @@
-package com.lacourt.myapplication.indlingresource
+package com.lacourt.myapplication.idlingresource
 
 import androidx.annotation.VisibleForTesting
-import androidx.test.espresso.IdlingResource
 
 object IdlingResourceManager {
     // The Idling Resource which will be null in production.

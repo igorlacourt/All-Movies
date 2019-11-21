@@ -5,10 +5,7 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import androidx.annotation.NonNull
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.MutableLiveData
-import androidx.test.espresso.IdlingResource
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.database.AppDatabase
 import com.lacourt.myapplication.deleteById
@@ -18,8 +15,7 @@ import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.domainmodel.DomainMovie
 import com.lacourt.myapplication.domainmodel.MyListItem
 import com.lacourt.myapplication.dto.*
-import com.lacourt.myapplication.indlingresource.IdlingResourceManager
-import com.lacourt.myapplication.indlingresource.SimpleIdlingResource
+import com.lacourt.myapplication.idlingresource.IdlingResourceManager
 import com.lacourt.myapplication.insertItem
 import com.lacourt.myapplication.isInDatabase
 import com.lacourt.myapplication.network.*
