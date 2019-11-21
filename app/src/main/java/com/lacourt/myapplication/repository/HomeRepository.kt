@@ -5,7 +5,10 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.NonNull
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.MutableLiveData
+import androidx.test.espresso.IdlingResource
 import com.lacourt.myapplication.AppConstants
 import com.lacourt.myapplication.database.AppDatabase
 import com.lacourt.myapplication.deleteById
@@ -15,6 +18,8 @@ import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.domainmodel.DomainMovie
 import com.lacourt.myapplication.domainmodel.MyListItem
 import com.lacourt.myapplication.dto.*
+import com.lacourt.myapplication.indlingresource.IdlingResourceManager
+import com.lacourt.myapplication.indlingresource.SimpleIdlingResource
 import com.lacourt.myapplication.insertItem
 import com.lacourt.myapplication.isInDatabase
 import com.lacourt.myapplication.network.*
@@ -45,10 +50,17 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
     var isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
     var isLoading: MutableLiveData<Boolean> = MutableLiveData()
 
+
+
+
+
+
     /*Remember:
      1. that the returned list cannot be mutable
      2. the mutable livedata should be private(check in the video again)*/
     init {
+        IdlingResourceManager.getIdlingResource().setIdleState(isIdleNow = false)
+
         fetchMoviesLists()
         Log.d("callstest", "repository called")
         movieDao?.deleteAll()
@@ -178,6 +190,7 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
         topTrendingMovie.value = callback
         isInDatabase(callback.data?.id)
         isLoading.value = false
+
     }
 
     fun isInDatabase(id: Int?) {
