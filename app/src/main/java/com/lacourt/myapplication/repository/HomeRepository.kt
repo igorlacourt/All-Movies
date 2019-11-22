@@ -68,7 +68,7 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
     }
 
     @SuppressLint("CheckResult")
-    private fun fetchMoviesLists() {
+     fun fetchMoviesLists() {
         isLoading.value = true
         Log.d("refresh", "HomeRepository, fetchMoviesLists()")
         val tmdbApi = Apifactory.tmdbApi
