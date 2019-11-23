@@ -8,6 +8,7 @@ import com.airbnb.epoxy.EpoxyController
 import com.lacourt.myapplication.domainMappers.toMyListItem
 import com.lacourt.myapplication.domainmodel.Details
 import com.lacourt.myapplication.domainmodel.DomainMovie
+import com.lacourt.myapplication.idlingresource.IdlingResourceManager
 import com.lacourt.myapplication.network.Error
 import com.lacourt.myapplication.ui.OnItemClick
 import com.lacourt.myapplication.openYoutube
@@ -197,6 +198,9 @@ class MovieController(
             lastDrawedCarousel
                 ?.addTo(this)
         }
+
+        if(topTrendingMovie != null && error == null && !isLoading)
+            IdlingResourceManager.getIdlingResource().setIdleState(isIdleNow = true)
     }
 
     private fun drawToptrendingMovie() {

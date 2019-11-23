@@ -1,15 +1,11 @@
 package com.lacourt.myapplication.ui.home
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -17,23 +13,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.lacourt.myapplication.R
-import com.lacourt.myapplication.domainmodel.DomainMovie
 import com.lacourt.myapplication.epoxy.*
 import com.lacourt.myapplication.network.Resource
 import com.lacourt.myapplication.ui.OnItemClick
 import com.lacourt.myapplication.viewmodel.HomeViewModel
-import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
-import androidx.core.os.HandlerCompat.postDelayed
-import android.os.Handler
-import kotlinx.android.synthetic.main.top_trending_movie.*
-import android.view.MotionEvent
-
-
-
-
 
 
 class HomeFragment : Fragment(), OnItemClick {
@@ -46,7 +29,7 @@ class HomeFragment : Fragment(), OnItemClick {
 
     private var topTrendingMovieId: Int? = null
 
-    private var homeToolbar: ConstraintLayout? = null
+    var testString = "Test String"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,9 +37,7 @@ class HomeFragment : Fragment(), OnItemClick {
         savedInstanceState: Bundle?
     ): View? {
         Log.d("callstest", "onCreateView called\n")
-         val root = inflater.inflate(R.layout.fragment_home, container, false)
-
-        homeToolbar = root?.findViewById<ConstraintLayout>(R.id.home_toolbar)
+        val root = inflater.inflate(R.layout.fragment_home, container, false)
 
         Log.d("refreshLog", "onCreateView() called")
 
@@ -85,8 +66,6 @@ class HomeFragment : Fragment(), OnItemClick {
                             "HomeFragment, listsOfMovies?.observe, success response = ${response.data.size}"
                         )
                         movieController.submitListsOfMovies(it, null)
-//                        movieController.requestModelBuild()
-//                        recyclerView.setController(movieController)
                     }
                 }
                 Resource.Status.LOADING -> {
@@ -117,8 +96,6 @@ class HomeFragment : Fragment(), OnItemClick {
                             )
                         topTrendingMovieId = details.data.id
                         movieController.submitTopTrendingMovie(it, null)
-//                        movieController.requestModelBuild()
-//                        recyclerView.setController(movieController)
                     }
                 }
                 Resource.Status.LOADING -> {
@@ -135,17 +112,10 @@ class HomeFragment : Fragment(), OnItemClick {
 
         viewModel.isInDatabase?.observe(this, Observer { isInDatabase ->
             movieController.submitIsInDatabase(isInDatabase)
-//            movieController.requestModelBuild()
-//            recyclerView.setController(movieController)
         })
 
         viewModel.isLoading?.observe(this, Observer { isLoading ->
             movieController.submitIsLoading(isLoading)
-
-//            movieController.requestModelBuild()
-//            recyclerView.setController(movieController)
-
-
         })
 
         return root
@@ -154,57 +124,6 @@ class HomeFragment : Fragment(), OnItemClick {
     override fun onResume() {
         super.onResume()
         viewModel.isIndatabase(topTrendingMovieId)
-
-
-    }
-
-    private fun setTranparentToolbar() {
-
-        homeToolbar?.y = 0.0f
-        homeToolbar?.visibility = View.VISIBLE
-        val handler = Handler()
-        handler.postDelayed({
-            var initY: Int? = null
-            var delta: Int = 0
-            if (homeToolbar != null && homeToolbar?.isVisible != null) {
-                recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                        super.onScrolled(recyclerView, dx, dy)
-                        if (initY == null) {
-                            initY = 0//recyclerView.y.toInt()
-                        }
-                        delta = initY!! - dy
-
-                        homeToolbar!!.y -= dy
-
-
-                        Log.d("myoffset", "recyclerView.y = ${recyclerView.top}")
-                        Log.d("myoffset", "initY = $initY")
-                        Log.d("myoffset", "dy = $dy")
-                        Log.d("myoffset", "homeToolbar.y = ${homeToolbar!!.y}")
-
-                        if (delta < 0) {
-                            if (homeToolbar!!.y < -homeToolbar!!.height) {
-                                homeToolbar!!.y = -homeToolbar!!.height.toFloat()
-                            } else {
-                                homeToolbar!!.y = homeToolbar!!.y + (delta / 2)
-                            }
-                        } else {
-                            if (homeToolbar!!.y < 0.0f) {
-                                homeToolbar!!.y = homeToolbar!!.y + (delta / 2)
-                            } else {
-                                homeToolbar!!.y = 0.0f
-                            }
-                        }
-                    }
-
-                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                        super.onScrollStateChanged(recyclerView, newState)
-                    }
-                })
-            }
-        }, 5000)
-
     }
 
     override fun onItemClick(id: Int) {

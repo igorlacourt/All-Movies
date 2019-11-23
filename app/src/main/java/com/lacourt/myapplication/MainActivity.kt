@@ -17,9 +17,6 @@ import com.lacourt.myapplication.ui.mylist.MyListFragment
 import com.lacourt.myapplication.ui.home.HomeFragment
 import android.view.MenuItem
 import androidx.annotation.NonNull
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
-
 
 class MainActivity : AppCompatActivity() {
 

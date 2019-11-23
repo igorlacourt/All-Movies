@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PAG Test</string>
+    <string name="app_name">All Movies</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
     <string name="title_my_list">My List</string>

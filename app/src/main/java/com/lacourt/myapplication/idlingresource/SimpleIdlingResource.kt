@@ -1,4 +1,4 @@
-package com.lacourt.myapplication.indlingresource
+package com.lacourt.myapplication.idlingresource
 
 import androidx.test.espresso.IdlingResource
 import java.util.concurrent.atomic.AtomicBoolean

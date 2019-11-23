@@ -10,17 +10,22 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.ui.GridAdapter
 import com.lacourt.myapplication.ui.OnItemClick
+import com.lacourt.myapplication.ui.home.HomeFragment
 import com.lacourt.myapplication.ui.home.MovieAdapter
 import com.lacourt.myapplication.viewmodel.MyListViewModel
 import kotlinx.android.synthetic.main.fragment_mylist.*
+import org.junit.Test
 
 class MyListFragment : Fragment(), OnItemClick {
     private val onItemClick = this as OnItemClick
@@ -78,4 +83,23 @@ class MyListFragment : Fragment(), OnItemClick {
                 = MyListFragmentDirections.actionNavigationMyListToDetailsFragment(id)
         findNavController().navigate(myListToDetailsFragment)
     }
+
+    @Test
+    fun testNavigationToInGameScreen() {
+        // Create a mock NavController
+//        val mockNavController = mock(NavController::class.java)
+//
+//        // Create a graphical FragmentScenario for the TitleScreen
+//        val titleScenario = launchFragmentInContainer<MyListFragment>()
+//
+//        // Set the NavController property on the fragment
+//        titleScenario.onFragment { fragment ->
+//            Navigation.setViewNavController(fragment.requireView(), mockNavController)
+//        }
+//
+//        // Verify that performing a click prompts the correct Navigation action
+//        onView(ViewMatchers.withId(R.id.play_btn)).perform(ViewActions.click())
+//        verify(mockNavController).navigate(R.id.action_title_screen_to_in_game)
+    }
+
 }
