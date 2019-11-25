@@ -47,10 +47,6 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
     var isLoading: MutableLiveData<Boolean> = MutableLiveData()
 
 
-
-
-
-
     /*Remember:
      1. that the returned list cannot be mutable
      2. the mutable livedata should be private(check in the video again)*/
@@ -201,6 +197,95 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
         ).show()
     }
 
+
+    @SuppressLint("CheckResult")
+    fun justForTesting() : MutableLiveData<Resource<List<Collection<DomainMovie>>>>{
+        isLoading.value = true
+        Log.d("refresh", "HomeRepository, fetchMoviesLists()")
+        val tmdbApi = Apifactory.tmdbApi
+        val trendinMoviesObservale = tmdbApi.getTrendingMovies(AppConstants.LANGUAGE, 1)
+        val upcomingMoviesObservale = tmdbApi.getUpcomingMovies(AppConstants.LANGUAGE, 1)
+        val popularMoviesObservale = tmdbApi.getPopularMovies(AppConstants.LANGUAGE, 1)
+        val topRatedMoviesObservable = tmdbApi.getTopRatedMovies(AppConstants.LANGUAGE, 1)
+
+        Observable.zip(
+            trendinMoviesObservale.subscribeOn(Schedulers.io()),
+            upcomingMoviesObservale.subscribeOn(Schedulers.io()),
+            popularMoviesObservale.subscribeOn(Schedulers.io()),
+            topRatedMoviesObservable.subscribeOn(Schedulers.io()),
+
+            Function4 { trendingMoviesResponse: MovieResponseDTO,
+                        upcomingMoviesResponse: MovieResponseDTO,
+                        popularMoviesResponse: MovieResponseDTO,
+                        topRatedMoviesResponse: MovieResponseDTO ->
+
+                val list1 = trendingMoviesResponse.toDomainMovie()
+                val list2 = upcomingMoviesResponse.toDomainMovie()
+                val list3 = popularMoviesResponse.toDomainMovie()
+                val list4 = topRatedMoviesResponse.toDomainMovie()
+
+
+//                removeRepeated(list3 as ArrayList)
+
+
+                var resultList = ArrayList<Collection<DomainMovie>>()
+                resultList.add(list1)
+                resultList.add(list2)
+                resultList.add(list3)
+                resultList.add(list4)
+
+
+                Log.d("refresh", "HomeRepository, resultList.size = ${resultList.size}")
+                Log.d("listsLog", "HomeRepository, resultList.size = ${resultList.size}")
+
+                listsOfMovies.postValue(Resource.success(resultList))
+
+//                fetchTopImageDetails(list1.elementAt(0).id)
+
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete {
+
+            }
+            .subscribe({}, { error ->
+                when (error) {
+                    is SocketTimeoutException -> {
+                        Log.d("errorBoolean", "HomeRepository, is SocketTimeoutException")
+                        Log.d("listsLog", "HomeRepository, is SocketTimeoutException")
+                        topTrendingMovie.postValue(
+                            Resource.error(Error(408, "SocketTimeoutException"))
+                        )
+                    }
+                    is UnknownHostException -> {
+                        Log.d("errorBoolean", "HomeRepository, is UnknownHostException")
+                        Log.d("listsLog", "HomeRepository, is UnknownHostException")
+                        topTrendingMovie.postValue(
+                            Resource.error(Error(99, "UnknownHostException"))
+                        )
+                    }
+                    is HttpException -> {
+                        Log.d("errorBoolean", "HomeRepository, is HttpException")
+                        Log.d("listsLog", "HomeRepository, is HttpException")
+                        topTrendingMovie.postValue(
+                            Resource.error(Error(error.code(), error.message()))
+                        )
+                    }
+                    else -> {
+                        Log.d("errorBoolean", "HomeRepository, is Another Error")
+                        Log.d("listsLog", "HomeRepository, is Another Error")
+                        topTrendingMovie.postValue(
+                            Resource.error(
+                                Error(0, error.message)
+                            )
+                        )
+                    }
+                }
+                isLoading.value = false
+            })
+
+        return listsOfMovies
+    }
 
 }
 

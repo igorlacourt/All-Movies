@@ -68,6 +68,9 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$rootProject.espressoVersion"
     implementation "androidx.test.espresso:espresso-idling-resource:$rootProject.espressoVersion"
 
+    //Test Rule Architecture Components
+    testImplementation "android.arch.core:core-testing:$rootProject.archTestVersion"
+
     //Fragment Scenario
     implementation 'androidx.fragment:fragment:1.1.0'
     implementation 'androidx.fragment:fragment-testing:1.1.0'
@@ -92,6 +95,7 @@ dependencies {
 
     // Robolectric
     testImplementation "org.robolectric:robolectric:3.3.2"
+
 
 //    implementation "androidx.navigation:navigation-fragment:$navigation_version"
 //    implementation "androidx.navigation:navigation-ui:$navigation_version"
