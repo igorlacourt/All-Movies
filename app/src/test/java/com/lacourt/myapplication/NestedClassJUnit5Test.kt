@@ -17,7 +17,6 @@ class NestedClassJUnit5Test {
             Person("John", "Doe", LocalDate.of(1969, 5, 20)),
             Person("Jane", "Smith", LocalDate.of(1997, 11, 21)),
             Person("Ivan", "Ivanov", LocalDate.of(1994, 2, 12))
-
         )
 
         val minAgeFilter = 18

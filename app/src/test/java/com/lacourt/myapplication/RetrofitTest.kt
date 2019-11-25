@@ -1,83 +1,125 @@
 package com.lacourt.myapplication
 
-import android.os.AsyncTask.execute
-import android.util.Log
-import android.widget.Toast
 import com.lacourt.myapplication.dto.MovieResponseDTO
 import com.lacourt.myapplication.network.Apifactory
-import com.lacourt.myapplication.network.Apifactory.tmdbApi
-import com.lacourt.myapplication.network.TmdbApi
-import com.lacourt.myapplication.repository.HomeRepository
-import io.reactivex.Completable
-import io.reactivex.CompletableObserver
+import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
+import io.reactivex.observers.TestObserver
+import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.subscribers.TestSubscriber
-import org.hamcrest.CoreMatchers.`is`
-import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.Test
-import org.mockito.Mockito
+import junit.framework.Assert.assertTrue
+import org.assertj.core.api.Assertions.assertThat
+import org.hamcrest.Matchers.`is`
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.rules.TestRule
+import org.junit.runner.Description
+import org.junit.runner.RunWith
+import org.junit.runners.model.Statement
+import org.mockito.MockitoAnnotations
+import org.mockito.junit.MockitoJUnitRunner
 import java.io.IOException
 
-
+@RunWith(MockitoJUnitRunner::class)
 class RetrofitTest {
+    private val LION_KING_ID = 420818
+
+    @Rule
+    @JvmField
+    var testSchedulerRule = RxTrampolineSchedulerRule()
+
+    @Before
+    fun setUp() {
+    }
+
 
     @Test
-    fun `When get example shirts then shirts are retrieved`() {
+    fun `When get top rated movies, then movies response object is retrieved`() {
+        val testObservable = TestObserver<MovieResponseDTO>()
 
-        val testSubscriber = TestSubscriber<MovieResponseDTO>()
-        val exampleSubscription =
-        Completable.fromAction { Apifactory.tmdbApi.getPopularMovies(AppConstants.LANGUAGE, 1) }
+        Apifactory.tmdbApi.getTopRatedMovies(AppConstants.LANGUAGE, 1)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe( object : CompletableObserver {
-                override fun onComplete() {
+            .subscribe(testObservable)
 
-                    Log.d("log_is_inserted", "DetailsRepository, delete(), onComplete() called")
-                    Log.d("mylistclick", "ExtensionFunctions, deleteById(), onComplete() called")
-
-                }
-
-                override fun onSubscribe(d: Disposable) {
-
-                }
-
-                override fun onError(e: Throwable) {
-                    Log.d("log_is_inserted", "DetailsRepository, delete(), onError() called")
-                    Log.d("mylistclick", "ExtensionFunctions, deleteById(), onError() called")
-
-                }
-            })
-            .subscribe(testSubscriber)
-
-        testSubscriber.assertNoErrors()
-        testSubscriber.assertSubscribed()
-        testSubscriber.assertComplete()
+        testObservable.assertSubscribed()
+        testObservable.assertComplete()
+        testObservable.assertNoErrors()
     }
 
     @Test
-    fun `chamada rertofit codigo de resposta true`() {
+    fun `When get trending movies, then movies response object is retrieved`() {
+        val testObservable = TestObserver<MovieResponseDTO>()
 
-        val call = tmdbApi.getPopularMovies(AppConstants.LANGUAGE, 1)
+        Apifactory.tmdbApi.getTrendingMovies(AppConstants.LANGUAGE, 1)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(testObservable)
 
+        testObservable.assertSubscribed()
+        testObservable.assertComplete()
+        testObservable.assertNoErrors()
+    }
+
+    @Test
+    fun `When movie is searched, then movies response object is retrieved`() {
+        val call =
+            Apifactory.tmdbApi.searchMovie(AppConstants.LANGUAGE, "emperror's new groove", false)
         try {
-            //Magic is here at .execute() instead of .enqueue()
             val response = call.execute()
-            val isSizeOk = response.body()!!.results.size == 20
-
-            assertTrue(response.isSuccessful() && isSizeOk)
-//            assertThat(response.code(), `is`(200))
+            assertTrue(response.isSuccessful)
 
         } catch (e: IOException) {
             e.printStackTrace()
         }
-
     }
 
     @Test
-    fun movies_call_mockito(){
+    fun `When get recommendations for a movie, then movies response object is retrieved`() {
+        val testObservable = TestObserver<MovieResponseDTO>()
+
+        Apifactory.tmdbApi.getRecommendations(LION_KING_ID, AppConstants.LANGUAGE, 1)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(testObservable)
+
+        testObservable.assertSubscribed()
+        testObservable.assertComplete()
+        testObservable.assertNoErrors()
+    }
+
+    @Test
+    fun `When get similar movies, then movies response object is retrieved`() {
+        val testObservable = TestObserver<MovieResponseDTO>()
+
+        Apifactory.tmdbApi.getSimilar(LION_KING_ID, AppConstants.LANGUAGE, 1)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(testObservable)
+
+        testObservable.assertSubscribed()
+        testObservable.assertComplete()
+        testObservable.assertNoErrors()
+    }
+
+    @Test
+    fun `When get movie's details, then movies response object is retrieved`() {
+        val call = Apifactory.tmdbApi.getDetails(LION_KING_ID, AppConstants.VIDEOS_AND_CASTS)
+
+        try {
+            val response = call.execute()
+            assertTrue(response.isSuccessful)
+
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+//    assertThat(response.code(), `is`(200))
+
+
+    @Test
+    fun movies_call_mockito() {
 //        Mockito.verify(tmdbApi).getMovies(Mockito.anyString(), cb.capture())
 //
 //        val testRepos = ArrayList<HomeRepository>()
@@ -90,3 +132,4 @@ class RetrofitTest {
 
     }
 }
+
