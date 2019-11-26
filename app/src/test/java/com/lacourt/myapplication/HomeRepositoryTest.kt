@@ -32,9 +32,13 @@ class HomeRepositoryTest {
 
     private var repository: HomeRepository? = null
 
+
+
     @Before
     fun setUp(){
         repository = HomeRepository(app)
+        //Not sure if it's needed
+        repository!!.listsOfMovies.observeForever {  }
     }
 
     @Test
