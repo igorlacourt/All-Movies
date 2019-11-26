@@ -2,10 +2,13 @@ package com.lacourt.myapplication
 
 import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.lacourt.myapplication.database.MyListDao
 import com.lacourt.myapplication.repository.HomeRepository
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.jupiter.params.shadow.com.univocity.parsers.common.Context
+import org.junit.jupiter.params.shadow.com.univocity.parsers.common.ContextWrapper
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito
@@ -17,27 +20,25 @@ import org.mockito.InjectMocks
 
 @RunWith(MockitoJUnitRunner::class)
 class HomeRepositoryTest {
-    @Mock
-    lateinit var app: Application
+    //Should use MyListDao as dependency injected in the repository, so I'd just need to mock it
+//    @Mock
+//    lateinit var myListDao: MyListDao
 
-//    @Spy
-    lateinit var repository: HomeRepository
+    @Spy
+    lateinit var app: Application
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-
-    @InjectMocks
-    private val app2 = Application()
+    private var repository: HomeRepository? = null
 
     @Before
-    fun setMocks(){
-        var homeRepository = HomeRepository(app)
-        repository = Mockito.spy(homeRepository)
+    fun setUp(){
+        repository = HomeRepository(app)
     }
 
     @Test
     fun `when fetch movies is called, livedata objects receive the expected values`(){
-        Mockito.`when`(repository.justForTesting()).thenReturn(repository.listsOfMovies)
+        Mockito.`when`(repository!!.justForTesting()).thenReturn(repository!!.listsOfMovies)
     }
 }

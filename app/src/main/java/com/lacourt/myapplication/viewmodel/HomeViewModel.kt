@@ -47,9 +47,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application){
         Log.d("log_is_inserted", "HomeViewModel, insert() called")
         repository?.insert(myListItem)
     }
+
     fun delete(id: Int){
         Log.d("log_is_inserted", "HomeViewModel, delete() called")
-
         repository?.delete(id)
     }
 
