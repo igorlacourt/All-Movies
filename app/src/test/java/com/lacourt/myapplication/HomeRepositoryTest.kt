@@ -32,17 +32,17 @@ class HomeRepositoryTest {
 
     private var repository: HomeRepository? = null
 
-
-
     @Before
     fun setUp(){
         repository = HomeRepository(app)
         //Not sure if it's needed
         repository!!.listsOfMovies.observeForever {  }
+
+//        repository.justForTesting()
     }
 
     @Test
     fun `when fetch movies is called, livedata objects receive the expected values`(){
-        Mockito.`when`(repository!!.justForTesting()).thenReturn(repository!!.listsOfMovies)
+//        Mockito.`when`(repository!!.justForTesting()).thenReturn(repository!!.listsOfMovies)
     }
 }

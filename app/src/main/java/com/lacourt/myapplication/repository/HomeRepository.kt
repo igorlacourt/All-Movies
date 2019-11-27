@@ -21,6 +21,7 @@ import com.lacourt.myapplication.isInDatabase
 import com.lacourt.myapplication.network.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Function4
 import io.reactivex.schedulers.Schedulers
 import retrofit2.HttpException
@@ -199,7 +200,7 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
 
 
     @SuppressLint("CheckResult")
-    fun justForTesting() : MutableLiveData<Resource<List<Collection<DomainMovie>>>>{
+    fun justForTesting() : Disposable {
         isLoading.value = true
         Log.d("refresh", "HomeRepository, fetchMoviesLists()")
         val tmdbApi = Apifactory.tmdbApi
@@ -208,7 +209,7 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
         val popularMoviesObservale = tmdbApi.getPopularMovies(AppConstants.LANGUAGE, 1)
         val topRatedMoviesObservable = tmdbApi.getTopRatedMovies(AppConstants.LANGUAGE, 1)
 
-        Observable.zip(
+       return Observable.zip(
             trendinMoviesObservale.subscribeOn(Schedulers.io()),
             upcomingMoviesObservale.subscribeOn(Schedulers.io()),
             popularMoviesObservale.subscribeOn(Schedulers.io()),
@@ -283,8 +284,6 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
                 }
                 isLoading.value = false
             })
-
-        return listsOfMovies
     }
 
 }
