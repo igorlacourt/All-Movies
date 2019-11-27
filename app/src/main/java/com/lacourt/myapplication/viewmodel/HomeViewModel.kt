@@ -22,7 +22,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application){
     var isLoading: LiveData<Boolean>? = null
 
     init {
-        Log.d("callstest", "homeViewModel init called.\n")
+//        Log.d("callstest", "homeViewModel init called.\n")
         repository = HomeRepository(application)
         topTrendingMovie = repository?.topTrendingMovie
 
@@ -30,7 +30,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application){
 
         isInDatabase = repository?.isInDatabase
         isLoading = repository?.isLoading
-        Log.d("listsLog", "HomeViewModel, resultList.size = ${listsOfMovies?.value?.data?.size}")
+//        Log.d("listsLog", "HomeViewModel, resultList.size = ${listsOfMovies?.value?.data?.size}")
     }
 
     fun isIndatabase(id: Int?){
@@ -38,9 +38,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application){
     }
 
     fun refresh(){
-        Log.d("refresh", "HomeViewMmodel, refresh()")
+//        Log.d("refresh", "HomeViewMmodel, refresh()")
         repository?.refresh()
-        Log.d("listsLog", "HomeViewModel, resultList.size = ${listsOfMovies?.value?.data?.size}")
+//        Log.d("listsLog", "HomeViewModel, resultList.size = ${listsOfMovies?.value?.data?.size}")
     }
 
     fun insert(myListItem: MyListItem) {
@@ -49,7 +49,7 @@ class HomeViewModel(application: Application) : AndroidViewModel(application){
     }
 
     fun delete(id: Int){
-        Log.d("log_is_inserted", "HomeViewModel, delete() called")
+//        Log.d("log_is_inserted", "HomeViewModel, delete() called")
         repository?.delete(id)
     }
 

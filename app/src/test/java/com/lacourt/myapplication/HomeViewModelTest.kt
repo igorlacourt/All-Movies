@@ -1,6 +1,7 @@
 package com.lacourt.myapplication
 
 import android.app.Application
+import com.lacourt.myapplication.network.Resource
 import com.lacourt.myapplication.viewmodel.HomeViewModel
 import junit.framework.Assert.assertEquals
 import org.junit.Test
@@ -18,18 +19,12 @@ class HomeViewModelTest {
 
     @Test
     fun isLiveDataEmitting_observeForever() {
-//
-//        viewModel.refresh()
-//
-//        viewModel.setNewValue("foo")
-//
-//        // This works but can be improved.
-//        viewModel.liveData2.observeForever { }
-//
-//        // Passes because it's not a result of a Transformation:
-//        assertEquals(viewModel.liveData1.value, "foo")
-//
-//        // Passes because now it's being observed:
-//        assertEquals(viewModel.liveData2.value, "FOO")
+
+        viewModel.listsOfMovies!!.observeForever {  }
+
+        viewModel.refresh()
+
+        // Passes because now it's being observed:
+        assertEquals(viewModel.listsOfMovies!!.value!!.status, Resource.Status.SUCCESS)
     }
 }

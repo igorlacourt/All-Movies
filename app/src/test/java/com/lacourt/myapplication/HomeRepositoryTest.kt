@@ -37,12 +37,11 @@ class HomeRepositoryTest {
         repository = HomeRepository(app)
         //Not sure if it's needed
         repository!!.listsOfMovies.observeForever {  }
-
-//        repository.justForTesting()
     }
 
     @Test
     fun `when fetch movies is called, livedata objects receive the expected values`(){
+        // Write this test using idling resource to check the live data after all operations finish.
 //        Mockito.`when`(repository!!.justForTesting()).thenReturn(repository!!.listsOfMovies)
     }
 }
