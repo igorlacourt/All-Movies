@@ -8,7 +8,6 @@ object AppConstants{
     const val TMDB_IMAGE_BASE_URL_W780 = "https://image.tmdb.org/t/p/w780/"
     const val TMDB_IMAGE_BASE_URL_ORIGINAL = "https://image.tmdb.org/t/p/original/"
     const val TMDB_IMAGE_BASE_URL_W1280 = "https://image.tmdb.org/t/p/w1280/"
-    const val TMDB_API_KEY = ""
     const val LANGUAGE = "en-US"
     const val DATE_ASC = "ASC"
     const val DATE_DESC = "DESC"
