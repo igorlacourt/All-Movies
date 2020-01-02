@@ -24,7 +24,7 @@ android {
 //        javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
         multiDexEnabled true
 
-        buildConfigField("String", "TMDB_API_KEY", TMDB_API_KEY)
+//        buildConfigField("String", "TMDB_API_KEY", TMDB_API_KEY)
     }
 
     buildTypes {

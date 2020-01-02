@@ -1,6 +1,8 @@
 package com.lacourt.myapplication.ui.details
 
+import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -11,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.bold
@@ -61,7 +64,9 @@ class DetailsFragment : Fragment(), OnItemClick {
     lateinit var backdropImageView: ImageView
     lateinit var voteAverage: TextView
     lateinit var emptyRecomendations: TextView
+    lateinit var searchStreamOnGoogle: ConstraintLayout
 
+    private var movieTitle: String? = null
     var movieId: Int? = null
 
     override fun onCreateView(
@@ -77,6 +82,10 @@ class DetailsFragment : Fragment(), OnItemClick {
         progressBar.visibility = View.VISIBLE
         emptyRecomendations = view.findViewById(R.id.tv_recommended_empty)
         emptyRecomendations.visibility = View.VISIBLE
+        searchStreamOnGoogle = view.findViewById(R.id.btn_search_stream_on_google)
+        searchStreamOnGoogle.visibility = View.INVISIBLE
+
+        searchStreamOnGoogleClickListener()
 
         var recyclerView = view.findViewById<RecyclerView>(R.id.rv_recommended)
         val adapter = GridAdapter(context, this, ArrayList())
@@ -200,6 +209,16 @@ class DetailsFragment : Fragment(), OnItemClick {
         return view
     }
 
+    private fun searchStreamOnGoogleClickListener() {
+        searchStreamOnGoogle.setOnClickListener {
+            movieTitle?.let {title ->
+                var intent: Intent  = Intent(Intent.ACTION_WEB_SEARCH)
+                intent.putExtra(SearchManager.QUERY, "watch movie ${title}")
+                startActivity(intent)
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         viewModel.isIndatabase(movieId)
@@ -226,6 +245,8 @@ class DetailsFragment : Fragment(), OnItemClick {
                         ).show()
                     }
                 })
+            movieTitle = title
+            searchStreamOnGoogle.visibility = View.VISIBLE
             detail_title.text = title
             detail_overview.text = overview
             release_year.text = release_date

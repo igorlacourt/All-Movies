@@ -24,4 +24,5 @@
     <string name="error_try_again_btn">Try again</string>
     <string name="database_item_not_removed">Could not remove from My List</string>
     <string name="database_item_not_inserted">Could not add to My List</string>
+    <string name="stream_search_google">Where to watch</string>
 </resources>

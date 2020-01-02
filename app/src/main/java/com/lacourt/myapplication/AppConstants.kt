@@ -13,4 +13,6 @@ object AppConstants{
     const val DATE_DESC = "DESC"
     const val VIDEOS = "videos"
     const val VIDEOS_AND_CASTS = "videos,casts"
+    const val TMDB_API_KEY = ""
+
 }

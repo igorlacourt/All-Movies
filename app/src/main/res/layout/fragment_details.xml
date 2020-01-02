@@ -90,7 +90,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_vote_average"
+                app:layout_constraintTop_toBottomOf="@+id/btn_search_stream_on_google"
                 tools:text="Detail overview Detail overview Detail overview Detail overview Detail overview Detail overview " />
 
             <TextView
@@ -180,6 +180,15 @@
                 app:layout_constraintBottom_toTopOf="@+id/rv_recommended"
                 app:layout_constraintStart_toStartOf="@+id/tv_director"
                 app:layout_constraintTop_toBottomOf="@+id/tv_my_list_details" />
+
+            <include
+                android:id="@+id/btn_search_stream_on_google"
+                layout="@layout/button_stream_google_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="@+id/tv_vote_average"
+                app:layout_constraintTop_toBottomOf="@+id/tv_vote_average" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
