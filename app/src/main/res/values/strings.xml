@@ -24,4 +24,11 @@
     <string name="error_try_again_btn">Try again</string>
     <string name="database_item_not_removed">Could not remove from My List</string>
     <string name="database_item_not_inserted">Could not add to My List</string>
+
+    <string name="avalia_play_store_popup_titulo">Finding some nice movies?</string>
+    <string name="avalia_play_store_mensagem">Your rating is important for us!</string>
+    <string name="avalia_play_store_btn_nunca">Never</string>
+    <string name="avalia_play_store_btn_mais_tarde">Later</string>
+    <string name="avalia_play_store_btn_avaliar">Rate</string>
+    <string name="play_store_uri">market://details?id=com.lacourt.myapplication</string>
 </resources>
