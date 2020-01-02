@@ -24,6 +24,7 @@ import android.content.Context
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import com.lacourt.myapplication.MainActivity
 import com.lacourt.myapplication.R
 
 class SearchFragment : Fragment(), OnItemClick {
@@ -61,6 +62,9 @@ class SearchFragment : Fragment(), OnItemClick {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+
+        (activity as MainActivity).mostraDialogoAvaliacao()
 
         showKeyBoard()
 

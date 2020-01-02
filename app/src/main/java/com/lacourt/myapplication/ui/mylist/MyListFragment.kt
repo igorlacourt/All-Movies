@@ -18,6 +18,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.lacourt.myapplication.MainActivity
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.ui.GridAdapter
 import com.lacourt.myapplication.ui.OnItemClick
@@ -65,6 +66,12 @@ class MyListFragment : Fragment(), OnItemClick {
         })
 
         return root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        (activity as MainActivity).mostraDialogoAvaliacao()
     }
 
     override fun onResume() {
