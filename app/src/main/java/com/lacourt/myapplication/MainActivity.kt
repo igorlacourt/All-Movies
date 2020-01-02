@@ -3,6 +3,7 @@ package com.lacourt.myapplication
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
@@ -54,6 +55,35 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         mostraDialogoAvaliacao()
+    }
+
+    private fun app_launched(mContext: Context) {
+        var prefs: SharedPreferences = mContext.getSharedPreferences("apprater", 0);
+
+        if (prefs.getBoolean("dontshowagain", false)) { return ; }
+
+        var editor = prefs.edit()
+
+        // Increment launch counter
+        var launch_count = prefs.getLong("launch_count", 0) + 1;
+        editor.putLong("launch_count", launch_count);
+
+        // Get date of first launch
+        var date_firstLaunch = prefs.getLong("date_firstlaunch", 0)
+        if (date_firstLaunch.toInt() == 0) {
+            date_firstLaunch = System.currentTimeMillis();
+            editor.putLong("date_firstlaunch", date_firstLaunch);
+        }
+
+        // Wait at least n days before opening
+        if (launch_count >= LAUNCHES_UNTIL_PROMPT) {
+            if (System.currentTimeMillis() >= date_firstLaunch +
+                (DAYS_UNTIL_PROMPT * 24 * 60 * 60 * 1000)) {
+                mostraDialogoAvaliacao()
+            }
+        }
+
+        editor.commit()
     }
 
     private fun mostraDialogoAvaliacao() {
