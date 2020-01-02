@@ -27,6 +27,11 @@ import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import com.lacourt.myapplication.util.SharedPrefManager
 import com.lacourt.myapplication.util.Util
+import com.google.android.gms.ads.initialization.InitializationStatus
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener
+import com.google.android.gms.ads.MobileAds
+
+
 
 class MainActivity : AppCompatActivity() {
 

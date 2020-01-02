@@ -15,6 +15,10 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544/6300978111"/>
+
         <activity android:name=".ui.details.DetailsActivity" />
         <activity android:name=".ui.search.SearchActivity" />
         <activity android:name=".ui.SearchActivity" />
