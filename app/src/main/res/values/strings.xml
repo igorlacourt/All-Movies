@@ -25,4 +25,11 @@
     <string name="database_item_not_removed">Could not remove from My List</string>
     <string name="database_item_not_inserted">Could not add to My List</string>
     <string name="stream_search_google">Where to watch</string>
+
+    <string name="rate_play_store_popup_title">Finding some nice movies?</string>
+    <string name="rate_play_store_message">Your rating is important for us!</string>
+    <string name="rate_play_store_btn_dont_show_again">Don\'t show again</string>
+    <string name="rate_play_store_btn_later">Do it later</string>
+    <string name="rate_play_store_btn_rate">Rate app</string>
+    <string name="play_store_uri">market://details?id=com.lacourt.myapplication</string>
 </resources>

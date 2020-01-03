@@ -1,11 +1,16 @@
 package com.lacourt.myapplication
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.net.Uri
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.findNavController
@@ -16,7 +21,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lacourt.myapplication.ui.mylist.MyListFragment
 import com.lacourt.myapplication.ui.home.HomeFragment
 import android.view.MenuItem
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.NonNull
+import androidx.appcompat.app.AlertDialog
+import com.lacourt.myapplication.util.SharedPrefManager
+import com.lacourt.myapplication.util.Util
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,6 +59,53 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        SharedPrefManager.getInstance(this).countLaunch()
+    }
+
+    fun showRatingDialog() {
+        if (SharedPrefManager.getInstance(this).isRatingAllowed()) {
+            Util.showRatingDialog(
+                this,
+                getString(R.string.rate_play_store_popup_title),
+                getString(R.string.rate_play_store_message),
+                getString(R.string.rate_play_store_btn_dont_show_again), onDontShowAgain(),
+                getString(R.string.rate_play_store_btn_later), onLater(),
+                getString(R.string.rate_play_store_btn_rate), onRate()
+            )
+        }
+    }
+
+    private fun onRate(): View.OnClickListener {
+        return View.OnClickListener {
+            Log.d("limitelog", "onAvaliar")
+            SharedPrefManager.getInstance(this).countLaunch()
+            openPlayStore()
+        }
+    }
+
+    private fun onLater(): View.OnClickListener {
+        return View.OnClickListener {
+            SharedPrefManager.getInstance(this).countLaunch()
+        }
+    }
+
+    private fun onDontShowAgain(): View.OnClickListener {
+        return View.OnClickListener {
+            SharedPrefManager.getInstance(this).dontAllowRating()
+        }
+    }
+
+    private fun openPlayStore() {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(getString(R.string.play_store_uri))
+        if(intent.resolveActivity(packageManager) != null)
+            startActivity(intent)
+        else {
+            var toast =Toast.makeText(this, "You don't have Play Store installed", Toast.LENGTH_SHORT)
+            toast.setGravity(Gravity.CENTER, 0, 0)
+            toast.show()
+        }
 
     }
 
@@ -84,4 +145,5 @@ class MainActivity : AppCompatActivity() {
 //        val layout = resources.getLayout(R.layout.fragment_mylist).id
 //        findNavController(R.layout.fragment_mylist).navigate(R.id.action_navigation_home_to_detailsActivity)
     }
+
 }

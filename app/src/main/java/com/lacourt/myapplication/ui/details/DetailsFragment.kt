@@ -66,8 +66,8 @@ class DetailsFragment : Fragment(), OnItemClick {
     lateinit var voteAverage: TextView
     lateinit var emptyRecomendations: TextView
     lateinit var searchStreamOnGoogle: ConstraintLayout
-
     private var movieTitle: String? = null
+
     var movieId: Int? = null
 
     override fun onCreateView(
@@ -83,7 +83,7 @@ class DetailsFragment : Fragment(), OnItemClick {
         progressBar.visibility = View.VISIBLE
         emptyRecomendations = view.findViewById(R.id.tv_recommended_empty)
         emptyRecomendations.visibility = View.VISIBLE
-        searchStreamOnGoogle = view.findViewById(R.id.btn_search_stream_on_google)
+        searchStreamOnGoogle = view.findViewById<ConstraintLayout>(R.id.btn_search_stream_on_google)
         searchStreamOnGoogle.visibility = View.INVISIBLE
 
         searchStreamOnGoogleClickListener()
@@ -207,6 +207,9 @@ class DetailsFragment : Fragment(), OnItemClick {
             }
         }
 
+
+        loadAds(view)
+
         return view
     }
 
@@ -219,6 +222,13 @@ class DetailsFragment : Fragment(), OnItemClick {
                 startActivity(intent)
             }
         }
+    }
+
+    private fun loadAds(view: View) {
+//        var mAdView = view.findViewById<AdView>(R.id.adView)
+//        initialize(context) {}
+//        val adRequest = AdRequest.Builder().build()
+//        mAdView.loadAd(adRequest)
     }
 
     override fun onResume() {
