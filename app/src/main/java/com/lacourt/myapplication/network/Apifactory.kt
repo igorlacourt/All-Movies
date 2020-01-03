@@ -1,6 +1,7 @@
 package com.lacourt.myapplication.network
 
 import com.lacourt.myapplication.AppConstants
+import com.lacourt.myapplication.BuildConfig
 //import com.lacourt.myapplication.BuildConfig.TMDB_API_KEY
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
@@ -14,7 +15,7 @@ object Apifactory {
     private val authInterceptor = Interceptor { chain ->
         val newUrl = chain.request().url
             .newBuilder()
-            .addQueryParameter("api_key", AppConstants.TMDB_API_KEY)
+            .addQueryParameter("api_key", BuildConfig.TMDB_API_KEY)
             .build()
 
         val newRequest = chain.request()

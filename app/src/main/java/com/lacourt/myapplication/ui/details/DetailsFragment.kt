@@ -47,6 +47,7 @@ import com.lacourt.myapplication.ui.home.MovieAdapter
 import com.lacourt.myapplication.ui.search.SearchFragmentDirections
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.net.URLEncoder
 import kotlin.math.floor
 
 /**
@@ -212,8 +213,9 @@ class DetailsFragment : Fragment(), OnItemClick {
     private fun searchStreamOnGoogleClickListener() {
         searchStreamOnGoogle.setOnClickListener {
             movieTitle?.let {title ->
-                var intent: Intent  = Intent(Intent.ACTION_WEB_SEARCH)
-                intent.putExtra(SearchManager.QUERY, "watch movie ${title}")
+                var escapedQuery = URLEncoder.encode("watch movie ${title}", "UTF-8")
+                var uri = Uri.parse("https://www.google.com/#q=" + escapedQuery)
+                var intent = Intent(Intent.ACTION_VIEW, uri)
                 startActivity(intent)
             }
         }
