@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity() {
         if(intent.resolveActivity(packageManager) != null)
             startActivity(intent)
         else {
-            var toast =Toast.makeText(this, "You don't have Play Store intalled", Toast.LENGTH_SHORT)
+            var toast =Toast.makeText(this, "You don't have Play Store installed", Toast.LENGTH_SHORT)
             toast.setGravity(Gravity.CENTER, 0, 0)
             toast.show()
         }
