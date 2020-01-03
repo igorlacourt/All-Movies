@@ -29,11 +29,15 @@ import kotlinx.android.synthetic.main.fragment_details.*
 import java.lang.Exception
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds.initialize
 import com.movies.allmovies.R
 import com.movies.allmovies.dto.CastsDTO
 import com.movies.allmovies.openYoutube
 import com.movies.allmovies.ui.GridAdapter
 import com.movies.allmovies.ui.OnItemClick
+import com.movies.allmovies.util.BannerAds
 import java.net.URLEncoder
 import kotlin.math.floor
 
@@ -195,7 +199,7 @@ class DetailsFragment : Fragment(), OnItemClick {
         }
 
 
-        loadAds(view)
+        BannerAds.loadAds(context, view)
 
         return view
     }
@@ -209,13 +213,6 @@ class DetailsFragment : Fragment(), OnItemClick {
                 startActivity(intent)
             }
         }
-    }
-
-    private fun loadAds(view: View) {
-//        var mAdView = view.findViewById<AdView>(R.id.adView)
-//        initialize(context) {}
-//        val adRequest = AdRequest.Builder().build()
-//        mAdView.loadAd(adRequest)
     }
 
     override fun onResume() {

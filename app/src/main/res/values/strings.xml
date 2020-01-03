@@ -33,5 +33,6 @@
     <string name="rate_play_store_btn_rate">Rate app</string>
     <string name="play_store_uri">market://details?id=com.lacourt.myapplication</string>
 
-    <string name="app_id_admob">ca-app-pub-5070947808406616~1403692144</string>
+    <string name="admob_app_id">ca-app-pub-5070947808406616~1403692144</string>
+    <string name="admob_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 </resources>

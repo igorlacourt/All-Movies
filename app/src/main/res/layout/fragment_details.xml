@@ -128,6 +128,23 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/wish_list_btn" />
 
+            <com.google.android.gms.ads.AdView
+                xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                ads:adSize="BANNER"
+                ads:adUnitId="@string/admob_ad_unit_id"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rv_recommended" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_recommended"
                 android:layout_width="match_parent"
@@ -140,37 +157,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_recommended_header" />
 
-<!--            <com.google.android.gms.ads.AdView-->
-<!--                xmlns:ads="http://schemas.android.com/apk/res-auto"-->
-<!--                android:id="@+id/adView"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_centerHorizontal="true"-->
-<!--                android:layout_alignParentBottom="true"-->
-<!--                ads:adSize="BANNER"-->
-<!--                ads:adUnitId="ca-app-pub-3940256099942544/6300978111"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintLeft_toLeftOf="parent"-->
-<!--                app:layout_constraintRight_toRightOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/rv_recommended"-->
-<!--                >-->
-<!--&lt;!&ndash;                app:layout_constraintBottom_toBottomOf="parent"&ndash;&gt;-->
-<!--            </com.google.android.gms.ads.AdView>-->
+
 
             <TextView
                 android:id="@+id/tv_recommended_empty"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:text="No movies to show"
-                android:gravity="center"
                 android:background="@color/colorPrimaryDark"
+                android:gravity="center"
+                android:text="No movies to show"
+                app:layout_constraintBottom_toTopOf="@+id/adView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_recommended_header"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@+id/tv_recommended_header" />
 
             <TextView
                 android:id="@+id/tv_director"

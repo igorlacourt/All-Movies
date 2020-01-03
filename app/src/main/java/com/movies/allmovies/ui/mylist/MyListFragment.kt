@@ -17,6 +17,7 @@ import com.movies.allmovies.MainActivity
 import com.movies.allmovies.R
 import com.movies.allmovies.ui.GridAdapter
 import com.movies.allmovies.ui.OnItemClick
+import com.movies.allmovies.util.BannerAds
 import com.movies.allmovies.viewmodel.MyListViewModel
 import org.junit.Test
 
@@ -56,6 +57,8 @@ class MyListFragment : Fragment(), OnItemClick {
 
             progressBar.visibility = View.INVISIBLE
         })
+
+        BannerAds.loadAds(context, root)
 
         return root
     }
