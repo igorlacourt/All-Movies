@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.lacourt.myapplication.ui.home.HomeFragment"
+        android:name="com.movies.allmovies.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/navigation_my_list"
-        android:name="com.lacourt.myapplication.ui.mylist.MyListFragment"
+        android:name="com.movies.allmovies.ui.mylist.MyListFragment"
         android:label="@string/title_my_list"
         tools:layout="@layout/fragment_dashboard" >
         <action
@@ -32,7 +32,7 @@
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.lacourt.myapplication.ui.search.SearchFragment"
+        android:name="com.movies.allmovies.ui.search.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_search" >
         <action
@@ -42,7 +42,7 @@
 
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="com.lacourt.myapplication.ui.details.DetailsFragment"
+        android:name="com.movies.allmovies.ui.details.DetailsFragment"
         android:label="DetailsFragment" >
         <argument
             android:name="id"

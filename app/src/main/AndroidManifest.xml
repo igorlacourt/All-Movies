@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.lacourt.myapplication">
+    package="com.movies.allmovies">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -22,7 +22,7 @@
         <activity android:name=".ui.details.DetailsActivity" />
         <activity android:name=".ui.search.SearchActivity" />
         <activity android:name=".ui.SearchActivity" />
-        <activity android:name=".MainActivity"
+        <activity android:name="com.movies.allmovies.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
