@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.findNavController
@@ -23,13 +24,11 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import com.lacourt.myapplication.util.SharedPrefManager
 import com.lacourt.myapplication.util.Util
-import com.google.android.gms.ads.initialization.InitializationStatus
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener
-import com.google.android.gms.ads.MobileAds
 
 
 
@@ -80,7 +79,7 @@ class MainActivity : AppCompatActivity() {
     private fun onAvaliar(): View.OnClickListener {
         return View.OnClickListener {
             Log.d("limitelog", "onAvaliar")
-            abrePlayStore()
+            openPlayStore()
         }
     }
 
@@ -96,10 +95,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun abrePlayStore() {
+    private fun openPlayStore() {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(getString(R.string.play_store_uri))
-        startActivity(intent)
+        if(intent.resolveActivity(packageManager) != null)
+            startActivity(intent)
+        else {
+            var toast =Toast.makeText(this, "You don't have Play Store intalled", Toast.LENGTH_SHORT)
+            toast.setGravity(Gravity.CENTER, 0, 0)
+            toast.show()
+        }
+
     }
 
     /*     onActivityResult replaces myListFragment with itself for updating

@@ -33,10 +33,6 @@ import java.lang.Exception
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.MobileAds.*
 import com.lacourt.myapplication.R
 import com.lacourt.myapplication.dto.CastsDTO
 import com.lacourt.myapplication.dto.DbMovieDTO
@@ -208,10 +204,10 @@ class DetailsFragment : Fragment(), OnItemClick {
     }
 
     private fun loadAds(view: View) {
-        var mAdView = view.findViewById<AdView>(R.id.adView)
-        initialize(context) {}
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
+//        var mAdView = view.findViewById<AdView>(R.id.adView)
+//        initialize(context) {}
+//        val adRequest = AdRequest.Builder().build()
+//        mAdView.loadAd(adRequest)
     }
 
     override fun onResume() {
