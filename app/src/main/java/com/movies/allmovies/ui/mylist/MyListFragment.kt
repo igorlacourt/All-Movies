@@ -59,9 +59,11 @@ class MyListFragment : Fragment(), OnItemClick {
             Log.d("receivertest", "onChange, list.size = ${list.size}")
             adapter.setList(list)
 
-            if (list.isNullOrEmpty())
+            if (list.isNullOrEmpty()) {
                 emptyList.visibility = View.VISIBLE
-            else{
+                makeAdsInvisible()
+            }
+            else {
                 emptyList.visibility = View.INVISIBLE
                 setAdsVisibility(list)
             }
@@ -73,6 +75,11 @@ class MyListFragment : Fragment(), OnItemClick {
         loadAdsBottomScreen()
 
         return root
+    }
+
+    private fun makeAdsInvisible() {
+        adViewBottomRv?.visibility = View.INVISIBLE
+        adViewBottomScreen?.visibility = View.INVISIBLE
     }
 
     private fun setAdsVisibility(list: List<DomainMovie>) {

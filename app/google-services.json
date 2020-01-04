@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "525598891553",
+    "firebase_url": "https://all-movies-45263.firebaseio.com",
+    "project_id": "all-movies-45263",
+    "storage_bucket": "all-movies-45263.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:525598891553:android:049e5c713235ab6c4d8d60",
+        "android_client_info": {
+          "package_name": "com.movies.allmovies"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "525598891553-8s8bsjg7590l51qihbaa3mdrt0u61f6c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.movies.allmovies",
+            "certificate_hash": "f6adb193f366d9f9c2fbf12a5c72ef111de70ac9"
+          }
+        },
+        {
+          "client_id": "525598891553-9kgsm8mb2nr585rug0qbog74160ds7n0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtCvaXAQCjQao-ZXH75tgqhdV-kyyKDHc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "525598891553-9kgsm8mb2nr585rug0qbog74160ds7n0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

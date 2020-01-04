@@ -60,6 +60,10 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0'
 
+    //Firebase
+    implementation 'com.google.firebase:firebase-analytics:17.2.1'
+    implementation 'com.google.firebase:firebase-messaging:20.1.0'
+
 //    testImplementation 'junit:junit:4.12'
     implementation 'androidx.test:core:' + rootProject.coreVersion
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -158,3 +162,5 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:18.3.0'
 
 }
+
+apply plugin: 'com.google.gms.google-services'
