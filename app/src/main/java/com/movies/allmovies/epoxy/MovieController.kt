@@ -108,18 +108,7 @@ class MovieController(
                     }
             )
         }
-        popularMovieModelList = ArrayList<MovieListModel_>()
-        listsOfMovies?.get(2)?.forEach { movie ->
-            popularMovieModelList?.add(
-                MovieListModel_()
-                    .id(movie.id)
-                    .mMoviePoster(movie.poster_path)
-                    .clickListener { model, parentView, clickedView, position ->
-                        Log.d("clicklog", "onCreateView popular movies called")
-                        movie.id?.let { callDetailsFragment(it) }
-                    }
-            )
-        }
+
         topRatedMoviesModelList = ArrayList<MovieListModel_>()
         listsOfMovies?.get(3)?.forEach { movie ->
             topRatedMoviesModelList?.add(
@@ -128,6 +117,19 @@ class MovieController(
                     .mMoviePoster(movie.poster_path)
                     .clickListener { model, parentView, clickedView, position ->
                         Log.d("clicklog", "onCreateView in all trending called")
+                        movie.id?.let { callDetailsFragment(it) }
+                    }
+            )
+        }
+
+        popularMovieModelList = ArrayList<MovieListModel_>()
+        listsOfMovies?.get(2)?.forEach { movie ->
+            popularMovieModelList?.add(
+                MovieListModel_()
+                    .id(movie.id)
+                    .mMoviePoster(movie.poster_path)
+                    .clickListener { model, parentView, clickedView, position ->
+                        Log.d("clicklog", "onCreateView popular movies called")
                         movie.id?.let { callDetailsFragment(it) }
                     }
             )
@@ -176,17 +178,6 @@ class MovieController(
         }
 
         HeaderModel_()
-            .id(4)
-            .header("Popular movies")
-            .addTo(this)
-        popularMovieModelList?.let {
-            CarouselModel_()
-                .id("popularMovies")
-                .models(it)
-                .addTo(this)
-        }
-
-        HeaderModel_()
             .id(5)
             .header("Critically acclaimed movies")
             .addTo(this)
@@ -197,6 +188,17 @@ class MovieController(
 
             lastDrawedCarousel
                 ?.addTo(this)
+        }
+
+        HeaderModel_()
+            .id(4)
+            .header("Popular movies")
+            .addTo(this)
+        popularMovieModelList?.let {
+            CarouselModel_()
+                .id("popularMovies")
+                .models(it)
+                .addTo(this)
         }
 
         if(topTrendingMovie != null && error == null && !isLoading)

@@ -38,7 +38,7 @@ class GridAdapter(
 
         val width = displayMetrics.widthPixels
 
-        val maxHeight= width.div(3) * 1.5
+        val maxHeight= width.div(3) * 1.4
 
         holder.poster.minimumHeight = maxHeight.toInt()
         holder.cardView.layoutParams.height = maxHeight.toInt()

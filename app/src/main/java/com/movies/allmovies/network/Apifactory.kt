@@ -1,7 +1,7 @@
 package com.movies.allmovies.network
 
-import com.movies.allmovies.AppConstants
 import com.movies.allmovies.BuildConfig
+import com.movies.allmovies.AppConstants
 //import com.lacourt.myapplication.BuildConfig.TMDB_API_KEY
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
