@@ -33,6 +33,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds.initialize
 import com.movies.allmovies.R
+import com.movies.allmovies.dto.CastDTO
 import com.movies.allmovies.dto.CastsDTO
 import com.movies.allmovies.openYoutube
 import com.movies.allmovies.ui.GridAdapter
@@ -249,8 +250,8 @@ class DetailsFragment : Fragment(), OnItemClick {
             tv_duration.text = convertDuration(runtime)
             setVoteAverageColor(tv_vote_average, vote_average)
             progressBar.visibility = View.INVISIBLE
-            setCast(tv_cast, casts)
             setDirector(tv_director, casts)
+            setCast(tv_cast, casts)
         }
 
     }
@@ -258,7 +259,10 @@ class DetailsFragment : Fragment(), OnItemClick {
     private fun setCast(tvCast: TextView, castAndDirector: CastsDTO?) {
         var builder = SpannableStringBuilder()
 
+        castAdapter.setList(castAndDirector?.cast)
+
         builder.bold { append("Cast: ") }
+
         if (!castAndDirector?.cast.isNullOrEmpty()) {
             for (i in 0 until castAndDirector?.cast!!.size) {
                 if (i == castAndDirector.cast.size - 1)
@@ -267,7 +271,6 @@ class DetailsFragment : Fragment(), OnItemClick {
                     builder.append("${castAndDirector.cast[i].name}, ")
             }
         }
-
 
         tvCast.text = builder
     }
