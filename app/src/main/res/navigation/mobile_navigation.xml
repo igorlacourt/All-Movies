@@ -52,6 +52,20 @@
             app:destination="@id/detailsFragment"
             app:enterAnim="@transition/slide_in_right"
             app:popExitAnim="@transition/slide_out_right" />
+        <action
+            android:id="@+id/action_detailsFragment_toPersonDetailFragment"
+            app:destination="@id/personDetailsFragment"
+            app:enterAnim="@transition/slide_in_right"
+            app:popExitAnim="@transition/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/personDetailsFragment"
+        android:name="com.movies.allmovies.ui.cast.PersonDetailsFragment"
+        android:label="DetailsFragment" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
     </fragment>
 
 </navigation>

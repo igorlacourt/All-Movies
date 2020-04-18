@@ -52,7 +52,7 @@ import kotlin.math.floor
  * Use the [DetailsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class DetailsFragment : Fragment(), OnItemClick {
+class DetailsFragment : Fragment(), OnItemClick, OnCastClick {
     lateinit var viewModel: DetailsViewModel
     lateinit var progressBar: FrameLayout
     lateinit var wishListButton: ImageView
@@ -328,6 +328,15 @@ class DetailsFragment : Fragment(), OnItemClick {
         }
     }
 
+    override fun onCastClick(id: Int) {
+        if (id != 0) {
+            Log.d("clickgrid", "HomeFragment, onItemClick, id = $id")
+            val detailsToPersonDetailsFragment = DetailsFragmentDirections.actionDetailsFragmentToPersonDetailFragment(id)
+            findNavController().navigate(detailsToPersonDetailsFragment)
+        } else {
+            Toast.makeText(context, "Sorry. Can not load this movie. :/", Toast.LENGTH_SHORT).show()
+        }
+    }
 //    companion object {
 //        /**
 //         * Use this factory method to create a new instance of

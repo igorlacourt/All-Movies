@@ -1,9 +1,6 @@
 package com.movies.allmovies.network
 
-import com.movies.allmovies.dto.CastDTO
-import com.movies.allmovies.dto.DetailsDTO
-import com.movies.allmovies.dto.GenreResponseDTO
-import com.movies.allmovies.dto.MovieResponseDTO
+import com.movies.allmovies.dto.*
 import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.Call
@@ -122,5 +119,5 @@ interface TmdbApi {
     fun getGenresObservable(): Observable<GenreResponseDTO>
 
     @GET("person/{person_id}")
-    fun getPerson(@Path("person_id") person_id: Int): Call<CastDTO>
+    fun getPerson(@Path("person_id") person_id: Int): Call<PersonDetails>
 }

@@ -13,15 +13,13 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.R
-import com.movies.allmovies.ui.OnItemClick
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.list_item_cast.view.*
-import kotlinx.android.synthetic.main.movie_list_item.view.*
 
 
 class CastsAdapter(
     private val context: Context?,
-    private val onItemClick: OnItemClick,
+    private val onCastClick: OnCastClick,
     private var list: ArrayList<CastDTO>
 ) : RecyclerView.Adapter<CastsHolder>() {
 
@@ -56,7 +54,7 @@ class CastsAdapter(
                 val id = list[position].id
                 if (id != null) {
                     Log.d("clickgrid", "GridAdapter, setOnClickListener, id = $id")
-                    onItemClick.onItemClick(id)
+                    onCastClick.onCastClick(id)
                 }
                 else {
                     Toast.makeText(
