@@ -28,6 +28,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_details.*
 import java.lang.Exception
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
@@ -82,17 +83,14 @@ class DetailsFragment : Fragment(), OnItemClick {
 
         var recyclerView = view.findViewById<RecyclerView>(R.id.rv_recommended)
         val adapter = GridAdapter(context, this, ArrayList())
-//        var layoutManager =
-//            object : GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false) {
-//                override fun canScrollVertically(): Boolean {
-//                    return false
-//                }
-//            }
-        recyclerView.layoutManager =
-            GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
-//        recyclerView.addItemDecoration(MoviePosterItemDecorator(50))
-
+        recyclerView.layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
+
+        var rvCasts = view.findViewById<RecyclerView>(R.id.rv_casts)
+        rvCasts.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val castsAdapter = CastsAdapter(context, this, ArrayList())
+        rvCasts.adapter = castsAdapter
+
 
         val id = arguments?.getInt("id") ?: 0
 
@@ -169,6 +167,11 @@ class DetailsFragment : Fragment(), OnItemClick {
                     //Display error message
                 }
             }
+        })
+
+        viewModel.casts.observe(this, Observer { list ->
+            Log.d("castlog", "observe called")
+            castsAdapter.setList(list)
         })
 
         backdropImageView.setOnClickListener {
@@ -258,8 +261,6 @@ class DetailsFragment : Fragment(), OnItemClick {
 
     private fun setCast(tvCast: TextView, castAndDirector: CastsDTO?) {
         var builder = SpannableStringBuilder()
-
-        castAdapter.setList(castAndDirector?.cast)
 
         builder.bold { append("Cast: ") }
 

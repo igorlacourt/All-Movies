@@ -1,5 +1,6 @@
 package com.movies.allmovies.network
 
+import com.movies.allmovies.dto.CastDTO
 import com.movies.allmovies.dto.DetailsDTO
 import com.movies.allmovies.dto.GenreResponseDTO
 import com.movies.allmovies.dto.MovieResponseDTO
@@ -119,4 +120,7 @@ interface TmdbApi {
 
     @GET("genre/movie/list")
     fun getGenresObservable(): Observable<GenreResponseDTO>
+
+    @GET("person/{person_id}")
+    fun getPerson(@Path("person_id") person_id: Int): Call<CastDTO>
 }

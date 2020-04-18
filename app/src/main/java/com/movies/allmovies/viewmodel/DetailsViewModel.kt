@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.movies.allmovies.domainmodel.Details
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
+import com.movies.allmovies.dto.CastDTO
 import com.movies.allmovies.repository.DetailsRepository
 import com.movies.allmovies.network.Resource
 
@@ -16,6 +17,7 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
     private val repository: DetailsRepository = DetailsRepository(application)
     internal var movie: MutableLiveData<Resource<Details>>? = null
     internal var recommendedMovies: MutableLiveData<Resource<List<DomainMovie>>> = repository.recommendedMovies
+    var casts: MutableLiveData<ArrayList<CastDTO>> =  repository.casts
     var isInDatabase: LiveData<Boolean> = repository.isInDatabase
 
     fun isInMyList(id: Int?): Boolean {
@@ -25,7 +27,7 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun isIndatabase(id: Int?){
-        repository?.isInDatabase(id)
+        repository.isInDatabase(id)
     }
 
     fun getDetails(id: Int) {
