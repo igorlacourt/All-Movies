@@ -42,10 +42,15 @@ class CastsAdapter(
         (context as Activity).windowManager.defaultDisplay.getMetrics(displayMetrics)
 
         holder.apply {
+            val person = list[position]
+
             Picasso.get()
-                .load("${AppConstants.TMDB_IMAGE_BASE_URL_W185}${list[position].profilePath}")
+                .load("${AppConstants.TMDB_IMAGE_BASE_URL_W185}${person.profilePath}")
                 .placeholder(R.drawable.placeholder)
                 .into(poster)
+
+            name.text = person.name
+            role.text = "as ${person.character}"
 
             cardView.setOnClickListener {
                 val id = list[position].id
@@ -71,9 +76,19 @@ class CastsAdapter(
         this.list.addAll(list)
         notifyDataSetChanged()
     }
+
+    fun addToList(list: List<CastDTO>) {
+        list.map { item ->
+            this.list.add(item)
+            notifyDataSetChanged()
+        }
+
+    }
 }
 
 class CastsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var poster = itemView.iv_photo
     var cardView = itemView.cv_cast
+    var name = itemView.tv_cast_name
+    var role = itemView.tv_cast_role
 }

@@ -6,28 +6,45 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     app:cardCornerRadius="5dp"
-    android:layout_marginEnd="10dp"
-    android:layout_marginRight="10dp">
+    android:layout_marginEnd="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginLeft="5dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/colorTotalDark">
         <ImageView
             android:id="@+id/iv_photo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="145dp"
+            android:paddingTop="10dp"
             android:scaleType="centerCrop"/>
         <TextView
+            android:id="@+id/tv_cast_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
             android:gravity="start"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textColor="@color/textColor"
             tools:text="Actor Jhon"/>
         <TextView
+            android:id="@+id/tv_cast_role"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginBottom="4dp"
             android:gravity="start"
-            tools:text="Jhon's charater"
+            android:textSize="11dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            tools:text="Jhon's character"
             android:textColor="@color/hintColor"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

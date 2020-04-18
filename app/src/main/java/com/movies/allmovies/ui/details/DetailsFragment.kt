@@ -34,6 +34,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds.initialize
 import com.movies.allmovies.R
+import com.movies.allmovies.domainMappers.toCastDTO
 import com.movies.allmovies.dto.CastDTO
 import com.movies.allmovies.dto.CastsDTO
 import com.movies.allmovies.openYoutube
@@ -158,6 +159,16 @@ class DetailsFragment : Fragment(), OnItemClick {
                     movieId = it.data?.id
                     details = it.data
                     displayDetails(it.data)
+                    it.data?.casts?.let { cast ->
+
+                        cast.cast?.let { actors ->
+                            castsAdapter.setList(actors)
+                        }
+                        cast.crew?.let { crew ->
+                            castsAdapter.addToList(crew.toCastDTO())
+                        }
+                    }
+
                 }
                 Resource.Status.LOADING -> {
                     // A return is given only once, so it is SUCCESS or ERROR. This loading case may not be necessary.
@@ -167,11 +178,6 @@ class DetailsFragment : Fragment(), OnItemClick {
                     //Display error message
                 }
             }
-        })
-
-        viewModel.casts.observe(this, Observer { list ->
-            Log.d("castlog", "observe called")
-            castsAdapter.setList(list)
         })
 
         backdropImageView.setOnClickListener {

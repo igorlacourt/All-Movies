@@ -6,7 +6,7 @@
     <color name="colorAccent">#4CAF50</color>
     <color name="colorBackground">#575757</color>
     <color name="textColor">#E2E2E2</color>
-    <color name="hintColor">#ccc</color>
+    <color name="hintColor">#BCBCBC</color>
     <color name="topTrendingTitleColor">#F1F1F1</color>
     <color name="genreDramaColor">#CF9E0A</color>
     <color name="genreActionColor">#FF9C22</color>
@@ -29,6 +29,9 @@
     <color name="avg4until6">#E4B811</color>
     <color name="avg0until4">#DD5733</color>
     <color name="shimmer_background">#444444</color>
+
+<!--    Cast CardView-->
+    <color name="cv_cast_color">#272727</color>
 
 
 </resources>

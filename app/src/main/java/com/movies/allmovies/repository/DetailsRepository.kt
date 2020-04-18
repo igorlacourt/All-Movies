@@ -28,9 +28,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class DetailsRepository(application: Application) : BaseRepository(), NetworkCallback<Details> {
     private val myListDao =
@@ -40,7 +37,6 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
     var isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
     var isLoading: MutableLiveData<Boolean> = MutableLiveData()
     val context: Context = application
-    val casts: MutableLiveData<ArrayList<CastDTO>> = MutableLiveData()
 
     fun getDetails(id: Int) {
         Log.d("calltest", "getDetails called")
@@ -144,30 +140,6 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
         myListDao.isInDatabase(callback.data?.id, isInDatabase)
 
         movie.value = callback
-
-        var localCastList = ArrayList<CastDTO>()
-
-        movie.value?.data?.casts?.cast?.map { cast ->
-            cast.id?.let { id ->
-                Apifactory.tmdbApi.getPerson(id).enqueue(object : Callback<CastDTO> {
-                    override fun onFailure(call: Call<CastDTO>, t: Throwable) {
-
-                    }
-
-                    override fun onResponse(call: Call<CastDTO>, response: Response<CastDTO>) {
-                        if (response.isSuccessful) {
-                            Log.d("castlog", "response successful")
-                            response.body()?.let { person ->
-                                Log.d("castlog", "add person ${person.name}, profile path: ${person.profilePath}")
-                                localCastList.add(person)
-                                casts.value = localCastList
-                            }
-                        }
-                    }
-
-                })
-            }
-        }
 
 //        val id: Int? = callback.data?.id
 //        Log.d("log_is_inserted", "DetailsRepository, networkCallResult() called, id = $id")

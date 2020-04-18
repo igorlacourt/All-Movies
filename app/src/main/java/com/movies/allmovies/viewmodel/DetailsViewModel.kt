@@ -17,7 +17,6 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
     private val repository: DetailsRepository = DetailsRepository(application)
     internal var movie: MutableLiveData<Resource<Details>>? = null
     internal var recommendedMovies: MutableLiveData<Resource<List<DomainMovie>>> = repository.recommendedMovies
-    var casts: MutableLiveData<ArrayList<CastDTO>> =  repository.casts
     var isInDatabase: LiveData<Boolean> = repository.isInDatabase
 
     fun isInMyList(id: Int?): Boolean {
