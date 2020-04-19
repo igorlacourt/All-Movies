@@ -32,7 +32,7 @@ data class Details(
 
     fun formatCasts() {
         if (!casts?.cast.isNullOrEmpty()){
-            for (i in casts?.cast!!.size - 1 downTo 9){
+            for (i in casts?.cast!!.size - 1 downTo 14) {
                 casts.cast.removeAt(i)
             }
         }
