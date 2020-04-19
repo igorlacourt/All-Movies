@@ -37,10 +37,11 @@
                 android:id="@+id/tv_vote_average"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:textColor="@color/colorAccent"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/tv_person_name"
                 app:layout_constraintTop_toBottomOf="@+id/tv_person_name"
                 tools:text="10" />
 
@@ -68,49 +69,58 @@
                 android:id="@+id/tv_bio"
                 android:layout_width="379dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:gravity="start|left"
                 android:justificationMode="inter_word"
                 android:lineSpacingExtra="2dp"
                 android:textSize="15sp"
                 android:textStyle="normal"
+                app:layout_constraintStart_toStartOf="@+id/tv_vote_average"
                 app:layout_constraintTop_toBottomOf="@+id/tv_vote_average"
-                tools:layout_editor_absoluteX="16dp"
                 tools:text="Person bio person bio person bio person bio person bio person bio person bio person bio person bio person bio " />
-
-            <TextView
-                android:id="@+id/tv_recommended_empty"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@color/colorPrimaryDark"
-                android:gravity="center"
-                android:text="No movies to show" />
 
             <TextView
                 android:id="@+id/tv_starred_movies"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="Movies with Jhon Actor"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/tv_bio"
                 app:layout_constraintTop_toBottomOf="@+id/tv_bio" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_casts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:background="@color/colorPrimaryDark"
                 android:scrollbars="none"
                 app:layout_constraintTop_toBottomOf="@+id/tv_starred_movies" />
+
+            <TextView
+                android:id="@+id/tv_recommended_empty"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="24dp"
+                android:background="@color/colorPrimaryDark"
+                android:gravity="center"
+                android:text="No movies to show"
+                app:layout_constraintTop_toBottomOf="@+id/tv_starred_movies" />
+
             <com.google.android.gms.ads.AdView
                 android:id="@+id/adView"
                 android:layout_width="411dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
+                android:layout_marginTop="24dp"
                 app:adSize="BANNER"
                 app:adUnitId="@string/admob_ad_unit_id"
-                app:layout_constraintTop_toBottomOf="@+id/rv_casts"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rv_casts" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
