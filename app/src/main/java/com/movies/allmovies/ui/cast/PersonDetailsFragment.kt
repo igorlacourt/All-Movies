@@ -133,6 +133,9 @@ class PersonDetailsFragment : Fragment(), OnItemClick {
                 })
             tv_person_name.text = name
             tv_bio.text = biography
+            tv_vote_average.text = "popularity $popularity"
+            tv_duration.text = "${age()} years old"
+            release_year.text = ""
             progressBar.visibility = View.INVISIBLE
         }
 
