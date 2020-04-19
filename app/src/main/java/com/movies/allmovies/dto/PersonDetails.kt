@@ -25,10 +25,6 @@ data class PersonDetails(
     val placeOfBirth: String?,
 
     @Expose
-    @SerializedName("also_known_as")
-    val knownAs: String?,
-
-    @Expose
     val gender: Int?,
 
     @Expose
