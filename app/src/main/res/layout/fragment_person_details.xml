@@ -20,16 +20,21 @@
 
             <TextView
                 android:id="@+id/tv_person_name"
-                android:layout_width="379dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
                 android:gravity="start"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Detail Title Detail Title Detail Title Detail Title " />
 
@@ -49,6 +54,8 @@
                 android:id="@+id/release_year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:textColor="@color/releaseYearColor"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_vote_average"
@@ -59,6 +66,8 @@
                 android:id="@+id/tv_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:textColor="@color/releaseYearColor"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/release_year"
@@ -67,14 +76,17 @@
 
             <TextView
                 android:id="@+id/tv_bio"
-                android:layout_width="379dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
                 android:gravity="start|left"
                 android:justificationMode="inter_word"
                 android:lineSpacingExtra="2dp"
                 android:textSize="15sp"
                 android:textStyle="normal"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/tv_vote_average"
                 app:layout_constraintTop_toBottomOf="@+id/tv_vote_average"
                 tools:text="Person bio person bio person bio person bio person bio person bio person bio person bio person bio person bio " />
@@ -90,15 +102,6 @@
                 app:layout_constraintStart_toStartOf="@+id/tv_bio"
                 app:layout_constraintTop_toBottomOf="@+id/tv_bio" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_casts"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@color/colorPrimaryDark"
-                android:scrollbars="none"
-                app:layout_constraintTop_toBottomOf="@+id/tv_starred_movies" />
-
             <TextView
                 android:id="@+id/tv_recommended_empty"
                 android:layout_width="match_parent"
@@ -107,6 +110,15 @@
                 android:background="@color/colorPrimaryDark"
                 android:gravity="center"
                 android:text="No movies to show"
+                app:layout_constraintTop_toBottomOf="@+id/tv_starred_movies" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_casts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@color/colorPrimaryDark"
+                android:scrollbars="none"
                 app:layout_constraintTop_toBottomOf="@+id/tv_starred_movies" />
 
             <com.google.android.gms.ads.AdView
@@ -159,7 +171,6 @@
                 android:layout_gravity="bottom"/>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
-
 
         <FrameLayout
         android:id="@+id/person_details_progress_bar"

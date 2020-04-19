@@ -132,6 +132,7 @@ class PersonDetailsFragment : Fragment(), OnItemClick {
                     }
                 })
             tv_person_name.text = name
+            tv_starred_movies.text = "Movies with $name"
             tv_bio.text = biography
             tv_vote_average.text = "popularity $popularity"
             tv_duration.text = "${age()} years old"
