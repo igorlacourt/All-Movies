@@ -66,6 +66,11 @@
         <argument
             android:name="id"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_personDetailsFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment"
+            app:enterAnim="@transition/slide_in_right"
+            app:popExitAnim="@transition/slide_out_right" />
     </fragment>
 
 </navigation>

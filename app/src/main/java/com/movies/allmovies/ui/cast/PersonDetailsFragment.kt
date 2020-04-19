@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.movies.allmovies.AppConstants
@@ -19,6 +20,7 @@ import com.movies.allmovies.dto.PersonDetails
 import com.movies.allmovies.network.Resource
 import com.movies.allmovies.ui.GridAdapter
 import com.movies.allmovies.ui.OnItemClick
+import com.movies.allmovies.ui.details.DetailsFragmentDirections
 import com.movies.allmovies.util.BannerAds
 import com.movies.allmovies.viewmodel.PersonViewModel
 import com.squareup.picasso.Callback
@@ -137,7 +139,13 @@ class PersonDetailsFragment : Fragment(), OnItemClick {
     }
 
     override fun onItemClick(id: Int) {
-
+        if (id != 0) {
+            Log.d("clickgrid", "HomeFragment, onItemClick, id = $id")
+            val personDetailsToDetailsFragment = PersonDetailsFragmentDirections.actionPersonDetailsFragmentToDetailsFragment(id)
+            findNavController().navigate(personDetailsToDetailsFragment)
+        } else {
+            Toast.makeText(context, "Sorry. Can not load this movie. :/", Toast.LENGTH_SHORT).show()
+        }
     }
 
 //    override fun onItemClick(id: Int) {

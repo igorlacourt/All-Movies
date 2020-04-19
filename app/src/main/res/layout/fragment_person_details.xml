@@ -106,28 +106,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_bio"
                 tools:text="Elenco: Whinderson Nunes" />
 
-            <ImageView
-                android:id="@+id/wish_list_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/tv_my_list_details"
-                app:layout_constraintStart_toStartOf="@+id/tv_my_list_details"
-                app:layout_constraintTop_toBottomOf="@+id/rv_casts"
-                tools:srcCompat="@drawable/ic_add_white_36dp" />
-
-            <TextView
-                android:id="@+id/tv_my_list_details"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginLeft="24dp"
-                android:text="@string/my_list_at_details"
-                android:textColor="#aaa"
-                android:textSize="11sp"
-                app:layout_constraintStart_toEndOf="@+id/btn_search_stream_on_google"
-                app:layout_constraintTop_toBottomOf="@id/wish_list_btn" />
-
             <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/adView"
                 android:layout_width="0dp"
@@ -160,7 +138,6 @@
                 android:id="@+id/tv_recommended_empty"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="20dp"
                 android:background="@color/colorPrimaryDark"
                 android:gravity="center"
                 android:text="No movies to show"
@@ -169,7 +146,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_recommended_header" />
+                app:layout_constraintTop_toBottomOf="@+id/rv_casts" />
 
             <TextView
                 android:id="@+id/tv_director"
@@ -208,16 +185,6 @@
                 app:layout_constraintBottom_toTopOf="@+id/rv_recommended"
                 app:layout_constraintStart_toStartOf="@+id/tv_director"
                 app:layout_constraintTop_toBottomOf="@+id/tv_my_list_details" />
-
-            <include
-                android:id="@+id/btn_search_stream_on_google"
-                layout="@layout/button_stream_google_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_my_list_details"
-                app:layout_constraintStart_toStartOf="@+id/tv_director"
-                app:layout_constraintTop_toBottomOf="@+id/rv_casts" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
