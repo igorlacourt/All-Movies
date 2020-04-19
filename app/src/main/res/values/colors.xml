@@ -33,5 +33,6 @@
 <!--    Cast CardView-->
     <color name="cv_cast_color">#272727</color>
 
+    <color name="show_more_color">#4D78C5</color>
 
 </resources>
