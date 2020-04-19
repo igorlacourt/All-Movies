@@ -20,19 +20,16 @@
 
             <TextView
                 android:id="@+id/tv_person_name"
-                android:layout_width="0dp"
+                android:layout_width="379dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
                 android:gravity="start"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Detail Title Detail Title Detail Title Detail Title " />
 
@@ -40,11 +37,10 @@
                 android:id="@+id/tv_vote_average"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:textColor="@color/colorAccent"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/tv_person_name"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_person_name"
                 tools:text="10" />
 
@@ -52,87 +48,34 @@
                 android:id="@+id/release_year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
                 android:textColor="@color/releaseYearColor"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_vote_average"
                 app:layout_constraintStart_toEndOf="@+id/tv_vote_average"
-                app:layout_constraintTop_toTopOf="@+id/tv_vote_average"
                 tools:text="0000" />
 
             <TextView
                 android:id="@+id/tv_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
                 android:textColor="@color/releaseYearColor"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/release_year"
                 app:layout_constraintStart_toEndOf="@+id/release_year"
-                app:layout_constraintTop_toTopOf="@+id/release_year"
                 tools:text="1h30" />
 
             <TextView
                 android:id="@+id/tv_bio"
-                android:layout_width="0dp"
+                android:layout_width="379dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
                 android:gravity="start|left"
                 android:justificationMode="inter_word"
                 android:lineSpacingExtra="2dp"
                 android:textSize="15sp"
                 android:textStyle="normal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_vote_average"
+                tools:layout_editor_absoluteX="16dp"
                 tools:text="Person bio person bio person bio person bio person bio person bio person bio person bio person bio person bio " />
-
-            <TextView
-                android:id="@+id/tv_cast"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textColor="#aaa"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@+id/tv_bio"
-                app:layout_constraintTop_toBottomOf="@+id/tv_bio"
-                tools:text="Elenco: Whinderson Nunes" />
-
-            <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/adView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                ads:adSize="BANNER"
-                ads:adUnitId="@string/admob_ad_unit_id"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rv_recommended" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_recommended"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimaryDark"
-                android:scrollbars="none"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_recommended_header" />
 
             <TextView
                 android:id="@+id/tv_recommended_empty"
@@ -140,25 +83,17 @@
                 android:layout_height="0dp"
                 android:background="@color/colorPrimaryDark"
                 android:gravity="center"
-                android:text="No movies to show"
-                app:layout_constraintBottom_toTopOf="@+id/adView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rv_casts" />
+                android:text="No movies to show" />
 
             <TextView
-                android:id="@+id/tv_director"
-                android:layout_width="0dp"
+                android:id="@+id/tv_starred_movies"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:textColor="#aaa"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@+id/tv_cast"
-                app:layout_constraintTop_toBottomOf="@+id/tv_cast"
-                tools:text="Director: Charles Bronson" />
-
+                android:text="Movies with Jhon Actor"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/tv_bio"
+                app:layout_constraintTop_toBottomOf="@+id/tv_bio" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_casts"
                 android:layout_width="match_parent"
@@ -166,26 +101,16 @@
                 android:layout_marginTop="16dp"
                 android:background="@color/colorPrimaryDark"
                 android:scrollbars="none"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.6"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_director" />
-
-            <TextView
-                android:id="@+id/tv_recommended_header"
-                android:layout_width="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/tv_starred_movies" />
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/adView"
+                android:layout_width="411dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="8dp"
-                android:text="Recommended"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/rv_recommended"
-                app:layout_constraintStart_toStartOf="@+id/tv_director"
-                app:layout_constraintTop_toBottomOf="@+id/tv_my_list_details" />
-
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                app:adSize="BANNER"
+                app:adUnitId="@string/admob_ad_unit_id"
+                app:layout_constraintTop_toBottomOf="@+id/rv_casts"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
@@ -216,7 +141,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
             </FrameLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -225,20 +149,23 @@
                 android:layout_gravity="bottom"/>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
-    <FrameLayout
-        android:id="@+id/person_details_progress_bar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-        <ProgressBar
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="visible"/>
-    </FrameLayout>
+
+
+    <!--    <FrameLayout-->
+<!--        android:id="@+id/person_details_progress_bar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="@color/colorPrimaryDark"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
+<!--        <ProgressBar-->
+<!--            style="?android:attr/progressBarStyle"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:visibility="visible"/>-->
+<!--            android:visibility="visible"/>-->
+<!--    </FrameLayout>-->
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
