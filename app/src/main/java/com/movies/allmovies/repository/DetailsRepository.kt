@@ -13,6 +13,7 @@ import com.movies.allmovies.domainMappers.toDomainMovie
 import com.movies.allmovies.domainmodel.Details
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
+import com.movies.allmovies.dto.CastDTO
 import com.movies.allmovies.dto.DetailsDTO
 import com.movies.allmovies.dto.MovieResponseDTO
 import com.movies.allmovies.insertItem

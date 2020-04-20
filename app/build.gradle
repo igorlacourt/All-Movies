@@ -76,6 +76,8 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$rootProject.espressoVersion"
     implementation "androidx.test.espresso:espresso-idling-resource:$rootProject.espressoVersion"
 
+    implementation 'com.borjabravo:readmoretextview:2.1.0'
+
     //Test Rule Architecture Components
     testImplementation "android.arch.core:core-testing:$rootProject.archTestVersion"
 

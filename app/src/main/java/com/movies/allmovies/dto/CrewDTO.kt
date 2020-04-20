@@ -1,6 +1,7 @@
 package com.movies.allmovies.dto
 
 import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
 data class CrewDTO(
     @Expose
@@ -16,5 +17,6 @@ data class CrewDTO(
     @Expose
     val name: String?,
     @Expose
-    val profilePath: Any?
+    @SerializedName("profile_path")
+    val profilePath: String?
 )

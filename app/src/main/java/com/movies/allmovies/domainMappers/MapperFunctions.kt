@@ -47,6 +47,21 @@ fun MovieResponseDTO.mapToDomain(): Collection<DbMovieDTO> {
     }
 }
 
+fun ArrayList<CrewDTO>.toCastDTO(): List<CastDTO> {
+    return this.map { crewDTO ->
+        CastDTO(
+            id = crewDTO.id,
+            name = crewDTO.name,
+            character = crewDTO.job,
+            creditId = crewDTO.creditId,
+            gender = crewDTO.gender,
+            castId = null,
+            order = null,
+            profilePath = crewDTO.profilePath
+        )
+    }
+}
+
 object MapperFunctions {
 
     fun movieResponseToDbMovieDTO(input: MovieResponseDTO): List<DbMovieDTO> {

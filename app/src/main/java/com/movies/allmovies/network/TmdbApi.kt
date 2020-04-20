@@ -1,8 +1,6 @@
 package com.movies.allmovies.network
 
-import com.movies.allmovies.dto.DetailsDTO
-import com.movies.allmovies.dto.GenreResponseDTO
-import com.movies.allmovies.dto.MovieResponseDTO
+import com.movies.allmovies.dto.*
 import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.Call
@@ -119,4 +117,17 @@ interface TmdbApi {
 
     @GET("genre/movie/list")
     fun getGenresObservable(): Observable<GenreResponseDTO>
+
+    @GET("person/{person_id}")
+    fun getPerson(@Path("person_id") person_id: Int): Call<PersonDetails>
+
+    @GET("discover/movie")
+    fun getActorsMovies(
+        @Query("with_cast")
+        id: Int,
+        @Query("language")
+        language: String,
+        @Query("include_adult")
+        adult: Boolean
+    ): Call<MovieResponseDTO>
 }

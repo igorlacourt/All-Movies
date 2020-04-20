@@ -28,11 +28,14 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_details.*
 import java.lang.Exception
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds.initialize
 import com.movies.allmovies.R
+import com.movies.allmovies.domainMappers.toCastDTO
+import com.movies.allmovies.dto.CastDTO
 import com.movies.allmovies.dto.CastsDTO
 import com.movies.allmovies.openYoutube
 import com.movies.allmovies.ui.GridAdapter
@@ -49,7 +52,7 @@ import kotlin.math.floor
  * Use the [DetailsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class DetailsFragment : Fragment(), OnItemClick {
+class DetailsFragment : Fragment(), OnItemClick, OnCastClick {
     lateinit var viewModel: DetailsViewModel
     lateinit var progressBar: FrameLayout
     lateinit var wishListButton: ImageView
@@ -81,17 +84,14 @@ class DetailsFragment : Fragment(), OnItemClick {
 
         var recyclerView = view.findViewById<RecyclerView>(R.id.rv_recommended)
         val adapter = GridAdapter(context, this, ArrayList())
-//        var layoutManager =
-//            object : GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false) {
-//                override fun canScrollVertically(): Boolean {
-//                    return false
-//                }
-//            }
-        recyclerView.layoutManager =
-            GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
-//        recyclerView.addItemDecoration(MoviePosterItemDecorator(50))
-
+        recyclerView.layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
+
+        var rvCasts = view.findViewById<RecyclerView>(R.id.rv_casts)
+        rvCasts.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val castsAdapter = CastsAdapter(context, this, ArrayList())
+        rvCasts.adapter = castsAdapter
+
 
         val id = arguments?.getInt("id") ?: 0
 
@@ -159,6 +159,16 @@ class DetailsFragment : Fragment(), OnItemClick {
                     movieId = it.data?.id
                     details = it.data
                     displayDetails(it.data)
+                    it.data?.casts?.let { cast ->
+
+                        cast.cast?.let { actors ->
+                            castsAdapter.setList(actors)
+                        }
+                        cast.crew?.let { crew ->
+                            castsAdapter.addToList(crew.toCastDTO())
+                        }
+                    }
+
                 }
                 Resource.Status.LOADING -> {
                     // A return is given only once, so it is SUCCESS or ERROR. This loading case may not be necessary.
@@ -249,8 +259,8 @@ class DetailsFragment : Fragment(), OnItemClick {
             tv_duration.text = convertDuration(runtime)
             setVoteAverageColor(tv_vote_average, vote_average)
             progressBar.visibility = View.INVISIBLE
-            setCast(tv_cast, casts)
             setDirector(tv_director, casts)
+            setCast(tv_cast, casts)
         }
 
     }
@@ -259,6 +269,7 @@ class DetailsFragment : Fragment(), OnItemClick {
         var builder = SpannableStringBuilder()
 
         builder.bold { append("Cast: ") }
+
         if (!castAndDirector?.cast.isNullOrEmpty()) {
             for (i in 0 until castAndDirector?.cast!!.size) {
                 if (i == castAndDirector.cast.size - 1)
@@ -267,7 +278,6 @@ class DetailsFragment : Fragment(), OnItemClick {
                     builder.append("${castAndDirector.cast[i].name}, ")
             }
         }
-
 
         tvCast.text = builder
     }
@@ -318,6 +328,15 @@ class DetailsFragment : Fragment(), OnItemClick {
         }
     }
 
+    override fun onCastClick(id: Int) {
+        if (id != 0) {
+            Log.d("clickgrid", "HomeFragment, onItemClick, id = $id")
+            val detailsToPersonDetailsFragment = DetailsFragmentDirections.actionDetailsFragmentToPersonDetailFragment(id)
+            findNavController().navigate(detailsToPersonDetailsFragment)
+        } else {
+            Toast.makeText(context, "Sorry. Can not load this movie. :/", Toast.LENGTH_SHORT).show()
+        }
+    }
 //    companion object {
 //        /**
 //         * Use this factory method to create a new instance of

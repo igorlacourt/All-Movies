@@ -7,6 +7,7 @@
     android:background="@color/colorPrimaryDark">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -84,6 +85,7 @@
                 android:layout_marginRight="16dp"
                 android:gravity="start|left"
                 android:justificationMode="inter_word"
+                android:lineSpacingExtra="2dp"
                 android:textSize="15sp"
                 android:textStyle="normal"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -98,8 +100,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
                 android:textColor="#aaa"
                 android:textSize="12sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/detail_overview"
                 app:layout_constraintTop_toBottomOf="@+id/detail_overview"
                 tools:text="Elenco: Whinderson Nunes" />
@@ -108,10 +115,10 @@
                 android:id="@+id/wish_list_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="@+id/tv_my_list_details"
                 app:layout_constraintStart_toStartOf="@+id/tv_my_list_details"
-                app:layout_constraintTop_toBottomOf="@+id/tv_director"
+                app:layout_constraintTop_toBottomOf="@+id/rv_casts"
                 tools:srcCompat="@drawable/ic_add_white_36dp" />
 
             <TextView
@@ -126,13 +133,12 @@
                 app:layout_constraintStart_toEndOf="@+id/btn_search_stream_on_google"
                 app:layout_constraintTop_toBottomOf="@id/wish_list_btn" />
 
-            <com.google.android.gms.ads.AdView
-                xmlns:ads="http://schemas.android.com/apk/res-auto"
+            <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/adView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 ads:adSize="BANNER"
@@ -147,8 +153,8 @@
                 android:id="@+id/rv_recommended"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="none"
                 android:background="@color/colorPrimaryDark"
+                android:scrollbars="none"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -159,10 +165,10 @@
                 android:id="@+id/tv_recommended_empty"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginTop="20dp"
                 android:background="@color/colorPrimaryDark"
                 android:gravity="center"
                 android:text="No movies to show"
-                android:layout_marginTop="20dp"
                 app:layout_constraintBottom_toTopOf="@+id/adView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -175,11 +181,28 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
                 android:textColor="#aaa"
                 android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/tv_cast"
                 app:layout_constraintTop_toBottomOf="@+id/tv_cast"
                 tools:text="Director: Charles Bronson" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_casts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@color/colorPrimaryDark"
+                android:scrollbars="none"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.6"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_director" />
 
             <TextView
                 android:id="@+id/tv_recommended_header"
@@ -199,9 +222,10 @@
                 layout="@layout/button_stream_google_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_my_list_details"
                 app:layout_constraintStart_toStartOf="@+id/tv_director"
-                app:layout_constraintTop_toTopOf="@+id/wish_list_btn" />
+                app:layout_constraintTop_toBottomOf="@+id/rv_casts" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

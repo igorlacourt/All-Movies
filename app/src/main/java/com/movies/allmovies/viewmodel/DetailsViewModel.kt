@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.movies.allmovies.domainmodel.Details
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
+import com.movies.allmovies.dto.CastDTO
 import com.movies.allmovies.repository.DetailsRepository
 import com.movies.allmovies.network.Resource
 
@@ -25,7 +26,7 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun isIndatabase(id: Int?){
-        repository?.isInDatabase(id)
+        repository.isInDatabase(id)
     }
 
     fun getDetails(id: Int) {

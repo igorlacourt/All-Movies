@@ -1,6 +1,7 @@
 package com.movies.allmovies.dto
 
 import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
 data class CastDTO(
     @Expose
@@ -18,5 +19,6 @@ data class CastDTO(
     @Expose
     val order: Int?,
     @Expose
+    @SerializedName("profile_path")
     val profilePath: String?
 )
