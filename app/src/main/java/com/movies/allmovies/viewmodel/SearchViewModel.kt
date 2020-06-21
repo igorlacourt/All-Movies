@@ -5,8 +5,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.repository.SearchRepository
+import javax.inject.Inject
 
-class SearchViewModel(application: Application) : AndroidViewModel(application) {
+class SearchViewModel @Inject constructor(application: Application) : AndroidViewModel(application) {
     //    private val query = MutableLiveData<String>()
     private val repository = SearchRepository()
 

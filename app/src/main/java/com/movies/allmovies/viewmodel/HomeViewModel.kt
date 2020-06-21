@@ -9,8 +9,9 @@ import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
 import com.movies.allmovies.network.Resource
 import com.movies.allmovies.repository.HomeRepository
+import javax.inject.Inject
 
-class HomeViewModel(application: Application) : AndroidViewModel(application){
+class HomeViewModel (application: Application) : AndroidViewModel(application){
     var app = application
 
     private var repository: HomeRepository? = null
