@@ -17,6 +17,8 @@ import com.movies.allmovies.ui.mylist.MyListFragment
 import com.movies.allmovies.ui.home.HomeFragment
 import android.widget.Toast
 import com.crashlytics.android.Crashlytics
+import com.movies.allmovies.di.MoviesApplication
+import com.movies.allmovies.di_subcomponent.MainComponent
 import com.movies.allmovies.util.SharedPrefManager
 import com.movies.allmovies.util.Util
 
@@ -24,9 +26,14 @@ import com.movies.allmovies.util.Util
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var mainComponent: MainComponent
+
     private var home: HomeFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //Tem q ser antes do super
+        mainComponent = (applicationContext as MoviesApplication).appComponent.mainComponent().create()
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 

@@ -3,18 +3,24 @@ package com.movies.allmovies.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import com.movies.allmovies.dto.MovieDTO
+import com.movies.allmovies.repository.Repository
 import com.movies.allmovies.repository.SearchRepository
 import javax.inject.Inject
 
-class SearchViewModel @Inject constructor(application: Application) : AndroidViewModel(application) {
+class SearchViewModel @Inject constructor(val repository: Repository) : ViewModel() {
     //    private val query = MutableLiveData<String>()
-    private val repository = SearchRepository()
+//    private val repository = SearchRepository()
 
-    var searchResult:LiveData<ArrayList<MovieDTO>> = repository.searchResult as LiveData<ArrayList<MovieDTO>>
+//    var searchResult:LiveData<ArrayList<MovieDTO>> = repository.searchResult as LiveData<ArrayList<MovieDTO>>
 
     fun searchMovie(title: String){
-        repository.searchMovie(title)
+//        repository.searchMovie(title)
+    }
+
+    fun makeRequest(){
+        repository.makeRequest()
     }
 
 
