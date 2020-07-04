@@ -8,12 +8,23 @@ import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.repository.SearchRepositoryImpl
 import com.movies.allmovies.repository.SearchResult
 import com.movies.allmovies.ui.search.SearchRepository
+import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(val searchRepository: SearchRepository) : ViewModel() {
-    var searchResult: MutableLiveData<ArrayList<MovieDTO>> = MutableLiveData<ArrayList<MovieDTO>>()// = (searchRepository as SearchRepositoryImpl).searchResult// as LiveData<ArrayList<MovieDTO>>
+    var searchResult: MutableLiveData<ArrayList<MovieDTO>> = MutableLiveData()
 
     fun searchMovie(title: String){
+//        CoroutineScope( {
+//            val result = searchRepository.searchMovie(title)
+//            when {
+//                result.Successful -> { // set success livedata
+//                }
+//            }
+//            else { // set error livedata
+//        }
+//        })
+
         searchRepository.searchMovie(title) { result: SearchResult ->
             when(result) {
                 is SearchResult.Success -> {

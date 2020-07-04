@@ -1,6 +1,6 @@
 package com.movies.allmovies.network
 
-class Resource<R> private constructor(val status: Status, val data: R?, val error: Error?){//}, val apiError:ApiError?) {
+class Resource<R> private constructor(val status: Status, val data: R? = null, val error: Error? = null){//}, val apiError:ApiError?) {
     enum class Status {
         SUCCESS, ERROR, LOADING
     }
@@ -8,22 +8,18 @@ class Resource<R> private constructor(val status: Status, val data: R?, val erro
         fun <R> success(data: R?): Resource<R> {
             return Resource(
                 Status.SUCCESS,
-                data,
-                null
+                data
             )
         }
-        fun <R> error(error: Error): Resource<R> {
+        fun <R> error(error: Error?): Resource<R> {
             return Resource(
                 Status.ERROR,
-                null,
-                error
+                error = error
             )
         }
         fun <R> loading(data: R?): Resource<R> {
             return Resource(
-                Status.LOADING,
-                data,
-                null
+                Status.LOADING
             )
         }
 
