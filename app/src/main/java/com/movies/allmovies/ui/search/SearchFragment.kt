@@ -28,9 +28,15 @@ import com.movies.allmovies.R
 import javax.inject.Inject
 
 class SearchFragment : Fragment(), OnItemClick {
+
+    // Dagger code
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by viewModels<SearchViewModel> { viewModelFactory }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity() as MainActivity).mainComponent.inject(this)
+    }
 
     private lateinit var recyclerView: RecyclerView
     private var progressBar: ProgressBar? = null
@@ -39,12 +45,6 @@ class SearchFragment : Fragment(), OnItemClick {
 
     companion object {
         fun newInstance() = SearchFragment()
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        (requireActivity() as MainActivity).mainComponent.inject(this)
     }
 
     override fun onCreateView(
@@ -58,7 +58,6 @@ class SearchFragment : Fragment(), OnItemClick {
         edtSearch = view.findViewById(R.id.edt_search)
         progressBar = view.findViewById(R.id.search_progress_bar)
         progressBar?.visibility = View.INVISIBLE
-//        viewModel = ViewModelProviders.of(this).get(SearchViewModel::class.java)
         adapter = SearchAdapter(context, this, ArrayList())
 
         recyclerView = view.findViewById(R.id.searched_list)
@@ -76,15 +75,15 @@ class SearchFragment : Fragment(), OnItemClick {
 
         showKeyBoard()
 
-//        viewModel.searchResult.observe(this, Observer { resultList ->
-//            adapter.setList(resultList)
-//            if (resultList.isNullOrEmpty())
-//                search_no_results.visibility = View.VISIBLE
-//            else
-//                search_no_results.visibility = View.INVISIBLE
-//
-//            progressBar?.visibility = View.INVISIBLE
-//        })
+        viewModel.searchResult.observe(this, Observer { resultList ->
+            adapter.setList(resultList)
+            if (resultList.isNullOrEmpty())
+                search_no_results.visibility = View.VISIBLE
+            else
+                search_no_results.visibility = View.INVISIBLE
+
+            progressBar?.visibility = View.INVISIBLE
+        })
 
         edt_search.addTextChangedListener(searchTextWatcher())
     }
@@ -107,7 +106,7 @@ class SearchFragment : Fragment(), OnItemClick {
 
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
             if (s.isNotEmpty())
-                viewModel.makeRequest()
+                viewModel.searchMovie(s.toString())
             progressBar?.visibility = View.VISIBLE
         }
     }

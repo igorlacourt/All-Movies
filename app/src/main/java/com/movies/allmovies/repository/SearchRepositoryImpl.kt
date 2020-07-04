@@ -7,16 +7,16 @@ import com.movies.allmovies.AppConstants
 import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.dto.MovieResponseDTO
 import com.movies.allmovies.network.Apifactory
+import com.movies.allmovies.ui.search.SearchRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
 
-class SearchRepository @Inject constructor(val context: Context): Repository{
-    var searchResult: MutableLiveData<ArrayList<MovieDTO>>? = MutableLiveData()
-
-
-    fun searchMovie(title:String) {
+class SearchRepositoryImpl @Inject constructor(val context: Context): SearchRepository {
+    public var searchResult: MutableLiveData<ArrayList<MovieDTO>>? = MutableLiveData()
+    var myvariable = 0
+    override fun searchMovie(title:String) {
         Apifactory.tmdbApi.searchMovie(AppConstants.LANGUAGE, title, false).enqueue(object : Callback<MovieResponseDTO> {
             override fun onFailure(call: Call<MovieResponseDTO>, t: Throwable) {
 
@@ -28,19 +28,5 @@ class SearchRepository @Inject constructor(val context: Context): Repository{
             }
         })
     }
-
-    override fun makeRequest() {
-        Apifactory.tmdbApi.searchMovie(AppConstants.LANGUAGE, "nova onda do imperador", false).enqueue(object : Callback<MovieResponseDTO> {
-            override fun onFailure(call: Call<MovieResponseDTO>, t: Throwable) {
-
-            }
-            override fun onResponse(call: Call<MovieResponseDTO>, responseDTO: Response<MovieResponseDTO>) {
-                if(responseDTO.isSuccessful)
-                    Log.d("searchlog", "onSuccessful, result = ${responseDTO.body()}")
-                searchResult?.value = responseDTO.body()?.results
-            }
-        })
-    }
-
 
 }

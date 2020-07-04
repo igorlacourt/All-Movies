@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private var home: HomeFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Dagger code
         //Tem q ser antes do super
         mainComponent = (applicationContext as MoviesApplication).appComponent.mainComponent().create()
 
