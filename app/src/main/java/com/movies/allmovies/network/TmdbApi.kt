@@ -140,4 +140,38 @@ interface TmdbApi {
         @Query("include_adult")
         adult: Boolean
     ): Call<MovieResponseDTO>
+
+
+    // SUSPEND FUNCTIONS
+    @GET("trending/movie/day")
+    suspend fun getTrendingMoviesSuspend(
+        @Query("language")
+        language: String,
+        @Query("page")
+        page: Int
+    ): Response<MovieResponseDTO>
+
+    @GET("movie/top_rated")
+    suspend fun getTopRatedMoviesSuspend(
+        @Query("language")
+        language: String,
+        @Query("page")
+        page: Int
+    ): Response<MovieResponseDTO>
+
+    @GET("movie/upcoming")
+    suspend fun getUpcomingMoviesSuspend(
+        @Query("language")
+        language: String,
+        @Query("page")
+        page: Int
+    ): Response<MovieResponseDTO>
+
+    @GET("movie/popular")
+    suspend fun getPopularMoviesSuspend(
+        @Query("language")
+        language: String,
+        @Query("page")
+        page: Int
+    ): Response<MovieResponseDTO>
 }

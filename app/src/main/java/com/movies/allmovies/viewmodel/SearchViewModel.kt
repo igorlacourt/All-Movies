@@ -27,6 +27,7 @@ class SearchViewModel @Inject constructor(val searchRepository: SearchRepository
                   Resource.Status.ERROR -> {
                     Log.d("searchlog", "searchMovie, Error")
                   }
+                  Resource.Status.LOADING -> TODO()
               }
           }
 

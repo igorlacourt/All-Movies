@@ -54,14 +54,20 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
     init {
         IdlingResourceManager.getIdlingResource().setIdleState(isIdleNow = false)
 
-        fetchMoviesLists()
+
+
+//        fetchMoviesLists()
         Log.d("callstest", "repository called")
         movieDao?.deleteAll()
     }
 
+    fun requestLists() {
+
+    }
+
     fun refresh() {
         Log.d("refresh", "HomeRepository, refresh()")
-        fetchMoviesLists()
+//        fetchMoviesLists()
     }
 
     @SuppressLint("CheckResult")

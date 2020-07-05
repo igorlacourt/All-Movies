@@ -57,6 +57,7 @@ class HomeFragment : Fragment(), OnItemClick {
         recyclerView.adapter = adapter
 
         viewModel.listsOfMovies?.observe(this, Observer { response ->
+            Log.d("parallelRequest", "HomeFragment, response size = ${response?.data?.size}")
             when (response?.status) {
                 Resource.Status.SUCCESS -> {
                     Log.d("listsLog", "HomeFragment, response size = ${response?.data?.size}")
