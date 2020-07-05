@@ -21,7 +21,7 @@ interface ApiResponse<T> {
     fun failure(exception: Exception): Resource<T>
 }
 
-class RetrofitResponse<T>(private val context: Context?, private val request: suspend () -> Response<T>) : ApiResponse<T> {
+class ServiceResponse<T>(private val context: Context?, private val request: suspend () -> Response<T>) : ApiResponse<T> {
     override suspend fun result(): Resource<T> {
         return try {
             val response = request()

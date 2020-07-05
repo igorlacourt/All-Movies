@@ -4,6 +4,7 @@ import com.movies.allmovies.dto.*
 import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -42,8 +43,17 @@ interface TmdbApi {
         query: String,
         @Query("include_adult")
         adult: Boolean
-
     ): Call<MovieResponseDTO>
+
+    @GET("search/movie")
+    suspend fun searchMovieSuspend(
+        @Query("language")
+        language: String,
+        @Query("query")
+        query: String,
+        @Query("include_adult")
+        adult: Boolean
+    ): Response<MovieResponseDTO>
 
     //    https://api.themoviedb.org/3/movie/287947/recommendations?api_key=fef98cf6bd829f53836bb7d92b02d6ef&language=en-US&page=1
     @GET("movie/{id}/recommendations")

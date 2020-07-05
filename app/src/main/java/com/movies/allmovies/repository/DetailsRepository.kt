@@ -15,6 +15,7 @@ import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
 import com.movies.allmovies.dto.CastDTO
 import com.movies.allmovies.dto.DetailsDTO
+import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.dto.MovieResponseDTO
 import com.movies.allmovies.insertItem
 import com.movies.allmovies.isInDatabase
@@ -61,14 +62,16 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : SingleObserver<MovieResponseDTO> {
                 override fun onSuccess(t: MovieResponseDTO) {
-                    if(t.results.size  < 3){
+                    val list = ArrayList<MovieDTO>()
+                    list.addAll(t.results)
+                    if(list.size  < 3){
                         getSimilar(checkedId)
                     } else {
-                        if (t.results.size == 20) {
+                        if (list.size == 20) {
                             val last = t.results.size - 1
                             val beforeLast = t.results.size - 2
-                            t.results.removeAt(last)
-                            t.results.removeAt(beforeLast)
+                            list.removeAt(last)
+                            list.removeAt(beforeLast)
                         }
                         recommendedMovies.value =
                             Resource.success(t.toDomainMovie() as List)
@@ -93,12 +96,13 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : SingleObserver<MovieResponseDTO> {
                 override fun onSuccess(t: MovieResponseDTO) {
-
+                    val list = ArrayList<MovieDTO>()
+                    list.addAll(t.results)
                     if (t.results.size == 20) {
                         val last = t.results.size - 1
                         val beforeLast = t.results.size - 2
-                        t.results.removeAt(last)
-                        t.results.removeAt(beforeLast)
+                        list.removeAt(last)
+                        list.removeAt(beforeLast)
                     }
                     recommendedMovies.value =
                         Resource.success(t.toDomainMovie() as List)

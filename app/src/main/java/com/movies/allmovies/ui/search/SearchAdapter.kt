@@ -43,7 +43,7 @@ class SearchAdapter(private val context: Context?,
 
     }
 
-    fun setList(list: ArrayList<MovieDTO>?) {
+    fun setList(list: List<MovieDTO>?) {
         Log.d("searchlog", "setList called")
         this.list.clear()
         list?.let {

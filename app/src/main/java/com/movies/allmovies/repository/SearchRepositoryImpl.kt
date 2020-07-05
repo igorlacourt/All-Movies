@@ -7,7 +7,9 @@ import com.movies.allmovies.AppConstants
 import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.dto.MovieResponseDTO
 import com.movies.allmovies.network.Apifactory
+import com.movies.allmovies.network.Resource
 import com.movies.allmovies.ui.search.SearchRepository
+import com.movies.allmovies.ui.search.ServiceResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,10 +37,14 @@ class SearchRepositoryImpl @Inject constructor(val context: Context): SearchRepo
         })
     }
 
+    override suspend fun requestMovie(title: String): Resource<MovieResponseDTO> {
+        return ServiceResponse(context){ Apifactory.tmdbApi.searchMovieSuspend(AppConstants.LANGUAGE, title, false)}.result()
+    }
+
 }
 
 sealed class SearchResult {
-    class Success(val movies: ArrayList<MovieDTO>) : SearchResult()
+    class Success(val movies: List<MovieDTO>) : SearchResult()
     class ApiError(val statusCode: Int) : SearchResult()
     object ServerError : SearchResult()
 }
