@@ -28,7 +28,7 @@ class HomeViewModel (application: Application) : AndroidViewModel(application){
     var listsOfMovies: MutableLiveData<Resource<List<Collection<DomainMovie>>>?> = MutableLiveData()
 
     var isInDatabase: LiveData<Boolean>? = null
-    var isLoading: LiveData<Boolean>? = null
+    var isLoading: MutableLiveData<Boolean>? = MutableLiveData()
 
     init {
 //        Log.d("callstest", "homeViewModel init called.\n")
@@ -43,7 +43,7 @@ class HomeViewModel (application: Application) : AndroidViewModel(application){
 //        listsOfMovies = repository?.listsOfMovies
 
         isInDatabase = repository?.isInDatabase
-        isLoading = repository?.isLoading
+//        isLoading = repository?.isLoading
 //        Log.d("listsLog", "HomeViewModel, resultList.size = ${listsOfMovies?.value?.data?.size}")
     }
 
@@ -89,6 +89,7 @@ class HomeViewModel (application: Application) : AndroidViewModel(application){
         Log.d("parallelRequest", "processData(), resultList.size = ${resultList.size}")
 
         listsOfMovies?.value = Resource.success(resultList)
+        isLoading?.value = false
     }
 
     fun isIndatabase(id: Int?){
