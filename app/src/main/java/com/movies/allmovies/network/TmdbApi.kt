@@ -1,6 +1,7 @@
 package com.movies.allmovies.network
 
 import com.movies.allmovies.dto.*
+import com.movies.allmovies.repository.NetworkResponse
 import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.Call
@@ -47,6 +48,16 @@ interface TmdbApi {
 
     @GET("search/movie")
     suspend fun searchMovieSuspend(
+        @Query("language")
+        language: String,
+        @Query("query")
+        query: String,
+        @Query("include_adult")
+        adult: Boolean
+    ): NetworkResponse<MovieResponseDTO, Error>
+
+    @GET("search/movie")
+    suspend fun searchMovieSuspend1(
         @Query("language")
         language: String,
         @Query("query")
