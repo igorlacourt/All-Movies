@@ -13,10 +13,10 @@ import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
 import com.movies.allmovies.dto.MovieResponseDTO
 import com.movies.allmovies.network.Apifactory
+import com.movies.allmovies.network.Error
 import com.movies.allmovies.network.Resource
 import com.movies.allmovies.repository.HomeRepository
-import com.movies.allmovies.repository.SearchRepositoryImpl
-import com.movies.allmovies.ui.search.ServiceResponse
+import com.movies.allmovies.repository.NetworkResponse
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
@@ -31,25 +31,23 @@ class HomeViewModel (application: Application) : AndroidViewModel(application){
     var isLoading: MutableLiveData<Boolean>? = MutableLiveData()
 
     init {
-//        Log.d("callstest", "homeViewModel init called.\n")
         repository = HomeRepository(application)
-
-
 
         parallelRequest()
 
         topTrendingMovie = repository?.topTrendingMovie
 
-//        listsOfMovies = repository?.listsOfMovies
-
         isInDatabase = repository?.isInDatabase
-//        isLoading = repository?.isLoading
-//        Log.d("listsLog", "HomeViewModel, resultList.size = ${listsOfMovies?.value?.data?.size}")
     }
 
     fun parallelRequest() {
         viewModelScope.launch {
             Log.d("parallelRequest", "parallelRequest(), viewModelScope.launch")
+            var trending: MovieResponseDTO
+            var upcoming: MovieResponseDTO
+            var popular: MovieResponseDTO
+            var topRated: MovieResponseDTO
+
             val tmdbApi = Apifactory.tmdbApi
             try {
                 val trendingMoviesResponse = async { tmdbApi.getTrendingMoviesSuspend(AppConstants.LANGUAGE, 1) }
@@ -57,10 +55,10 @@ class HomeViewModel (application: Application) : AndroidViewModel(application){
                 val popularMoviesResponse = async { tmdbApi.getPopularMoviesSuspend(AppConstants.LANGUAGE, 1) }
                 val topRatedMoviesResponse = async { tmdbApi.getTopRatedMoviesSuspend(AppConstants.LANGUAGE, 1) }
                 processData(
-                    trendingMoviesResponse.await().body(),
-                    upcomingMoviesResponse.await().body(),
-                    popularMoviesResponse.await().body(),
-                    topRatedMoviesResponse.await().body()
+                    trendingMoviesResponse.await(),
+                    upcomingMoviesResponse.await(),
+                    popularMoviesResponse.await(),
+                    topRatedMoviesResponse.await()
                 )
             } catch (exception: Exception) {
                 Log.d("parallelRequest", exception.message)
@@ -68,19 +66,18 @@ class HomeViewModel (application: Application) : AndroidViewModel(application){
         }
     }
 
-    fun processData(
-        trending: MovieResponseDTO?,
-        upcoming: MovieResponseDTO?,
-        popular: MovieResponseDTO?,
-        topRated: MovieResponseDTO?
+    private fun processData(
+        trending: NetworkResponse<MovieResponseDTO, Error>,
+        upcoming: NetworkResponse<MovieResponseDTO, Error>,
+        popular: NetworkResponse<MovieResponseDTO, Error>,
+        topRated: NetworkResponse<MovieResponseDTO, Error>
     ) {
-        Log.d("parallelRequest", "processData()")
-        val list1 = trending?.toDomainMovie()
-        val list2 = upcoming?.toDomainMovie()
-        val list3 = popular?.toDomainMovie()
-        val list4 = topRated?.toDomainMovie()
+        val list1: Collection<DomainMovie>? = convertResponse(trending)
+        val list2 = convertResponse(upcoming)
+        val list3 = convertResponse(popular)
+        val list4 = convertResponse(topRated)
 
-        var resultList = ArrayList<Collection<DomainMovie>>()
+        val resultList = ArrayList<Collection<DomainMovie>>()
         list1?.let { resultList.add(it) }
         list2?.let { resultList.add(it) }
         list3?.let { resultList.add(it) }
@@ -88,8 +85,32 @@ class HomeViewModel (application: Application) : AndroidViewModel(application){
 
         Log.d("parallelRequest", "processData(), resultList.size = ${resultList.size}")
 
-        listsOfMovies?.value = Resource.success(resultList)
+        listsOfMovies.value = if (resultList.size == 4){
+            Resource.success(resultList)
+        } else {
+            Resource.error(Error(0, "error loading at least one of the movie lists"))
+        }
         isLoading?.value = false
+    }
+
+    private fun convertResponse(trending: NetworkResponse<MovieResponseDTO, Error>): Collection<DomainMovie>? {
+        when(trending){
+            is NetworkResponse.Success -> {
+                return trending.body.toDomainMovie()
+            }
+            is NetworkResponse.ApiError -> {
+                Log.d("TAG", "ApiError ${trending.body}")
+                return null
+            }
+            is NetworkResponse.NetworkError -> {
+                Log.d("TAG", "NetworkError")
+                return null
+            }
+            is NetworkResponse.UnknownError -> {
+                Log.d("TAG", "UnknownError")
+                return null
+            }
+        }
     }
 
     fun isIndatabase(id: Int?){

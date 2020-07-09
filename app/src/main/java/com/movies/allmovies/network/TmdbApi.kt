@@ -160,7 +160,7 @@ interface TmdbApi {
         language: String,
         @Query("page")
         page: Int
-    ): Response<MovieResponseDTO>
+    ): NetworkResponse<MovieResponseDTO, Error>
 
     @GET("movie/top_rated")
     suspend fun getTopRatedMoviesSuspend(
@@ -168,7 +168,7 @@ interface TmdbApi {
         language: String,
         @Query("page")
         page: Int
-    ): Response<MovieResponseDTO>
+    ): NetworkResponse<MovieResponseDTO, Error>
 
     @GET("movie/upcoming")
     suspend fun getUpcomingMoviesSuspend(
@@ -176,7 +176,7 @@ interface TmdbApi {
         language: String,
         @Query("page")
         page: Int
-    ): Response<MovieResponseDTO>
+    ): NetworkResponse<MovieResponseDTO, Error>
 
     @GET("movie/popular")
     suspend fun getPopularMoviesSuspend(
@@ -184,5 +184,5 @@ interface TmdbApi {
         language: String,
         @Query("page")
         page: Int
-    ): Response<MovieResponseDTO>
+    ): NetworkResponse<MovieResponseDTO, Error>
 }
