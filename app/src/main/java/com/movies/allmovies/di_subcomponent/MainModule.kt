@@ -16,12 +16,12 @@ interface MainModule {
     @Binds
     @IntoMap
     @ViewModelKey(SearchViewModel::class)
-    abstract fun bindSearchViewModel(searchViewModel: SearchViewModel): ViewModel
+    fun bindSearchViewModel(searchViewModel: SearchViewModel): ViewModel
 
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(HomeViewModel::class)
-//    fun bindHomeViewModel(viewModel: HomeViewModel): ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(HomeViewModel::class)
+    fun bindHomeViewModel(viewModel: HomeViewModel): ViewModel
 //
 //    @Binds
 //    @IntoMap

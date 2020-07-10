@@ -132,6 +132,7 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
      fun fetchMoviesLists() {
         isLoading.value = true
         Log.d("refresh", "HomeRepository, fetchMoviesLists()")
+
         val tmdbApi = Apifactory.tmdbApi
         val trendinMoviesObservale = tmdbApi.getTrendingMovies(AppConstants.LANGUAGE, 1)
         val upcomingMoviesObservale = tmdbApi.getUpcomingMovies(AppConstants.LANGUAGE, 1)
