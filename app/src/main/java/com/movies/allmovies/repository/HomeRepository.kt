@@ -19,6 +19,7 @@ import com.movies.allmovies.idlingresource.IdlingResourceManager
 import com.movies.allmovies.insertItem
 import com.movies.allmovies.isInDatabase
 import com.movies.allmovies.network.*
+import com.movies.allmovies.viewmodel.HomeResult
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -56,71 +57,6 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
     init {
         IdlingResourceManager.getIdlingResource().setIdleState(isIdleNow = false)
         movieDao?.deleteAll()
-    }
-
-    suspend fun parallelRequest(homeResultCallback: (result: HomeResult) -> Unit) {
-        val tmdbApi = Apifactory.tmdbApi
-        withContext(Dispatchers.IO){
-            try {
-                val trendingMoviesResponse = async { tmdbApi.getTrendingMoviesSuspend(AppConstants.LANGUAGE, 1) }
-                val upcomingMoviesResponse = async { tmdbApi.getUpcomingMoviesSuspend(AppConstants.LANGUAGE, 1) }
-                val popularMoviesResponse = async { tmdbApi.getPopularMoviesSuspend(AppConstants.LANGUAGE, 1) }
-                val topRatedMoviesResponse = async { tmdbApi.getTopRatedMoviesSuspend(AppConstants.LANGUAGE, 1) }
-                processData(
-                    homeResultCallback,
-                    trendingMoviesResponse.await(),
-                    upcomingMoviesResponse.await(),
-                    popularMoviesResponse.await(),
-                    topRatedMoviesResponse.await()
-                )
-            } catch (exception: Exception) {
-                Log.d("parallelRequest", exception.message)
-            }
-        }
-    }
-
-    private fun processData(homeResultCallback: (result: HomeResult) -> Unit,
-        trending: NetworkResponse<MovieResponseDTO, Error>,
-        upcoming: NetworkResponse<MovieResponseDTO, Error>,
-        popular: NetworkResponse<MovieResponseDTO, Error>,
-        topRated: NetworkResponse<MovieResponseDTO, Error>
-    ) {
-        val list1: Collection<DomainMovie>? = convertResponse(trending)
-        val list2 = convertResponse(upcoming)
-        val list3 = convertResponse(popular)
-        val list4 = convertResponse(topRated)
-
-        val resultList = ArrayList<Collection<DomainMovie>>()
-        list1?.let { resultList.add(it) }
-        list2?.let { resultList.add(it) }
-        list3?.let { resultList.add(it) }
-        list4?.let { resultList.add(it) }
-
-        if (resultList.size == 4){
-            homeResultCallback(HomeResult.Success(resultList))
-        } else {
-            homeResultCallback(HomeResult.ApiError(400))
-        }
-    }
-
-    private fun convertResponse(trending: NetworkResponse<MovieResponseDTO, Error>): Collection<DomainMovie>? {
-        when(trending){
-            is NetworkResponse.Success -> {
-                return trending.body.toDomainMovie()
-            }
-            is NetworkResponse.ApiError -> {
-                Log.d("TAG", "ApiError ${trending.body}")
-                return null
-            }
-            is NetworkResponse.NetworkError -> {
-                Log.d("TAG", "NetworkError")
-                return null
-            }
-            is NetworkResponse.UnknownError -> {
-                Log.d("TAG", "UnknownError")
-                return null
-            }
-        }
     }
 
     fun refresh() {
@@ -236,125 +172,24 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
     }
 
     private fun fetchTopImageDetails(id: Int?) {
-        if (id != null)
-            NetworkCall<DetailsDTO, Details>().makeCall(
-                Apifactory.tmdbApi.getDetails(id, AppConstants.LANGUAGE),
-                this,
-                MapperFunctions::toDetails
-            )
+//        if (id != null)
+//            NetworkCall<DetailsDTO, Details>().makeCall(
+//                Apifactory.tmdbApi.getDetails(id, AppConstants.LANGUAGE),
+//                this,
+//                MapperFunctions::toDetails
+//            )
     }
 
     override fun networkCallResult(callback: Resource<Details>) {
         topTrendingMovie.value = callback
         isInDatabase(callback.data?.id)
         isLoading.value = false
-
     }
 
     fun isInDatabase(id: Int?) {
         id?.let { myListDao.isInDatabase(id, isInDatabase) }
     }
 
-    fun networkErrorToast() {
-        Toast.makeText(
-            application.applicationContext,
-            "Network failure :(",
-            Toast.LENGTH_SHORT
-        ).show()
-    }
-
-
-    @SuppressLint("CheckResult")
-    fun justForTesting() : Disposable {
-        isLoading.value = true
-        Log.d("refresh", "HomeRepository, fetchMoviesLists()")
-        val tmdbApi = Apifactory.tmdbApi
-        val trendinMoviesObservale = tmdbApi.getTrendingMovies(AppConstants.LANGUAGE, 1)
-        val upcomingMoviesObservale = tmdbApi.getUpcomingMovies(AppConstants.LANGUAGE, 1)
-        val popularMoviesObservale = tmdbApi.getPopularMovies(AppConstants.LANGUAGE, 1)
-        val topRatedMoviesObservable = tmdbApi.getTopRatedMovies(AppConstants.LANGUAGE, 1)
-
-       return Observable.zip(
-            trendinMoviesObservale.subscribeOn(Schedulers.io()),
-            upcomingMoviesObservale.subscribeOn(Schedulers.io()),
-            popularMoviesObservale.subscribeOn(Schedulers.io()),
-            topRatedMoviesObservable.subscribeOn(Schedulers.io()),
-
-            Function4 { trendingMoviesResponse: MovieResponseDTO,
-                        upcomingMoviesResponse: MovieResponseDTO,
-                        popularMoviesResponse: MovieResponseDTO,
-                        topRatedMoviesResponse: MovieResponseDTO ->
-
-                val list1 = trendingMoviesResponse.toDomainMovie()
-                val list2 = upcomingMoviesResponse.toDomainMovie()
-                val list3 = popularMoviesResponse.toDomainMovie()
-                val list4 = topRatedMoviesResponse.toDomainMovie()
-
-
-//                removeRepeated(list3 as ArrayList)
-
-
-                var resultList = ArrayList<Collection<DomainMovie>>()
-                resultList.add(list1)
-                resultList.add(list2)
-                resultList.add(list3)
-                resultList.add(list4)
-
-
-                Log.d("refresh", "HomeRepository, resultList.size = ${resultList.size}")
-                Log.d("listsLog", "HomeRepository, resultList.size = ${resultList.size}")
-
-                listsOfMovies.postValue(Resource.success(resultList))
-
-//                fetchTopImageDetails(list1.elementAt(0).id)
-
-            })
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnComplete {
-
-            }
-            .subscribe({}, { error ->
-                when (error) {
-                    is SocketTimeoutException -> {
-                        Log.d("errorBoolean", "HomeRepository, is SocketTimeoutException")
-                        Log.d("listsLog", "HomeRepository, is SocketTimeoutException")
-                        topTrendingMovie.postValue(
-                            Resource.error(Error(408, "SocketTimeoutException"))
-                        )
-                    }
-                    is UnknownHostException -> {
-                        Log.d("errorBoolean", "HomeRepository, is UnknownHostException")
-                        Log.d("listsLog", "HomeRepository, is UnknownHostException")
-                        topTrendingMovie.postValue(
-                            Resource.error(Error(99, "UnknownHostException"))
-                        )
-                    }
-                    is HttpException -> {
-                        Log.d("errorBoolean", "HomeRepository, is HttpException")
-                        Log.d("listsLog", "HomeRepository, is HttpException")
-                        topTrendingMovie.postValue(
-                            Resource.error(Error(error.code(), error.message()))
-                        )
-                    }
-                    else -> {
-                        Log.d("errorBoolean", "HomeRepository, is Another Error")
-                        Log.d("listsLog", "HomeRepository, is Another Error")
-                        topTrendingMovie.postValue(
-                            Resource.error(
-                                Error(0, error.message)
-                            )
-                        )
-                    }
-                }
-                isLoading.value = false
-            })
-    }
-
 }
 
-sealed class HomeResult {
-    class Success(val movies: ArrayList<Collection<DomainMovie>>) : HomeResult()
-    class ApiError(val statusCode: Int) : HomeResult()
-    object ServerError : HomeResult()
-}
+

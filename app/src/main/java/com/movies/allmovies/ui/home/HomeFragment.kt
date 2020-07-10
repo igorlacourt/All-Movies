@@ -104,28 +104,10 @@ class HomeFragment : Fragment(), OnItemClick {
         })
 
         viewModel.topTrendingMovie?.observe(this, Observer { details ->
-            when (details.status) {
-                Resource.Status.SUCCESS -> {
-                    details.data?.let {
-                        if (it.genres != null)
-                            Log.d(
-                                "refresh",
-                                "HomeFragment, topTrendingMovie?.observe, success, response = ${it.title}"
-                            )
-                        topTrendingMovieId = details.data.id
-                        movieController.submitTopTrendingMovie(it, null)
-                    }
-                }
-                Resource.Status.LOADING -> {
-                }
-                Resource.Status.ERROR -> {
-                    Log.d(
-                        "refresh",
-                        "HomeFragment, topTrendingMovie?.observe, fail, response = ${details.error?.cd}"
-                    )
-                    movieController.submitTopTrendingMovie(null, details.error)
-                }
-            }
+//            if (details.genres != null)
+            Log.d("getTopMovie", "HomeFragment, topTrendingMovie?.observe, response = ${details.title}")
+            topTrendingMovieId = details.id
+            movieController.submitTopTrendingMovie(details, null)
         })
 
         viewModel.isInDatabase?.observe(this, Observer { isInDatabase ->

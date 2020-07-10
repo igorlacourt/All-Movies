@@ -10,14 +10,14 @@ import retrofit2.Response
 class UserRepository(var apiServices: TmdbApi):BaseRepository(){
 
     fun getDetails(id: Int, callBack: Callback<DetailsDTO>) {
-        apiServices.getDetails(575452, AppConstants.VIDEOS_AND_CASTS).makeCall {
-            onResponseSuccess = {
-//             it.body().
-            }
-            onResponseFailure = {
-
-            }
-        }
+//        apiServices.getDetails(575452, AppConstants.VIDEOS_AND_CASTS).makeCall {
+//            onResponseSuccess = {
+////             it.body().
+//            }
+//            onResponseFailure = {
+//
+//            }
+//        }
     }
 }
 

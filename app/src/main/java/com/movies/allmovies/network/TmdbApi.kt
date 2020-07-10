@@ -94,12 +94,12 @@ interface TmdbApi {
     ): Observable<DetailsDTO>
 
     @GET("movie/{id}")//@GET("movie/{id}")
-    fun getDetails(
+    suspend fun getDetails(
         @Path("id")
-        id: Int,
+        id: Int?,
         @Query("append_to_response")
         append: String
-    ): Call<DetailsDTO>
+    ): NetworkResponse<DetailsDTO, Error>
 
     //    https://api.themoviedb.org/3/tv/latest?api_key=<<api_key>>&language=en-US
     @GET("tv/latest")

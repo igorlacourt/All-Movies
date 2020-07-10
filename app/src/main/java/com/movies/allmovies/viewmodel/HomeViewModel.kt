@@ -5,16 +5,21 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
 import com.movies.allmovies.AppConstants
+import com.movies.allmovies.database.AppDatabase
+import com.movies.allmovies.deleteById
+import com.movies.allmovies.domainMappers.MapperFunctions
 import com.movies.allmovies.domainMappers.toDomainMovie
 import com.movies.allmovies.domainmodel.Details
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
 import com.movies.allmovies.dto.MovieResponseDTO
+import com.movies.allmovies.insertItem
+import com.movies.allmovies.isInDatabase
 import com.movies.allmovies.network.Apifactory
+import com.movies.allmovies.network.Apifactory.tmdbApi
 import com.movies.allmovies.network.Error
 import com.movies.allmovies.network.Resource
 import com.movies.allmovies.repository.HomeRepository
-import com.movies.allmovies.repository.HomeResult
 import com.movies.allmovies.repository.NetworkResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -24,11 +29,18 @@ import javax.inject.Inject
 
 interface HomeDataSource {
     suspend fun getListsOfMovies(homeResultCallback: (result: HomeResult) -> Unit)
+
+    fun isIndatabase(id: Int?)
+
+    fun refresh()
+
+    fun insert(myListItem: MyListItem)
+
+    fun delete(id: Int)
 }
 
-class HomeDataSourceImpl @Inject constructor(): HomeDataSource {
+class HomeDataSourceImpl @Inject constructor(val context: Context): HomeDataSource {
     override suspend fun getListsOfMovies(homeResultCallback: (result: HomeResult) -> Unit) {
-        val tmdbApi = Apifactory.tmdbApi
         withContext(Dispatchers.IO){
             try {
                 val trendingMoviesResponse = async { tmdbApi.getTrendingMoviesSuspend(AppConstants.LANGUAGE, 1) }
@@ -47,8 +59,28 @@ class HomeDataSourceImpl @Inject constructor(): HomeDataSource {
             }
         }
     }
+    var isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
 
-    private fun processData(homeResultCallback: (result: HomeResult) -> Unit,
+    private val myListDao =
+        AppDatabase.getDatabase(context)?.MyListDao()
+
+    override fun isIndatabase(id: Int?) {
+        id?.let { myListDao.isInDatabase(id, isInDatabase) }
+    }
+
+    override fun refresh() {
+        //        fetchMoviesLists()
+    }
+
+    override fun insert(myListItem: MyListItem) {
+        myListDao?.insertItem(context, myListItem, isInDatabase)
+    }
+
+    override fun delete(id: Int) {
+        myListDao.deleteById(context, id, isInDatabase)
+    }
+
+    private suspend fun processData(homeResultCallback: (result: HomeResult) -> Unit,
                             trending: NetworkResponse<MovieResponseDTO, Error>,
                             upcoming: NetworkResponse<MovieResponseDTO, Error>,
                             popular: NetworkResponse<MovieResponseDTO, Error>,
@@ -66,19 +98,22 @@ class HomeDataSourceImpl @Inject constructor(): HomeDataSource {
         list4?.let { resultList.add(it) }
 
         if (resultList.size == 4){
-            homeResultCallback(HomeResult.Success(resultList))
+            withContext(Dispatchers.IO){
+                val trendingMoviesResponse = async { tmdbApi.getTrendingMoviesSuspend(AppConstants.LANGUAGE, 1) }
+                homeResultCallback(HomeResult.Success(resultList))
+            }
         } else {
             homeResultCallback(HomeResult.ApiError(400))
         }
     }
 
-    private fun convertResponse(trending: NetworkResponse<MovieResponseDTO, Error>): Collection<DomainMovie>? {
-        when(trending){
+    private fun convertResponse(response: NetworkResponse<MovieResponseDTO, Error>): Collection<DomainMovie>? {
+        when(response){
             is NetworkResponse.Success -> {
-                return trending.body.toDomainMovie()
+                return response.body.toDomainMovie()
             }
             is NetworkResponse.ApiError -> {
-                Log.d("TAG", "ApiError ${trending.body}")
+                Log.d("TAG", "ApiError ${response.body}")
                 return null
             }
             is NetworkResponse.NetworkError -> {
@@ -93,11 +128,11 @@ class HomeDataSourceImpl @Inject constructor(): HomeDataSource {
     }
 }
 
-class HomeViewModel @Inject constructor(homeDataSource: HomeDataSource, val context: Context) : ViewModel(){
+class HomeViewModel @Inject constructor(private val homeDataSource: HomeDataSource, val context: Context) : ViewModel(){
     var app = context
 
     private var repository: HomeRepository? = null
-    var topTrendingMovie: LiveData<Resource<Details>>? = null
+    var topTrendingMovie: MutableLiveData<Details>? = MutableLiveData()
     var listsOfMovies: MutableLiveData<List<Collection<DomainMovie>>?> = MutableLiveData()
 
     var isInDatabase: LiveData<Boolean>? = null
@@ -112,6 +147,7 @@ class HomeViewModel @Inject constructor(homeDataSource: HomeDataSource, val cont
                     is HomeResult.Success -> {
                     Log.d("searchlog", "searchMovie, SearchResult.Success")
                         listsOfMovies.postValue(result.movies)
+                        getTopMovie(result.movies[0].elementAt(0).id)
                         isLoading?.postValue(false)
                     }
                     is HomeResult.ApiError -> {
@@ -126,30 +162,55 @@ class HomeViewModel @Inject constructor(homeDataSource: HomeDataSource, val cont
                 }
             }
         }
-
-        topTrendingMovie = repository?.topTrendingMovie
-
         isInDatabase = repository?.isInDatabase
     }
 
+    private fun getTopMovie(id: Int?) {
+        viewModelScope.launch {
+            try {
+                val response = tmdbApi.getDetails(id, AppConstants.LANGUAGE)
+                when (response) {
+                    is NetworkResponse.Success -> {
+                        Log.d("getTopMovie", " NetworkResponse.Success ${response.body.title}")
+                        Log.d("getTopMovie", " MapperFunctions.toDetails(response.body).title =  ${MapperFunctions.toDetails(response.body).title}")
+                        topTrendingMovie?.postValue(MapperFunctions.toDetails(response.body))
+                    }
+                    is NetworkResponse.ApiError -> Log.d(
+                        "getTopMovie",
+                        "ApiError ${response.body.message}"
+                    )
+                    is NetworkResponse.NetworkError -> Log.d("getTopMovie", "NetworkError")
+                    is NetworkResponse.UnknownError -> Log.d("getTopMovie", "UnknownError")
+                }
+            } catch (e: Exception) {
+                Log.d("parallelRequest", e.message)
+            }
+        }
+    }
+
     fun isIndatabase(id: Int?){
-        repository?.isInDatabase(id)
+        homeDataSource.isIndatabase(id)
     }
 
     fun refresh(){
 //        Log.d("refresh", "HomeViewMmodel, refresh()")
-        repository?.refresh()
+        homeDataSource?.refresh()
 //        Log.d("listsLog", "HomeViewModdel, resultList.size = ${listsOfMovies?.value?.data?.size}")
     }
 
     fun insert(myListItem: MyListItem) {
         Log.d("log_is_inserted", "HomeViewModel, insert() called")
-        repository?.insert(myListItem)
+        homeDataSource?.insert(myListItem)
     }
 
     fun delete(id: Int){
 //        Log.d("log_is_inserted", "HomeViewModel, delete() called")
-        repository?.delete(id)
+        homeDataSource?.delete(id)
     }
 
+}
+sealed class HomeResult {
+    class Success(val movies: ArrayList<Collection<DomainMovie>>) : HomeResult()
+    class ApiError(val statusCode: Int) : HomeResult()
+    object ServerError : HomeResult()
 }
