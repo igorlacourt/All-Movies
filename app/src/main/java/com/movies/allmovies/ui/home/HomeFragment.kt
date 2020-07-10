@@ -57,33 +57,34 @@ class HomeFragment : Fragment(), OnItemClick {
         recyclerView.adapter = adapter
 
         viewModel.listsOfMovies?.observe(this, Observer { response ->
-            Log.d("parallelRequest", "HomeFragment, response size = ${response?.data?.size}")
-            when (response?.status) {
-                Resource.Status.SUCCESS -> {
-                    Log.d("listsLog", "HomeFragment, response size = ${response?.data?.size}")
-                    response.data?.let {
-                        Log.d(
-                            "refresh",
-                            "HomeFragment, listsOfMovies?.observe, success response = ${response.data.size}"
-                        )
-                        movieController.submitListsOfMovies(it, null)
-                    }
-                }
-                Resource.Status.LOADING -> {
-                }
-                Resource.Status.ERROR -> {
-                    Log.d(
-                        "refresh",
-                        "HomeFragment, listsOfMovies?.observe, fail, response = ${response.error?.cd}"
-                    )
-                    movieController.submitListsOfMovies(null, response.error)
-                    Toast.makeText(
-                        context,
-                        "${response.error?.message}, ${response.error?.cd}",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
+            response?.let { movieController.submitListsOfMovies(it, null) }
+//            Log.d("parallelRequest", "HomeFragment, response size = ${response?.data?.size}")
+//            when (response?.status) {
+//                Resource.Status.SUCCESS -> {
+//                    Log.d("listsLog", "HomeFragment, response size = ${response?.data?.size}")
+//                    response.data?.let {
+//                        Log.d(
+//                            "refresh",
+//                            "HomeFragment, listsOfMovies?.observe, success response = ${response.data.size}"
+//                        )
+//                        movieController.submitListsOfMovies(it, null)
+//                    }
+//                }
+//                Resource.Status.LOADING -> {
+//                }
+//                Resource.Status.ERROR -> {
+//                    Log.d(
+//                        "refresh",
+//                        "HomeFragment, listsOfMovies?.observe, fail, response = ${response.error?.cd}"
+//                    )
+//                    movieController.submitListsOfMovies(null, response.error)
+//                    Toast.makeText(
+//                        context,
+//                        "${response.error?.message}, ${response.error?.cd}",
+//                        Toast.LENGTH_LONG
+//                    ).show()
+//                }
+//            }
         })
 
         viewModel.topTrendingMovie?.observe(this, Observer { details ->

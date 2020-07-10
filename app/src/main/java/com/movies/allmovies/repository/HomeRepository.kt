@@ -24,6 +24,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Function4
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -47,22 +50,77 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
     var isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
     var isLoading: MutableLiveData<Boolean> = MutableLiveData()
 
-
     /*Remember:
      1. that the returned list cannot be mutable
      2. the mutable livedata should be private(check in the video again)*/
     init {
         IdlingResourceManager.getIdlingResource().setIdleState(isIdleNow = false)
-
-
-
-//        fetchMoviesLists()
-        Log.d("callstest", "repository called")
         movieDao?.deleteAll()
     }
 
-    fun requestLists() {
+    suspend fun parallelRequest(homeResultCallback: (result: HomeResult) -> Unit) {
+        val tmdbApi = Apifactory.tmdbApi
+        withContext(Dispatchers.IO){
+            try {
+                val trendingMoviesResponse = async { tmdbApi.getTrendingMoviesSuspend(AppConstants.LANGUAGE, 1) }
+                val upcomingMoviesResponse = async { tmdbApi.getUpcomingMoviesSuspend(AppConstants.LANGUAGE, 1) }
+                val popularMoviesResponse = async { tmdbApi.getPopularMoviesSuspend(AppConstants.LANGUAGE, 1) }
+                val topRatedMoviesResponse = async { tmdbApi.getTopRatedMoviesSuspend(AppConstants.LANGUAGE, 1) }
+                processData(
+                    homeResultCallback,
+                    trendingMoviesResponse.await(),
+                    upcomingMoviesResponse.await(),
+                    popularMoviesResponse.await(),
+                    topRatedMoviesResponse.await()
+                )
+            } catch (exception: Exception) {
+                Log.d("parallelRequest", exception.message)
+            }
+        }
+    }
 
+    private fun processData(homeResultCallback: (result: HomeResult) -> Unit,
+        trending: NetworkResponse<MovieResponseDTO, Error>,
+        upcoming: NetworkResponse<MovieResponseDTO, Error>,
+        popular: NetworkResponse<MovieResponseDTO, Error>,
+        topRated: NetworkResponse<MovieResponseDTO, Error>
+    ) {
+        val list1: Collection<DomainMovie>? = convertResponse(trending)
+        val list2 = convertResponse(upcoming)
+        val list3 = convertResponse(popular)
+        val list4 = convertResponse(topRated)
+
+        val resultList = ArrayList<Collection<DomainMovie>>()
+        list1?.let { resultList.add(it) }
+        list2?.let { resultList.add(it) }
+        list3?.let { resultList.add(it) }
+        list4?.let { resultList.add(it) }
+
+        if (resultList.size == 4){
+            homeResultCallback(HomeResult.Success(resultList))
+        } else {
+            homeResultCallback(HomeResult.ApiError(400))
+        }
+    }
+
+    private fun convertResponse(trending: NetworkResponse<MovieResponseDTO, Error>): Collection<DomainMovie>? {
+        when(trending){
+            is NetworkResponse.Success -> {
+                return trending.body.toDomainMovie()
+            }
+            is NetworkResponse.ApiError -> {
+                Log.d("TAG", "ApiError ${trending.body}")
+                return null
+            }
+            is NetworkResponse.NetworkError -> {
+                Log.d("TAG", "NetworkError")
+                return null
+            }
+            is NetworkResponse.UnknownError -> {
+                Log.d("TAG", "UnknownError")
+                return null
+            }
+        }
     }
 
     fun refresh() {
@@ -294,3 +352,8 @@ class HomeRepository(private val application: Application) : NetworkCallback<Det
 
 }
 
+sealed class HomeResult {
+    class Success(val movies: ArrayList<Collection<DomainMovie>>) : HomeResult()
+    class ApiError(val statusCode: Int) : HomeResult()
+    object ServerError : HomeResult()
+}

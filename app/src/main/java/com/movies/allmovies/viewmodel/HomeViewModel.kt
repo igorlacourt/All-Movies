@@ -16,6 +16,7 @@ import com.movies.allmovies.network.Apifactory
 import com.movies.allmovies.network.Error
 import com.movies.allmovies.network.Resource
 import com.movies.allmovies.repository.HomeRepository
+import com.movies.allmovies.repository.HomeResult
 import com.movies.allmovies.repository.NetworkResponse
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -25,7 +26,7 @@ class HomeViewModel (application: Application) : AndroidViewModel(application){
 
     private var repository: HomeRepository? = null
     var topTrendingMovie: LiveData<Resource<Details>>? = null
-    var listsOfMovies: MutableLiveData<Resource<List<Collection<DomainMovie>>>?> = MutableLiveData()
+    var listsOfMovies: MutableLiveData<List<Collection<DomainMovie>>?> = MutableLiveData()
 
     var isInDatabase: LiveData<Boolean>? = null
     var isLoading: MutableLiveData<Boolean>? = MutableLiveData()
@@ -33,84 +34,30 @@ class HomeViewModel (application: Application) : AndroidViewModel(application){
     init {
         repository = HomeRepository(application)
 
-        parallelRequest()
+        viewModelScope.launch{
+            repository?.parallelRequest{ result ->
+                when(result) {
+                    is HomeResult.Success -> {
+                    Log.d("searchlog", "searchMovie, SearchResult.Success")
+                        listsOfMovies.postValue(result.movies)
+                        isLoading?.postValue(false)
+                    }
+                    is HomeResult.ApiError -> {
+                      Log.d("searchlog", "searchMovie, SearchResult.ApiError")
+                        isLoading?.postValue(false)
+                    }
+                    is HomeResult.ServerError -> {
+                      Log.d("searchlog", "searchMovie, SearchResult.ServerError")
+                        isLoading?.postValue(false)
+                    }
+
+                }
+            }
+        }
 
         topTrendingMovie = repository?.topTrendingMovie
 
         isInDatabase = repository?.isInDatabase
-    }
-
-    fun parallelRequest() {
-        viewModelScope.launch {
-            Log.d("parallelRequest", "parallelRequest(), viewModelScope.launch")
-            var trending: MovieResponseDTO
-            var upcoming: MovieResponseDTO
-            var popular: MovieResponseDTO
-            var topRated: MovieResponseDTO
-
-            val tmdbApi = Apifactory.tmdbApi
-            try {
-                val trendingMoviesResponse = async { tmdbApi.getTrendingMoviesSuspend(AppConstants.LANGUAGE, 1) }
-                val upcomingMoviesResponse = async { tmdbApi.getUpcomingMoviesSuspend(AppConstants.LANGUAGE, 1) }
-                val popularMoviesResponse = async { tmdbApi.getPopularMoviesSuspend(AppConstants.LANGUAGE, 1) }
-                val topRatedMoviesResponse = async { tmdbApi.getTopRatedMoviesSuspend(AppConstants.LANGUAGE, 1) }
-                processData(
-                    trendingMoviesResponse.await(),
-                    upcomingMoviesResponse.await(),
-                    popularMoviesResponse.await(),
-                    topRatedMoviesResponse.await()
-                )
-            } catch (exception: Exception) {
-                Log.d("parallelRequest", exception.message)
-            }
-        }
-    }
-
-    private fun processData(
-        trending: NetworkResponse<MovieResponseDTO, Error>,
-        upcoming: NetworkResponse<MovieResponseDTO, Error>,
-        popular: NetworkResponse<MovieResponseDTO, Error>,
-        topRated: NetworkResponse<MovieResponseDTO, Error>
-    ) {
-        val list1: Collection<DomainMovie>? = convertResponse(trending)
-        val list2 = convertResponse(upcoming)
-        val list3 = convertResponse(popular)
-        val list4 = convertResponse(topRated)
-
-        val resultList = ArrayList<Collection<DomainMovie>>()
-        list1?.let { resultList.add(it) }
-        list2?.let { resultList.add(it) }
-        list3?.let { resultList.add(it) }
-        list4?.let { resultList.add(it) }
-
-        Log.d("parallelRequest", "processData(), resultList.size = ${resultList.size}")
-
-        listsOfMovies.value = if (resultList.size == 4){
-            Resource.success(resultList)
-        } else {
-            Resource.error(Error(0, "error loading at least one of the movie lists"))
-        }
-        isLoading?.value = false
-    }
-
-    private fun convertResponse(trending: NetworkResponse<MovieResponseDTO, Error>): Collection<DomainMovie>? {
-        when(trending){
-            is NetworkResponse.Success -> {
-                return trending.body.toDomainMovie()
-            }
-            is NetworkResponse.ApiError -> {
-                Log.d("TAG", "ApiError ${trending.body}")
-                return null
-            }
-            is NetworkResponse.NetworkError -> {
-                Log.d("TAG", "NetworkError")
-                return null
-            }
-            is NetworkResponse.UnknownError -> {
-                Log.d("TAG", "UnknownError")
-                return null
-            }
-        }
     }
 
     fun isIndatabase(id: Int?){
