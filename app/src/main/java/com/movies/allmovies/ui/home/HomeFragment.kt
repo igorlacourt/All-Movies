@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -13,11 +15,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.epoxy.EpoxyRecyclerView
+import com.movies.allmovies.AppConstants
 import com.movies.allmovies.MainActivity
 import com.movies.allmovies.R
+import com.movies.allmovies.databinding.FragmentHomeMoviesBinding
+import com.movies.allmovies.domainMappers.toMyListItem
 import com.movies.allmovies.epoxy.*
 import com.movies.allmovies.ui.OnItemClick
 import com.movies.allmovies.viewmodel.HomeViewModel
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.add_to_my_list.view.*
 import javax.inject.Inject
 
 
@@ -33,63 +40,76 @@ class HomeFragment : Fragment(), OnItemClick {
         (requireActivity() as MainActivity).mainComponent.inject(this)
     }
 
-    private lateinit var recyclerView: EpoxyRecyclerView
-
-    private val itemClick = this as OnItemClick
-
-    private val movieController by lazy { MovieController(context, itemClick, viewModel) }
-
     private var topTrendingMovieId: Int? = null
-
-    var testString = "Test String"
+    private lateinit var binding: FragmentHomeMoviesBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d("callstest", "onCreateView called\n")
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_home_movies, container, false
+        )
+        binding.lifecycleOwner = this
+        binding.viewmodel = viewModel
 
-        Log.d("refreshLog", "onCreateView() called")
+        attachObservers()
+        attachClickListeners()
 
-//        viewModel =
-//            ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        return binding.root
+    }
 
-        recyclerView = root.findViewById(R.id.movie_list)
+    private fun attachClickListeners() {
+        binding.iBtnAddToMyList.btAddToList.setOnClickListener {
+            viewModel.topTrendingMovie?.value?.toMyListItem()?.let {
+                viewModel.insert(it)
+            }
+        }
+    }
 
-        Log.d("clicklog", "before initialize movieController")
-        Log.d("genreslog", "HomeFragment, onCreateView() called")
+    private fun attachObservers() {
+        listsOfMoviesObserver()
+        topMovieObserver()
+        isInDataBaseObserver()
+        isLoadingObserver()
+    }
 
-        val adapter = movieController.adapter
-
-        var layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        recyclerView.layoutManager = layoutManager
-
-        recyclerView.adapter = adapter
-
-        viewModel.listsOfMovies?.observe(this, Observer { response ->
+    private fun listsOfMoviesObserver() {
+        viewModel.listsOfMovies.observe(this, Observer { response ->
             response?.let {
-                movieController.submitListsOfMovies(it, null)
+                binding.rvListsOfMovies.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                binding.rvListsOfMovies.adapter = ListsOfMoviesAdapter(requireContext(), response)
             }
         })
+    }
 
+    private fun topMovieObserver() {
         viewModel.topTrendingMovie?.observe(this, Observer { details ->
             topTrendingMovieId = details.id
-            movieController.submitTopTrendingMovie(details, null)
-            viewModel.isInDatabase(details.id)
+            Picasso.get()
+                .load("${AppConstants.TMDB_IMAGE_BASE_URL_W780}${details.backdrop_path}")
+                .placeholder(R.drawable.placeholder)
+                .into(binding.ivTopTrendingMovie)
         })
+    }
 
+    private fun isInDataBaseObserver() {
         viewModel.isInDatabase.observe(this, Observer { isInDatabase ->
-            Log.d("isDbLog", "isInDatabase = $isInDatabase")
-            movieController.submitIsInDatabase(isInDatabase)
+            if (isInDatabase) {
+                binding.iBtnAddToMyList.btAddToList.setImageDrawable(
+                    ResourcesCompat.getDrawable(resources, R.drawable.wish_list_btn_24dp, null)
+                )
+            } else {
+                ResourcesCompat.getDrawable(resources, R.drawable.ic_check_mark_24dp, null)
+            }
         })
+    }
 
-        viewModel.isLoading?.observe(this, Observer { isLoading ->
-            movieController.submitIsLoading(isLoading)
+    private fun isLoadingObserver() {
+        viewModel.isLoading.observe(this, Observer { isLoading ->
         })
-
-        return root
     }
 
     override fun onResume() {

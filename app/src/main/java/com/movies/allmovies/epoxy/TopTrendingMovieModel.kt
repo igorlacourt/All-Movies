@@ -141,8 +141,8 @@ abstract class TopTrendingMovieModel(val context: Context?, val isInDatabase: Bo
             title = itemView.findViewById(R.id.tv_top_trending_movie_title)
             genres = itemView.findViewById(R.id.tv_genres)
             trailerButton = itemView.findViewById(R.id.btn_top_trending_trailer)
-            myListButton = itemView.findViewById(R.id.btn_top_trending_my_list)
-            myListIcon = itemView.findViewById(R.id.wish_list_btn)
+            myListButton = itemView.findViewById(R.id.i_btn_add_to_my_list)
+            myListIcon = itemView.findViewById(R.id.bt_add_to_list)
             learnMoreButton = itemView.findViewById(R.id.btn_learn_more)
         }
     }

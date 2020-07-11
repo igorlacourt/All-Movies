@@ -30,12 +30,8 @@ import java.lang.Exception
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.MobileAds.initialize
 import com.movies.allmovies.R
 import com.movies.allmovies.domainMappers.toCastDTO
-import com.movies.allmovies.dto.CastDTO
 import com.movies.allmovies.dto.CastsDTO
 import com.movies.allmovies.openYoutube
 import com.movies.allmovies.ui.GridAdapter
@@ -71,7 +67,7 @@ class DetailsFragment : Fragment(), OnItemClick, OnCastClick {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_details, container, false)
         voteAverage = view.findViewById(R.id.tv_vote_average)
-        wishListButton = view.findViewById(R.id.wish_list_btn)
+        wishListButton = view.findViewById(R.id.bt_add_to_list)
         backdropImageView = view.findViewById(R.id.detail_backdrop)
         progressBar = view.findViewById(R.id.details_progress_bar)
         progressBar.visibility = View.VISIBLE

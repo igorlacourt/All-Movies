@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:id="@+id/bt_add_to_list"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:clickable="false"
+            android:focusable="false"
+            app:layout_constraintBottom_toTopOf="@+id/tv_my_list_details"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:srcCompat="@drawable/ic_add_white_144dp" />
+
+        <TextView
+            android:id="@+id/tv_my_list_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:text="@string/my_list_at_details"
+            android:textColor="#CECECE"
+            android:textSize="@dimen/small_text_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/bt_add_to_list"
+            app:layout_constraintLeft_toLeftOf="@+id/bt_add_to_list"
+            app:layout_constraintRight_toRightOf="@+id/bt_add_to_list"
+            app:layout_constraintStart_toStartOf="@+id/bt_add_to_list"
+            app:layout_constraintTop_toBottomOf="@+id/bt_add_to_list" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
