@@ -82,7 +82,7 @@ class HomeDataSourceImpl @Inject constructor(val context: Context): HomeDataSour
                             popular: NetworkResponse<MovieResponseDTO, Error>,
                             topRated: NetworkResponse<MovieResponseDTO, Error>
     ) {
-        val list1: Collection<DomainMovie>? = convertResponse(trending)
+        val list1 = convertResponse(trending)
         val list2 = convertResponse(upcoming)
         val list3 = convertResponse(popular)
         val list4 = convertResponse(topRated)
