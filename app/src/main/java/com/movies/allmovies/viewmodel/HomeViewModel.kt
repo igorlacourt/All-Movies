@@ -1,6 +1,5 @@
 package com.movies.allmovies.viewmodel
 
-import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
@@ -13,13 +12,8 @@ import com.movies.allmovies.domainmodel.Details
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
 import com.movies.allmovies.dto.MovieResponseDTO
-import com.movies.allmovies.insertItem
-import com.movies.allmovies.isInDatabase
-import com.movies.allmovies.network.Apifactory
 import com.movies.allmovies.network.Apifactory.tmdbApi
 import com.movies.allmovies.network.Error
-import com.movies.allmovies.network.Resource
-import com.movies.allmovies.repository.HomeRepository
 import com.movies.allmovies.repository.NetworkResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -30,7 +24,7 @@ import javax.inject.Inject
 interface HomeDataSource {
     suspend fun getListsOfMovies(homeResultCallback: (result: HomeResult) -> Unit)
 
-    fun isIndatabase(id: Int?)
+    fun isInDatabase(id: Int) : Boolean
 
     fun refresh()
 
@@ -64,8 +58,8 @@ class HomeDataSourceImpl @Inject constructor(val context: Context): HomeDataSour
     private val myListDao =
         AppDatabase.getDatabase(context)?.MyListDao()
 
-    override fun isIndatabase(id: Int?) {
-        id?.let { myListDao.isInDatabase(id, isInDatabase) }
+    override fun isInDatabase(id: Int): Boolean {
+        return myListDao?.getById(id) ?: false
     }
 
     override fun refresh() {
@@ -73,14 +67,16 @@ class HomeDataSourceImpl @Inject constructor(val context: Context): HomeDataSour
     }
 
     override fun insert(myListItem: MyListItem) {
-        myListDao?.insertItem(context, myListItem, isInDatabase)
+        myListDao?.insert(myListItem)
+        isInDatabase.value = true
     }
 
     override fun delete(id: Int) {
-        myListDao.deleteById(context, id, isInDatabase)
+        myListDao?.deleteById(id)
+        isInDatabase.value = false
     }
 
-    private suspend fun processData(homeResultCallback: (result: HomeResult) -> Unit,
+    private fun processData(homeResultCallback: (result: HomeResult) -> Unit,
                             trending: NetworkResponse<MovieResponseDTO, Error>,
                             upcoming: NetworkResponse<MovieResponseDTO, Error>,
                             popular: NetworkResponse<MovieResponseDTO, Error>,
@@ -98,10 +94,7 @@ class HomeDataSourceImpl @Inject constructor(val context: Context): HomeDataSour
         list4?.let { resultList.add(it) }
 
         if (resultList.size == 4){
-            withContext(Dispatchers.IO){
-                val trendingMoviesResponse = async { tmdbApi.getTrendingMoviesSuspend(AppConstants.LANGUAGE, 1) }
-                homeResultCallback(HomeResult.Success(resultList))
-            }
+            homeResultCallback(HomeResult.Success(resultList))
         } else {
             homeResultCallback(HomeResult.ApiError(400))
         }
@@ -129,40 +122,41 @@ class HomeDataSourceImpl @Inject constructor(val context: Context): HomeDataSour
 }
 
 class HomeViewModel @Inject constructor(private val homeDataSource: HomeDataSource, val context: Context) : ViewModel(){
-    var app = context
-
-    private var repository: HomeRepository? = null
     var topTrendingMovie: MutableLiveData<Details>? = MutableLiveData()
     var listsOfMovies: MutableLiveData<List<Collection<DomainMovie>>?> = MutableLiveData()
 
-    var isInDatabase: LiveData<Boolean>? = null
-    var isLoading: MutableLiveData<Boolean>? = MutableLiveData()
+    var isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
+    var isLoading: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
-        repository = HomeRepository(app as Application)
+        isLoading.value = true
+        isInDatabase.value = false
+        getListOfMovies()
 
+    }
+
+    private fun getListOfMovies() {
         viewModelScope.launch{
             homeDataSource.getListsOfMovies{ result ->
                 when(result) {
                     is HomeResult.Success -> {
-                    Log.d("searchlog", "searchMovie, SearchResult.Success")
+                        Log.d("searchlog", "searchMovie, SearchResult.Success")
                         listsOfMovies.postValue(result.movies)
                         getTopMovie(result.movies[0].elementAt(0).id)
-                        isLoading?.postValue(false)
+                        isLoading.postValue(false)
                     }
                     is HomeResult.ApiError -> {
-                      Log.d("searchlog", "searchMovie, SearchResult.ApiError")
-                        isLoading?.postValue(false)
+                        Log.d("searchlog", "searchMovie, SearchResult.ApiError")
+                        isLoading.postValue(false)
                     }
                     is HomeResult.ServerError -> {
-                      Log.d("searchlog", "searchMovie, SearchResult.ServerError")
-                        isLoading?.postValue(false)
+                        Log.d("searchlog", "searchMovie, SearchResult.ServerError")
+                        isLoading.postValue(false)
                     }
 
                 }
             }
         }
-        isInDatabase = repository?.isInDatabase
     }
 
     private fun getTopMovie(id: Int?) {
@@ -171,41 +165,38 @@ class HomeViewModel @Inject constructor(private val homeDataSource: HomeDataSour
                 val response = tmdbApi.getDetails(id, AppConstants.LANGUAGE)
                 when (response) {
                     is NetworkResponse.Success -> {
-                        Log.d("getTopMovie", " NetworkResponse.Success ${response.body.title}")
-                        Log.d("getTopMovie", " MapperFunctions.toDetails(response.body).title =  ${MapperFunctions.toDetails(response.body).title}")
                         topTrendingMovie?.postValue(MapperFunctions.toDetails(response.body))
+                        isLoading.postValue(false)
                     }
-                    is NetworkResponse.ApiError -> Log.d(
-                        "getTopMovie",
-                        "ApiError ${response.body.message}"
-                    )
+                    is NetworkResponse.ApiError -> Log.d("getTopMovie", "ApiError ${response.body.message}")
                     is NetworkResponse.NetworkError -> Log.d("getTopMovie", "NetworkError")
                     is NetworkResponse.UnknownError -> Log.d("getTopMovie", "UnknownError")
                 }
             } catch (e: Exception) {
                 Log.d("parallelRequest", e.message)
+                throw e
             }
         }
     }
 
-    fun isIndatabase(id: Int?){
-        homeDataSource.isIndatabase(id)
+    fun isInDatabase(id: Int?){
+        id?.let {
+            isInDatabase.value = homeDataSource.isInDatabase(id)
+            isLoading.value = false
+        }
     }
 
     fun refresh(){
-//        Log.d("refresh", "HomeViewMmodel, refresh()")
-        homeDataSource?.refresh()
-//        Log.d("listsLog", "HomeViewModdel, resultList.size = ${listsOfMovies?.value?.data?.size}")
+        homeDataSource.refresh()
     }
 
     fun insert(myListItem: MyListItem) {
-        Log.d("log_is_inserted", "HomeViewModel, insert() called")
-        homeDataSource?.insert(myListItem)
+        homeDataSource.insert(myListItem)
+        isInDatabase.value = true
     }
 
     fun delete(id: Int){
-//        Log.d("log_is_inserted", "HomeViewModel, delete() called")
-        homeDataSource?.delete(id)
+        homeDataSource.delete(id)
     }
 
 }

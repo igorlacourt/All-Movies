@@ -107,18 +107,18 @@ fun MyListDao?.isInDatabase(id: Int?, isInDatabase: MutableLiveData<Boolean>) {
     val disposable = CompositeDisposable()
 
     if (id != null && this != null) {
-        this.getById(id)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            ?.doOnNext {
-                isInDatabase.postValue(true)
-                Log.d(
-                    "log_is_inserted",
-                    "ExtensionFunction.IsInDatabase(), getById(), doOnNext called, isInDatabase.value = $isInDatabase"
-                )
-            }
-            ?.doOnSubscribe {  }
-            ?.doOnComplete {  }
-            ?.subscribe()
+//        this.getById(id)
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            ?.doOnNext {
+//                isInDatabase.postValue(true)
+//                Log.d(
+//                    "log_is_inserted",
+//                    "ExtensionFunction.IsInDatabase(), getById(), doOnNext called, isInDatabase.value = $isInDatabase"
+//                )
+//            }
+//            ?.doOnSubscribe {  }
+//            ?.doOnComplete {  }
+//            ?.subscribe()
     }
 }

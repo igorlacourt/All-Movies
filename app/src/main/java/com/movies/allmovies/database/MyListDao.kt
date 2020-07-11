@@ -8,11 +8,12 @@ import androidx.room.Query
 import com.movies.allmovies.domainmodel.MyListItem
 import com.movies.allmovies.dto.DbMovieDTO
 import io.reactivex.Flowable
+import io.reactivex.Single
 
 @Dao
 interface MyListDao {
-    @Query("SELECT id FROM mylist WHERE id = :id")
-    fun getById(id: Int): Flowable<Int>
+    @Query("SELECT EXISTS (SELECT id FROM mylist WHERE id = :id)")
+    fun getById(id: Int): Boolean
 //
 //    @Query("SELECT id FROM mylist WHERE id = :id")
 //    fun getById(id: Int): Single<Int>
