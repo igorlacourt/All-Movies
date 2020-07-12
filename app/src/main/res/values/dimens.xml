@@ -3,4 +3,5 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="small_text_size">10sp</dimen>
+    <dimen name="movie_list_title">14sp</dimen>
 </resources>

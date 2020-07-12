@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.database.AppDatabase
-import com.movies.allmovies.deleteById
 import com.movies.allmovies.domainMappers.MapperFunctions
 import com.movies.allmovies.domainMappers.toDomainMovie
 import com.movies.allmovies.domainmodel.Details
@@ -24,7 +23,7 @@ import javax.inject.Inject
 interface HomeDataSource {
     suspend fun getListsOfMovies(homeResultCallback: (result: HomeResult) -> Unit)
 
-    fun isInDatabase(id: Int) : Boolean
+    fun isTopMovieInDatabase(id: Int) : Boolean
 
     fun refresh()
 
@@ -53,12 +52,11 @@ class HomeDataSourceImpl @Inject constructor(val context: Context): HomeDataSour
             }
         }
     }
-    var isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
 
     private val myListDao =
         AppDatabase.getDatabase(context)?.MyListDao()
 
-    override fun isInDatabase(id: Int): Boolean {
+    override fun isTopMovieInDatabase(id: Int): Boolean {
         return myListDao?.getById(id) ?: false
     }
 
@@ -68,12 +66,10 @@ class HomeDataSourceImpl @Inject constructor(val context: Context): HomeDataSour
 
     override fun insert(myListItem: MyListItem) {
         myListDao?.insert(myListItem)
-        isInDatabase.value = true
     }
 
     override fun delete(id: Int) {
         myListDao?.deleteById(id)
-        isInDatabase.value = false
     }
 
     private fun processData(homeResultCallback: (result: HomeResult) -> Unit,
@@ -129,10 +125,9 @@ class HomeViewModel @Inject constructor(private val homeDataSource: HomeDataSour
     var isLoading: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
-        isLoading.value = true
-        isInDatabase.value = false
-        getListOfMovies()
 
+        isLoading.value = true
+        getListOfMovies()
     }
 
     private fun getListOfMovies() {
@@ -143,7 +138,6 @@ class HomeViewModel @Inject constructor(private val homeDataSource: HomeDataSour
                         Log.d("searchlog", "searchMovie, SearchResult.Success")
                         listsOfMovies.postValue(result.movies)
                         getTopMovie(result.movies[0].elementAt(0).id)
-                        isLoading.postValue(false)
                     }
                     is HomeResult.ApiError -> {
                         Log.d("searchlog", "searchMovie, SearchResult.ApiError")
@@ -166,7 +160,6 @@ class HomeViewModel @Inject constructor(private val homeDataSource: HomeDataSour
                 when (response) {
                     is NetworkResponse.Success -> {
                         topTrendingMovie?.postValue(MapperFunctions.toDetails(response.body))
-                        isLoading.postValue(false)
                     }
                     is NetworkResponse.ApiError -> Log.d("getTopMovie", "ApiError ${response.body.message}")
                     is NetworkResponse.NetworkError -> Log.d("getTopMovie", "NetworkError")
@@ -179,11 +172,9 @@ class HomeViewModel @Inject constructor(private val homeDataSource: HomeDataSour
         }
     }
 
-    fun isInDatabase(id: Int?){
-        id?.let {
-            isInDatabase.value = homeDataSource.isInDatabase(id)
-            isLoading.value = false
-        }
+    fun isTopMovieInDatabase(id: Int){
+        isInDatabase.value = homeDataSource.isTopMovieInDatabase(id)
+        isLoading.value = false
     }
 
     fun refresh(){
@@ -197,6 +188,7 @@ class HomeViewModel @Inject constructor(private val homeDataSource: HomeDataSour
 
     fun delete(id: Int){
         homeDataSource.delete(id)
+        isInDatabase.value = false
     }
 
 }
