@@ -1,19 +1,14 @@
 package com.movies.allmovies.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.network.Apifactory
-import com.movies.allmovies.network.Resource
-import com.movies.allmovies.repository.NetworkResponse
-import com.movies.allmovies.repository.SearchRepositoryImpl
-import com.movies.allmovies.repository.SearchResult
+import com.movies.allmovies.network.new_network.NetworkResponse
 import com.movies.allmovies.ui.search.SearchRepository
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
