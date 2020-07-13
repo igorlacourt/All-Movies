@@ -1,10 +1,9 @@
 package com.movies.allmovies.ui.search
 
-import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.dto.MovieResponseDTO
 import com.movies.allmovies.network.Resource
-import com.movies.allmovies.repository.NetworkResponse
-import com.movies.allmovies.repository.SearchResult
+import com.movies.allmovies.network.new_network.SearchResult
+
 
 interface SearchRepository {
  fun searchMovie(title: String, searchResultCallback: (result: SearchResult) -> Unit)
