@@ -73,8 +73,8 @@ class MovieAdapter(
 }
 
 class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    var poster = itemView.iv_poster
-    var cardView = itemView.movie_card_view
+    var poster = itemView.iv_movie_poster
+    var cardView = itemView.cv_movie
     var layout = itemView.movie_layout
 
 }

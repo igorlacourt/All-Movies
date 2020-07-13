@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.MainActivity
 import com.movies.allmovies.R
-import com.movies.allmovies.databinding.FragmentHomeMoviesBinding
+import com.movies.allmovies.databinding.FragmentHomeBinding
 import com.movies.allmovies.domainMappers.toMyListItem
 import com.movies.allmovies.ui.OnItemClick
 import com.movies.allmovies.viewmodel.HomeViewModel
@@ -34,7 +34,7 @@ class HomeFragment : Fragment(), OnItemClick {
         (requireActivity() as MainActivity).mainComponent.inject(this)
     }
 
-    private lateinit var binding: FragmentHomeMoviesBinding
+    private lateinit var binding: FragmentHomeBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,10 +42,10 @@ class HomeFragment : Fragment(), OnItemClick {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_home_movies, container, false
+            inflater, R.layout.fragment_home, container, false
         )
         binding.lifecycleOwner = this
-        binding.viewmodel = viewModel
+        binding.viewModel = viewModel
 
         attachObservers()
         attachClickListeners()

@@ -19,6 +19,7 @@ class GenresAdapter(val context: Context?, val genres: ArrayList<String>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenresHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.genre_list_item, parent, false)
+
         return GenresHolder(view)
     }
 

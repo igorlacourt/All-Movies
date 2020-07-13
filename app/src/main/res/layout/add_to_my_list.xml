@@ -2,7 +2,7 @@
 <layout>
     <data>
         <variable
-            name="viewmodel"
+            name="viewModel"
             type="com.movies.allmovies.viewmodel.HomeViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -19,7 +19,7 @@
             android:layout_height="32dp"
             android:clickable="false"
             android:focusable="false"
-            android:srcIcon="@{viewmodel.isInDatabase}"
+            app:srcIcon="@{viewModel.isInDatabase}"
             app:layout_constraintBottom_toTopOf="@+id/tv_my_list_details"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

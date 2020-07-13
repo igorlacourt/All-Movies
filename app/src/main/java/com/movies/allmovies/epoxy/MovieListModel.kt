@@ -36,8 +36,8 @@ abstract class MovieListModel : EpoxyModelWithHolder<MovieListModel.ViewHolder>(
         var poster: ImageView? = null
         var cardView: CardView? = null
         override fun bindView(itemView: View) {
-            poster = itemView.findViewById(R.id.iv_poster)
-            cardView = itemView.findViewById(R.id.movie_card_view)
+            poster = itemView.findViewById(R.id.iv_movie_poster)
+            cardView = itemView.findViewById(R.id.cv_movie)
         }
     }
 

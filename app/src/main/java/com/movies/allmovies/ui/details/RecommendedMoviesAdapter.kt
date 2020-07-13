@@ -26,7 +26,7 @@ class RecommendedMoviesAdapter(
                 val layoutInflater = LayoutInflater.from(mContext)
                 view = layoutInflater.inflate(R.layout.movie_list_item, null)
             }
-            val poster = view?.findViewById<ImageView>(R.id.iv_poster)
+            val poster = view?.findViewById<ImageView>(R.id.iv_movie_poster)
             Picasso.get()
                 .load("${AppConstants.TMDB_IMAGE_BASE_URL_W185}${movies!![position].poster_path}")
                 .placeholder(R.drawable.placeholder)

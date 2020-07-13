@@ -20,7 +20,7 @@ class CarouselItemCustomView @JvmOverloads constructor(
     init {
         inflate(context, R.layout.movie_list_item, this)
         orientation = VERTICAL
-        poster = (findViewById(R.id.iv_poster))
+        poster = (findViewById(R.id.iv_movie_poster))
 
         val url = "https://image.tmdb.org/t/p/w500"
         Picasso.get().load(url + "/jpfkzbIXgKZqCZAkEkFH2VYF63s.jpg").into(poster)

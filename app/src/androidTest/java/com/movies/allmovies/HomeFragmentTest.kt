@@ -53,7 +53,7 @@ class HomeFragmentTest {
     @Test
     fun after_loading_fragment_MyList_is_displayed() {
         Thread.sleep(50000)
-        onView(withId(R.id.movie_list))
+        onView(withId(R.id.rv_lists_of_movies))
             .check(matches(isDisplayed()))
     }
 
