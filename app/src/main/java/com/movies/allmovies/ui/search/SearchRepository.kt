@@ -2,7 +2,7 @@ package com.movies.allmovies.ui.search
 
 import com.movies.allmovies.dto.MovieResponseDTO
 import com.movies.allmovies.network.Resource
-import com.movies.allmovies.network.new_network.SearchResult
+import com.movies.allmovies.repository.SearchResult
 
 
 interface SearchRepository {

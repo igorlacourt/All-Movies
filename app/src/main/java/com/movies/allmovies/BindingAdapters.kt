@@ -1,5 +1,6 @@
 package com.movies.allmovies
 
+import android.view.View
 import android.widget.ImageView
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
@@ -16,6 +17,16 @@ object BindingAdapters {
             imageView.setImageDrawable(
                 ResourcesCompat.getDrawable(imageView.context.resources, R.drawable.wish_list_btn_24dp, null)
             )
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("isVisible")
+    fun setVisibility(view: View, isVisible: Boolean){
+        view.visibility = if(isVisible) {
+            View.INVISIBLE
+        } else {
+            View.GONE
         }
     }
 

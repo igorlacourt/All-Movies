@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.network.Apifactory
-import com.movies.allmovies.network.new_network.NetworkResponse
+import com.movies.allmovies.repository.NetworkResponse
 import com.movies.allmovies.ui.search.SearchRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject

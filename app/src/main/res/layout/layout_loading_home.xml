@@ -24,7 +24,8 @@
         app:shimmer_repeat_mode="restart"
         app:shimmer_repeat_delay="0"
         app:shimmer_shape="radial"
-        app:shimmer_tilt="45">
+        app:shimmer_tilt="45"
+        app:shimmer_auto_start="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
