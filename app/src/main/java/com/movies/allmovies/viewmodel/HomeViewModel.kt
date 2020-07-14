@@ -126,6 +126,8 @@ class HomeViewModel @Inject constructor(private val homeDataSource: HomeDataSour
 
     init {
         isLoading.value = true
+        Log.d("isld", "init, isLoading.value = ${isLoading.value}")
+
         getListOfMovies()
     }
 
@@ -174,6 +176,7 @@ class HomeViewModel @Inject constructor(private val homeDataSource: HomeDataSour
     fun isTopMovieInDatabase(id: Int){
         isInDatabase.value = homeDataSource.isTopMovieInDatabase(id)
         isLoading.value = false
+        Log.d("isld", "isTopMovieInDatabase, isLoading.value = ${isLoading.value}")
     }
 
     fun refresh(){

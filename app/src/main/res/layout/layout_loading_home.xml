@@ -1,149 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmer_view_container"
+<layout>
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.movies.allmovies.viewmodel.HomeViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        isVisible="@{viewModel.isLoading}"
+        android:id="@+id/cl_shimmer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shimmer_dropoff="200"
-        app:shimmer_duration="2500"
-        app:shimmer_intensity="0.1"
-        app:shimmer_base_alpha="0"
-        app:shimmer_repeat_mode="restart"
-        app:shimmer_repeat_delay="0"
-        app:shimmer_shape="radial"
-        app:shimmer_tilt="45"
-        app:shimmer_auto_start="true">
+        android:background="@color/colorPrimaryDark">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_view_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:shimmer_auto_start="true"
+            app:shimmer_base_alpha="0"
+            app:shimmer_dropoff="200"
+            app:shimmer_duration="2500"
+            app:shimmer_intensity="0.1"
+            app:shimmer_repeat_delay="0"
+            app:shimmer_repeat_mode="restart"
+            app:shimmer_shape="radial"
+            app:shimmer_tilt="45">
 
-            <View
-                android:layout_width="350dp"
-                android:layout_height="200dp"
-                android:layout_margin="16dp"
-                android:background="@color/shimmer_background"
-                app:layout_constraintBottom_toTopOf="@+id/shimmer_title_place"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <View
-                android:id="@+id/shimmer_title_place"
-                android:layout_width="0dp"
-                android:layout_height="38dp"
-                android:layout_marginBottom="42dp"
-                android:background="@color/shimmer_background"
-                app:layout_constraintBottom_toTopOf="@+id/shimmer_buttons_place"
-                app:layout_constraintEnd_toEndOf="@+id/guideline4"
-                app:layout_constraintLeft_toLeftOf="@+id/guideline3"
-                app:layout_constraintRight_toRightOf="@+id/guideline4"
-                app:layout_constraintStart_toStartOf="@+id/guideline3" />
-
-            <View
-                android:id="@+id/shimmer_buttons_place"
-                android:layout_width="0dp"
-                android:layout_height="38dp"
-                android:layout_marginBottom="32dp"
-                android:background="@color/shimmer_background"
-                app:layout_constraintBottom_toTopOf="@+id/shimmer_carousel_place"
-                app:layout_constraintEnd_toEndOf="@+id/guideline2"
-                app:layout_constraintLeft_toLeftOf="@+id/guideline"
-                app:layout_constraintRight_toRightOf="@+id/guideline2"
-                app:layout_constraintStart_toStartOf="@+id/guideline" />
-
-            <LinearLayout
-                android:id="@+id/shimmer_carousel_place"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="2dp"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <View
-                    android:layout_width="101dp"
-                    android:layout_height="150dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="@color/shimmer_background" />
+                    android:layout_width="350dp"
+                    android:layout_height="200dp"
+                    android:layout_margin="16dp"
+                    android:background="@color/shimmer_background"
+                    app:layout_constraintBottom_toTopOf="@+id/shimmer_title_place"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <View
-                    android:layout_width="101dp"
-                    android:layout_height="150dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="@color/shimmer_background" />
+                    android:id="@+id/shimmer_title_place"
+                    android:layout_width="0dp"
+                    android:layout_height="38dp"
+                    android:layout_marginBottom="42dp"
+                    android:background="@color/shimmer_background"
+                    app:layout_constraintBottom_toTopOf="@+id/shimmer_buttons_place"
+                    app:layout_constraintEnd_toEndOf="@+id/guideline4"
+                    app:layout_constraintLeft_toLeftOf="@+id/guideline3"
+                    app:layout_constraintRight_toRightOf="@+id/guideline4"
+                    app:layout_constraintStart_toStartOf="@+id/guideline3" />
 
                 <View
-                    android:layout_width="101dp"
-                    android:layout_height="150dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="@color/shimmer_background" />
+                    android:id="@+id/shimmer_buttons_place"
+                    android:layout_width="0dp"
+                    android:layout_height="38dp"
+                    android:layout_marginBottom="32dp"
+                    android:background="@color/shimmer_background"
+                    app:layout_constraintBottom_toTopOf="@+id/shimmer_carousel_place"
+                    app:layout_constraintEnd_toEndOf="@+id/guideline2"
+                    app:layout_constraintLeft_toLeftOf="@+id/guideline"
+                    app:layout_constraintRight_toRightOf="@+id/guideline2"
+                    app:layout_constraintStart_toStartOf="@+id/guideline" />
 
-                <View
-                    android:layout_width="101dp"
-                    android:layout_height="150dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="@color/shimmer_background" />
+                <LinearLayout
+                    android:id="@+id/shimmer_carousel_place"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="2dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent">
 
-            </LinearLayout>
+                    <View
+                        android:layout_width="101dp"
+                        android:layout_height="150dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:background="@color/shimmer_background" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.35" />
+                    <View
+                        android:layout_width="101dp"
+                        android:layout_height="150dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:background="@color/shimmer_background" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.65" />
+                    <View
+                        android:layout_width="101dp"
+                        android:layout_height="150dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:background="@color/shimmer_background" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.1" />
+                    <View
+                        android:layout_width="101dp"
+                        android:layout_height="150dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:background="@color/shimmer_background" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.9" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.facebook.shimmer.ShimmerFrameLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.35" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.65" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.1" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.9" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
 
     <!-- Adding 4 rows of placeholders -->
     <!--        <GridLayout-->
