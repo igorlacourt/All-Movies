@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -7,8 +9,7 @@
             type="com.movies.allmovies.viewmodel.HomeViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
         isVisible="@{viewModel.isLoading}"
         android:id="@+id/cl_shimmer"
         android:layout_width="match_parent"
@@ -49,15 +50,11 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <View
-                    android:layout_width="350dp"
+                    android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:layout_margin="16dp"
+                    android:layout_marginHorizontal="16dp"
                     android:background="@color/shimmer_background"
                     app:layout_constraintBottom_toTopOf="@+id/shimmer_title_place"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <View
@@ -76,7 +73,7 @@
                     android:id="@+id/shimmer_buttons_place"
                     android:layout_width="0dp"
                     android:layout_height="38dp"
-                    android:layout_marginBottom="32dp"
+                    android:layout_marginBottom="40dp"
                     android:background="@color/shimmer_background"
                     app:layout_constraintBottom_toTopOf="@+id/shimmer_carousel_place"
                     app:layout_constraintEnd_toEndOf="@+id/guideline2"
