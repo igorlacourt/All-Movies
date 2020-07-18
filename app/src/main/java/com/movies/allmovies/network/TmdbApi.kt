@@ -68,14 +68,14 @@ interface TmdbApi {
 
     //    https://api.themoviedb.org/3/movie/287947/recommendations?api_key=fef98cf6bd829f53836bb7d92b02d6ef&language=en-US&page=1
     @GET("movie/{id}/recommendations")
-    fun getRecommendations(
+    suspend fun getRecommendations(
         @Path("id")
-        id: Int,
+        id: Int?,
         @Query("language")
         language: String,
         @Query("page")
         page: Int
-    ): Single<MovieResponseDTO>
+    ): NetworkResponse<MovieResponseDTO, Error>
 
     @GET("movie/{id}/similar")
     fun getSimilar(
@@ -98,7 +98,7 @@ interface TmdbApi {
         @Path("id")
         id: Int?,
         @Query("append_to_response")
-        append: String
+        append: String? = null
     ): NetworkResponse<DetailsDTO, Error>
 
     //    https://api.themoviedb.org/3/tv/latest?api_key=<<api_key>>&language=en-US

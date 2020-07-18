@@ -57,7 +57,7 @@ class HomeDataSourceImpl @Inject constructor(val context: Context): HomeDataSour
         AppDatabase.getDatabase(context)?.MyListDao()
 
     override fun isTopMovieInDatabase(id: Int): Boolean {
-        return myListDao?.getById(id) ?: false
+        return myListDao?.exists(id) ?: false
     }
 
     override fun refresh() {

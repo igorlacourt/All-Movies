@@ -8,10 +8,12 @@ import androidx.lifecycle.MutableLiveData
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.database.AppDatabase
 import com.movies.allmovies.deleteById
+import com.movies.allmovies.domainMappers.MapperFunctions.toDetails
 import com.movies.allmovies.domainMappers.toDomainMovie
 import com.movies.allmovies.domainmodel.Details
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
+import com.movies.allmovies.dto.DetailsDTO
 import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.dto.MovieResponseDTO
 import com.movies.allmovies.insertItem
@@ -47,42 +49,42 @@ class DetailsRepository(application: Application) : BaseRepository(), NetworkCal
     fun getRecommendedMovies(id: Int) {
         //  This checked was inserted for changing the id of frozen2 to the id of Frozen1 because the similar results were
         //displaying unappropriated results for children
-        var checkedId: Int
-        checkedId = id
-        if(checkedId == 330457) {
-            checkedId = 109445
-        }
-        val disposable = CompositeDisposable()
-        Apifactory.tmdbApi.getRecommendations(checkedId, AppConstants.LANGUAGE, 1)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : SingleObserver<MovieResponseDTO> {
-                override fun onSuccess(t: MovieResponseDTO) {
-                    val list = ArrayList<MovieDTO>()
-                    list.addAll(t.results)
-                    if(list.size  < 3){
-                        getSimilar(checkedId)
-                    } else {
-                        if (list.size == 20) {
-                            val last = t.results.size - 1
-                            val beforeLast = t.results.size - 2
-                            list.removeAt(last)
-                            list.removeAt(beforeLast)
-                        }
-                        recommendedMovies.value =
-                            Resource.success(t.toDomainMovie() as List)
-                    }
-                    disposable.dispose()
-                }
-
-                override fun onSubscribe(d: Disposable) {
-                    disposable.add(d)
-                }
-
-                override fun onError(e: Throwable) {
-                    disposable.dispose()
-                }
-            })
+//        var checkedId: Int
+//        checkedId = id
+//        if(checkedId == 330457) {
+//            checkedId = 109445
+//        }
+//        val disposable = CompositeDisposable()
+//        Apifactory.tmdbApi.getRecommendations(checkedId, AppConstants.LANGUAGE, 1)
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe(object : SingleObserver<MovieResponseDTO> {
+//                override fun onSuccess(t: MovieResponseDTO) {
+//                    val list = ArrayList<MovieDTO>()
+//                    list.addAll(t.results)
+//                    if(list.size  < 3){
+//                        getSimilar(checkedId)
+//                    } else {
+//                        if (list.size == 20) {
+//                            val last = t.results.size - 1
+//                            val beforeLast = t.results.size - 2
+//                            list.removeAt(last)
+//                            list.removeAt(beforeLast)
+//                        }
+//                        recommendedMovies.value =
+//                            Resource.success(t.toDomainMovie() as List)
+//                    }
+//                    disposable.dispose()
+//                }
+//
+//                override fun onSubscribe(d: Disposable) {
+//                    disposable.add(d)
+//                }
+//
+//                override fun onError(e: Throwable) {
+//                    disposable.dispose()
+//                }
+//            })
     }
 
     fun getSimilar(id: Int) {

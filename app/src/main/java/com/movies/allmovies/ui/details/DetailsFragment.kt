@@ -19,9 +19,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.movies.allmovies.AppConstants
 
-import com.movies.allmovies.domainMappers.MapperFunctions
 import com.movies.allmovies.domainmodel.Details
-import com.movies.allmovies.network.Resource
 import com.movies.allmovies.viewmodel.DetailsViewModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -32,6 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.movies.allmovies.R
 import com.movies.allmovies.domainMappers.toCastDTO
+import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.dto.CastsDTO
 import com.movies.allmovies.openYoutube
 import com.movies.allmovies.ui.GridAdapter
@@ -96,25 +95,27 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
         viewModel =
             ViewModelProviders.of(this).get(DetailsViewModel::class.java)
 
-        viewModel.recommendedMovies.observe(viewLifecycleOwner, Observer { resource ->
-            when (resource.status) {
-                Resource.Status.SUCCESS -> {
-                    resource?.data?.let { movies ->
-                        if (movies.isNullOrEmpty())
-                            emptyRecomendations.visibility = View.VISIBLE
-                        else
-                            emptyRecomendations.visibility = View.INVISIBLE
-
-                        Log.d("recnull", "visibility = ${emptyRecomendations.visibility}")
-                        adapter.setList(movies)
-//                        recommendedMoviesAdapter.setList(movies)
-                    }
-                }
-                Resource.Status.LOADING -> {
-                }
-                Resource.Status.ERROR -> {
-                }
-            }
+        viewModel.recommendedMovies.observe(viewLifecycleOwner, Observer { movies ->
+            if (movies.isNullOrEmpty())
+                emptyRecomendations.visibility = View.VISIBLE
+            else
+                emptyRecomendations.visibility = View.INVISIBLE
+            adapter.setList(movies as List<DomainMovie>)
+//            when (resource.status) {
+//                Resource.Status.SUCCESS -> {
+//                    resource?.data?.let { movies ->
+//
+//
+//                        Log.d("recnull", "visibility = ${emptyRecomendations.visibility}")
+//
+////                        recommendedMoviesAdapter.setList(movies)
+//                    }
+//                }
+//                Resource.Status.LOADING -> {
+//                }
+//                Resource.Status.ERROR -> {
+//                }
+//            }
         })
 
         viewModel.isInDatabase.observe(viewLifecycleOwner, Observer { isInDatabase ->
@@ -149,29 +150,16 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
                 Toast.LENGTH_LONG
             ).show()
 
-        viewModel.movie?.observe(viewLifecycleOwner, Observer {
-            when (it?.status) {
-                Resource.Status.SUCCESS -> {
-                    movieId = it.data?.id
-                    details = it.data
-                    displayDetails(it.data)
-                    it.data?.casts?.let { cast ->
-
-                        cast.cast?.let { actors ->
-                            castsAdapter.setList(actors)
-                        }
-                        cast.crew?.let { crew ->
-                            castsAdapter.addToList(crew.toCastDTO())
-                        }
-                    }
-
+        viewModel.movie.observe(viewLifecycleOwner, Observer {
+            movieId = it.id
+            details = it
+            displayDetails(it)
+            it.casts?.let { cast ->
+                cast.cast?.let { actors ->
+                    castsAdapter.setList(actors)
                 }
-                Resource.Status.LOADING -> {
-                    // A return is given only once, so it is SUCCESS or ERROR. This loading case may not be necessary.
-                    progressBar.visibility = View.VISIBLE
-                }
-                Resource.Status.ERROR -> {
-                    //Display error message
+                cast.crew?.let { crew ->
+                    castsAdapter.addToList(crew.toCastDTO())
                 }
             }
         })
@@ -182,26 +170,26 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
 
         wishListButton.setOnClickListener {
             Log.d("log_is_inserted", "Button clicked")
-            if (viewModel.isInDatabase.value == false) {
-                Log.d("log_is_inserted", "isInDatabase false")
-                val itemData = viewModel.movie?.value?.data
-                if (itemData?.id != null) {
-                    viewModel.insert(
-                        MapperFunctions.toMyListItem(
-                            itemData
-                        )
-                    )
-                } else {
-                    Toast.makeText(
-                        context,
-                        "Did not save to My List.",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            } else {
-                Log.d("log_is_inserted", "isInDatabase true")
-                viewModel.movie?.value?.data?.id?.let { id -> viewModel.delete(id) }
-            }
+//            if (viewModel.isInDatabase.value == false) {
+//                Log.d("log_is_inserted", "isInDatabase false")
+//                val itemData = viewModel.movie?.value?.data
+//                if (itemData?.id != null) {
+//                    viewModel.insert(
+//                        MapperFunctions.toMyListItem(
+//                            itemData
+//                        )
+//                    )
+//                } else {
+//                    Toast.makeText(
+//                        context,
+//                        "Did not save to My List.",
+//                        Toast.LENGTH_LONG
+//                    ).show()
+//                }
+//            } else {
+//                Log.d("log_is_inserted", "isInDatabase true")
+//                viewModel.movie?.value?.data?.id?.let { id -> viewModel.delete(id) }
+//            }
         }
 
 
@@ -223,7 +211,7 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
 
     override fun onResume() {
         super.onResume()
-        viewModel.isIndatabase(movieId)
+        viewModel.isInDatabase(movieId)
     }
 
     fun displayDetails(details: Details?) {
