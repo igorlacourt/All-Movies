@@ -8,10 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.R
 import com.movies.allmovies.domainmodel.DomainMovie
+import com.movies.allmovies.ui.OnMovieClick
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_list_item.view.*
 
-class MoviesAdapter (val context: Context?, val movies: Collection<DomainMovie>) :
+class MoviesAdapter (val movieClick: OnMovieClick, val context: Context?, val movies: Collection<DomainMovie>) :
     RecyclerView.Adapter<MoviesAdapter.MovieHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieHolder {
@@ -24,10 +25,18 @@ class MoviesAdapter (val context: Context?, val movies: Collection<DomainMovie>)
     }
 
     override fun onBindViewHolder(holder: MovieHolder, position: Int) {
-        Picasso.get()
-            .load("${AppConstants.TMDB_IMAGE_BASE_URL_W185}${movies.elementAt(position).poster_path}")
-            .placeholder(R.drawable.placeholder)
-            .into(holder.poster)
+        movies.elementAt(position).apply {
+
+            Picasso.get()
+                .load("${AppConstants.TMDB_IMAGE_BASE_URL_W185}${poster_path}")
+                .placeholder(R.drawable.placeholder)
+                .into(holder.poster)
+
+            holder.cardView.setOnClickListener {
+                id?.let { id -> movieClick.onClick(id) }
+            }
+
+        }
 
     }
 

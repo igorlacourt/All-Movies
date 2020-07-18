@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.R
 import com.movies.allmovies.domainmodel.MyListItem
-import com.movies.allmovies.ui.OnItemClick
+import com.movies.allmovies.ui.OnMovieClick
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_list_item.view.*
 
 class MyListAdapter(
     private val context: Context?,
-    private val onItemClick: OnItemClick,
+    private val onMovieClick: OnMovieClick,
     private var list: ArrayList<MyListItem>
 ) : RecyclerView.Adapter<MyListHolder>() {
 
@@ -43,7 +43,7 @@ class MyListAdapter(
                 val id = list[position].id
                 Log.d("clickgrid", "MyListAdapter, setOnClickListener, id = $id")
                 if(id != null)
-                    onItemClick.onItemClick(id)
+                    onMovieClick.onClick(id)
                 else
                     Toast.makeText(context, "Sorry. Can not load this movie. :/", Toast.LENGTH_SHORT).show()
             }

@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.movie_list_item.view.*
 
 class GridAdapter(
     private val context: Context?,
-    private val onItemClick: OnItemClick,
+    private val onMovieClick: OnMovieClick,
     private var list: ArrayList<DomainMovie>
 ) : RecyclerView.Adapter<RecommendedHolder>() {
 
@@ -53,7 +53,7 @@ class GridAdapter(
                 val id = list[position].id
                 if (id != null) {
                     Log.d("clickgrid", "GridAdapter, setOnClickListener, id = $id")
-                    onItemClick.onItemClick(id)
+                    onMovieClick.onClick(id)
                 }
                 else {
                     Toast.makeText(

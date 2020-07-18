@@ -10,13 +10,13 @@ import com.movies.allmovies.domainmodel.Details
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.idlingresource.IdlingResourceManager
 import com.movies.allmovies.network.Error
-import com.movies.allmovies.ui.OnItemClick
+import com.movies.allmovies.ui.OnMovieClick
 import com.movies.allmovies.openYoutube
 import com.movies.allmovies.viewmodel.HomeViewModel
 
 class MovieController(
     private val context: Context?,
-    private val onItemClick: OnItemClick,
+    private val onMovieClick: OnMovieClick,
     private val viewModel: HomeViewModel
 ) : EpoxyController() {
 
@@ -264,7 +264,7 @@ class MovieController(
 
     private fun callDetailsFragment(id: Int) {
         if (id != 0) {
-            onItemClick.onItemClick(id)
+            onMovieClick.onClick(id)
         } else {
             Toast.makeText(context, "Sorry. Can not load this movie. :/", Toast.LENGTH_SHORT)
                 .show()

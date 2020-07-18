@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.R
 import com.movies.allmovies.dto.MovieDTO
-import com.movies.allmovies.ui.OnItemClick
+import com.movies.allmovies.ui.OnMovieClick
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.searched_list_item.view.*
 
 class SearchAdapter(private val context: Context?,
-                    private val onItemClick: OnItemClick,
+                    private val onMovieClick: OnMovieClick,
                     private var list: ArrayList<MovieDTO>
 ) : RecyclerView.Adapter<SearchViewHolder>() {
 
@@ -37,7 +37,7 @@ class SearchAdapter(private val context: Context?,
 
             itemLayout.setOnClickListener {
                 Log.d("clickgrid", "SearchAdapter, setOnClickListener, id = ${list[position].id}")
-                onItemClick.onItemClick(list[position].id)
+                onMovieClick.onClick(list[position].id)
             }
         }
 

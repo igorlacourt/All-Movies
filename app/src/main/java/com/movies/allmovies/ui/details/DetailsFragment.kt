@@ -35,7 +35,7 @@ import com.movies.allmovies.domainMappers.toCastDTO
 import com.movies.allmovies.dto.CastsDTO
 import com.movies.allmovies.openYoutube
 import com.movies.allmovies.ui.GridAdapter
-import com.movies.allmovies.ui.OnItemClick
+import com.movies.allmovies.ui.OnMovieClick
 import com.movies.allmovies.util.BannerAds
 import java.net.URLEncoder
 import kotlin.math.floor
@@ -48,7 +48,7 @@ import kotlin.math.floor
  * Use the [DetailsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class DetailsFragment : Fragment(), OnItemClick, OnCastClick {
+class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
     lateinit var viewModel: DetailsViewModel
     lateinit var progressBar: FrameLayout
     lateinit var wishListButton: ImageView
@@ -314,7 +314,7 @@ class DetailsFragment : Fragment(), OnItemClick, OnCastClick {
         "${hours}h ${minutes}m"
     } ?: ""
 
-    override fun onItemClick(id: Int) {
+    override fun onClick(id: Int) {
         if (id != 0) {
             Log.d("clickgrid", "HomeFragment, onItemClick, id = $id")
             val detailsToDetailsFragment = DetailsFragmentDirections.actionDetailsFragmentSelf(id)

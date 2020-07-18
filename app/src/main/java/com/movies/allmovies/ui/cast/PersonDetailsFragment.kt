@@ -19,15 +19,14 @@ import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.dto.PersonDetails
 import com.movies.allmovies.network.Resource
 import com.movies.allmovies.ui.GridAdapter
-import com.movies.allmovies.ui.OnItemClick
-import com.movies.allmovies.ui.details.DetailsFragmentDirections
+import com.movies.allmovies.ui.OnMovieClick
 import com.movies.allmovies.util.BannerAds
 import com.movies.allmovies.viewmodel.PersonViewModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_person_details.*
 
-class PersonDetailsFragment : Fragment(), OnItemClick {
+class PersonDetailsFragment : Fragment(), OnMovieClick {
     lateinit var viewModel: PersonViewModel
     lateinit var progressBar: FrameLayout
 
@@ -142,7 +141,7 @@ class PersonDetailsFragment : Fragment(), OnItemClick {
 
     }
 
-    override fun onItemClick(id: Int) {
+    override fun onClick(id: Int) {
         if (id != 0) {
             Log.d("clickgrid", "HomeFragment, onItemClick, id = $id")
             val personDetailsToDetailsFragment = PersonDetailsFragmentDirections.actionPersonDetailsFragmentToDetailsFragment(id)

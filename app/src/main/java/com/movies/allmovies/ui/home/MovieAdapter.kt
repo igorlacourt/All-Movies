@@ -11,13 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.R
 import com.movies.allmovies.dto.DbMovieDTO
-import com.movies.allmovies.ui.OnItemClick
+import com.movies.allmovies.ui.OnMovieClick
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_list_item.view.*
 
 class MovieAdapter(
     private val context: Context?,
-    private val onItemClick: OnItemClick,
+    private val onMovieClick: OnMovieClick,
     private var movies: List<DbMovieDTO>
 ) : PagedListAdapter<DbMovieDTO, MovieViewHolder>(DIFF_CALLBACK) {
 
@@ -48,7 +48,7 @@ class MovieAdapter(
 
             cardView.setOnClickListener {
                 Log.d("clickgrid", "MovieAdapter, setOnClickListener, id = ${movies[position].id}")
-                onItemClick.onItemClick(movieDTO.id)
+                onMovieClick.onClick(movieDTO.id)
             }
         }
 

@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.crashlytics.android.Crashlytics
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
@@ -21,11 +20,11 @@ import com.movies.allmovies.MainActivity
 import com.movies.allmovies.R
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.ui.GridAdapter
-import com.movies.allmovies.ui.OnItemClick
+import com.movies.allmovies.ui.OnMovieClick
 import com.movies.allmovies.viewmodel.MyListViewModel
 
-class MyListFragment : Fragment(), OnItemClick {
-    private val onItemClick = this as OnItemClick
+class MyListFragment : Fragment(), OnMovieClick {
+    private val onItemClick = this as OnMovieClick
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewModel: MyListViewModel
     private lateinit var adapter: GridAdapter
@@ -126,7 +125,7 @@ class MyListFragment : Fragment(), OnItemClick {
         recyclerView.adapter = adapter
     }
 
-    override fun onItemClick(id: Int) {
+    override fun onClick(id: Int) {
         val myListToDetailsFragment
                 = MyListFragmentDirections.actionNavigationMyListToDetailsFragment(id)
         findNavController().navigate(myListToDetailsFragment)

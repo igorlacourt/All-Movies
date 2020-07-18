@@ -22,12 +22,12 @@ import com.movies.allmovies.R
 import com.movies.allmovies.databinding.FragmentHomeBinding
 import com.movies.allmovies.domainMappers.toMyListItem
 import com.movies.allmovies.dto.GenreXDTO
-import com.movies.allmovies.ui.OnItemClick
+import com.movies.allmovies.ui.OnMovieClick
 import com.movies.allmovies.viewmodel.HomeViewModel
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
 
-class HomeFragment : Fragment(), OnItemClick {
+class HomeFragment : Fragment(), OnMovieClick {
     // Dagger code
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -67,7 +67,7 @@ class HomeFragment : Fragment(), OnItemClick {
             response?.let {
                 binding.rvListsOfMovies.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                binding.rvListsOfMovies.adapter = ListsOfMoviesAdapter(requireContext(), response)
+                binding.rvListsOfMovies.adapter = ListsOfMoviesAdapter(this, requireContext(), response)
             }
         })
     }
@@ -134,7 +134,7 @@ class HomeFragment : Fragment(), OnItemClick {
         }
     }
 
-    override fun onItemClick(id: Int) {
+    override fun onClick(id: Int) {
         val homeToDetailsFragment =
             HomeFragmentDirections.actionNavigationHomeToDetailsFragment(id)
         findNavController().navigate(homeToDetailsFragment)

@@ -1,6 +1,5 @@
 package com.movies.allmovies.ui.search
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-import com.movies.allmovies.ui.OnItemClick
+import com.movies.allmovies.ui.OnMovieClick
 import com.movies.allmovies.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
 import android.content.Context
@@ -27,7 +26,7 @@ import com.movies.allmovies.MainActivity
 import com.movies.allmovies.R
 import javax.inject.Inject
 
-class SearchFragment : Fragment(), OnItemClick {
+class SearchFragment : Fragment(), OnMovieClick {
 
     // Dagger code
     @Inject
@@ -111,7 +110,7 @@ class SearchFragment : Fragment(), OnItemClick {
         }
     }
 
-    override fun onItemClick(id: Int) {
+    override fun onClick(id: Int) {
         if (id != 0) {
             val myListToDetailsFragment =
                 SearchFragmentDirections.actionNavigationSearchToDetailsFragment(id)
