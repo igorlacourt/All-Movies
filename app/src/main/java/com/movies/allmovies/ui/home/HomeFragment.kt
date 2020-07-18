@@ -1,12 +1,15 @@
 package com.movies.allmovies.ui.home
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.text.set
 import androidx.core.text.toSpannable
 import androidx.databinding.DataBindingUtil
@@ -22,6 +25,7 @@ import com.movies.allmovies.R
 import com.movies.allmovies.databinding.FragmentHomeBinding
 import com.movies.allmovies.domainMappers.toMyListItem
 import com.movies.allmovies.dto.GenreXDTO
+import com.movies.allmovies.dto.VideoDTO
 import com.movies.allmovies.ui.OnMovieClick
 import com.movies.allmovies.viewmodel.HomeViewModel
 import com.squareup.picasso.Picasso
@@ -90,6 +94,19 @@ class HomeFragment : Fragment(), OnMovieClick {
     }
 
     private fun attachClickListeners() {
+        addToMyListClickListener()
+        trailerButtonClickListener()
+        learnMoreButtonClickListener()
+        topMovieImageClickListener()
+    }
+
+    private fun topMovieImageClickListener() {
+        binding.ivTopTrendingMovie.setOnClickListener {
+            goToTrailer(viewModel.topTrendingMovie?.value?.videos)
+        }
+    }
+
+    private fun addToMyListClickListener() {
         binding.iAddToMyList.btAddToList.setOnClickListener {
             viewModel.topTrendingMovie?.value?.toMyListItem()?.let { listItem ->
                 if(viewModel.isInDatabase.value == false){
@@ -97,6 +114,20 @@ class HomeFragment : Fragment(), OnMovieClick {
                 } else {
                     listItem.id?.let { id -> viewModel.delete(id) }
                 }
+            }
+        }
+    }
+
+    private fun trailerButtonClickListener() {
+        binding.btnTopTrendingTrailer.setOnClickListener {
+            goToTrailer(viewModel.topTrendingMovie?.value?.videos)
+        }
+    }
+
+    private fun learnMoreButtonClickListener() {
+        binding.btnLearnMore.setOnClickListener {
+            viewModel.topTrendingMovie?.value?.id?.let { id ->
+                goToDetailsFragment(id)
             }
         }
     }
@@ -135,9 +166,28 @@ class HomeFragment : Fragment(), OnMovieClick {
     }
 
     override fun onClick(id: Int) {
+       goToDetailsFragment(id)
+    }
+
+    private fun goToTrailer(videos: ArrayList<VideoDTO>?) {
+        if (!videos.isNullOrEmpty() && !videos[0].key.isNullOrEmpty()) {
+            val webIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("http://www.youtube.com/watch?v=${videos[0].key}")
+            )
+            context?.startActivity(webIntent)
+        } else {
+            Toast.makeText(
+                context,
+                context?.getString(R.string.no_video_to_show),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun goToDetailsFragment(id: Int) {
         val homeToDetailsFragment =
             HomeFragmentDirections.actionNavigationHomeToDetailsFragment(id)
         findNavController().navigate(homeToDetailsFragment)
     }
-
 }
