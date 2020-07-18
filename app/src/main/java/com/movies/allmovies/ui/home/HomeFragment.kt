@@ -1,11 +1,15 @@
 package com.movies.allmovies.ui.home
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.set
+import androidx.core.text.toSpannable
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,6 +22,8 @@ import com.movies.allmovies.MainActivity
 import com.movies.allmovies.R
 import com.movies.allmovies.databinding.FragmentHomeBinding
 import com.movies.allmovies.domainMappers.toMyListItem
+import com.movies.allmovies.dto.GenreXDTO
+import com.movies.allmovies.epoxy.TopTrendingMovieModel
 import com.movies.allmovies.ui.OnItemClick
 import com.movies.allmovies.viewmodel.HomeViewModel
 import com.squareup.picasso.Picasso
@@ -74,6 +80,8 @@ class HomeFragment : Fragment(), OnItemClick {
                 .load("${AppConstants.TMDB_IMAGE_BASE_URL_W780}${details.backdrop_path}")
                 .placeholder(R.drawable.placeholder)
                 .into(binding.ivTopTrendingMovie)
+            binding.tvTopTrendingMovieTitle.text = details.title
+            details.genres?.let { drawGenres(it) }
             details?.id?.let { id -> viewModel.isTopMovieInDatabase(id) }
         })
     }
@@ -97,6 +105,35 @@ class HomeFragment : Fragment(), OnItemClick {
 
     override fun onResume() {
         super.onResume()
+    }
+
+    private fun drawGenres(genresList: List<GenreXDTO>){
+        for (i in 0 until genresList.size) {
+            binding.tvGenres.append(genresList[i].name)
+            if (i < genresList.size - 1) {
+                val s = "  •  ".toSpannable()
+                var color = context?.resources?.getColor(R.color.genreFamilyColor)
+                genresList.map {
+                    when (it.name) {
+                        "Drama" -> color = context?.resources?.getColor(R.color.genreDramaColor)
+                        "Action" -> color = context?.resources?.getColor(R.color.genreActionColor)
+                        "Western" -> color = context?.resources?.getColor(R.color.genreWesternColor)
+                        "Thriller" -> color =
+                            context?.resources?.getColor(R.color.genreThrillerColor)
+                        "War" -> color = context?.resources?.getColor(R.color.genreWarColor)
+                        "Horror" -> color = context?.resources?.getColor(R.color.genreHorrorColor)
+                        "Terror" -> color = context?.resources?.getColor(R.color.genreTerrorColor)
+                        "Documentary" -> color =
+                            context?.resources?.getColor(R.color.genreDocumentaryColor)
+                    }
+                }
+
+                s[0..5] = color?.let { ForegroundColorSpan(it) } ?: ForegroundColorSpan(Color.GRAY)
+
+                binding.tvGenres.append(s)
+            }
+
+        }
     }
 
     override fun onItemClick(id: Int) {
