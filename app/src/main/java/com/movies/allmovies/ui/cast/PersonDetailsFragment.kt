@@ -66,7 +66,7 @@ class PersonDetailsFragment : Fragment(), OnItemClick {
             Toast.makeText(context, "Can not load details", Toast.LENGTH_LONG).show()
         }
 
-        viewModel.starredMovies.observe(this, Observer { resource ->
+        viewModel.starredMovies.observe(viewLifecycleOwner, Observer { resource ->
             when (resource.status) {
                 Resource.Status.SUCCESS -> {
                     resource?.data?.let { movies ->
@@ -87,7 +87,7 @@ class PersonDetailsFragment : Fragment(), OnItemClick {
             }
         })
 
-        viewModel.person?.observe(this, Observer {
+        viewModel.person?.observe(viewLifecycleOwner, Observer {
             when (it?.status) {
                 Resource.Status.SUCCESS -> {
                     Log.d("personlog", "Resource.Status.SUCCESS")

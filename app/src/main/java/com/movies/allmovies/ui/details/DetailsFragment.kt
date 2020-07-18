@@ -96,7 +96,7 @@ class DetailsFragment : Fragment(), OnItemClick, OnCastClick {
         viewModel =
             ViewModelProviders.of(this).get(DetailsViewModel::class.java)
 
-        viewModel.recommendedMovies.observe(this, Observer { resource ->
+        viewModel.recommendedMovies.observe(viewLifecycleOwner, Observer { resource ->
             when (resource.status) {
                 Resource.Status.SUCCESS -> {
                     resource?.data?.let { movies ->
@@ -117,7 +117,7 @@ class DetailsFragment : Fragment(), OnItemClick, OnCastClick {
             }
         })
 
-        viewModel.isInDatabase.observe(this, Observer { isInDatabase ->
+        viewModel.isInDatabase.observe(viewLifecycleOwner, Observer { isInDatabase ->
             Log.d("log_is_inserted", "onChanged()")
             if (isInDatabase) {
                 wishListButton.setImageDrawable(
@@ -149,7 +149,7 @@ class DetailsFragment : Fragment(), OnItemClick, OnCastClick {
                 Toast.LENGTH_LONG
             ).show()
 
-        viewModel.movie?.observe(this, Observer {
+        viewModel.movie?.observe(viewLifecycleOwner, Observer {
             when (it?.status) {
                 Resource.Status.SUCCESS -> {
                     movieId = it.data?.id

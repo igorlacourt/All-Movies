@@ -56,7 +56,7 @@ class MyListFragment : Fragment(), OnItemClick {
         setUpRecyclerView()
         viewModel =
             ViewModelProviders.of(this).get(MyListViewModel::class.java)
-        viewModel.myList.observe(this, Observer { list ->
+        viewModel.myList.observe(viewLifecycleOwner, Observer { list ->
             Log.d("receivertest", "onChange, list.size = ${list.size}")
             adapter.setList(list)
 

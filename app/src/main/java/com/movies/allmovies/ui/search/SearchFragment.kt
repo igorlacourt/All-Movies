@@ -75,7 +75,7 @@ class SearchFragment : Fragment(), OnItemClick {
 
         showKeyBoard()
 
-        viewModel.searchResult.observe(this, Observer { resultList ->
+        viewModel.searchResult.observe(viewLifecycleOwner, Observer { resultList ->
             adapter.setList(resultList)
             if (resultList.isNullOrEmpty())
                 search_no_results.visibility = View.VISIBLE

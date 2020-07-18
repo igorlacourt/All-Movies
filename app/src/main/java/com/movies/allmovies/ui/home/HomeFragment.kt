@@ -23,7 +23,6 @@ import com.movies.allmovies.viewmodel.HomeViewModel
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
 
-
 class HomeFragment : Fragment(), OnItemClick {
     // Dagger code
     @Inject
@@ -60,7 +59,7 @@ class HomeFragment : Fragment(), OnItemClick {
     }
 
     private fun listsOfMoviesObserver() {
-        viewModel.listsOfMovies.observe(this, Observer { response ->
+        viewModel.listsOfMovies.observe(viewLifecycleOwner, Observer { response ->
             response?.let {
                 binding.rvListsOfMovies.layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -70,7 +69,7 @@ class HomeFragment : Fragment(), OnItemClick {
     }
 
     private fun topMovieObserver() {
-        viewModel.topTrendingMovie?.observe(this, Observer { details ->
+        viewModel.topTrendingMovie?.observe(viewLifecycleOwner, Observer { details ->
             Picasso.get()
                 .load("${AppConstants.TMDB_IMAGE_BASE_URL_W780}${details.backdrop_path}")
                 .placeholder(R.drawable.placeholder)
@@ -80,7 +79,7 @@ class HomeFragment : Fragment(), OnItemClick {
     }
 
     private fun isLoadingObserver() {
-        viewModel.isLoading.observe(this, Observer { isLoading ->
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
         })
     }
 
