@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +22,6 @@ import com.movies.allmovies.R
 import com.movies.allmovies.databinding.FragmentHomeBinding
 import com.movies.allmovies.domainMappers.toMyListItem
 import com.movies.allmovies.dto.GenreXDTO
-import com.movies.allmovies.epoxy.TopTrendingMovieModel
 import com.movies.allmovies.ui.OnItemClick
 import com.movies.allmovies.viewmodel.HomeViewModel
 import com.squareup.picasso.Picasso
