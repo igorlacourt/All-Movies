@@ -106,7 +106,7 @@ class HomeFragment : Fragment(), OnItemClick {
     }
 
     private fun drawGenres(genresList: List<GenreXDTO>){
-        for (i in 0 until genresList.size) {
+        for (i in genresList.indices) {
             binding.tvGenres.append(genresList[i].name)
             if (i < genresList.size - 1) {
                 val s = "  •  ".toSpannable()
