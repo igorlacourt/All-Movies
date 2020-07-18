@@ -118,11 +118,17 @@ class HomeDataSourceImpl @Inject constructor(val context: Context): HomeDataSour
 }
 
 class HomeViewModel @Inject constructor(private val homeDataSource: HomeDataSource, val context: Context) : ViewModel(){
-    var topTrendingMovie: MutableLiveData<Details>? = MutableLiveData()
-    var listsOfMovies: MutableLiveData<List<Collection<DomainMovie>>?> = MutableLiveData()
+    private val _topTrendingMovie: MutableLiveData<Details>? = MutableLiveData()
+    val topTrendingMovie: LiveData<Details>? = _topTrendingMovie
 
-    var isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
-    var isLoading: MutableLiveData<Boolean> = MutableLiveData()
+    private val _listsOfMovies: MutableLiveData<List<Collection<DomainMovie>>?> = MutableLiveData()
+    val listsOfMovies: LiveData<List<Collection<DomainMovie>>?> = _listsOfMovies
+
+    private val _isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
+    val isInDatabase: LiveData<Boolean> = _isInDatabase
+
+    private val _isLoading: MutableLiveData<Boolean> = MutableLiveData()
+    val isLoading: MutableLiveData<Boolean> = _isLoading
 
     init {
         isLoading.value = true
@@ -137,7 +143,7 @@ class HomeViewModel @Inject constructor(private val homeDataSource: HomeDataSour
                 when(result) {
                     is HomeResult.Success -> {
                         Log.d("searchlog", "searchMovie, SearchResult.Success")
-                        listsOfMovies.postValue(result.movies)
+                        _listsOfMovies.postValue(result.movies)
                         getTopMovie(result.movies[0].elementAt(0).id)
                     }
                     is HomeResult.ApiError -> {
@@ -160,7 +166,7 @@ class HomeViewModel @Inject constructor(private val homeDataSource: HomeDataSour
                 val response = tmdbApi.getDetails(id, AppConstants.LANGUAGE)
                 when (response) {
                     is NetworkResponse.Success -> {
-                        topTrendingMovie?.postValue(MapperFunctions.toDetails(response.body))
+                        _topTrendingMovie?.postValue(MapperFunctions.toDetails(response.body))
                     }
                     is NetworkResponse.ApiError -> Log.d("getTopMovie", "ApiError ${response.body.message}")
                     is NetworkResponse.NetworkError -> Log.d("getTopMovie", "NetworkError")
@@ -174,7 +180,7 @@ class HomeViewModel @Inject constructor(private val homeDataSource: HomeDataSour
     }
 
     fun isTopMovieInDatabase(id: Int){
-        isInDatabase.value = homeDataSource.isTopMovieInDatabase(id)
+        _isInDatabase.value = homeDataSource.isTopMovieInDatabase(id)
         isLoading.value = false
         Log.d("isld", "isTopMovieInDatabase, isLoading.value = ${isLoading.value}")
     }
@@ -185,12 +191,12 @@ class HomeViewModel @Inject constructor(private val homeDataSource: HomeDataSour
 
     fun insert(myListItem: MyListItem) {
         homeDataSource.insert(myListItem)
-        isInDatabase.value = true
+        _isInDatabase.value = true
     }
 
     fun delete(id: Int){
         homeDataSource.delete(id)
-        isInDatabase.value = false
+        _isInDatabase.value = false
     }
 
 }

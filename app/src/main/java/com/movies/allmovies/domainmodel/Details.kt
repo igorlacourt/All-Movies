@@ -30,7 +30,7 @@ data class Details(
        formatCasts()
     }
 
-    fun formatCasts() {
+    private fun formatCasts() {
         if (!casts?.cast.isNullOrEmpty()){
             for (i in casts?.cast!!.size - 1 downTo 14) {
                 casts.cast.removeAt(i)
@@ -54,7 +54,7 @@ data class Details(
 
     }
 
-    fun getTrailer(): VideoDTO? {
+    private fun getTrailer(): VideoDTO? {
         var trailer: VideoDTO? = null
 
         videos?.forEach { video ->
@@ -78,7 +78,7 @@ data class Details(
 
         if (trailer == null)
             if (!videos.isNullOrEmpty())
-                trailer = videos.get(0)
+                trailer = videos[0]
 
         return trailer
     }
