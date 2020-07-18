@@ -69,13 +69,14 @@ class CastsAdapter(
     }
 
     fun setList(list: List<CastDTO>) {
-        Log.d("grid-log", "setList() called")
+        Log.d("castlg", "setList() called")
         this.list.clear()
         this.list.addAll(list)
         notifyDataSetChanged()
     }
 
     fun addToList(list: List<CastDTO>) {
+        Log.d("castlg", "addToList() called")
         list.map { item ->
             this.list.add(item)
             notifyDataSetChanged()

@@ -208,6 +208,7 @@
                     android:layout_marginTop="16dp"
                     android:background="@color/colorPrimaryDark"
                     android:scrollbars="none"
+                    android:nestedScrollingEnabled="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.6"
                     app:layout_constraintLeft_toLeftOf="parent"

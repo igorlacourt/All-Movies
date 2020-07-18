@@ -57,8 +57,8 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
     var movieId: Int? = null
 
     private lateinit var binding: FragmentDetailsBinding
-    val castsAdapter: CastsAdapter? = null
-    val gridAdapter: GridAdapter? = null
+    private var castsAdapter: CastsAdapter? = null
+    private var gridAdapter: GridAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,10 +76,12 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
         searchStreamOnGoogleClickListener()
 
         binding.rvRecommended.layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
-        binding.rvRecommended.adapter = GridAdapter(context, this, ArrayList())
+        gridAdapter = GridAdapter(context, this, ArrayList())
+        binding.rvRecommended.adapter = gridAdapter
 
         binding.rvCasts.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.rvCasts.adapter = CastsAdapter(context, this, ArrayList())
+        castsAdapter = CastsAdapter(context, this, ArrayList())
+        binding.rvCasts.adapter = castsAdapter
 
 
         val id = arguments?.getInt("id") ?: 0
