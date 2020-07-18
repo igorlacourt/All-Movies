@@ -13,7 +13,7 @@ import io.reactivex.Single
 @Dao
 interface MyListDao {
     @Query("SELECT EXISTS (SELECT id FROM mylist WHERE id = :id)")
-    fun exists(id: Int): Boolean
+    fun exists(id: Int?): Boolean
 //
 //    @Query("SELECT id FROM mylist WHERE id = :id")
 //    fun getById(id: Int): Single<Int>

@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.bold
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -29,6 +30,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.movies.allmovies.R
+import com.movies.allmovies.databinding.FragmentDetailsBinding
+import com.movies.allmovies.domainMappers.MapperFunctions
 import com.movies.allmovies.domainMappers.toCastDTO
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.dto.CastsDTO
@@ -49,96 +52,48 @@ import kotlin.math.floor
  */
 class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
     lateinit var viewModel: DetailsViewModel
-    lateinit var progressBar: FrameLayout
-    lateinit var wishListButton: ImageView
-    lateinit var backdropImageView: ImageView
-    lateinit var voteAverage: TextView
-    lateinit var emptyRecomendations: TextView
-    lateinit var searchStreamOnGoogle: ConstraintLayout
     private var movieTitle: String? = null
 
     var movieId: Int? = null
+
+    private lateinit var binding: FragmentDetailsBinding
+    val castsAdapter: CastsAdapter? = null
+    val gridAdapter: GridAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_details, container, false)
-        voteAverage = view.findViewById(R.id.tv_vote_average)
-        wishListButton = view.findViewById(R.id.bt_add_to_list)
-        backdropImageView = view.findViewById(R.id.detail_backdrop)
-        progressBar = view.findViewById(R.id.details_progress_bar)
-        progressBar.visibility = View.VISIBLE
-        emptyRecomendations = view.findViewById(R.id.tv_recommended_empty)
-        emptyRecomendations.visibility = View.VISIBLE
-        searchStreamOnGoogle = view.findViewById<ConstraintLayout>(R.id.btn_search_stream_on_google)
-        searchStreamOnGoogle.visibility = View.INVISIBLE
+        binding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_details, container, false
+        )
+        viewModel =
+            ViewModelProviders.of(this).get(DetailsViewModel::class.java)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
 
         searchStreamOnGoogleClickListener()
 
-        var recyclerView = view.findViewById<RecyclerView>(R.id.rv_recommended)
-        val adapter = GridAdapter(context, this, ArrayList())
-        recyclerView.layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
-        recyclerView.adapter = adapter
+        binding.rvRecommended.layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
+        binding.rvRecommended.adapter = GridAdapter(context, this, ArrayList())
 
-        var rvCasts = view.findViewById<RecyclerView>(R.id.rv_casts)
-        rvCasts.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        val castsAdapter = CastsAdapter(context, this, ArrayList())
-        rvCasts.adapter = castsAdapter
+        binding.rvCasts.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvCasts.adapter = CastsAdapter(context, this, ArrayList())
 
 
         val id = arguments?.getInt("id") ?: 0
 
         var details: Details? = null
 
-        viewModel =
-            ViewModelProviders.of(this).get(DetailsViewModel::class.java)
+
 
         viewModel.recommendedMovies.observe(viewLifecycleOwner, Observer { movies ->
             if (movies.isNullOrEmpty())
-                emptyRecomendations.visibility = View.VISIBLE
+                binding.tvRecommendedEmpty.visibility = View.VISIBLE
             else
-                emptyRecomendations.visibility = View.INVISIBLE
-            adapter.setList(movies as List<DomainMovie>)
-//            when (resource.status) {
-//                Resource.Status.SUCCESS -> {
-//                    resource?.data?.let { movies ->
-//
-//
-//                        Log.d("recnull", "visibility = ${emptyRecomendations.visibility}")
-//
-////                        recommendedMoviesAdapter.setList(movies)
-//                    }
-//                }
-//                Resource.Status.LOADING -> {
-//                }
-//                Resource.Status.ERROR -> {
-//                }
-//            }
-        })
-
-        viewModel.isInDatabase.observe(viewLifecycleOwner, Observer { isInDatabase ->
-            Log.d("log_is_inserted", "onChanged()")
-            if (isInDatabase) {
-                wishListButton.setImageDrawable(
-                    ResourcesCompat.getDrawable(
-                        resources,
-                        R.drawable.ic_check_mark_24dp,
-                        null
-                    )
-                )
-                Log.d("log_is_inserted", "isInserted true, button to checkmark")
-            } else {
-                wishListButton.setImageDrawable(
-                    ResourcesCompat.getDrawable(
-                        resources,
-                        R.drawable.wish_list_btn_24dp,
-                        null
-                    )
-                )
-                Log.d("log_is_inserted", "isInserted false, button to plus sign")
-            }
+                binding.tvRecommendedEmpty.visibility = View.INVISIBLE
+            gridAdapter?.setList(movies as List<DomainMovie>)
         })
 
         if (id != 0)
@@ -156,50 +111,31 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
             displayDetails(it)
             it.casts?.let { cast ->
                 cast.cast?.let { actors ->
-                    castsAdapter.setList(actors)
+                    castsAdapter?.setList(actors)
                 }
                 cast.crew?.let { crew ->
-                    castsAdapter.addToList(crew.toCastDTO())
+                    castsAdapter?.addToList(crew.toCastDTO())
                 }
             }
         })
 
-        backdropImageView.setOnClickListener {
+        binding.detailBackdrop.setOnClickListener {
             details?.openYoutube(context)
         }
 
-        wishListButton.setOnClickListener {
+        binding.btAddToList.setOnClickListener {
             Log.d("log_is_inserted", "Button clicked")
-//            if (viewModel.isInDatabase.value == false) {
-//                Log.d("log_is_inserted", "isInDatabase false")
-//                val itemData = viewModel.movie?.value?.data
-//                if (itemData?.id != null) {
-//                    viewModel.insert(
-//                        MapperFunctions.toMyListItem(
-//                            itemData
-//                        )
-//                    )
-//                } else {
-//                    Toast.makeText(
-//                        context,
-//                        "Did not save to My List.",
-//                        Toast.LENGTH_LONG
-//                    ).show()
-//                }
-//            } else {
-//                Log.d("log_is_inserted", "isInDatabase true")
-//                viewModel.movie?.value?.data?.id?.let { id -> viewModel.delete(id) }
-//            }
+            viewModel.addToList()
         }
 
 
-        BannerAds.loadAds(context, view)
+        BannerAds.loadAds(context, binding.root)
 
-        return view
+        return binding.root
     }
 
     private fun searchStreamOnGoogleClickListener() {
-        searchStreamOnGoogle.setOnClickListener {
+        binding.btnSearchStreamOnGoogle.setOnClickListener {
             movieTitle?.let {title ->
                 var escapedQuery = URLEncoder.encode("watch movie ${title}", "UTF-8")
                 var uri = Uri.parse("https://www.google.com/#q=" + escapedQuery)
@@ -236,13 +172,13 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
                     }
                 })
             movieTitle = title
-            searchStreamOnGoogle.visibility = View.VISIBLE
+            binding.btnSearchStreamOnGoogle.visibility = View.VISIBLE
             detail_title.text = title
             detail_overview.text = overview
             release_year.text = release_date
             tv_duration.text = convertDuration(runtime)
             setVoteAverageColor(tv_vote_average, vote_average)
-            progressBar.visibility = View.INVISIBLE
+            binding.detailsProgressBar.visibility = View.INVISIBLE
             setDirector(tv_director, casts)
             setCast(tv_cast, casts)
         }

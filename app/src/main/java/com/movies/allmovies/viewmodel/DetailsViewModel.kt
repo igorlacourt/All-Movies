@@ -2,6 +2,7 @@ package com.movies.allmovies.viewmodel
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -32,7 +33,7 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
     private val _recommendedMovies: MutableLiveData<Collection<DomainMovie>> = MutableLiveData()
     val recommendedMovies: LiveData<Collection<DomainMovie>> = _recommendedMovies
 
-    private val _isInDatabase: LiveData<Boolean> = MutableLiveData()
+    private val _isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
     val isInDatabase: LiveData<Boolean> = _isInDatabase
 
     private val myListDao =
@@ -44,7 +45,7 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
         return true
     }
 
-    fun isInDatabase(id: Int) : Boolean{
+    fun isInDatabase(id: Int?) : Boolean{
         return myListDao?.exists(id) ?: false
     }
 
@@ -55,25 +56,41 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
 //        repository.getRecommendedMovies(id)
 //    }
 
+    fun addToList() {
+        if (isInDatabase.value == false) {
+            Log.d("log_is_inserted", "isInDatabase false")
+            if (movie.value?.id != null) {
+                movie.value?.let { insert(MapperFunctions.toMyListItem(it)) }
+            }
+        } else {
+            Log.d("log_is_inserted", "isInDatabase true")
+            movie.value?.id?.let { id -> delete(id) }
+        }
+    }
+
+
     fun insert(myListItem: MyListItem) {
         Log.d("log_is_inserted", "DetailsViewModel, insert() called")
-        repository.insert(myListItem)
+        myListDao?.insert(myListItem)
+        _isInDatabase.value = true
     }
 
     fun delete(id: Int){
         Log.d("log_is_inserted", "DetailsViewModel, delete() called")
-        repository.delete(id)
+        myListDao?.deleteById(id)
+        _isInDatabase.value = false
     }
 
     fun getDetails(id: Int) {
-        viewModelScope.launch {// lembrar do apend to response!!
+        viewModelScope.launch {
             val response = tmdbApi.getDetails(id, AppConstants.LANGUAGE)
             when (response) {
                 is NetworkResponse.Success -> {
                     Log.d("detailsviewmodel", "Success ${response.body.title}")
                     val details = MapperFunctions.toDetails(response.body)
-                    _movie.value = details
                     getRecommendations(details.id)
+                    _movie.value = details
+                    _isInDatabase.postValue(isInDatabase(details.id))
                 }
                 is NetworkResponse.ApiError -> Log.d(
                     "detailsviewmodel",
