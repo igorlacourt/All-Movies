@@ -7,7 +7,7 @@ Nesta branch, temos o aplicativo foi feito com o intuito de testar diferentes bi
 
 # Versão Refatorada
 [English]
-In the brach of this project called feature/dagger, we can find a refactored version of this code, making use of architecture components, databinding and dagger. Even though the refacting is still in progress, this branch brings a much better approach to MVVM with livedata and databinding.
+In the brach of this project called **feature/dagger**, we can find a refactored version of this code, making use of architecture components, databinding and dagger. Even though the refacting is still in progress, **this branch brings a much better approach to MVVM with livedata and databinding**.
 
 [Português]
-Na branch chamada feature/dagger deste projeto, se encontra uma versão refatorada desta código, melhor organizada, utilizando architecture components, databinding e dagger. Mesmo com a refatoração ainda em andamento, demonstra muito melhor a aplicação do MVVM utilizando livedata e databinding.
+Na branch chamada **feature/dagger** deste projeto, se encontra uma versão refatorada desta código, melhor organizada, utilizando architecture components, databinding e dagger. Mesmo com a refatoração ainda em andamento, **demonstra muito melhor a aplicação do MVVM utilizando livedata e databinding**.
