@@ -10,9 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.bold
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -28,10 +26,8 @@ import kotlinx.android.synthetic.main.fragment_details.*
 import java.lang.Exception
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.movies.allmovies.R
 import com.movies.allmovies.databinding.FragmentDetailsBinding
-import com.movies.allmovies.domainMappers.MapperFunctions
 import com.movies.allmovies.domainMappers.toCastDTO
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.dto.CastsDTO
@@ -59,6 +55,7 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
     private lateinit var binding: FragmentDetailsBinding
     private var castsAdapter: CastsAdapter? = null
     private var gridAdapter: GridAdapter? = null
+    private var details: Details? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,8 +70,6 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        searchStreamOnGoogleClickListener()
-
         binding.rvRecommended.layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
         gridAdapter = GridAdapter(context, this, ArrayList())
         binding.rvRecommended.adapter = gridAdapter
@@ -83,12 +78,7 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
         castsAdapter = CastsAdapter(context, this, ArrayList())
         binding.rvCasts.adapter = castsAdapter
 
-
         val id = arguments?.getInt("id") ?: 0
-
-        var details: Details? = null
-
-
 
         viewModel.recommendedMovies.observe(viewLifecycleOwner, Observer { movies ->
             if (movies.isNullOrEmpty())
@@ -111,29 +101,20 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
             movieId = it.id
             details = it
             displayDetails(it)
-            it.casts?.let { cast ->
-                cast.cast?.let { actors ->
-                    castsAdapter?.setList(actors)
-                }
-                cast.crew?.let { crew ->
-                    castsAdapter?.addToList(crew.toCastDTO())
-                }
-            }
+            setCastsList(it.casts)
         })
 
-        binding.detailBackdrop.setOnClickListener {
-            details?.openYoutube(context)
-        }
-
-        binding.btAddToList.setOnClickListener {
-            Log.d("log_is_inserted", "Button clicked")
-            viewModel.addToList()
-        }
-
+        setupClickListeners()
 
         BannerAds.loadAds(context, binding.root)
 
         return binding.root
+    }
+
+    private fun setupClickListeners() {
+        searchStreamOnGoogleClickListener()
+        backdropClickListener()
+        addToListClickListener()
     }
 
     private fun searchStreamOnGoogleClickListener() {
@@ -147,6 +128,29 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
         }
     }
 
+    private fun backdropClickListener() {
+        binding.detailBackdrop.setOnClickListener {
+            details?.openYoutube(context)
+        }
+    }
+
+    private fun addToListClickListener() {
+        binding.btAddToList.setOnClickListener {
+            viewModel.addToList()
+        }
+    }
+
+    private fun setCastsList(casts: CastsDTO?) {
+        casts?.let { cast ->
+            cast.cast?.let { actors ->
+                castsAdapter?.setList(actors)
+            }
+            cast.crew?.let { crew ->
+                castsAdapter?.addToList(crew.toCastDTO())
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         viewModel.isInDatabase(movieId)
@@ -155,7 +159,6 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
     fun displayDetails(details: Details?) {
         details?.apply {
             val imagePath = backdrop_path ?: poster_path
-            Log.d("calltest", "onChange, response = $this")
 
             Picasso.get()
                 .load("${AppConstants.TMDB_IMAGE_BASE_URL_W500}$imagePath")
@@ -173,13 +176,14 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
                         ).show()
                     }
                 })
+
             movieTitle = title
             binding.btnSearchStreamOnGoogle.visibility = View.VISIBLE
-            detail_title.text = title
-            detail_overview.text = overview
-            release_year.text = release_date
-            tv_duration.text = convertDuration(runtime)
-            setVoteAverageColor(tv_vote_average, vote_average)
+            binding.detailTitle.text = title
+            binding.detailOverview.text = overview
+            binding.releaseYear.text = release_date
+            binding.tvDuration.text = runtime
+            setVoteAverageColor(binding.tvVoteAverage, vote_average)
             binding.detailsProgressBar.visibility = View.INVISIBLE
             setDirector(tv_director, casts)
             setCast(tv_cast, casts)

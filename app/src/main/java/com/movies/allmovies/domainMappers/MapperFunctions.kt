@@ -85,7 +85,7 @@ object MapperFunctions {
                 overview,
                 poster_path,
                 release_date,
-                runtime,
+                runtime.toString(),
                 title,
                 vote_average,
                 videos?.results,

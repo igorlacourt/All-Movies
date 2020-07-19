@@ -14,7 +14,7 @@ data class Details(
     val overview: String?,
     val poster_path: String?,
     var release_date: String?,
-    var runtime: Int?,
+    var runtime: String?,
     val title: String?,
     val vote_average: Double?,
     val videos: ArrayList<VideoDTO>?,

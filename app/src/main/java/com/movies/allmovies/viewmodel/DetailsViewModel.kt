@@ -2,10 +2,7 @@ package com.movies.allmovies.viewmodel
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.database.AppDatabase
 import com.movies.allmovies.domainMappers.MapperFunctions
@@ -21,7 +18,10 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
     val app : Application = application
 
     private val _movie: MutableLiveData<Details> = MutableLiveData()
-    val movie: LiveData<Details> = _movie
+    val movie: LiveData<Details> = Transformations.map(_movie) { movie ->
+        movie.runtime = convertDuration(movie.runtime)
+        movie
+    }
 
     private val _recommendedMovies: MutableLiveData<Collection<DomainMovie>> = MutableLiveData()
     val recommendedMovies: LiveData<Collection<DomainMovie>> = _recommendedMovies
@@ -31,6 +31,13 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
 
     private val myListDao =
         AppDatabase.getDatabase(app)?.MyListDao()
+
+    private fun convertDuration(timeSeconds: String?) = timeSeconds?.let {
+        val duration = it.toInt()
+        val minutes = (duration % 60)
+        val hours = (duration / 60)
+        "${hours}h ${minutes}m"
+    } ?: ""
 
     fun isInDatabase(id: Int?) : Boolean{
         return myListDao?.exists(id) ?: false
