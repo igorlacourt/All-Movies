@@ -1,7 +1,10 @@
 package com.movies.allmovies.viewmodel
 
 import android.app.Application
+import android.text.SpannableStringBuilder
 import android.util.Log
+import android.widget.TextView
+import androidx.core.text.bold
 import androidx.lifecycle.*
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.database.AppDatabase
@@ -10,6 +13,7 @@ import com.movies.allmovies.domainMappers.toDomainMovie
 import com.movies.allmovies.domainmodel.Details
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
+import com.movies.allmovies.dto.CastsDTO
 import com.movies.allmovies.network.Apifactory.tmdbApi
 import com.movies.allmovies.repository.NetworkResponse
 import kotlinx.coroutines.launch
@@ -18,10 +22,7 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
     val app : Application = application
 
     private val _movie: MutableLiveData<Details> = MutableLiveData()
-    val movie: LiveData<Details> = Transformations.map(_movie) { movie ->
-        movie.runtime = convertDuration(movie.runtime)
-        movie
-    }
+    val movie: LiveData<Details> = _movie
 
     private val _recommendedMovies: MutableLiveData<Collection<DomainMovie>> = MutableLiveData()
     val recommendedMovies: LiveData<Collection<DomainMovie>> = _recommendedMovies
@@ -31,13 +32,6 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
 
     private val myListDao =
         AppDatabase.getDatabase(app)?.MyListDao()
-
-    private fun convertDuration(timeSeconds: String?) = timeSeconds?.let {
-        val duration = it.toInt()
-        val minutes = (duration % 60)
-        val hours = (duration / 60)
-        "${hours}h ${minutes}m"
-    } ?: ""
 
     fun isInDatabase(id: Int?) : Boolean{
         return myListDao?.exists(id) ?: false

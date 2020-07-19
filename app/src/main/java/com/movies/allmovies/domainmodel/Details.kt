@@ -1,6 +1,7 @@
 package com.movies.allmovies.domainmodel
 
-import android.util.Log
+import android.text.SpannableStringBuilder
+import androidx.core.text.bold
 import com.movies.allmovies.dto.CastsDTO
 import com.movies.allmovies.dto.CrewDTO
 import com.movies.allmovies.dto.GenreXDTO
@@ -18,7 +19,9 @@ data class Details(
     val title: String?,
     val vote_average: Double?,
     val videos: ArrayList<VideoDTO>?,
-    val casts: CastsDTO?
+    val casts: CastsDTO?,
+    var formattedCasts: SpannableStringBuilder? = null,
+    var formattedDirector: SpannableStringBuilder? = null
 ) {
     init {
         release_date = release_date?.subSequence(0, 4).toString()
@@ -27,10 +30,48 @@ data class Details(
         videos?.clear()
         trailer?.let { videos?.add(it) }
 
-       formatCasts()
+        formatCastsArray()
+        formattedCasts = formatCasts(casts)
+        formattedDirector = formatDirector(casts)
+        runtime = formatRuntime()
+
     }
 
-    private fun formatCasts() {
+    private fun formatCasts(castAndDirector: CastsDTO?) : SpannableStringBuilder {
+        var builder = SpannableStringBuilder()
+
+        builder.bold { append("Cast: ") }
+
+        if (!castAndDirector?.cast.isNullOrEmpty()) {
+            for (i in 0 until castAndDirector?.cast!!.size) {
+                if (i == castAndDirector.cast.size - 1)
+                    builder.append("${castAndDirector.cast[i].name}")
+                else
+                    builder.append("${castAndDirector.cast[i].name}, ")
+            }
+        }
+
+        return builder
+    }
+
+    private fun formatDirector(castAndDirector: CastsDTO?): SpannableStringBuilder {
+        var builder = SpannableStringBuilder()
+
+        builder.bold { append("Director: ") }
+        builder.append("${castAndDirector?.crew?.get(0)?.name}")
+
+        return builder
+    }
+
+    private fun formatRuntime() : String = runtime?.let {
+            val duration = it.toInt()
+            val minutes = (duration % 60)
+            val hours = (duration / 60)
+            "${hours}h ${minutes}m"
+        } ?: ""
+
+
+    private fun formatCastsArray() {
         if (!casts?.cast.isNullOrEmpty()){
             for (i in casts?.cast!!.size - 1 downTo 14) {
                 casts.cast.removeAt(i)
@@ -43,9 +84,7 @@ data class Details(
                 var job = crew.job?.toLowerCase()
                 if (director == null && job == "director" ) {
                     director = crew
-                    Log.d("dirlog", "$job == \"director\", is director, ${crew.job?.toLowerCase()}")
                 } else {
-                    Log.d("dirlog", "$job == \"director\", not director, ${crew.job?.toLowerCase()}")
                 }
             }
             casts?.crew?.clear()

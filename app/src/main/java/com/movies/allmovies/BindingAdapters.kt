@@ -2,8 +2,11 @@ package com.movies.allmovies
 
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.BindingAdapter
+import kotlin.math.floor
 
 object BindingAdapters {
     @JvmStatic
@@ -35,6 +38,29 @@ object BindingAdapters {
             View.VISIBLE
         } else {
             View.GONE
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("voteAverageColor")
+    fun voteAverageColor(tv: TextView, avg: Double?) {
+        if (avg != null) {
+            var color = R.color.avg0until4
+            val vote: Int = floor(avg).toInt()
+            when (vote) {
+                10 -> color = R.color.avg8until10
+                9 -> color = R.color.avg8until10
+                8 -> color = R.color.avg8until10
+                7 -> color = R.color.avg6until8
+                6 -> color = R.color.avg6until8
+                5 -> color = R.color.avg4until6
+                4 -> color = R.color.avg4until6
+                3 -> color = R.color.avg0until4
+                2 -> color = R.color.avg0until4
+                1 -> color = R.color.avg0until4
+            }
+            tv.text = "${avg.toString()} vote average"
+            tv.context?.let { tv.setTextColor(ContextCompat.getColor(it, color)) }
         }
     }
 

@@ -179,14 +179,7 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
 
             movieTitle = title
             binding.btnSearchStreamOnGoogle.visibility = View.VISIBLE
-            binding.detailTitle.text = title
-            binding.detailOverview.text = overview
-            binding.releaseYear.text = release_date
-            binding.tvDuration.text = runtime
-            setVoteAverageColor(binding.tvVoteAverage, vote_average)
             binding.detailsProgressBar.visibility = View.INVISIBLE
-            setDirector(tv_director, casts)
-            setCast(tv_cast, casts)
         }
 
     }
@@ -216,33 +209,6 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
 
         tvDir.text = builder
     }
-
-    private fun setVoteAverageColor(tv: TextView, avg: Double?) {
-        if (avg != null) {
-            var color = R.color.avg0until4
-            val vote: Int = floor(avg).toInt()
-            when (vote) {
-                10 -> color = R.color.avg8until10
-                9 -> color = R.color.avg8until10
-                8 -> color = R.color.avg8until10
-                7 -> color = R.color.avg6until8
-                6 -> color = R.color.avg6until8
-                5 -> color = R.color.avg4until6
-                4 -> color = R.color.avg4until6
-                3 -> color = R.color.avg0until4
-                2 -> color = R.color.avg0until4
-                1 -> color = R.color.avg0until4
-            }
-            tv.text = "${avg.toString()} vote average"
-            context?.let { tv.setTextColor(ContextCompat.getColor(it, color)) }
-        }
-    }
-
-    private fun convertDuration(timeSeconds: Int?) = timeSeconds?.let {
-        val minutes = (it % 60)
-        val hours = (it / 60)
-        "${hours}h ${minutes}m"
-    } ?: ""
 
     override fun onClick(id: Int) {
         if (id != 0) {
