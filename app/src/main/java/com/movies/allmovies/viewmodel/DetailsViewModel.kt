@@ -1,6 +1,7 @@
 package com.movies.allmovies.viewmodel
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
 import com.movies.allmovies.AppConstants
@@ -13,9 +14,9 @@ import com.movies.allmovies.domainmodel.MyListItem
 import com.movies.allmovies.network.Apifactory.tmdbApi
 import com.movies.allmovies.repository.NetworkResponse
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DetailsViewModel(application: Application) : AndroidViewModel(application){
-    val app : Application = application
+class DetailsViewModel @Inject constructor(val context: Context) : ViewModel(){
 
     private val _movie: MutableLiveData<Details> = MutableLiveData()
     val movie: LiveData<Details> = _movie
@@ -30,7 +31,7 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
     val isLoading: LiveData<Boolean> = _isLoading
 
     private val myListDao =
-        AppDatabase.getDatabase(app)?.MyListDao()
+        AppDatabase.getDatabase(context)?.MyListDao()
 
     fun getDetails(id: Int) {
         _isLoading.value = true

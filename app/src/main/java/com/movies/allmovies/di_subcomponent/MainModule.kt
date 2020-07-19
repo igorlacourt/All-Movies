@@ -22,6 +22,11 @@ interface MainModule {
     @IntoMap
     @ViewModelKey(HomeViewModel::class)
     fun bindHomeViewModel(viewModel: HomeViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DetailsViewModel::class)
+    fun bindDetailsViewModel(viewModel: DetailsViewModel): ViewModel
 //
 //    @Binds
 //    @IntoMap

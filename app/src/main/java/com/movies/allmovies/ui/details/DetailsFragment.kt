@@ -1,5 +1,6 @@
 package com.movies.allmovies.ui.details
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -10,7 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -23,6 +26,7 @@ import kotlinx.android.synthetic.main.fragment_details.*
 import java.lang.Exception
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.movies.allmovies.MainActivity
 import com.movies.allmovies.R
 import com.movies.allmovies.databinding.FragmentDetailsBinding
 import com.movies.allmovies.domainMappers.toCastDTO
@@ -32,16 +36,27 @@ import com.movies.allmovies.openYoutube
 import com.movies.allmovies.ui.GridAdapter
 import com.movies.allmovies.ui.OnMovieClick
 import com.movies.allmovies.util.BannerAds
+import com.movies.allmovies.viewmodel.HomeViewModel
 import java.net.URLEncoder
+import javax.inject.Inject
 
 class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
-    lateinit var viewModel: DetailsViewModel
+//    lateinit var viewModel: DetailsViewModel
     private lateinit var binding: FragmentDetailsBinding
     private var castsAdapter: CastsAdapter? = null
     private var gridAdapter: GridAdapter? = null
     private var details: Details? = null
 
     private val args: DetailsFragmentArgs by navArgs()
+
+    // Dagger code
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by viewModels<DetailsViewModel> { viewModelFactory }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity() as MainActivity).mainComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +65,7 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_details, container, false
         )
-        viewModel = ViewModelProviders.of(this).get(DetailsViewModel::class.java)
+//        viewModel = ViewModelProviders.of(this).get(DetailsViewModel::class.java)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
