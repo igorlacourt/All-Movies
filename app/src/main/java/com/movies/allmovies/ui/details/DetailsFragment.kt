@@ -36,10 +36,6 @@ import java.net.URLEncoder
 
 class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
     lateinit var viewModel: DetailsViewModel
-    private var movieTitle: String? = null
-
-    var movieId: Int? = null
-
     private lateinit var binding: FragmentDetailsBinding
     private var castsAdapter: CastsAdapter? = null
     private var gridAdapter: GridAdapter? = null
@@ -76,7 +72,6 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
 
     private fun attachMovieObserver() {
         viewModel.movie.observe(viewLifecycleOwner, Observer {
-            movieId = it.id
             details = it
             displayDetails(it)
             setCastsList(it.casts)
@@ -119,9 +114,9 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
 
     private fun searchStreamOnGoogleClickListener() {
         binding.btnSearchStreamOnGoogle.setOnClickListener {
-            movieTitle?.let {title ->
-                var escapedQuery = URLEncoder.encode("watch movie ${title}", "UTF-8")
-                var uri = Uri.parse("https://www.google.com/#q=" + escapedQuery)
+            viewModel.movie.value?.title?.let {title ->
+                var escapedQuery = URLEncoder.encode("watch movie $title", "UTF-8")
+                var uri = Uri.parse("https://www.google.com/#q=$escapedQuery")
                 var intent = Intent(Intent.ACTION_VIEW, uri)
                 startActivity(intent)
             }
@@ -153,7 +148,7 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
 
     override fun onResume() {
         super.onResume()
-        viewModel.isInDatabase(movieId)
+        viewModel.isInDatabase(args.id)
     }
 
     private fun displayDetails(details: Details?) {
@@ -173,8 +168,6 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
                             .show()
                     }
                 })
-
-            movieTitle = title
         }
 
     }
