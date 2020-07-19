@@ -114,7 +114,6 @@ data class Details(
             }
         }
 
-
         if (trailer == null)
             if (!videos.isNullOrEmpty())
                 trailer = videos[0]

@@ -1,10 +1,7 @@
 package com.movies.allmovies.viewmodel
 
 import android.app.Application
-import android.text.SpannableStringBuilder
 import android.util.Log
-import android.widget.TextView
-import androidx.core.text.bold
 import androidx.lifecycle.*
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.database.AppDatabase
@@ -13,7 +10,6 @@ import com.movies.allmovies.domainMappers.toDomainMovie
 import com.movies.allmovies.domainmodel.Details
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
-import com.movies.allmovies.dto.CastsDTO
 import com.movies.allmovies.network.Apifactory.tmdbApi
 import com.movies.allmovies.repository.NetworkResponse
 import kotlinx.coroutines.launch
@@ -30,34 +26,14 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
     private val _isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
     val isInDatabase: LiveData<Boolean> = _isInDatabase
 
+    private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(true)
+    val isLoading: LiveData<Boolean> = _isLoading
+
     private val myListDao =
         AppDatabase.getDatabase(app)?.MyListDao()
 
-    fun isInDatabase(id: Int?) : Boolean{
-        return myListDao?.exists(id) ?: false
-    }
-
-    fun addToList() {
-        if (isInDatabase.value == false) {
-            if (movie.value?.id != null) {
-                movie.value?.let { insert(MapperFunctions.toMyListItem(it)) }
-            }
-        } else {
-            movie.value?.id?.let { id -> delete(id) }
-        }
-    }
-
-    fun insert(myListItem: MyListItem) {
-        myListDao?.insert(myListItem)
-        _isInDatabase.value = true
-    }
-
-    fun delete(id: Int){
-        myListDao?.deleteById(id)
-        _isInDatabase.value = false
-    }
-
     fun getDetails(id: Int) {
+        _isLoading.value = true
         viewModelScope.launch {
             val response = tmdbApi.getDetails(id, AppConstants.VIDEOS_AND_CASTS)
             when (response) {
@@ -83,6 +59,7 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
             when (response) {
                 is NetworkResponse.Success -> {
                     _recommendedMovies.value = response.body.toDomainMovie()
+                    _isLoading.value = false
                 }
                 is NetworkResponse.ApiError -> Log.d(
                     "detailsviewmodel",
@@ -94,21 +71,41 @@ class DetailsViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    private fun filterResultsList() {
+    fun isInDatabase(id: Int?) : Boolean{
+        return myListDao?.exists(id) ?: false
+    }
+
+    fun addToList() {
+        if (isInDatabase.value == false) {
+            if (movie.value?.id != null) {
+                movie.value?.let { insert(MapperFunctions.toMyListItem(it)) }
+            }
+        } else {
+            movie.value?.id?.let { id -> delete(id) }
+        }
+    }
+
+    fun insert(myListItem: MyListItem) {
+        myListDao?.insert(myListItem)
+        _isInDatabase.value = true
+    }
+
+    fun delete(id: Int){
+        myListDao?.deleteById(id)
+        _isInDatabase.value = false
+    }
+
+//    private fun filterResultsList(list: Collection<DomainMovie>) {
 //        val list = ArrayList<MovieDTO>()
 //        list.addAll(t.results)
-//        if(list.size  < 3){
-//            getSimilar(checkedId)
-//        } else {
-//            if (list.size == 20) {
-//                val last = t.results.size - 1
-//                val beforeLast = t.results.size - 2
-//                list.removeAt(last)
-//                list.removeAt(beforeLast)
-//            }
-//            recommendedMovies.value =
-//                Resource.success(t.toDomainMovie() as List)
+//
+//        if (list.size == 20) {
+//            val last = list.size - 1
+//            val beforeLast = list.size - 2
+//            list.remove()
+//            list.removeAt(beforeLast)
 //        }
-    }
+//            _recommendedMovies.value = list
+//    }
 
 }
