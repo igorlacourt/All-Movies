@@ -132,10 +132,6 @@ class HomeFragment : Fragment(), OnMovieClick {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     private fun drawGenres(genresList: List<GenreXDTO>){
         for (i in genresList.indices) {
             binding.tvGenres.append(genresList[i].name)
