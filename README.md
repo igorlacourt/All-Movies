@@ -1,4 +1,4 @@
-##Movie Catalog##
+## Movie Catalog
 
 https://play.google.com/store/apps/details?id=com.movies.allmovies&hl=en
 
