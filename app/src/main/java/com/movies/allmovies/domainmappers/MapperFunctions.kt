@@ -1,4 +1,4 @@
-package com.movies.allmovies.domainMappers
+package com.movies.allmovies.domainmappers
 
 import com.movies.allmovies.domainmodel.Details
 import com.movies.allmovies.domainmodel.DomainMovie

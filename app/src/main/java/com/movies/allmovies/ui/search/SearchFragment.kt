@@ -13,7 +13,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.movies.allmovies.ui.OnMovieClick
 import com.movies.allmovies.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.fragment_search.*

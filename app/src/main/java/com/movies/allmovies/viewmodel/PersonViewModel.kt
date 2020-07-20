@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.movies.allmovies.AppConstants
-import com.movies.allmovies.domainMappers.toDomainMovie
+import com.movies.allmovies.domainmappers.toDomainMovie
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.dto.MovieResponseDTO
 import com.movies.allmovies.dto.PersonDetails

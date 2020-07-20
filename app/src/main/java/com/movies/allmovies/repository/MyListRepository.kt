@@ -3,7 +3,7 @@ package com.movies.allmovies.repository
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.movies.allmovies.database.AppDatabase
-import com.movies.allmovies.domainMappers.toDomainMovie
+import com.movies.allmovies.domainmappers.toDomainMovie
 import com.movies.allmovies.domainmodel.DomainMovie
 
 class MyListRepository(application: Application) {

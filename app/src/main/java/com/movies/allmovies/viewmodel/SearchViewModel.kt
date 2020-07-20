@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.network.Apifactory
-import com.movies.allmovies.repository.NetworkResponse
+import com.movies.allmovies.network.NetworkResponse
 import com.movies.allmovies.ui.search.SearchRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,31 +28,6 @@ class SearchViewModel @Inject constructor(val searchRepository: SearchRepository
                   is NetworkResponse.NetworkError -> Log.d(TAG, "NetworkError")
                   is NetworkResponse.UnknownError -> Log.d(TAG, "UnknownError")
               }
-//              val resource = searchRepository.requestMovie(title)
-//              when(resource.status) {
-//                  Resource.Status.SUCCESS -> {
-//                      searchResult.value = resource.data?.results
-//                  }
-//                  Resource.Status.ERROR -> {
-//                    Log.d("searchlog", "searchMovie, Error")
-//                  }
-//                  Resource.Status.LOADING -> TODO()
-//              }
           }
-
-//        searchRepository.searchMovie(title) { result: SearchResult ->
-//            when(result) {
-//                is SearchResult.Success -> {
-//                    Log.d("searchlog", "searchMovie, SearchResult.Success")
-//                    searchResult.value = result.movies
-//                }
-//                is SearchResult.ApiError -> {
-//                    Log.d("searchlog", "searchMovie, SearchResult.ApiError")
-//                }
-//                is SearchResult.ServerError -> {
-//                    Log.d("searchlog", "searchMovie, SearchResult.ServerError")
-//                }
-//            }
-//        }
     }
 }

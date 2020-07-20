@@ -23,7 +23,7 @@ import com.movies.allmovies.AppConstants
 import com.movies.allmovies.MainActivity
 import com.movies.allmovies.R
 import com.movies.allmovies.databinding.FragmentHomeBinding
-import com.movies.allmovies.domainMappers.toMyListItem
+import com.movies.allmovies.domainmappers.toMyListItem
 import com.movies.allmovies.dto.GenreXDTO
 import com.movies.allmovies.dto.VideoDTO
 import com.movies.allmovies.ui.OnMovieClick

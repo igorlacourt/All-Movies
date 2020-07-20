@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import com.movies.allmovies.di.ViewModelKey
 import com.movies.allmovies.viewmodel.DetailsViewModel
 import com.movies.allmovies.viewmodel.HomeViewModel
-import com.movies.allmovies.viewmodel.MyListViewModel
 import com.movies.allmovies.viewmodel.SearchViewModel
 import dagger.Binds
 import dagger.Module

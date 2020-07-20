@@ -1,18 +1,17 @@
 package com.movies.allmovies.viewmodel
 
-import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.database.AppDatabase
-import com.movies.allmovies.domainMappers.MapperFunctions
-import com.movies.allmovies.domainMappers.toDomainMovie
+import com.movies.allmovies.domainmappers.MapperFunctions
+import com.movies.allmovies.domainmappers.toDomainMovie
 import com.movies.allmovies.domainmodel.Details
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
 import com.movies.allmovies.network.Apifactory.tmdbApi
-import com.movies.allmovies.repository.NetworkResponse
+import com.movies.allmovies.network.NetworkResponse
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

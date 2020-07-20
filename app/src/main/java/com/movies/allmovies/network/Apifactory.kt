@@ -2,7 +2,6 @@ package com.movies.allmovies.network
 
 import com.movies.allmovies.BuildConfig
 import com.movies.allmovies.AppConstants
-import com.movies.allmovies.repository.NetworkResponseAdapterFactory
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

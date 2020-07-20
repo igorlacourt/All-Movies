@@ -1,9 +1,9 @@
 package com.movies.allmovies.di
 
-import com.movies.allmovies.ui.search.SearchRepository
+import com.movies.allmovies.datasource.HomeDataSource
+import com.movies.allmovies.datasource.HomeDataSourceImpl
 import com.movies.allmovies.repository.SearchRepositoryImpl
-import com.movies.allmovies.viewmodel.HomeDataSource
-import com.movies.allmovies.viewmodel.HomeDataSourceImpl
+import com.movies.allmovies.ui.search.SearchRepository
 import dagger.Binds
 import dagger.Module
 import javax.inject.Singleton

@@ -1,7 +1,6 @@
 package com.movies.allmovies.network
 
 import com.movies.allmovies.dto.*
-import com.movies.allmovies.repository.NetworkResponse
 import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.Call

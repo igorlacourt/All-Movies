@@ -14,7 +14,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.movies.allmovies.AppConstants
@@ -29,14 +28,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.movies.allmovies.MainActivity
 import com.movies.allmovies.R
 import com.movies.allmovies.databinding.FragmentDetailsBinding
-import com.movies.allmovies.domainMappers.toCastDTO
+import com.movies.allmovies.domainmappers.toCastDTO
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.dto.CastsDTO
 import com.movies.allmovies.openYoutube
 import com.movies.allmovies.ui.GridAdapter
 import com.movies.allmovies.ui.OnMovieClick
 import com.movies.allmovies.util.BannerAds
-import com.movies.allmovies.viewmodel.HomeViewModel
 import java.net.URLEncoder
 import javax.inject.Inject
 
