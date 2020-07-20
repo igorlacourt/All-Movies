@@ -19,10 +19,7 @@
     <color name="genreFamilyColor">#009688</color>
     <color name="releaseYearColor">#727272</color>
     <color name="trailerButtonColor">#F0F0F0</color>
-    <color name="trailerButtonPressedColor">#999999</color>
     <color name="trailerButtonTextColor">#111111</color>
-    <color name="errorRetryButtonColor">#8D8D8D</color>
-    <color name="errorMessageColor">#D3D3D3</color>
 
     <color name="avg8until10">#12AA00</color>
     <color name="avg6until8">#83BB00</color>
@@ -31,7 +28,6 @@
     <color name="shimmer_background">#444444</color>
 
 <!--    Cast CardView-->
-    <color name="cv_cast_color">#272727</color>
 
     <color name="show_more_color">#4D78C5</color>
 

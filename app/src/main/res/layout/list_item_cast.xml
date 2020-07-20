@@ -45,7 +45,7 @@
             android:layout_marginRight="4dp"
             android:layout_marginBottom="4dp"
             android:gravity="start"
-            android:textSize="11dp"
+            android:textSize="11sp"
             android:maxLines="1"
             android:ellipsize="end"
             tools:text="Jhon's character"

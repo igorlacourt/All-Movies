@@ -28,8 +28,6 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var mainComponent: MainComponent
 
-    private var home: HomeFragment? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         // Dagger code
         //Tem q ser antes do super

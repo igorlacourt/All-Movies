@@ -1,27 +1,18 @@
 <resources>
     <string name="app_name">All Movies</string>
-    <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
     <string name="title_my_list">My List</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="movies_preferences">movies_preferences</string>
     <string name="search_hint">Search by title.</string>
     <string name="search_no_results">No results.</string>
-    <string name="title_activity_bottom_nav">BottomNavActivity</string>
-    <string name="title_dashboard">Dashboard</string>
     <string name="title_search">Search</string>
     <string name="my_list_at_details">My List</string>
     <string name="learn_more">Learn More</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="details_type_movie">movie</string>
-    <string name="details_type_tv">tv</string>
-<!--    <string name="top_trending_button_play_trailer"><![CDATA[<h2>▶</h2> Trailer]]></string>-->
+    <!--    <string name="top_trending_button_play_trailer"><![CDATA[<h2>▶</h2> Trailer]]></string>-->
     <string name="top_trending_button_play_trailer">Trailer</string>
 
     <string name="no_video_to_show">No video to show</string>
-    <string name="error_try_again_btn">Try again</string>
     <string name="database_item_not_removed">Could not remove from My List</string>
     <string name="database_item_not_inserted">Could not add to My List</string>
     <string name="stream_search_google">Where to watch</string>
@@ -35,5 +26,4 @@
 
     <string name="admob_app_id">ca-app-pub-5070947808406616~1403692144</string>
     <string name="admob_ad_unit_id">ca-app-pub-5070947808406616/9255273764</string>
-    <string name="admob_ad_unit_test_id">ca-app-pub-3940256099942544/6300978111</string>
 </resources>
