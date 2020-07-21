@@ -5,6 +5,7 @@ https://play.google.com/store/apps/details?id=com.movies.allmovies&hl=en
 ### What you will find in this project
 - **Dagger2** (still only injecting ViewModels - planning to inject all depedencies in future modifications)
 - **MVVM** - ViewModel, LiveData, Databinding and Repository (for the HomeScreen)
+- **Room** - Used for persistence of the movies in "My List" feature
 - **Firebase Cloud Message - FCM**
 - **Retrofit** CallAdapter Factory built for a concise way of making web requests in the ViewModel
 
