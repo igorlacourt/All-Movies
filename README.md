@@ -8,7 +8,7 @@ https://play.google.com/store/apps/details?id=com.movies.allmovies&hl=en
 - Firebase Cloud Message - FCM
 - Retrofit CallAdapter Factory built for a concise way of making web requests in the ViewModel
 
-ps.: PersonViewModel, PersonDetailsFragment and MyListFragment are still not refactored. Another point is that due to lack of time the request error cases are not being handled by the views, but want to implement it as soon as possible.
+ps.: PersonViewModel, PersonDetailsFragment and MyListFragment are still not refactored. Another point is that, due to lack of time, the request error cases are not being handled by the views, but want to implement it as soon as possible.
 
 ### Home Screen
 ![tape-one](https://github.com/igorlacourt/All-Movies/blob/feature/dagger/tape1.gif)
