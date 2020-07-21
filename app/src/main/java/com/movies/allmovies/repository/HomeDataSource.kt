@@ -1,4 +1,4 @@
-package com.movies.allmovies.datasource
+package com.movies.allmovies.repository
 
 import com.movies.allmovies.domainmodel.MyListItem
 import com.movies.allmovies.viewmodel.HomeResult

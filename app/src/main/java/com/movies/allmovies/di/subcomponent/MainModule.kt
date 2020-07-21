@@ -1,4 +1,4 @@
-package com.movies.allmovies.di_subcomponent
+package com.movies.allmovies.di.subcomponent
 
 import androidx.lifecycle.ViewModel
 import com.movies.allmovies.di.ViewModelKey

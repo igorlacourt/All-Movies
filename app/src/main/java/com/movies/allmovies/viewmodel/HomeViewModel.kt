@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.movies.allmovies.AppConstants
-import com.movies.allmovies.datasource.HomeDataSource
+import com.movies.allmovies.repository.HomeDataSource
 import com.movies.allmovies.domainmappers.MapperFunctions
 import com.movies.allmovies.domainmodel.Details
 import com.movies.allmovies.domainmodel.DomainMovie

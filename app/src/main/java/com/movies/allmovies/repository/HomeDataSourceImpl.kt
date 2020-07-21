@@ -1,4 +1,4 @@
-package com.movies.allmovies.datasource
+package com.movies.allmovies.repository
 
 import android.content.Context
 import android.util.Log
@@ -17,7 +17,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class HomeDataSourceImpl @Inject constructor(val context: Context): HomeDataSource {
+class HomeDataSourceImpl @Inject constructor(val context: Context):
+    HomeDataSource {
     override suspend fun getListsOfMovies(homeResultCallback: (result: HomeResult) -> Unit) {
         withContext(Dispatchers.IO){
             try {

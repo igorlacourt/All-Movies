@@ -14,11 +14,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.movies.allmovies.ui.mylist.MyListFragment
-import com.movies.allmovies.ui.home.HomeFragment
 import android.widget.Toast
-import com.crashlytics.android.Crashlytics
 import com.movies.allmovies.di.MoviesApplication
-import com.movies.allmovies.di_subcomponent.MainComponent
+import com.movies.allmovies.di.subcomponent.MainComponent
 import com.movies.allmovies.util.SharedPrefManager
 import com.movies.allmovies.util.Util
 

@@ -23,14 +23,11 @@ class PersonViewModel(application: Application) : AndroidViewModel(application){
     fun getPersonDetails(id: Int) {
         Apifactory.tmdbApi.getPerson(id).enqueue(object : Callback<PersonDetails> {
             override fun onFailure(call: Call<PersonDetails>, t: Throwable) {
-                Log.d("personlog", "ViewModel, onFailure")
                 person?.value = Resource.error(Error(400, t.localizedMessage))
             }
 
             override fun onResponse(call: Call<PersonDetails>, response: Response<PersonDetails>) {
-                Log.d("personlog", "ViewModel, onResponse")
                 if (response.isSuccessful) {
-                    Log.d("personlog", "ViewModel, isSuccessful")
                     response.body()?.let { personData ->
                         person?.value = Resource.success(personData)
                     }
@@ -45,14 +42,11 @@ class PersonViewModel(application: Application) : AndroidViewModel(application){
     fun getActorsMovies(id: Int) {
         Apifactory.tmdbApi.getActorsMovies(id, AppConstants.LANGUAGE, false).enqueue(object : Callback<MovieResponseDTO> {
             override fun onFailure(call: Call<MovieResponseDTO>, t: Throwable) {
-                Log.d("personlog", "ViewModel, onFailure")
                 person?.value = Resource.error(Error(400, t.localizedMessage))
             }
 
             override fun onResponse(call: Call<MovieResponseDTO>, response: Response<MovieResponseDTO>) {
-                Log.d("personlog", "ViewModel, onResponse")
                 if (response.isSuccessful) {
-                    Log.d("personlog", "ViewModel, isSuccessful")
                     response.body()?.let { movies ->
                         starredMovies.value = Resource.success(movies.toDomainMovie())
                     }

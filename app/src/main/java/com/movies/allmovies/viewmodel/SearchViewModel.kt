@@ -8,11 +8,10 @@ import com.movies.allmovies.AppConstants
 import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.network.Apifactory
 import com.movies.allmovies.network.NetworkResponse
-import com.movies.allmovies.ui.search.SearchRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SearchViewModel @Inject constructor(val searchRepository: SearchRepository) : ViewModel() {
+class SearchViewModel @Inject constructor() : ViewModel() {
     var searchResult: MutableLiveData<List<MovieDTO>> = MutableLiveData()
 
     val TAG = "calltest"

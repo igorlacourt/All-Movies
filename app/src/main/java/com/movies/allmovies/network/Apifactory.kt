@@ -25,7 +25,7 @@ object Apifactory {
         chain.proceed(newRequest)
     }
 
-    fun loggingClient(): OkHttpClient{
+    private fun loggingClient(): OkHttpClient{
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
 
@@ -37,7 +37,7 @@ object Apifactory {
             .build()
     }
 
-    fun retrofit(): Retrofit = Retrofit.Builder()
+    private fun retrofit(): Retrofit = Retrofit.Builder()
         .baseUrl(AppConstants.TMDB_BASE_URL)
         .client(loggingClient())
         .addConverterFactory(GsonConverterFactory.create())

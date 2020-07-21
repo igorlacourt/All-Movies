@@ -1,4 +1,4 @@
-package com.movies.allmovies.di_subcomponent
+package com.movies.allmovies.di.subcomponent
 
 import com.movies.allmovies.MainActivity
 import com.movies.allmovies.ui.details.DetailsFragment
