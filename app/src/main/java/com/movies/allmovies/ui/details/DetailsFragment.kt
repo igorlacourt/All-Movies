@@ -63,7 +63,6 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_details, container, false
         )
-//        viewModel = ViewModelProviders.of(this).get(DetailsViewModel::class.java)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
