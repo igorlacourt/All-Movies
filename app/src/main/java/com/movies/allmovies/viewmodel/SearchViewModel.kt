@@ -6,18 +6,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.dto.MovieDTO
-import com.movies.allmovies.network.Apifactory
 import com.movies.allmovies.network.NetworkResponse
+import com.movies.allmovies.network.TmdbApi
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SearchViewModel @Inject constructor() : ViewModel() {
+class SearchViewModel @Inject constructor(private val tmdbApi: TmdbApi) : ViewModel() {
     var searchResult: MutableLiveData<List<MovieDTO>> = MutableLiveData()
 
     val TAG = "calltest"
     fun searchMovie(title: String){
           viewModelScope.launch {
-              val response = Apifactory.tmdbApi.searchMovieSuspend(AppConstants.LANGUAGE, title, false)
+              val response = tmdbApi.searchMovieSuspend(AppConstants.LANGUAGE, title, false)
               when (response) {
                   is NetworkResponse.Success -> {
                       Log.d(TAG, "Success ${response.body.results[0].title}")

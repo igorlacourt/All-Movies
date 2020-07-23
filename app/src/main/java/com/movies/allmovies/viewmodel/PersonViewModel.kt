@@ -1,27 +1,30 @@
 package com.movies.allmovies.viewmodel
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.domainmappers.toDomainMovie
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.dto.MovieResponseDTO
 import com.movies.allmovies.dto.PersonDetails
-import com.movies.allmovies.network.Apifactory
 import com.movies.allmovies.network.Error
 import com.movies.allmovies.network.Resource
+import com.movies.allmovies.network.TmdbApi
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class PersonViewModel(application: Application) : AndroidViewModel(application){
+class PersonViewModel @Inject constructor(val context: Context, private val tmdbApi: TmdbApi) : ViewModel(){
     var person: MutableLiveData<Resource<PersonDetails>>? = MutableLiveData()
     var starredMovies: MutableLiveData<Resource<Collection<DomainMovie>>> = MutableLiveData()
 
     fun getPersonDetails(id: Int) {
-        Apifactory.tmdbApi.getPerson(id).enqueue(object : Callback<PersonDetails> {
+        tmdbApi.getPerson(id).enqueue(object : Callback<PersonDetails> {
             override fun onFailure(call: Call<PersonDetails>, t: Throwable) {
                 person?.value = Resource.error(Error(400, t.localizedMessage))
             }
@@ -40,7 +43,7 @@ class PersonViewModel(application: Application) : AndroidViewModel(application){
     }
 
     fun getActorsMovies(id: Int) {
-        Apifactory.tmdbApi.getActorsMovies(id, AppConstants.LANGUAGE, false).enqueue(object : Callback<MovieResponseDTO> {
+        tmdbApi.getActorsMovies(id, AppConstants.LANGUAGE, false).enqueue(object : Callback<MovieResponseDTO> {
             override fun onFailure(call: Call<MovieResponseDTO>, t: Throwable) {
                 person?.value = Resource.error(Error(400, t.localizedMessage))
             }

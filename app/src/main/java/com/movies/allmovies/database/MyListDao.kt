@@ -7,8 +7,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.movies.allmovies.domainmodel.MyListItem
 import com.movies.allmovies.dto.DbMovieDTO
-import io.reactivex.Flowable
-import io.reactivex.Single
 
 @Dao
 interface MyListDao {

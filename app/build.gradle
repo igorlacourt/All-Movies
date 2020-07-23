@@ -22,7 +22,6 @@ android {
         versionName "1.2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-//        javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
         multiDexEnabled true
 
         buildConfigField("String", "TMDB_API_KEY", TMDB_API_KEY)
@@ -48,9 +47,6 @@ android {
         jvmTarget = "1.8"
     }
 
-//    packagingOptions {
-//        exclude 'META-INF/DEPENDENCIES'
-//    }
 }
 kapt { correctErrorTypes = true}
 dependencies {
@@ -107,18 +103,9 @@ dependencies {
     // MockK
     testImplementation "io.mockk:mockk:1.9.3"
 
-//    // Mockito for unit tests
-//    testImplementation "org.mockito:mockito-core:3.1.12"
-//
-//    // Mockito for Android tests
-//    androidTestImplementation 'org.mockito:mockito-android:3.1.12'
-
     // Robolectric
     testImplementation "org.robolectric:robolectric:3.3.2"
 
-
-//    implementation "androidx.navigation:navigation-fragment:$navigation_version"
-//    implementation "androidx.navigation:navigation-ui:$navigation_version"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
 
@@ -133,9 +120,6 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit2_version"
     implementation "com.squareup.retrofit2:converter-scalars:$retrofit2_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit2_version"
-
-//    Gson
-//    implementation 'com.google.code.gson:gson:2.8.5'
 
 //    Okhttp3
     implementation "com.squareup.okhttp3:okhttp:$okhttp3_version"
@@ -153,22 +137,8 @@ dependencies {
     implementation 'com.android.support:support-v4:27.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 
-    // RxJava
-    implementation "io.reactivex.rxjava2:rxjava:2.2.12"
-    implementation "androidx.room:room-rxjava2:$room_version"
-
-    // RxAndroid
-    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
-
-    // RxJava Call Adapter
-    implementation "com.squareup.retrofit2:adapter-rxjava2:2.5.0"
-
     //Shimmer layout
     implementation 'com.facebook.shimmer:shimmer:0.5.0@aar'
-
-    //Epoxy
-    implementation 'com.airbnb.android:epoxy:3.8.0'//3.6.0'//3.7.0'//3.8.0'
-    kapt 'com.airbnb.android:epoxy-processor:3.8.0'
 
     implementation 'com.android.support:multidex:1.0.3'
 

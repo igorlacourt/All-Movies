@@ -12,12 +12,12 @@ import com.movies.allmovies.domainmappers.MapperFunctions
 import com.movies.allmovies.domainmodel.Details
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
-import com.movies.allmovies.network.Apifactory.tmdbApi
 import com.movies.allmovies.network.NetworkResponse
+import com.movies.allmovies.network.TmdbApi
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(private val homeDataSource: HomeDataSource, val context: Context) : ViewModel(){
+class HomeViewModel @Inject constructor(val context: Context, private val tmdbApi: TmdbApi, private val homeDataSource: HomeDataSource) : ViewModel(){
     private val _topTrendingMovie: MutableLiveData<Details>? = MutableLiveData()
     val topTrendingMovie: LiveData<Details>? = _topTrendingMovie
 

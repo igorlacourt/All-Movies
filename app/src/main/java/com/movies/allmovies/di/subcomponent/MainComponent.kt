@@ -1,6 +1,8 @@
 package com.movies.allmovies.di.subcomponent
 
 import com.movies.allmovies.MainActivity
+import com.movies.allmovies.dto.PersonDetails
+import com.movies.allmovies.ui.cast.PersonDetailsFragment
 import com.movies.allmovies.ui.details.DetailsFragment
 import com.movies.allmovies.ui.home.HomeFragment
 import com.movies.allmovies.ui.mylist.MyListFragment
@@ -21,5 +23,6 @@ interface MainComponent {
     fun inject(fragment: DetailsFragment)
     fun inject(fragment: SearchFragment)
     fun inject(fragment: MyListFragment)
+    fun inject(fragment: PersonDetailsFragment)
 
 }

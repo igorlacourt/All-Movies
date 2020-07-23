@@ -1,5 +1,6 @@
 package com.movies.allmovies.ui.cast
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,12 +9,15 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.movies.allmovies.AppConstants
+import com.movies.allmovies.MainActivity
 import com.movies.allmovies.R
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.dto.PersonDetails
@@ -21,13 +25,22 @@ import com.movies.allmovies.network.Resource
 import com.movies.allmovies.ui.GridAdapter
 import com.movies.allmovies.ui.OnMovieClick
 import com.movies.allmovies.util.BannerAds
+import com.movies.allmovies.viewmodel.HomeViewModel
 import com.movies.allmovies.viewmodel.PersonViewModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_person_details.*
+import javax.inject.Inject
 
 class PersonDetailsFragment : Fragment(), OnMovieClick {
-    lateinit var viewModel: PersonViewModel
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by viewModels<PersonViewModel> { viewModelFactory }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity() as MainActivity).mainComponent.inject(this)
+    }
+
     lateinit var progressBar: FrameLayout
 
     var personId: Int? = null
@@ -54,8 +67,6 @@ class PersonDetailsFragment : Fragment(), OnMovieClick {
 
         var details: PersonDetails? = null
 
-        viewModel =
-            ViewModelProviders.of(this).get(PersonViewModel::class.java)
 
         if (id != 0) {
             viewModel.getPersonDetails(id)

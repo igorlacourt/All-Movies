@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.movies.allmovies.di.ViewModelKey
 import com.movies.allmovies.viewmodel.DetailsViewModel
 import com.movies.allmovies.viewmodel.HomeViewModel
+import com.movies.allmovies.viewmodel.PersonViewModel
 import com.movies.allmovies.viewmodel.SearchViewModel
 import dagger.Binds
 import dagger.Module
@@ -26,11 +27,11 @@ interface MainModule {
     @IntoMap
     @ViewModelKey(DetailsViewModel::class)
     fun bindDetailsViewModel(viewModel: DetailsViewModel): ViewModel
-//
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(DetailsViewModel::class)
-//    fun bindDetailsViewModel(viewModel: DetailsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PersonViewModel::class)
+    fun bindPersonViewModel(viewModel: PersonViewModel): ViewModel
 
 
 //    @Binds
