@@ -21,7 +21,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 class SearchViewModelTest {
     private val dispatcher = TestCoroutineDispatcher()
     private val tmdbApi = mockk<TmdbApi>()
-    private var viewModel: SearchViewModel? = SearchViewModel(tmdbApi)
+    private var viewModel: SearchViewModel? = SearchViewModel(tmdbApi, dispatcher)
     private val movieTitle = "nemo"
     private val successResponse = NetworkResponse.Success(
         MovieResponseDTO(listOf(
@@ -58,7 +58,7 @@ class SearchViewModelTest {
     }
 
     @Test
-    fun `make request, retorns 200`() {
+    fun `make request, returns 200`() {
         //Arrange
         coEvery { tmdbApi.searchMovieSuspend(AppConstants.LANGUAGE, movieTitle, false) } answers {
             successResponse

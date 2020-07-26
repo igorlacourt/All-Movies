@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.database.AppDatabase
+import com.movies.allmovies.di.MainDispatcher
 import com.movies.allmovies.domainmappers.MapperFunctions
 import com.movies.allmovies.domainmappers.toDomainMovie
 import com.movies.allmovies.domainmodel.Details
@@ -12,10 +13,11 @@ import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
 import com.movies.allmovies.network.NetworkResponse
 import com.movies.allmovies.network.TmdbApi
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class DetailsViewModel @Inject constructor(val context: Context, private val tmdbApi: TmdbApi) : ViewModel(){
+class DetailsViewModel @Inject constructor(val context: Context, private val tmdbApi: TmdbApi, @MainDispatcher val mainDispatcher: CoroutineDispatcher) : ViewModel(){
 
     private val _movie: MutableLiveData<Details> = MutableLiveData()
     val movie: LiveData<Details> = _movie
@@ -34,7 +36,7 @@ class DetailsViewModel @Inject constructor(val context: Context, private val tmd
 
     fun getDetails(id: Int) {
         _isLoading.value = true
-        viewModelScope.launch {
+        viewModelScope.launch(mainDispatcher) {
             val response = tmdbApi.getDetails(id, AppConstants.VIDEOS_AND_CASTS)
             when (response) {
                 is NetworkResponse.Success -> {

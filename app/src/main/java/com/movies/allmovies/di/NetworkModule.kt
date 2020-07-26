@@ -6,6 +6,8 @@ import com.movies.allmovies.network.NetworkResponseAdapterFactory
 import com.movies.allmovies.network.TmdbApi
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

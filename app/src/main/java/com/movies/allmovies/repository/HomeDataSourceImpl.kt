@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.database.AppDatabase
+import com.movies.allmovies.di.IoDispatcher
 import com.movies.allmovies.domainmappers.toDomainMovie
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
@@ -12,15 +13,16 @@ import com.movies.allmovies.network.Error
 import com.movies.allmovies.network.NetworkResponse
 import com.movies.allmovies.network.TmdbApi
 import com.movies.allmovies.viewmodel.HomeResult
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class HomeDataSourceImpl @Inject constructor(val context: Context, private val tmbdbApi: TmdbApi):
+class HomeDataSourceImpl @Inject constructor(val context: Context, private val tmbdbApi: TmdbApi, @IoDispatcher private val ioDispatcher: CoroutineDispatcher):
     HomeDataSource {
     override suspend fun getListsOfMovies(homeResultCallback: (result: HomeResult) -> Unit) {
-        withContext(Dispatchers.IO){
+        withContext(ioDispatcher){
             try {
                 val trendingMoviesResponse = async { tmbdbApi.getTrendingMoviesSuspend(AppConstants.LANGUAGE, 1) }
                 val upcomingMoviesResponse = async { tmbdbApi.getUpcomingMoviesSuspend(AppConstants.LANGUAGE, 1) }

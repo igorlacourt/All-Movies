@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.movies.allmovies.AppConstants
+import com.movies.allmovies.di.MainDispatcher
 import com.movies.allmovies.domainmappers.toDomainMovie
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.dto.MovieResponseDTO
@@ -14,12 +15,13 @@ import com.movies.allmovies.dto.PersonDetails
 import com.movies.allmovies.network.Error
 import com.movies.allmovies.network.Resource
 import com.movies.allmovies.network.TmdbApi
+import kotlinx.coroutines.CoroutineDispatcher
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
 
-class PersonViewModel @Inject constructor(val context: Context, private val tmdbApi: TmdbApi) : ViewModel(){
+class PersonViewModel @Inject constructor(val context: Context, private val tmdbApi: TmdbApi, @MainDispatcher val mainDispatcher: CoroutineDispatcher) : ViewModel(){
     var person: MutableLiveData<Resource<PersonDetails>>? = MutableLiveData()
     var starredMovies: MutableLiveData<Resource<Collection<DomainMovie>>> = MutableLiveData()
 
