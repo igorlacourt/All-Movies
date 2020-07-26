@@ -6,23 +6,21 @@ import com.movies.allmovies.dto.MovieResponseDTO
 import com.movies.allmovies.network.NetworkResponse
 import com.movies.allmovies.network.TmdbApi
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
 import org.junit.Assert
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
-//@ExperimentalCoroutinesApi
 @ExtendWith(InstantExecutorExtension::class)
 class SearchViewModelTest {
-//    private val dispathcer = TestCoroutinesDispatcher()
-
+    private val dispatcher = TestCoroutineDispatcher()
     private val tmdbApi = mockk<TmdbApi>()
-
     private var viewModel: SearchViewModel? = SearchViewModel(tmdbApi)
     private val movieTitle = "nemo"
     private val successResponse = NetworkResponse.Success(
@@ -49,18 +47,18 @@ class SearchViewModelTest {
 
     @BeforeEach
     fun init() {
-
+        Dispatchers.setMain(dispatcher)
     }
 
     @AfterEach
     fun tearDown() {
         viewModel = null
-//        Dicspatchers.reseMain()
-//        testDispatecher.cleanupTestCoroutines()
+        Dispatchers.resetMain()
+        dispatcher.cleanupTestCoroutines()
     }
 
     @Test
-    fun `make reques, retorno 200`(){
+    fun `make request, retorns 200`() {
         //Arrange
         coEvery { tmdbApi.searchMovieSuspend(AppConstants.LANGUAGE, movieTitle, false) } answers {
             successResponse
@@ -69,6 +67,6 @@ class SearchViewModelTest {
         viewModel?.searchMovie(movieTitle)
 
         //Assert
-        Assert.assertEquals(successResponse, viewModel?.searchResult)
+        Assert.assertEquals(successResponse.body.results, viewModel?.searchResult?.value)
     }
 }
