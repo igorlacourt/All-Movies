@@ -10,12 +10,10 @@ import com.movies.allmovies.AppConstants
 import com.movies.allmovies.R
 import com.movies.allmovies.di.MainDispatcher
 import com.movies.allmovies.dto.MovieDTO
-import com.movies.allmovies.network.Error
 import com.movies.allmovies.network.NetworkResponse
 import com.movies.allmovies.network.TmdbApi
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
-import java.io.IOException
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(private val context: Context, private val tmdbApi: TmdbApi, @MainDispatcher val mainDispatcher: CoroutineDispatcher) : ViewModel() {
@@ -23,53 +21,68 @@ class SearchViewModel @Inject constructor(private val context: Context, private 
     private var _searchResult = MutableLiveData<List<MovieDTO>>()
     var searchResult: LiveData<List<MovieDTO>> = _searchResult
 
-    private var _errorVisibility = MutableLiveData<Boolean>(false)
-    var errorVisibility: LiveData<Boolean> = _errorVisibility
+    private var _searchProgressBarVisibility = MutableLiveData<Boolean>(false)
+    var searchProgressBarVisibility: LiveData<Boolean> = _searchProgressBarVisibility
 
-    private var _apiErrorResult = MutableLiveData<String>()
-    var apiErrorResult: LiveData<String> = _apiErrorResult
+    private var _noResultsVisibility = MutableLiveData<Boolean>(true)
+    var noResultsVisibility: LiveData<Boolean> = _noResultsVisibility
 
-    private var _networkErrorResult = MutableLiveData<String>()
-    var networkErrorResult: LiveData<String> = _networkErrorResult
-
-    private var _unknownErrorResult = MutableLiveData<String>()
-    var unknownErrorResult: LiveData<String> = _unknownErrorResult
+    private var _errorMessage = MutableLiveData<String>()
+    var errorMessage: LiveData<String> = _errorMessage
 
     val TAG = "calltest"
     fun searchMovie(title: String){
-          viewModelScope.launch(mainDispatcher) {
+        searchProgressBarVisible(true)
+        viewModelScope.launch(mainDispatcher) {
               val response = tmdbApi.searchMovieSuspend(AppConstants.LANGUAGE, title, false)
               when (response) {
                   is NetworkResponse.Success -> {
-                      Log.d(TAG, "Success ${response.body.results[0].title}")
+                      Log.d(TAG, "Success")
                       _searchResult.value = response.body.results
-                      _errorVisibility.value = true
+                      if (response.body.results.isNullOrEmpty()){
+                          noResultsVisible(true)
+                      }
+                      searchProgressBarVisible(false)
+                      noResultsVisible(false)
                   }
                   is NetworkResponse.ApiError -> {
                       Log.d("svmlog", "_____________________________")
                       Log.d("svmlog", "NetworkResponse.ApiError ->")
                       Log.d("svmlog", "code = ${response.body.cd}")
                       Log.d("svmlog", "msg = ${response.body.message}")
-                      _apiErrorResult.value = context.resources.getString(R.string.api_error_msg)
-                      _errorVisibility.value = true
+                      _errorMessage.value = context.resources.getString(R.string.api_error_msg)
+                      searchProgressBarVisible(false)
+                      noResultsVisible(false)
                   }
                   is NetworkResponse.NetworkError -> {
                       Log.d("svmlog", "_____________________________")
                       Log.d("svmlog", "NetworkResponse.NetworkError ->")
                       Log.d("svmlog", "cause = ${response.error.cause}")
                       Log.d("svmlog", "localizedMessage = ${response.error.localizedMessage}")
-                      _networkErrorResult.value = context.resources.getString(R.string.network_error_msg)
-                      _errorVisibility.value = true
+                      _errorMessage.value = context.resources.getString(R.string.network_error_msg)
+                      searchProgressBarVisible(false)
+                      noResultsVisible(false)
                   }
+
                   is NetworkResponse.UnknownError -> {
                       Log.d("svmlog", "_____________________________")
                       Log.d("svmlog", "NetworkResponse.UnknownError ->")
                       Log.d("svmlog", "cause = ${response.error?.cause}")
                       Log.d("svmlog", "localizedMessage = ${response.error?.localizedMessage}")
-                      _unknownErrorResult.value = context.resources.getString(R.string.unknown_error_msg)
-                      _errorVisibility.value = true
+                      _errorMessage.value = context.resources.getString(R.string.unknown_error_msg)
+                      searchProgressBarVisible(false)
+                      noResultsVisible(false)
                   }
               }
           }
     }
+
+    private fun searchProgressBarVisible(isVisible: Boolean) {
+        _searchProgressBarVisibility.value = isVisible
+    }
+
+    private fun noResultsVisible(isVisible: Boolean) {
+        _noResultsVisibility.value = isVisible
+    }
+
 }
