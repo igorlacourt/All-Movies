@@ -93,4 +93,20 @@ class SearchViewModelTest {
         Assert.assertEquals(null, viewModel?.unknownErrorResult?.value)
         Assert.assertEquals(networkErrorResponse.error, viewModel?.networkErrorResult?.value)
     }
+
+    @Test
+    fun `make request, returns 500`() {
+        //Arrange
+        coEvery { tmdbApi.searchMovieSuspend(AppConstants.LANGUAGE, movieTitle, false) } answers {
+            apiErrorResponse
+        }
+        //Act
+        viewModel?.searchMovie(movieTitle)
+
+        //Assert
+        Assert.assertEquals(null, viewModel?.searchResult?.value)
+        Assert.assertEquals(null, viewModel?.apiErrorResult?.value)
+        Assert.assertEquals(null, viewModel?.unknownErrorResult?.value)
+        Assert.assertEquals(networkErrorResponse.error, viewModel?.networkErrorResult?.value)
+    }
 }
