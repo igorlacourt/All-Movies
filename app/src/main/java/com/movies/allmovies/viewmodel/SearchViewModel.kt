@@ -23,6 +23,9 @@ class SearchViewModel @Inject constructor(private val context: Context, private 
     private var _searchResult = MutableLiveData<List<MovieDTO>>()
     var searchResult: LiveData<List<MovieDTO>> = _searchResult
 
+    private var _errorVisibility = MutableLiveData<Boolean>(false)
+    var errorVisibility: LiveData<Boolean> = _errorVisibility
+
     private var _apiErrorResult = MutableLiveData<String>()
     var apiErrorResult: LiveData<String> = _apiErrorResult
 
@@ -40,6 +43,7 @@ class SearchViewModel @Inject constructor(private val context: Context, private 
                   is NetworkResponse.Success -> {
                       Log.d(TAG, "Success ${response.body.results[0].title}")
                       _searchResult.value = response.body.results
+                      _errorVisibility.value = true
                   }
                   is NetworkResponse.ApiError -> {
                       Log.d("svmlog", "_____________________________")
@@ -47,6 +51,7 @@ class SearchViewModel @Inject constructor(private val context: Context, private 
                       Log.d("svmlog", "code = ${response.body.cd}")
                       Log.d("svmlog", "msg = ${response.body.message}")
                       _apiErrorResult.value = context.resources.getString(R.string.api_error_msg)
+                      _errorVisibility.value = true
                   }
                   is NetworkResponse.NetworkError -> {
                       Log.d("svmlog", "_____________________________")
@@ -54,6 +59,7 @@ class SearchViewModel @Inject constructor(private val context: Context, private 
                       Log.d("svmlog", "cause = ${response.error.cause}")
                       Log.d("svmlog", "localizedMessage = ${response.error.localizedMessage}")
                       _networkErrorResult.value = context.resources.getString(R.string.network_error_msg)
+                      _errorVisibility.value = true
                   }
                   is NetworkResponse.UnknownError -> {
                       Log.d("svmlog", "_____________________________")
@@ -61,6 +67,7 @@ class SearchViewModel @Inject constructor(private val context: Context, private 
                       Log.d("svmlog", "cause = ${response.error?.cause}")
                       Log.d("svmlog", "localizedMessage = ${response.error?.localizedMessage}")
                       _unknownErrorResult.value = context.resources.getString(R.string.unknown_error_msg)
+                      _errorVisibility.value = true
                   }
               }
           }
