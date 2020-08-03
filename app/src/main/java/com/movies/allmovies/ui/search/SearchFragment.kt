@@ -42,7 +42,19 @@ class SearchFragment : Fragment(), OnMovieClick {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+
         setupRecyclerView()
+
+        (activity as MainActivity).showRatingDialog()
+        showKeyBoard()
+
+        attachSearchObserver()
+        attachRetryClickListener()
+
+        binding.etSearch.addTextChangedListener(searchTextWatcher())
+
         return binding.root
     }
 
@@ -52,41 +64,9 @@ class SearchFragment : Fragment(), OnMovieClick {
         binding.rvSearchedList.adapter = adapter
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        (activity as MainActivity).showRatingDialog()
-        showKeyBoard()
-
-        setupSearchObserver()
-        setupErrorObserver()
-        attachRetryClickListener()
-
-        binding.etSearch.addTextChangedListener(searchTextWatcher())
-    }
-
-    private fun setupSearchObserver() {
+    private fun attachSearchObserver() {
         viewModel.searchResult.observe(viewLifecycleOwner, Observer { resultList ->
             adapter.setList(resultList)
-//            if (resultList.isEmpty()){
-//                showErrorScreen(requireContext().resources.getString(R.string.no_results))
-//            }
-            hideErrorScreen()
-        })
-    }
-
-    private fun hideErrorScreen() {
-        binding.iErrorScreen.rlErrorScreen.visibility = View.GONE
-    }
-
-    private fun showErrorScreen(message: String) {
-        binding.iErrorScreen.rlErrorScreen.visibility = View.VISIBLE
-        binding.iErrorScreen.tvErrorMsg.text = message
-    }
-
-    private fun setupErrorObserver() {
-        viewModel.errorMessage.observe(viewLifecycleOwner, Observer { errorMessage ->
-            showErrorScreen(errorMessage)
         })
     }
 

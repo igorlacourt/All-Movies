@@ -15,4 +15,10 @@ object AppConstants{
     const val VIDEOS_AND_CASTS = "videos,casts"
     const val TMDB_API_KEY = ""
 
+
+//    ERROR MESSAGES
+    const val API_ERROR_MESSAGE = "Resource not found :/\n \"Please, try again later\""
+    const val NETWORK_ERROR_MESSAGE = "Network Error :/\\n \\\"Please, check your connection and try again\\\""
+    const val UNKNOWN_ERROR_MESSAGE = "Unexpected Error :/\\n \\\"Please, check your connection and try again\\\""
+    const val SEARCH_NO_RESULtS = "No results."
 }

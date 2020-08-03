@@ -16,13 +16,16 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SearchViewModel @Inject constructor(private val context: Context, private val tmdbApi: TmdbApi, @MainDispatcher val mainDispatcher: CoroutineDispatcher) : ViewModel() {
+class SearchViewModel @Inject constructor(private val tmdbApi: TmdbApi, @MainDispatcher val mainDispatcher: CoroutineDispatcher) : ViewModel() {
 
     private var _searchResult = MutableLiveData<List<MovieDTO>>()
     var searchResult: LiveData<List<MovieDTO>> = _searchResult
 
     private var _searchProgressBarVisibility = MutableLiveData<Boolean>(false)
     var searchProgressBarVisibility: LiveData<Boolean> = _searchProgressBarVisibility
+
+    private var _errorScreenVisibility = MutableLiveData<Boolean>(false)
+    var errorScreenVisibility: LiveData<Boolean> = _errorScreenVisibility
 
     private var _noResultsVisibility = MutableLiveData<Boolean>(true)
     var noResultsVisibility: LiveData<Boolean> = _noResultsVisibility
@@ -32,36 +35,32 @@ class SearchViewModel @Inject constructor(private val context: Context, private 
 
     val TAG = "calltest"
     fun searchMovie(title: String){
-        searchProgressBarVisible(true)
+        showSearchProgressBar(true)
+        showError(false)
         viewModelScope.launch(mainDispatcher) {
               val response = tmdbApi.searchMovieSuspend(AppConstants.LANGUAGE, title, false)
+             showSearchProgressBar(false)
               when (response) {
                   is NetworkResponse.Success -> {
                       Log.d(TAG, "Success")
                       _searchResult.value = response.body.results
-                      if (response.body.results.isNullOrEmpty()){
-                          noResultsVisible(true)
-                      }
-                      searchProgressBarVisible(false)
-                      noResultsVisible(false)
+                      showResults(response.body.results)
                   }
                   is NetworkResponse.ApiError -> {
                       Log.d("svmlog", "_____________________________")
                       Log.d("svmlog", "NetworkResponse.ApiError ->")
                       Log.d("svmlog", "code = ${response.body.cd}")
                       Log.d("svmlog", "msg = ${response.body.message}")
-                      _errorMessage.value = context.resources.getString(R.string.api_error_msg)
-                      searchProgressBarVisible(false)
-                      noResultsVisible(false)
+                      _errorMessage.value = AppConstants.API_ERROR_MESSAGE
+                      showErrorScreen()
                   }
                   is NetworkResponse.NetworkError -> {
                       Log.d("svmlog", "_____________________________")
                       Log.d("svmlog", "NetworkResponse.NetworkError ->")
                       Log.d("svmlog", "cause = ${response.error.cause}")
                       Log.d("svmlog", "localizedMessage = ${response.error.localizedMessage}")
-                      _errorMessage.value = context.resources.getString(R.string.network_error_msg)
-                      searchProgressBarVisible(false)
-                      noResultsVisible(false)
+                      _errorMessage.value = AppConstants.NETWORK_ERROR_MESSAGE
+                      showErrorScreen()
                   }
 
                   is NetworkResponse.UnknownError -> {
@@ -69,20 +68,36 @@ class SearchViewModel @Inject constructor(private val context: Context, private 
                       Log.d("svmlog", "NetworkResponse.UnknownError ->")
                       Log.d("svmlog", "cause = ${response.error?.cause}")
                       Log.d("svmlog", "localizedMessage = ${response.error?.localizedMessage}")
-                      _errorMessage.value = context.resources.getString(R.string.unknown_error_msg)
-                      searchProgressBarVisible(false)
-                      noResultsVisible(false)
+                      _errorMessage.value = AppConstants.UNKNOWN_ERROR_MESSAGE
+                      showErrorScreen()
                   }
               }
           }
     }
 
-    private fun searchProgressBarVisible(isVisible: Boolean) {
-        _searchProgressBarVisibility.value = isVisible
+    private fun showResults(results: List<MovieDTO>) {
+        if (results.isNullOrEmpty()){
+            showNoResultsMessage(true)
+        } else {
+            showNoResultsMessage(false)
+        }
     }
 
-    private fun noResultsVisible(isVisible: Boolean) {
-        _noResultsVisibility.value = isVisible
+    private fun showErrorScreen() {
+        showError(true)
+        showNoResultsMessage(false)
+    }
+
+    private fun showError(shouldShow: Boolean) {
+        _errorScreenVisibility.value = shouldShow
+    }
+
+    private fun showSearchProgressBar(shouldShow: Boolean) {
+        _searchProgressBarVisibility.value = shouldShow
+    }
+
+    private fun showNoResultsMessage(shouldShow: Boolean) {
+        _noResultsVisibility.value = shouldShow
     }
 
 }

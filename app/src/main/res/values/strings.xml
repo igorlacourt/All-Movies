@@ -27,9 +27,5 @@
     <string name="admob_app_id">ca-app-pub-5070947808406616~1403692144</string>
     <string name="admob_ad_unit_id">ca-app-pub-5070947808406616/9255273764</string>
 
-    <!--  ERROR MESSAGES-->
-    <string name="api_error_msg">Resource not found :/\n Please, try again later.</string>
-    <string name="network_error_msg">Network Erro :/\n Please, check your connection and try again.</string>
-    <string name="unknown_error_msg">Network Erro :/\n Please, check your connection and try again.</string>
-    <string name="no_results">No results.</string>
+
 </resources>
