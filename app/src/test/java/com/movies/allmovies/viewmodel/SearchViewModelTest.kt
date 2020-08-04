@@ -19,11 +19,12 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import java.io.IOException
 
+
 @ExtendWith(InstantExecutorExtension::class)
 class SearchViewModelTest {
     private val dispatcher = TestCoroutineDispatcher()
     private val tmdbApi = mockk<TmdbApi>()
-    private var viewModel: SearchViewModel? = SearchViewModel(tmdbApi, dispatcher)
+    private var viewModel: SearchViewModel? = null
     private val movieTitle = "nemo"
     private val successResponse = NetworkResponse.Success(
         MovieResponseDTO(listOf(
@@ -53,6 +54,7 @@ class SearchViewModelTest {
 
     @BeforeEach
     fun init() {
+        viewModel = SearchViewModel(tmdbApi, dispatcher)
         Dispatchers.setMain(dispatcher)
     }
 
