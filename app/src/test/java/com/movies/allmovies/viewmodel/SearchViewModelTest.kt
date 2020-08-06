@@ -71,6 +71,7 @@ class SearchViewModelTest {
 
     @After
     fun tearDown() {
+        viewModel = null
         Dispatchers.resetMain()
         dispatcher.cleanupTestCoroutines()
     }
