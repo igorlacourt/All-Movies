@@ -8,15 +8,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.di.IoDispatcher
-import com.movies.allmovies.repository.HomeDataSource
-import com.movies.allmovies.domainmappers.MapperFunctions
 import com.movies.allmovies.domainmappers.toDetails
 import com.movies.allmovies.domainmodel.Details
-import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
 import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.network.NetworkResponse
 import com.movies.allmovies.network.TmdbApi
+import com.movies.allmovies.repository.HomeDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import javax.inject.Inject
