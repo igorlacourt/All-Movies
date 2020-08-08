@@ -1,11 +1,10 @@
 package com.movies.allmovies.domainmappers
 
 import com.movies.allmovies.domainmodel.Details
-import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
 import com.movies.allmovies.dto.*
 
-fun Details.toMyListItem(): MyListItem? {
+fun Details.toMyListItem(): MyListItem {
     return with(this) {
         MyListItem(
             id,
@@ -14,25 +13,6 @@ fun Details.toMyListItem(): MyListItem? {
         )
     }
 
-}
-
-fun List<MyListItem>.toDomainMovieList(): List<DomainMovie>? {
-    return this.map { myListItem ->
-        DomainMovie(
-            myListItem.id,
-            myListItem.poster_path
-        )
-    }
-
-}
-
-fun MovieResponseDTO.toDomainMovieList(): Collection<DomainMovie> {
-    return this.results.map { movieDTO ->
-        DomainMovie(
-            movieDTO.id,
-            movieDTO.poster_path
-        )
-    }
 }
 
 fun ArrayList<CrewDTO>.toCastDTO(): List<CastDTO> {
@@ -76,17 +56,5 @@ fun DetailsDTO.toDetails(): Details {
             videos?.results,
             casts
         )
-    }
-}
-
-object MapperFunctions {
-    fun toMyListItem(input: Details): MyListItem {
-        return with(input) {
-            MyListItem(
-                id,
-                poster_path,
-                release_date
-            )
-        }
     }
 }

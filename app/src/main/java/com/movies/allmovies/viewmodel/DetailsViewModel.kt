@@ -9,8 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.database.AppDatabase
 import com.movies.allmovies.di.MainDispatcher
-import com.movies.allmovies.domainmappers.MapperFunctions
 import com.movies.allmovies.domainmappers.toDetails
+import com.movies.allmovies.domainmappers.toMyListItem
 import com.movies.allmovies.domainmodel.Details
 import com.movies.allmovies.domainmodel.MyListItem
 import com.movies.allmovies.dto.MovieDTO
@@ -83,7 +83,7 @@ class DetailsViewModel @Inject constructor(val context: Context, private val tmd
     fun addToList() {
         if (isInDatabase.value == false) {
             if (movie.value?.id != null) {
-                movie.value?.let { insert(MapperFunctions.toMyListItem(it)) }
+                movie.value?.let { insert(it.toMyListItem()) }
             }
         } else {
             movie.value?.id?.let { id -> delete(id) }

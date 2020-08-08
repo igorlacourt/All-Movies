@@ -18,7 +18,6 @@ import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.movies.allmovies.MainActivity
 import com.movies.allmovies.R
-import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.ui.GridAdapter
 import com.movies.allmovies.ui.OnMovieClick

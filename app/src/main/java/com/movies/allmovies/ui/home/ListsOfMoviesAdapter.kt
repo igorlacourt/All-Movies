@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.movies.allmovies.R
-import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.ui.OnMovieClick
 import kotlinx.android.synthetic.main.list_item_rv_movies.view.*

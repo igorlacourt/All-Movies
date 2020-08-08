@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.database.AppDatabase
-import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
 import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.dto.MovieResponseDTO

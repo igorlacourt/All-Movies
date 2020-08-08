@@ -7,7 +7,6 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.movies.allmovies.database.AppDatabase.Companion.DATABASE_VERSION
 import com.movies.allmovies.domainmodel.MyListItem
-import com.movies.allmovies.dto.DbMovieDTO
 
 private var INSTANCE: AppDatabase? = null
 

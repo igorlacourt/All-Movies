@@ -3,8 +3,6 @@ package com.movies.allmovies.viewmodel
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.movies.allmovies.AppConstants
-import com.movies.allmovies.domainmappers.toDomainMovieList
-import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
 import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.dto.MovieResponseDTO
@@ -37,13 +35,13 @@ class HomeViewModelTest {
 
     private var homeDataSourceMock: HomeDataSourceMock? = null
     private var viewModel: HomeViewModel? = null
-    private val movieDTOMock = MovieDTO(false, "", arrayListOf("0","0","0"), arrayListOf("","",""), 0, "", "", "", 0.0, "", "", "", false, 0.0, 0)
+    private val movieDTOMock = MovieDTO(0, "", "", "")
     private val successResponseMock = NetworkResponse.Success(MovieResponseDTO(listOf(movieDTOMock)))
     private val resultListsMock = arrayListOf(
-        successResponseMock.body.toDomainMovieList(),
-        successResponseMock.body.toDomainMovieList(),
-        successResponseMock.body.toDomainMovieList(),
-        successResponseMock.body.toDomainMovieList()
+        successResponseMock.body.results,
+        successResponseMock.body.results,
+        successResponseMock.body.results,
+        successResponseMock.body.results
     )
 
     @Before
@@ -114,7 +112,7 @@ class HomeViewModelTest {
 //    }
 }
 
-class HomeDataSourceMock(private val resultLists: ArrayList<Collection<DomainMovie>>? = null, private val success: Boolean) :
+class HomeDataSourceMock(private val resultLists: ArrayList<List<MovieDTO>>? = null, private val success: Boolean) :
     HomeDataSource {
     override suspend fun getListsOfMovies(dispatcher: CoroutineDispatcher, homeResultCallback: (result: HomeResult) -> Unit) {
         if(success){

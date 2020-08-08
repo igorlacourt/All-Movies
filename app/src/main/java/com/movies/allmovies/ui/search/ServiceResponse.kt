@@ -6,7 +6,7 @@ import android.net.NetworkCapabilities
 import android.util.Log
 import com.movies.allmovies.network.Error
 import com.movies.allmovies.network.Resource
-import com.squareup.moshi.JsonEncodingException
+//import com.squareup.moshi.JsonEncodingException
 import okhttp3.ResponseBody
 import retrofit2.HttpException
 import retrofit2.Response
@@ -84,10 +84,10 @@ class ServiceResponse<T>(private val context: Context?, private val request: sus
                 Log.d("errorBoolean", "RetrofitResponse, is IOException")
                 Error(1, "IOException")
             }
-            is JsonEncodingException -> {
-                Log.d("errorBoolean", "RetrofitResponse, is JsonEncodingException")
-                Error(2, "JsonEncondingException")
-            }
+//            is JsonEncodingException -> { // needs moshi dependency
+//                Log.d("errorBoolean", "RetrofitResponse, is JsonEncodingException")
+//                Error(2, "JsonEncondingException")
+//            }
             else -> {
                 Log.d("errorBoolean", "RetrofitResponse, is Another Error")
                 Error(0, exception.message)

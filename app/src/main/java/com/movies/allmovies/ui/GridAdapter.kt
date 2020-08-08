@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.R
-import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.dto.MovieDTO
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_list_item.view.*

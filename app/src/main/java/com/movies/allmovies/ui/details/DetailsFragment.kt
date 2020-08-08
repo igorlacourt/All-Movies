@@ -29,7 +29,6 @@ import com.movies.allmovies.MainActivity
 import com.movies.allmovies.R
 import com.movies.allmovies.databinding.FragmentDetailsBinding
 import com.movies.allmovies.domainmappers.toCastDTO
-import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.dto.CastsDTO
 import com.movies.allmovies.openYoutube
 import com.movies.allmovies.ui.GridAdapter

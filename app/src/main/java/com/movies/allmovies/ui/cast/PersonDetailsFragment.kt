@@ -19,13 +19,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.MainActivity
 import com.movies.allmovies.R
-import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.dto.PersonDetails
 import com.movies.allmovies.network.Resource
 import com.movies.allmovies.ui.GridAdapter
 import com.movies.allmovies.ui.OnMovieClick
 import com.movies.allmovies.util.BannerAds
-import com.movies.allmovies.viewmodel.HomeViewModel
 import com.movies.allmovies.viewmodel.PersonViewModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
