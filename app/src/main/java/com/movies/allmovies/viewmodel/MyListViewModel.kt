@@ -5,9 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.movies.allmovies.database.AppDatabase
-import com.movies.allmovies.domainmappers.toDomainMovieList
 import com.movies.allmovies.domainmappers.toMovieList
-import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.dto.MovieDTO
 
 class MyListViewModel(application: Application) : AndroidViewModel(application) {
