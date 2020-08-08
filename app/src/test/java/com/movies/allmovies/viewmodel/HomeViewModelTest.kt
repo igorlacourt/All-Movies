@@ -1,4 +1,4 @@
-package com.movies.allmovies.repository
+package com.movies.allmovies.viewmodel
 
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -10,8 +10,7 @@ import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.dto.MovieResponseDTO
 import com.movies.allmovies.network.NetworkResponse
 import com.movies.allmovies.network.TmdbApi
-import com.movies.allmovies.viewmodel.HomeResult
-import com.movies.allmovies.viewmodel.HomeViewModel
+import com.movies.allmovies.repository.HomeDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -64,7 +63,10 @@ class HomeViewModelTest {
     @Test
     fun `get lists of movies from the data source, and all lists come with no error`() = dispatcher.runBlockingTest {
         // Arrange
-        homeDataSourceMock = HomeDataSourceMock(resultListsMock, success = true)
+        homeDataSourceMock = HomeDataSourceMock(
+            resultListsMock,
+            success = true
+        )
         viewModel = HomeViewModel(context, tmdbApi, homeDataSourceMock!!, dispatcher)
         // Act
         viewModel?.getListOfMovies()
@@ -77,7 +79,8 @@ class HomeViewModelTest {
     @Test
     fun `get lists of movies from the data source, but an error occurs in one or more of the requests`() = dispatcher.runBlockingTest {
         // Arrange
-        homeDataSourceMock = HomeDataSourceMock(success = false)
+        homeDataSourceMock =
+            HomeDataSourceMock(success = false)
         viewModel = HomeViewModel(context, tmdbApi, homeDataSourceMock!!, dispatcher)
         // Act
         viewModel?.getListOfMovies()
@@ -111,7 +114,8 @@ class HomeViewModelTest {
 //    }
 }
 
-class HomeDataSourceMock(private val resultLists: ArrayList<Collection<DomainMovie>>? = null, private val success: Boolean) : HomeDataSource {
+class HomeDataSourceMock(private val resultLists: ArrayList<Collection<DomainMovie>>? = null, private val success: Boolean) :
+    HomeDataSource {
     override suspend fun getListsOfMovies(dispatcher: CoroutineDispatcher, homeResultCallback: (result: HomeResult) -> Unit) {
         if(success){
             resultLists?.let { homeResultCallback(HomeResult.Success(resultLists)) }
