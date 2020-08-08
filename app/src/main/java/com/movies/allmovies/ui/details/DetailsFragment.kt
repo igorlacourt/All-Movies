@@ -97,7 +97,7 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
             } else {
                 binding.tvRecommendedEmpty.visibility = View.INVISIBLE
             }
-            gridAdapter?.setList(movies as List<DomainMovie>)
+            gridAdapter?.setList(movies)
         })
     }
 

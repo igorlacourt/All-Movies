@@ -35,7 +35,7 @@ class SearchAdapter(private val context: Context?,
                 .into(backdrop)
 
             itemLayout.setOnClickListener {
-                onMovieClick.onClick(list[position].id)
+                list[position].id?.let { it1 -> onMovieClick.onClick(it1) }
             }
         }
 

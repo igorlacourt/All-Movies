@@ -86,7 +86,7 @@ class PersonDetailsFragment : Fragment(), OnMovieClick {
 //                            emptyRecomendations.visibility = View.INVISIBLE
 
 //                        Log.d("recnull", "visibility = ${emptyRecomendations.visibility}")
-                        adapter.setList(movies as List<DomainMovie>)
+                        adapter.setList(movies)
 //                        recommendedMoviesAdapter.setList(movies)
                     }
                 }

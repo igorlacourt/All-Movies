@@ -8,11 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.R
 import com.movies.allmovies.domainmodel.DomainMovie
+import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.ui.OnMovieClick
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_list_item.view.*
 
-class MoviesAdapter (val movieClick: OnMovieClick, val context: Context?, val movies: Collection<DomainMovie>) :
+class MoviesAdapter (val movieClick: OnMovieClick, val context: Context?, val movies: List<MovieDTO>) :
     RecyclerView.Adapter<MoviesAdapter.MovieHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieHolder {

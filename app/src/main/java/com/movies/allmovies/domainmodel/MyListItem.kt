@@ -6,17 +6,15 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 
 @Entity(tableName = "mylist")
-data class MyListItem(@Expose
-                    @NonNull
-                    @PrimaryKey(autoGenerate = false)
-                    val id: Int?,
+data class MyListItem(
+    @Expose
+    @NonNull
+    @PrimaryKey(autoGenerate = false)
+    val id: Int?,
 
-                      @Expose
-                    val poster_path: String?,
+    @Expose
+    val poster_path: String?,
 
-                      @Expose
-                    val release_date: String?,
-
-                      @Expose
-                    val vote_average: Double?
+    @Expose
+    val backdrop_path: String?
 )

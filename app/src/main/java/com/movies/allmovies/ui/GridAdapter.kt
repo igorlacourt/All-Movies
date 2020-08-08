@@ -11,13 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.R
 import com.movies.allmovies.domainmodel.DomainMovie
+import com.movies.allmovies.dto.MovieDTO
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_list_item.view.*
 
 class GridAdapter(
     private val context: Context?,
     private val onMovieClick: OnMovieClick,
-    private var list: ArrayList<DomainMovie>
+    private var list: List<MovieDTO>
 ) : RecyclerView.Adapter<RecommendedHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecommendedHolder {
@@ -67,10 +68,9 @@ class GridAdapter(
 
     }
 
-    fun setList(list: List<DomainMovie>) {
+    fun setList(list: List<MovieDTO>) {
         Log.d("grid-log", "setList() called")
-        this.list.clear()
-        this.list.addAll(list)
+        this.list = list
         notifyDataSetChanged()
     }
 }

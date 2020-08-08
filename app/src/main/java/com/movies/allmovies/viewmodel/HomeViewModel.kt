@@ -10,9 +10,11 @@ import com.movies.allmovies.AppConstants
 import com.movies.allmovies.di.IoDispatcher
 import com.movies.allmovies.repository.HomeDataSource
 import com.movies.allmovies.domainmappers.MapperFunctions
+import com.movies.allmovies.domainmappers.toDetails
 import com.movies.allmovies.domainmodel.Details
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
+import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.network.NetworkResponse
 import com.movies.allmovies.network.TmdbApi
 import kotlinx.coroutines.CoroutineDispatcher
@@ -23,8 +25,8 @@ class HomeViewModel @Inject constructor(val context: Context, private val tmdbAp
     private val _topTrendingMovie: MutableLiveData<Details>? = MutableLiveData()
     val topTrendingMovie: LiveData<Details>? = _topTrendingMovie
 
-    private val _listsOfMovies: MutableLiveData<List<Collection<DomainMovie>>?> = MutableLiveData()
-    val listsOfMovies: LiveData<List<Collection<DomainMovie>>?> = _listsOfMovies
+    private val _listsOfMovies: MutableLiveData<List<List<MovieDTO>>?> = MutableLiveData()
+    val listsOfMovies: LiveData<List<List<MovieDTO>>?> = _listsOfMovies
 
     private val _isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
     val isInDatabase: LiveData<Boolean> = _isInDatabase
@@ -82,7 +84,7 @@ class HomeViewModel @Inject constructor(val context: Context, private val tmdbAp
                 val response = tmdbApi.getDetails(id, AppConstants.LANGUAGE)
                 when (response) {
                     is NetworkResponse.Success -> {
-                        _topTrendingMovie?.postValue(MapperFunctions.toDetails(response.body))
+                        _topTrendingMovie?.postValue(response.body.toDetails())
                     }
                     is NetworkResponse.ApiError -> Log.d("getTopMovie", "ApiError ${response.body.message}")
                     is NetworkResponse.NetworkError -> Log.d("getTopMovie", "NetworkError")
@@ -118,7 +120,7 @@ class HomeViewModel @Inject constructor(val context: Context, private val tmdbAp
 }
 
 sealed class HomeResult {
-    class Success(val movies: ArrayList<Collection<DomainMovie>>) : HomeResult()
+    class Success(val movies: ArrayList<List<MovieDTO>>) : HomeResult()
     class ApiError(val statusCode: Int) : HomeResult()
     object ServerError : HomeResult()
 }

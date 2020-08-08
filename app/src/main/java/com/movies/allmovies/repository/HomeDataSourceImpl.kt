@@ -4,9 +4,9 @@ import android.content.Context
 import android.util.Log
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.database.AppDatabase
-import com.movies.allmovies.domainmappers.toDomainMovieList
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
+import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.dto.MovieResponseDTO
 import com.movies.allmovies.network.Error
 import com.movies.allmovies.network.NetworkResponse
@@ -72,7 +72,7 @@ class HomeDataSourceImpl
         val list3 = convertResponse(popular)
         val list4 = convertResponse(topRated)
 
-        val resultList = ArrayList<Collection<DomainMovie>>()
+        val resultList = ArrayList<List<MovieDTO>>()
         list1?.let { resultList.add(it) }
         list2?.let { resultList.add(it) }
         list3?.let { resultList.add(it) }
@@ -85,11 +85,11 @@ class HomeDataSourceImpl
         }
     }
 
-    private fun convertResponse(response: NetworkResponse<MovieResponseDTO, Error>): Collection<DomainMovie>? {
+    private fun convertResponse(response: NetworkResponse<MovieResponseDTO, Error>): List<MovieDTO>? {
         // isso aqui pode ser mudado para o success e depois um else, talvez seja interessante mudar na video aula
         when(response){
             is NetworkResponse.Success -> {
-                return response.body.toDomainMovieList()
+                return response.body.results
             }
             is NetworkResponse.ApiError -> {
                 Log.d("TAG", "ApiError ${response.body}")

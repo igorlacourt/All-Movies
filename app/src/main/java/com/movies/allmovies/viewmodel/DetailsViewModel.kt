@@ -2,15 +2,18 @@ package com.movies.allmovies.viewmodel
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.database.AppDatabase
 import com.movies.allmovies.di.MainDispatcher
 import com.movies.allmovies.domainmappers.MapperFunctions
-import com.movies.allmovies.domainmappers.toDomainMovieList
+import com.movies.allmovies.domainmappers.toDetails
 import com.movies.allmovies.domainmodel.Details
-import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
+import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.network.NetworkResponse
 import com.movies.allmovies.network.TmdbApi
 import kotlinx.coroutines.CoroutineDispatcher
@@ -22,8 +25,8 @@ class DetailsViewModel @Inject constructor(val context: Context, private val tmd
     private val _movie: MutableLiveData<Details> = MutableLiveData()
     val movie: LiveData<Details> = _movie
 
-    private val _recommendedMovies: MutableLiveData<Collection<DomainMovie>> = MutableLiveData()
-    val recommendedMovies: LiveData<Collection<DomainMovie>> = _recommendedMovies
+    private val _recommendedMovies: MutableLiveData<List<MovieDTO>> = MutableLiveData()
+    val recommendedMovies: LiveData<List<MovieDTO>> = _recommendedMovies
 
     private val _isInDatabase: MutableLiveData<Boolean> = MutableLiveData()
     val isInDatabase: LiveData<Boolean> = _isInDatabase
@@ -40,7 +43,7 @@ class DetailsViewModel @Inject constructor(val context: Context, private val tmd
             val response = tmdbApi.getDetails(id, AppConstants.VIDEOS_AND_CASTS)
             when (response) {
                 is NetworkResponse.Success -> {
-                    val details = MapperFunctions.toDetails(response.body)
+                    val details = response.body.toDetails()
                     getRecommendations(details.id)
                     _movie.value = details
                     _isInDatabase.postValue(isInDatabase(details.id))
@@ -60,7 +63,7 @@ class DetailsViewModel @Inject constructor(val context: Context, private val tmd
             val response = tmdbApi.getRecommendations(id, AppConstants.LANGUAGE, 1)
             when (response) {
                 is NetworkResponse.Success -> {
-                    _recommendedMovies.value = response.body.toDomainMovieList()
+                    _recommendedMovies.value = response.body.results
                     _isLoading.value = false
                 }
                 is NetworkResponse.ApiError -> Log.d(

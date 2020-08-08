@@ -10,8 +10,7 @@ fun Details.toMyListItem(): MyListItem? {
         MyListItem(
             id,
             poster_path,
-            release_date,
-            vote_average
+            release_date
         )
     }
 
@@ -36,17 +35,6 @@ fun MovieResponseDTO.toDomainMovieList(): Collection<DomainMovie> {
     }
 }
 
-fun MovieResponseDTO.mapToDomain(): Collection<DbMovieDTO> {
-    return this.results.map { movieDTO ->
-        DbMovieDTO(
-            movieDTO.id,
-            movieDTO.poster_path,
-            movieDTO.release_date,
-            movieDTO.vote_average
-        )
-    }
-}
-
 fun ArrayList<CrewDTO>.toCastDTO(): List<CastDTO> {
     return this.map { crewDTO ->
         CastDTO(
@@ -62,65 +50,43 @@ fun ArrayList<CrewDTO>.toCastDTO(): List<CastDTO> {
     }
 }
 
+fun List<MyListItem>.toMovieList(): List<MovieDTO> {
+    return this.map { myListItem ->
+        MovieDTO(
+            myListItem.id,
+            myListItem.poster_path,
+            myListItem.backdrop_path,
+            null
+        )
+    }
+}
+
+fun DetailsDTO.toDetails(): Details {
+    return with(this) {
+        Details(
+            backdrop_path,
+            genres,
+            id,
+            overview,
+            poster_path,
+            release_date,
+            runtime.toString(),
+            title,
+            vote_average,
+            videos?.results,
+            casts
+        )
+    }
+}
+
 object MapperFunctions {
-
-    fun movieResponseToDbMovieDTO(input: MovieResponseDTO): List<DbMovieDTO> {
-        return input.results.map { movieDTO ->
-            DbMovieDTO(
-                movieDTO.id,
-                movieDTO.poster_path,
-                movieDTO.release_date,
-                movieDTO.vote_average
-            )
-
-        }
-    }
-
-    fun toDetails(input: DetailsDTO): Details {
-        return with(input) {
-            Details(
-                backdrop_path,
-                genres,
-                id,
-                overview,
-                poster_path,
-                release_date,
-                runtime.toString(),
-                title,
-                vote_average,
-                videos?.results,
-                casts
-            )
-        }
-    }
-
     fun toMyListItem(input: Details): MyListItem {
         return with(input) {
             MyListItem(
                 id,
                 poster_path,
-                release_date,
-                vote_average
+                release_date
             )
-        }
-    }
-
-    fun toListOfDbMovieDTO(networkMoviesList: List<MovieDTO>): List<DbMovieDTO> {
-        return networkMoviesList.map {
-            with(it) {
-                DbMovieDTO(
-                    id,
-                    poster_path,
-                    release_date,
-                    vote_average
-                )
-            }
-        }
-    }
-
-    fun toDbMovieDTO(input: MovieDTO): DbMovieDTO {
-        return with(input) {
-            DbMovieDTO(id, poster_path, release_date, vote_average)
         }
     }
 }

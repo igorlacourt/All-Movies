@@ -19,6 +19,7 @@ import com.google.android.gms.ads.MobileAds
 import com.movies.allmovies.MainActivity
 import com.movies.allmovies.R
 import com.movies.allmovies.domainmodel.DomainMovie
+import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.ui.GridAdapter
 import com.movies.allmovies.ui.OnMovieClick
 import com.movies.allmovies.viewmodel.MyListViewModel
@@ -82,7 +83,7 @@ class MyListFragment : Fragment(), OnMovieClick {
         adViewBottomScreen?.visibility = View.INVISIBLE
     }
 
-    private fun setAdsVisibility(list: List<DomainMovie>) {
+    private fun setAdsVisibility(list: List<MovieDTO>) {
         if (list.size >= 7){
             adViewBottomRv?.visibility = View.VISIBLE
             adViewBottomScreen?.visibility = View.INVISIBLE

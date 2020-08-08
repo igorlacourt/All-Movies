@@ -6,8 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.di.MainDispatcher
-import com.movies.allmovies.domainmappers.toDomainMovieList
-import com.movies.allmovies.domainmodel.DomainMovie
+import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.dto.MovieResponseDTO
 import com.movies.allmovies.dto.PersonDetails
 import com.movies.allmovies.network.Error
@@ -21,7 +20,7 @@ import javax.inject.Inject
 
 class PersonViewModel @Inject constructor(val context: Context, private val tmdbApi: TmdbApi, @MainDispatcher val mainDispatcher: CoroutineDispatcher) : ViewModel(){
     var person: MutableLiveData<Resource<PersonDetails>>? = MutableLiveData()
-    var starredMovies: MutableLiveData<Resource<Collection<DomainMovie>>> = MutableLiveData()
+    var starredMovies: MutableLiveData<Resource<List<MovieDTO>>> = MutableLiveData()
 
     fun getPersonDetails(id: Int) {
         tmdbApi.getPerson(id).enqueue(object : Callback<PersonDetails> {
@@ -51,7 +50,7 @@ class PersonViewModel @Inject constructor(val context: Context, private val tmdb
             override fun onResponse(call: Call<MovieResponseDTO>, response: Response<MovieResponseDTO>) {
                 if (response.isSuccessful) {
                     response.body()?.let { movies ->
-                        starredMovies.value = Resource.success(movies.toDomainMovieList())
+                        starredMovies.value = Resource.success(movies.results)
                     }
                 } else {
                     Log.d("personlog", "ViewModel, NOT Successful")
