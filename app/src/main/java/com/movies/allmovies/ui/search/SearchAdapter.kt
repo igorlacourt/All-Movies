@@ -1,7 +1,6 @@
 package com.movies.allmovies.ui.search
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,7 +35,6 @@ class SearchAdapter(private val context: Context?,
                 .into(backdrop)
 
             itemLayout.setOnClickListener {
-                Log.d("clickgrid", "SearchAdapter, setOnClickListener, id = ${list[position].id}")
                 onMovieClick.onClick(list[position].id)
             }
         }
@@ -44,7 +42,6 @@ class SearchAdapter(private val context: Context?,
     }
 
     fun setList(list: List<MovieDTO>?) {
-        Log.d("searchlog", "setList called")
         this.list.clear()
         list?.let {
             this.list.addAll(it)
@@ -58,4 +55,3 @@ class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var title = itemView.searched_title
     var itemLayout = itemView.search_item_layout
 }
-

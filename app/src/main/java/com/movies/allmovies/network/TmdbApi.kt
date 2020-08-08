@@ -28,7 +28,7 @@ interface TmdbApi {
         page: Int
     ): NetworkResponse<MovieResponseDTO, Error>
 
-    @GET("movie/{id}")//@GET("movie/{id}")
+    @GET("movie/{id}")
     suspend fun getDetails(
         @Path("id")
         id: Int?,
