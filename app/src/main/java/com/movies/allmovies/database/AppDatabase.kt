@@ -11,14 +11,12 @@ import com.movies.allmovies.dto.DbMovieDTO
 
 private var INSTANCE: AppDatabase? = null
 
-@Database(entities = [DbMovieDTO::class, MyListItem::class], version = DATABASE_VERSION, exportSchema = false)
+@Database(entities = [MyListItem::class], version = DATABASE_VERSION, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase: RoomDatabase() {
 
-    abstract fun MovieDao() : MovieDao
     abstract fun MyListDao() : MyListDao
 
-//TODO(create the favorites table)
     companion object {
         const val DATABASE_VERSION = 1
         val DATABASE_NAME = "app_database"
