@@ -7,7 +7,7 @@ import com.movies.allmovies.AppConstants
 import com.movies.allmovies.database.AppDatabase
 import com.movies.allmovies.di.MainDispatcher
 import com.movies.allmovies.domainmappers.MapperFunctions
-import com.movies.allmovies.domainmappers.toDomainMovie
+import com.movies.allmovies.domainmappers.toDomainMovieList
 import com.movies.allmovies.domainmodel.Details
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
@@ -60,7 +60,7 @@ class DetailsViewModel @Inject constructor(val context: Context, private val tmd
             val response = tmdbApi.getRecommendations(id, AppConstants.LANGUAGE, 1)
             when (response) {
                 is NetworkResponse.Success -> {
-                    _recommendedMovies.value = response.body.toDomainMovie()
+                    _recommendedMovies.value = response.body.toDomainMovieList()
                     _isLoading.value = false
                 }
                 is NetworkResponse.ApiError -> Log.d(

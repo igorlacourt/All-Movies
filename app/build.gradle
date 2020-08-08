@@ -87,6 +87,9 @@ dependencies {
     //Mockito
     testImplementation "org.mockito:mockito-core:3.3.3"
 
+    //Mockito-Kotlin
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+
     //Junit4
     testImplementation "junit:junit:4.12"
 

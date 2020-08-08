@@ -4,8 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.database.AppDatabase
-import com.movies.allmovies.di.IoDispatcher
-import com.movies.allmovies.domainmappers.toDomainMovie
+import com.movies.allmovies.domainmappers.toDomainMovieList
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
 import com.movies.allmovies.dto.MovieResponseDTO
@@ -14,20 +13,22 @@ import com.movies.allmovies.network.NetworkResponse
 import com.movies.allmovies.network.TmdbApi
 import com.movies.allmovies.viewmodel.HomeResult
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class HomeDataSourceImpl @Inject constructor(val context: Context, private val tmbdbApi: TmdbApi, @IoDispatcher private val ioDispatcher: CoroutineDispatcher):
-    HomeDataSource {
-    override suspend fun getListsOfMovies(homeResultCallback: (result: HomeResult) -> Unit) {
-        withContext(ioDispatcher){
+class HomeDataSourceImpl
+    @Inject
+    constructor(val context: Context, private val tmdbApi: TmdbApi)
+    : HomeDataSource {
+
+    override suspend fun getListsOfMovies(dispatcher: CoroutineDispatcher, homeResultCallback: (result: HomeResult) -> Unit) {
+        withContext(dispatcher){
             try {
-                val trendingMoviesResponse = async { tmbdbApi.getTrendingMoviesSuspend(AppConstants.LANGUAGE, 1) }
-                val upcomingMoviesResponse = async { tmbdbApi.getUpcomingMoviesSuspend(AppConstants.LANGUAGE, 1) }
-                val popularMoviesResponse = async { tmbdbApi.getPopularMoviesSuspend(AppConstants.LANGUAGE, 1) }
-                val topRatedMoviesResponse = async { tmbdbApi.getTopRatedMoviesSuspend(AppConstants.LANGUAGE, 1) }
+                val trendingMoviesResponse = async { tmdbApi.getTrendingMoviesSuspend(AppConstants.LANGUAGE, 1) }
+                val upcomingMoviesResponse = async { tmdbApi.getUpcomingMoviesSuspend(AppConstants.LANGUAGE, 1) }
+                val popularMoviesResponse = async { tmdbApi.getPopularMoviesSuspend(AppConstants.LANGUAGE, 1) }
+                val topRatedMoviesResponse = async { tmdbApi.getTopRatedMoviesSuspend(AppConstants.LANGUAGE, 1) }
                 processData(
                     homeResultCallback,
                     trendingMoviesResponse.await(),
@@ -85,9 +86,10 @@ class HomeDataSourceImpl @Inject constructor(val context: Context, private val t
     }
 
     private fun convertResponse(response: NetworkResponse<MovieResponseDTO, Error>): Collection<DomainMovie>? {
+        // isso aqui pode ser mudado para o success e depois um else, talvez seja interessante mudar na video aula
         when(response){
             is NetworkResponse.Success -> {
-                return response.body.toDomainMovie()
+                return response.body.toDomainMovieList()
             }
             is NetworkResponse.ApiError -> {
                 Log.d("TAG", "ApiError ${response.body}")

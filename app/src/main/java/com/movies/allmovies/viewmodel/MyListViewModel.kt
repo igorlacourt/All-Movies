@@ -5,7 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.movies.allmovies.database.AppDatabase
-import com.movies.allmovies.domainmappers.toDomainMovie
+import com.movies.allmovies.domainmappers.toDomainMovieList
 import com.movies.allmovies.domainmodel.DomainMovie
 
 class MyListViewModel(application: Application) : AndroidViewModel(application) {
@@ -19,6 +19,6 @@ class MyListViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun getList() {
-        _myList.value = myListDao?.all()?.toDomainMovie()
+        _myList.value = myListDao?.all()?.toDomainMovieList()
     }
 }

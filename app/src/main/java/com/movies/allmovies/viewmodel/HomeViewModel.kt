@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.movies.allmovies.AppConstants
+import com.movies.allmovies.di.IoDispatcher
 import com.movies.allmovies.repository.HomeDataSource
 import com.movies.allmovies.domainmappers.MapperFunctions
 import com.movies.allmovies.domainmodel.Details
@@ -14,10 +15,11 @@ import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.domainmodel.MyListItem
 import com.movies.allmovies.network.NetworkResponse
 import com.movies.allmovies.network.TmdbApi
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(val context: Context, private val tmdbApi: TmdbApi, private val homeDataSource: HomeDataSource) : ViewModel(){
+class HomeViewModel @Inject constructor(val context: Context, private val tmdbApi: TmdbApi, private val homeDataSource: HomeDataSource, @IoDispatcher private val ioDispatcher: CoroutineDispatcher) : ViewModel(){
     private val _topTrendingMovie: MutableLiveData<Details>? = MutableLiveData()
     val topTrendingMovie: LiveData<Details>? = _topTrendingMovie
 
@@ -30,6 +32,12 @@ class HomeViewModel @Inject constructor(val context: Context, private val tmdbAp
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData()
     val isLoading: MutableLiveData<Boolean> = _isLoading
 
+    private var _errorScreenVisibility = MutableLiveData<Boolean>(false)
+    var errorScreenVisibility: LiveData<Boolean> = _errorScreenVisibility
+
+    private var _errorMessage = MutableLiveData<String>()
+    var errorMessage: LiveData<String> = _errorMessage
+
     init {
         isLoading.value = true
         Log.d("isld", "init, isLoading.value = ${isLoading.value}")
@@ -37,9 +45,9 @@ class HomeViewModel @Inject constructor(val context: Context, private val tmdbAp
         getListOfMovies()
     }
 
-    private fun getListOfMovies() {
-        viewModelScope.launch{
-            homeDataSource.getListsOfMovies{ result ->
+    fun getListOfMovies() {
+        viewModelScope.launch(ioDispatcher){
+            homeDataSource.getListsOfMovies(ioDispatcher){ result ->
                 when(result) {
                     is HomeResult.Success -> {
                         Log.d("searchlog", "searchMovie, SearchResult.Success")
@@ -48,16 +56,24 @@ class HomeViewModel @Inject constructor(val context: Context, private val tmdbAp
                     }
                     is HomeResult.ApiError -> {
                         Log.d("searchlog", "searchMovie, SearchResult.ApiError")
+                        _errorMessage.value = AppConstants.API_ERROR_MESSAGE
+                        showErrorScreen(true)
                         isLoading.postValue(false)
                     }
                     is HomeResult.ServerError -> {
                         Log.d("searchlog", "searchMovie, SearchResult.ServerError")
+                        _errorMessage.value = AppConstants.API_ERROR_MESSAGE
+                        showErrorScreen(true)
                         isLoading.postValue(false)
                     }
 
                 }
             }
         }
+    }
+
+    private fun showErrorScreen(shouldShow: Boolean) {
+        _errorScreenVisibility.value = shouldShow
     }
 
     private fun getTopMovie(id: Int?) {

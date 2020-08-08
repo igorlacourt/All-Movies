@@ -1,14 +1,12 @@
 package com.movies.allmovies.viewmodel
 
-import android.app.Application
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.di.MainDispatcher
-import com.movies.allmovies.domainmappers.toDomainMovie
+import com.movies.allmovies.domainmappers.toDomainMovieList
 import com.movies.allmovies.domainmodel.DomainMovie
 import com.movies.allmovies.dto.MovieResponseDTO
 import com.movies.allmovies.dto.PersonDetails
@@ -53,7 +51,7 @@ class PersonViewModel @Inject constructor(val context: Context, private val tmdb
             override fun onResponse(call: Call<MovieResponseDTO>, response: Response<MovieResponseDTO>) {
                 if (response.isSuccessful) {
                     response.body()?.let { movies ->
-                        starredMovies.value = Resource.success(movies.toDomainMovie())
+                        starredMovies.value = Resource.success(movies.toDomainMovieList())
                     }
                 } else {
                     Log.d("personlog", "ViewModel, NOT Successful")

@@ -17,7 +17,7 @@ fun Details.toMyListItem(): MyListItem? {
 
 }
 
-fun List<MyListItem>.toDomainMovie(): List<DomainMovie>? {
+fun List<MyListItem>.toDomainMovieList(): List<DomainMovie>? {
     return this.map { myListItem ->
         DomainMovie(
             myListItem.id,
@@ -27,7 +27,7 @@ fun List<MyListItem>.toDomainMovie(): List<DomainMovie>? {
 
 }
 
-fun MovieResponseDTO.toDomainMovie(): Collection<DomainMovie> {
+fun MovieResponseDTO.toDomainMovieList(): Collection<DomainMovie> {
     return this.results.map { movieDTO ->
         DomainMovie(
             movieDTO.id,
