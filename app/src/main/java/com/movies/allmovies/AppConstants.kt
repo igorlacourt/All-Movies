@@ -15,6 +15,9 @@ object AppConstants{
     const val VIDEOS_AND_CASTS = "videos,casts"
     const val TMDB_API_KEY = ""
 
+//    DATABASE
+    const val DATABASE_VERSION = 1
+    const val DATABASE_NAME = "app_database"
 
 //    ERROR MESSAGES
     const val API_ERROR_MESSAGE = "Resource not found :/\n \"Please, try again later\""

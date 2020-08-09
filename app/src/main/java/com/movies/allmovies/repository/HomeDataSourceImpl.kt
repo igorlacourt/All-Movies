@@ -3,7 +3,7 @@ package com.movies.allmovies.repository
 import android.content.Context
 import android.util.Log
 import com.movies.allmovies.AppConstants
-import com.movies.allmovies.database.AppDatabase
+import com.movies.allmovies.database.MyListDao
 import com.movies.allmovies.domainmodel.MyListItem
 import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.dto.MovieResponseDTO
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 class HomeDataSourceImpl
     @Inject
-    constructor(val context: Context, private val tmdbApi: TmdbApi)
+    constructor(val context: Context, private val tmdbApi: TmdbApi, private val myListDao: MyListDao)
     : HomeDataSource {
 
     override suspend fun getListsOfMovies(dispatcher: CoroutineDispatcher, homeResultCallback: (result: HomeResult) -> Unit) {
@@ -41,11 +41,8 @@ class HomeDataSourceImpl
         }
     }
 
-    private val myListDao =
-        AppDatabase.getDatabase(context)?.MyListDao()
-
     override fun isTopMovieInDatabase(id: Int): Boolean {
-        return myListDao?.exists(id) ?: false
+        return myListDao.exists(id) ?: false
     }
 
     override fun refresh() {
@@ -53,11 +50,11 @@ class HomeDataSourceImpl
     }
 
     override fun insert(myListItem: MyListItem) {
-        myListDao?.insert(myListItem)
+        myListDao.insert(myListItem)
     }
 
     override fun delete(id: Int) {
-        myListDao?.deleteById(id)
+        myListDao.deleteById(id)
     }
 
     private fun processData(homeResultCallback: (result: HomeResult) -> Unit,

@@ -1,5 +1,6 @@
 package com.movies.allmovies.ui.mylist
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,7 +9,9 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,16 +24,26 @@ import com.movies.allmovies.R
 import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.ui.GridAdapter
 import com.movies.allmovies.ui.OnMovieClick
+import com.movies.allmovies.viewmodel.HomeViewModel
 import com.movies.allmovies.viewmodel.MyListViewModel
+import javax.inject.Inject
 
 class MyListFragment : Fragment(), OnMovieClick {
     private val onItemClick = this as OnMovieClick
     private lateinit var recyclerView: RecyclerView
-    private lateinit var viewModel: MyListViewModel
+//    private lateinit var viewModel: MyListViewModel
     private lateinit var adapter: GridAdapter
     private var adViewBottomRv: AdView? = null
     private var adViewBottomScreen: AdView? = null
 
+    // Dagger code
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by viewModels<MyListViewModel> { viewModelFactory }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity() as MainActivity).mainComponent.inject(this)
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,8 +66,8 @@ class MyListFragment : Fragment(), OnMovieClick {
         recyclerView = root.findViewById(R.id.my_list_list)
 
         setUpRecyclerView()
-        viewModel =
-            ViewModelProviders.of(this).get(MyListViewModel::class.java)
+//        viewModel =
+//            ViewModelProviders.of(this).get(MyListViewModel::class.java)
         viewModel.myList.observe(viewLifecycleOwner, Observer { list ->
             Log.d("receivertest", "onChange, list.size = ${list.size}")
             adapter.setList(list)

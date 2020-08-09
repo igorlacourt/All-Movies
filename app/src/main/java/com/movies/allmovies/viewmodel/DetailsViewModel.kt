@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.movies.allmovies.AppConstants
-import com.movies.allmovies.database.AppDatabase
+import com.movies.allmovies.database.MyListDao
 import com.movies.allmovies.di.MainDispatcher
 import com.movies.allmovies.domainmappers.toDetails
 import com.movies.allmovies.domainmappers.toMyListItem
@@ -20,7 +20,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class DetailsViewModel @Inject constructor(val context: Context, private val tmdbApi: TmdbApi, @MainDispatcher val mainDispatcher: CoroutineDispatcher) : ViewModel(){
+class DetailsViewModel @Inject constructor(val context: Context, private val tmdbApi: TmdbApi, @MainDispatcher val mainDispatcher: CoroutineDispatcher, private val myListDao: MyListDao) : ViewModel(){
 
     private val _movie: MutableLiveData<Details> = MutableLiveData()
     val movie: LiveData<Details> = _movie
@@ -33,9 +33,6 @@ class DetailsViewModel @Inject constructor(val context: Context, private val tmd
 
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(true)
     val isLoading: LiveData<Boolean> = _isLoading
-
-    private val myListDao =
-        AppDatabase.getDatabase(context)?.MyListDao()
 
     fun getDetails(id: Int) {
         _isLoading.value = true

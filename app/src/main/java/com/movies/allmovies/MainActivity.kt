@@ -20,8 +20,6 @@ import com.movies.allmovies.di.subcomponent.MainComponent
 import com.movies.allmovies.util.SharedPrefManager
 import com.movies.allmovies.util.Util
 
-
-
 class MainActivity : AppCompatActivity() {
 
     lateinit var mainComponent: MainComponent
@@ -113,31 +111,6 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.nav_host_fragment, MyListFragment(), "my_list")
                 .commit()
         }
-    }
-
-    fun onHomeClick() {
-        var homeFragment = supportFragmentManager.findFragmentByTag("home")
-
-//        if (homeFragment == null || !homeFragment.isAdded) {
-//            supportFragmentManager
-//                .beginTransaction()
-//                .replace(R.id.nav_host_fragment, HomeFragment(), "home")
-//                .commit()
-//        }
-
-    }
-
-    fun onMyListClick() {
-        var myListFragment = supportFragmentManager.findFragmentByTag("my_list")
-
-//        if (myListFragment == null || !myListFragment.isAdded) {
-//            supportFragmentManager
-//                .beginTransaction()
-//                .replace(R.id.nav_host_fragment, MyListFragment(), "my_list")
-//                .commit()
-//        }
-//        val layout = resources.getLayout(R.layout.fragment_mylist).id
-//        findNavController(R.layout.fragment_mylist).navigate(R.id.action_navigation_home_to_detailsActivity)
     }
 
 }
