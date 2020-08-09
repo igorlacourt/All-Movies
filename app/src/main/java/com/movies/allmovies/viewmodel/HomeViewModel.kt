@@ -49,24 +49,27 @@ class HomeViewModel @Inject constructor(val context: Context, private val tmdbAp
         viewModelScope.launch(ioDispatcher){
             homeDataSource.getListsOfMovies(ioDispatcher){ result ->
                 when(result) {
-                    is HomeResult.Success -> {
+                    is NetworkResponse.Success -> {
                         Log.d("searchlog", "searchMovie, SearchResult.Success")
-                        _listsOfMovies.postValue(result.movies)
-                        getTopMovie(result.movies[0].elementAt(0).id)
+                        _listsOfMovies.postValue(result.body)
+                        getTopMovie(result.body[0].elementAt(0).id)
                     }
-                    is HomeResult.ApiError -> {
+                    is NetworkResponse.ApiError -> {
                         Log.d("searchlog", "searchMovie, SearchResult.ApiError")
                         _errorMessage.value = AppConstants.API_ERROR_MESSAGE
                         showErrorScreen(true)
                         isLoading.postValue(false)
                     }
-                    is HomeResult.ServerError -> {
+                    is NetworkResponse.NetworkError -> {
                         Log.d("searchlog", "searchMovie, SearchResult.ServerError")
                         _errorMessage.value = AppConstants.API_ERROR_MESSAGE
                         showErrorScreen(true)
                         isLoading.postValue(false)
                     }
-
+                    is NetworkResponse.UnknownError -> {
+                        _errorMessage.value = AppConstants.UNKNOWN_ERROR_MESSAGE
+                        showErrorScreen(true)
+                    }
                 }
             }
         }

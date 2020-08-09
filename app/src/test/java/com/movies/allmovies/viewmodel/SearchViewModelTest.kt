@@ -39,21 +39,10 @@ class SearchViewModelTest {
         MovieResponseDTO(
             listOf(
                 MovieDTO(
-                    false,
-                    "backdrop-path",
-                    arrayListOf("1", "2", "3", "4"),
-                    arrayListOf("comedy, drama, adventure"),
-                    1234,
-                    "en-US",
-                    "Finding Nemo",
-                    "movie overview",
-                    90.0,
-                    "poster-path",
-                    "2020",
-                    "Finding Nemo",
-                    false,
-                    10.0,
-                    200000
+                    0,
+                    "",
+                    "",
+                    ""
                 )
             )
         )

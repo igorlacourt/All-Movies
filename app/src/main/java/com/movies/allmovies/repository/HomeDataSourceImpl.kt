@@ -10,10 +10,10 @@ import com.movies.allmovies.dto.MovieResponseDTO
 import com.movies.allmovies.network.Error
 import com.movies.allmovies.network.NetworkResponse
 import com.movies.allmovies.network.TmdbApi
-import com.movies.allmovies.viewmodel.HomeResult
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
+import java.io.IOException
 import javax.inject.Inject
 
 class HomeDataSourceImpl
@@ -21,7 +21,7 @@ class HomeDataSourceImpl
     constructor(val context: Context, private val tmdbApi: TmdbApi, private val myListDao: MyListDao)
     : HomeDataSource {
 
-    override suspend fun getListsOfMovies(dispatcher: CoroutineDispatcher, homeResultCallback: (result: HomeResult) -> Unit) {
+    override suspend fun getListsOfMovies(dispatcher: CoroutineDispatcher, homeResultCallback:  (result: NetworkResponse<List<List<MovieDTO>>, Error>) -> Unit) {
         withContext(dispatcher){
             try {
                 val trendingMoviesResponse = async { tmdbApi.getTrendingMoviesSuspend(AppConstants.LANGUAGE, 1) }
@@ -57,47 +57,60 @@ class HomeDataSourceImpl
         myListDao.deleteById(id)
     }
 
-    private fun processData(homeResultCallback: (result: HomeResult) -> Unit,
+    private fun processData(homeResultCallback: (result: NetworkResponse<List<List<MovieDTO>>, Error>) -> Unit,
                             trending: NetworkResponse<MovieResponseDTO, Error>,
                             upcoming: NetworkResponse<MovieResponseDTO, Error>,
                             popular: NetworkResponse<MovieResponseDTO, Error>,
                             topRated: NetworkResponse<MovieResponseDTO, Error>
     ) {
-        val list1 = convertResponse(trending)
-        val list2 = convertResponse(upcoming)
-        val list3 = convertResponse(popular)
-        val list4 = convertResponse(topRated)
+        val pair1 = convertResponse(trending)
+        val pair2 = convertResponse(upcoming)
+        val pair3 = convertResponse(popular)
+        val pair4 = convertResponse(topRated)
 
-        val resultList = ArrayList<List<MovieDTO>>()
-        list1?.let { resultList.add(it) }
-        list2?.let { resultList.add(it) }
-        list3?.let { resultList.add(it) }
-        list4?.let { resultList.add(it) }
-
-        if (resultList.size == 4){
-            homeResultCallback(HomeResult.Success(resultList))
-        } else {
-            homeResultCallback(HomeResult.ApiError(400))
+        when {
+            pair1.first == null -> {
+                pair1.second?.let { homeResultCallback(it) }
+                return
+            }
+            pair2.first == null -> {
+                pair2.second?.let { homeResultCallback(it) }
+                return
+            }
+            pair2.first == null -> {
+                pair2.second?.let { homeResultCallback(it) }
+                return
+            }
+            pair2.first == null -> {
+                pair2.second?.let { homeResultCallback(it) }
+                return
+            }
+            else -> {
+                val resultList = ArrayList<List<MovieDTO>>()
+                pair1.first?.let { resultList.add(it) }
+                pair2.first?.let { resultList.add(it) }
+                pair3.first?.let { resultList.add(it) }
+                pair4.first?.let { resultList.add(it) }
+                homeResultCallback(NetworkResponse.Success(resultList))
+            }
         }
     }
 
-    private fun convertResponse(response: NetworkResponse<MovieResponseDTO, Error>): List<MovieDTO>? {
-        // isso aqui pode ser mudado para o success e depois um else, talvez seja interessante mudar na video aula
-        when(response){
+    private fun convertResponse(response: NetworkResponse<MovieResponseDTO, Error>)
+            : Pair<List<MovieDTO>?, NetworkResponse<List<List<MovieDTO>>, Error>?>
+    {
+        return when(response) {
             is NetworkResponse.Success -> {
-                return response.body.results
+                Pair(response.body.results, null)
             }
             is NetworkResponse.ApiError -> {
-                Log.d("TAG", "ApiError ${response.body}")
-                return null
+                Pair(null, NetworkResponse.ApiError(response.body, response.code))
             }
             is NetworkResponse.NetworkError -> {
-                Log.d("TAG", "NetworkError")
-                return null
+                Pair(null, NetworkResponse.NetworkError(IOException()))
             }
             is NetworkResponse.UnknownError -> {
-                Log.d("TAG", "UnknownError")
-                return null
+                Pair(null, NetworkResponse.UnknownError(Throwable()))
             }
         }
     }
