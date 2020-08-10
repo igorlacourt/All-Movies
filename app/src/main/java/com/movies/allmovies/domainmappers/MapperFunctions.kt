@@ -44,17 +44,17 @@ fun List<MyListItem>.toMovieList(): List<MovieDTO> {
 fun DetailsDTO.toDetails(): Details {
     return with(this) {
         Details(
-            backdrop_path,
-            genres,
-            id,
-            overview,
-            poster_path,
-            release_date,
-            runtime.toString(),
-            title,
-            vote_average,
-            videos?.results,
-            casts
+            backdrop_path = backdrop_path,
+            genres = genres,
+            id = id,
+            overview = overview,
+            poster_path = poster_path,
+            release_date = release_date,
+            runtime = runtime.toString(),
+            title = title,
+            vote_average = vote_average,
+            videos = videos?.results,
+            casts = casts
         )
     }
 }

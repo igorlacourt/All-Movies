@@ -37,14 +37,7 @@ class SearchViewModelTest {
     private val movieTitle = "nemo"
     private val successResponse = NetworkResponse.Success(
         MovieResponseDTO(
-            listOf(
-                MovieDTO(
-                    0,
-                    "",
-                    "",
-                    ""
-                )
-            )
+            listOf(MovieDTO(0, "", "", ""))
         )
     )
 

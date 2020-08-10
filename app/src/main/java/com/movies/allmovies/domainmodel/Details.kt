@@ -84,7 +84,6 @@ data class Details(
                 var job = crew.job?.toLowerCase()
                 if (director == null && job == "director" ) {
                     director = crew
-                } else {
                 }
             }
             casts?.crew?.clear()

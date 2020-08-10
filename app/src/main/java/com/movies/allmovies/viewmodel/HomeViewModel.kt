@@ -69,6 +69,7 @@ class HomeViewModel @Inject constructor(val context: Context, private val tmdbAp
                     is NetworkResponse.UnknownError -> {
                         _errorMessage.value = AppConstants.UNKNOWN_ERROR_MESSAGE
                         showErrorScreen(true)
+                        isLoading.postValue(false)
                     }
                 }
             }
@@ -80,7 +81,7 @@ class HomeViewModel @Inject constructor(val context: Context, private val tmdbAp
     }
 
     private fun getTopMovie(id: Int?) {
-        viewModelScope.launch {
+        viewModelScope.launch(ioDispatcher) {
             try {
                 val response = tmdbApi.getDetails(id, AppConstants.LANGUAGE)
                 when (response) {
@@ -118,10 +119,4 @@ class HomeViewModel @Inject constructor(val context: Context, private val tmdbAp
         _isInDatabase.value = false
     }
 
-}
-
-sealed class HomeResult {
-    class Success(val movies: ArrayList<List<MovieDTO>>) : HomeResult()
-    class ApiError(val statusCode: Int) : HomeResult()
-    object ServerError : HomeResult()
 }

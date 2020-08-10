@@ -37,18 +37,18 @@ class HomeDataSourceImplTest {
     @Test
     fun `make all 4 requests and all of them is successful`() = dispatcher.runBlockingTest {
         // Arrange
-        `when`(tmdbApi.getTrendingMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
+//        `when`(tmdbApi.getTrendingMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
 //            successResponseMock
-        )
-        `when`(tmdbApi.getUpcomingMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
+//        )
+//        `when`(tmdbApi.getUpcomingMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
 //            successResponseMock
-        )
-        `when`(tmdbApi.getPopularMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
+//        )
+//        `when`(tmdbApi.getPopularMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
 //            successResponseMock
-        )
-        `when`(tmdbApi.getTopRatedMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
+//        )
+//        `when`(tmdbApi.getTopRatedMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
 //            successResponseMock
-        )
+//        )
         // Act
 //        viewModel?.getListOfMovies()
         // Assert
