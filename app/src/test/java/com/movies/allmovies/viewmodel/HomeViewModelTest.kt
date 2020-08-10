@@ -88,28 +88,6 @@ class HomeViewModelTest {
         Assert.assertEquals(AppConstants.API_ERROR_MESSAGE, viewModel?.errorMessage?.value)
     }
 
-//    @Test
-//    fun `make all 4 requests and all of them is successful`() = dispatcher.runBlockingTest {
-//        // Arrange
-//        `when`(tmdbApi.getTrendingMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
-//            successResponseMock
-//        )
-//        `when`(tmdbApi.getUpcomingMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
-//            successResponseMock
-//        )
-//        `when`(tmdbApi.getPopularMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
-//            successResponseMock
-//        )
-//        `when`(tmdbApi.getTopRatedMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
-//            successResponseMock
-//        )
-//        // Act
-//        viewModel?.getListOfMovies()
-//        // Assert
-//        Assert.assertEquals(resultListsMock, viewModel?.listsOfMovies?.value)
-//        assertEquals(false, viewModel?.errorScreenVisibility?.value)
-//        assertEquals(null, viewModel?.errorMessage?.value)
-//    }
 }
 
 class HomeDataSourceMock(private val resultLists: ArrayList<List<MovieDTO>>? = null, private val success: Boolean) :
