@@ -73,9 +73,9 @@ class HomeViewModelTest {
         // Act
         viewModel?.getListOfMovies()
         // Assert
-        Assert.assertEquals(resultListsMock, viewModel?.listsOfMovies?.value)
-        Assert.assertEquals(false, viewModel?.errorScreenVisibility?.value)
-        Assert.assertEquals(null, viewModel?.errorMessage?.value)
+        assertEquals(resultListsMock, viewModel?.listsOfMovies?.value)
+        assertEquals(false, viewModel?.errorScreenVisibility?.value)
+        assertEquals(null, viewModel?.errorMessage?.value)
     }
 
     @Test
@@ -89,9 +89,9 @@ class HomeViewModelTest {
         // Act
         viewModel?.getListOfMovies()
         // Assert
-        Assert.assertEquals(null, viewModel?.listsOfMovies?.value)
-        Assert.assertEquals(true, viewModel?.errorScreenVisibility?.value)
-        Assert.assertEquals(AppConstants.API_ERROR_MESSAGE, viewModel?.errorMessage?.value)
+        assertEquals(null, viewModel?.listsOfMovies?.value)
+        assertEquals(true, viewModel?.errorScreenVisibility?.value)
+        assertEquals(AppConstants.API_ERROR_MESSAGE, viewModel?.errorMessage?.value)
     }
 
     @Test
@@ -105,9 +105,9 @@ class HomeViewModelTest {
         // Act
         viewModel?.getListOfMovies()
         // Assert
-        Assert.assertEquals(null, viewModel?.listsOfMovies?.value)
-        Assert.assertEquals(true, viewModel?.errorScreenVisibility?.value)
-        Assert.assertEquals(AppConstants.API_ERROR_MESSAGE, viewModel?.errorMessage?.value)
+        assertEquals(null, viewModel?.listsOfMovies?.value)
+        assertEquals(true, viewModel?.errorScreenVisibility?.value)
+        assertEquals(AppConstants.API_ERROR_MESSAGE, viewModel?.errorMessage?.value)
     }
 
     @Test

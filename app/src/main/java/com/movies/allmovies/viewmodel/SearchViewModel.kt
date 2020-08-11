@@ -1,13 +1,11 @@
 package com.movies.allmovies.viewmodel
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.movies.allmovies.AppConstants
-import com.movies.allmovies.R
 import com.movies.allmovies.di.MainDispatcher
 import com.movies.allmovies.dto.MovieDTO
 import com.movies.allmovies.network.NetworkResponse
