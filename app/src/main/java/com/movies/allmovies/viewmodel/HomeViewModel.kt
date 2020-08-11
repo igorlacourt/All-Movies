@@ -44,46 +44,65 @@ class HomeViewModel @Inject constructor(val context: Context, private val tmdbAp
 
     fun getListOfMovies() {
         showErrorScreen(false)
-        viewModelScope.launch(ioDispatcher){
-            homeDataSource.getListsOfMovies(ioDispatcher){ result ->
-                when(result) {
-                    is NetworkResponse.Success -> {
-                        _listsOfMovies.value = result.body
-                        getTopMovie(result.body[0][0].id)
-                    }
-                    is NetworkResponse.ApiError -> {
-                        showErrorScreen(show = true, errorMessage = AppConstants.API_ERROR_MESSAGE)
-                    }
-                    is NetworkResponse.NetworkError -> {
-                        showErrorScreen(show = true, errorMessage = AppConstants.NETWORK_ERROR_MESSAGE)
-                    }
-                    is NetworkResponse.UnknownError -> {
-                        showErrorScreen(show = true, errorMessage = AppConstants.UNKNOWN_ERROR_MESSAGE)
+        try {
+            viewModelScope.launch(ioDispatcher) {
+                //The scope bellow is in a background thread called from the data source
+                //Because of this, we have to call postValue instead of value for filling the livedatas
+                homeDataSource.getListsOfMovies(ioDispatcher) { result ->
+                    when (result) {
+                        is NetworkResponse.Success -> {
+                            _listsOfMovies.postValue(result.body)
+                            getTopMovie(result.body[0][0].id)
+                        }
+                        is NetworkResponse.ApiError -> {
+                            showErrorScreen(show = true, message = AppConstants.API_ERROR_MESSAGE)
+                        }
+                        is NetworkResponse.NetworkError -> {
+                            showErrorScreen(
+                                show = true,
+                                message = AppConstants.NETWORK_ERROR_MESSAGE
+                            )
+                        }
+                        is NetworkResponse.UnknownError -> {
+                            showErrorScreen(
+                                show = true,
+                                message = AppConstants.UNKNOWN_ERROR_MESSAGE
+                            )
+                        }
                     }
                 }
             }
+        } catch (exception: Exception){
+            throw exception
         }
     }
 
     private fun getTopMovie(id: Int?) {
-        viewModelScope.launch(ioDispatcher) {
-            val response = tmdbApi.getDetails(id, AppConstants.LANGUAGE)
-            when (response) {
-                is NetworkResponse.Success -> {
-                    _topTrendingMovie?.value = response.body.toDetails()
-                    showLoadingScreen(false)
-                }
-                is NetworkResponse.ApiError -> {
-                    showErrorScreen(show = true, errorMessage = AppConstants.API_ERROR_MESSAGE)
-                }
-                is NetworkResponse.NetworkError -> {
-                    showErrorScreen(show = true, errorMessage = AppConstants.NETWORK_ERROR_MESSAGE)
-                }
-                is NetworkResponse.UnknownError -> {
-                    showErrorScreen(show = true, errorMessage = AppConstants.UNKNOWN_ERROR_MESSAGE)
+        try {
+            viewModelScope.launch(ioDispatcher) {
+                val response = tmdbApi.getDetails(id, AppConstants.LANGUAGE)
+                when (response) {
+                    is NetworkResponse.Success -> {
+                        _topTrendingMovie?.postValue(response.body.toDetails())
+                        showLoadingScreen(false)
+                        Log.d("homelog", "getTopMovie")
+                        Log.d("homelog", "isLoading = ${isLoading.value}")
+                    }
+                    is NetworkResponse.ApiError -> {
+                        showErrorScreen(show = true, message = AppConstants.API_ERROR_MESSAGE)
+                    }
+                    is NetworkResponse.NetworkError -> {
+                        showErrorScreen(show = true, message = AppConstants.NETWORK_ERROR_MESSAGE)
+                    }
+                    is NetworkResponse.UnknownError -> {
+                        showErrorScreen(show = true, message = AppConstants.UNKNOWN_ERROR_MESSAGE)
+                    }
                 }
             }
+        } catch (exception: Exception){
+            throw exception
         }
+
     }
 
     fun isTopMovieInDatabase(id: Int){
@@ -105,14 +124,14 @@ class HomeViewModel @Inject constructor(val context: Context, private val tmdbAp
         _isInDatabase.value = false
     }
 
-    private fun showErrorScreen(show: Boolean, errorMessage: String? = null) {
-        _errorMessage.value = errorMessage
-        _errorScreenVisibility.value = show
-        _isLoading.value = !show
+    private fun showErrorScreen(show: Boolean, message: String? = null) {
+        _errorMessage.postValue(message)
+        _errorScreenVisibility.postValue(show)
+        _isLoading.postValue(!show)
     }
 
     private fun showLoadingScreen(show: Boolean) {
-        _isLoading.value = show
+        _isLoading.postValue(show)
     }
 
 }

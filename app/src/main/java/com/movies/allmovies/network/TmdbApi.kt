@@ -8,7 +8,7 @@ import retrofit2.http.Query
 
 interface TmdbApi {
     @GET("search/movie")
-    suspend fun searchMovieSuspend(
+    suspend fun searchMovie(
         @Query("language")
         language: String,
         @Query("query")
@@ -50,7 +50,7 @@ interface TmdbApi {
     ): Call<MovieResponseDTO>
 
     @GET("trending/movie/day")
-    suspend fun getTrendingMoviesSuspend(
+    suspend fun getTrendingMovies(
         @Query("language")
         language: String,
         @Query("page")
@@ -58,7 +58,7 @@ interface TmdbApi {
     ): NetworkResponse<MovieResponseDTO, Error>
 
     @GET("movie/top_rated")
-    suspend fun getTopRatedMoviesSuspend(
+    suspend fun getTopRatedMovies(
         @Query("language")
         language: String,
         @Query("page")
@@ -66,7 +66,7 @@ interface TmdbApi {
     ): NetworkResponse<MovieResponseDTO, Error>
 
     @GET("movie/upcoming")
-    suspend fun getUpcomingMoviesSuspend(
+    suspend fun getUpcomingMovies(
         @Query("language")
         language: String,
         @Query("page")
@@ -74,7 +74,7 @@ interface TmdbApi {
     ): NetworkResponse<MovieResponseDTO, Error>
 
     @GET("movie/popular")
-    suspend fun getPopularMoviesSuspend(
+    suspend fun getPopularMovies(
         @Query("language")
         language: String,
         @Query("page")

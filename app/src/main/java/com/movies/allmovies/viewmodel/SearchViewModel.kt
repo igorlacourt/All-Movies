@@ -1,6 +1,5 @@
 package com.movies.allmovies.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -31,46 +30,36 @@ class SearchViewModel @Inject constructor(private val tmdbApi: TmdbApi, @MainDis
     private var _errorMessage = MutableLiveData<String>()
     var errorMessage: LiveData<String> = _errorMessage
 
-    val TAG = "calltest"
     fun searchMovie(title: String){
         showSearchProgressBar(true)
         showError(false)
-        viewModelScope.launch(mainDispatcher) {
-              val response = tmdbApi.searchMovieSuspend(AppConstants.LANGUAGE, title, false)
-             showSearchProgressBar(false)
-              when (response) {
-                  is NetworkResponse.Success -> {
-                      Log.d(TAG, "Success")
-                      _searchResult.value = response.body.results
-                      showResults(response.body.results)
-                  }
-                  is NetworkResponse.ApiError -> {
-                      Log.d("svmlog", "_____________________________")
-                      Log.d("svmlog", "NetworkResponse.ApiError ->")
-                      Log.d("svmlog", "code = ${response.body.cd}")
-                      Log.d("svmlog", "msg = ${response.body.message}")
-                      _errorMessage.value = AppConstants.API_ERROR_MESSAGE
-                      showErrorScreen()
-                  }
-                  is NetworkResponse.NetworkError -> {
-                      Log.d("svmlog", "_____________________________")
-                      Log.d("svmlog", "NetworkResponse.NetworkError ->")
-                      Log.d("svmlog", "cause = ${response.error.cause}")
-                      Log.d("svmlog", "localizedMessage = ${response.error.localizedMessage}")
-                      _errorMessage.value = AppConstants.NETWORK_ERROR_MESSAGE
-                      showErrorScreen()
-                  }
+        try {
+            viewModelScope.launch(mainDispatcher) {
+                val response = tmdbApi.searchMovie(AppConstants.LANGUAGE, title, false)
+                showSearchProgressBar(false)
+                when (response) {
+                    is NetworkResponse.Success -> {
+                        _searchResult.value = response.body.results
+                        showResults(response.body.results)
+                    }
+                    is NetworkResponse.ApiError -> {
+                        _errorMessage.value = AppConstants.API_ERROR_MESSAGE
+                        showErrorScreen()
+                    }
+                    is NetworkResponse.NetworkError -> {
+                        _errorMessage.value = AppConstants.NETWORK_ERROR_MESSAGE
+                        showErrorScreen()
+                    }
 
-                  is NetworkResponse.UnknownError -> {
-                      Log.d("svmlog", "_____________________________")
-                      Log.d("svmlog", "NetworkResponse.UnknownError ->")
-                      Log.d("svmlog", "cause = ${response.error?.cause}")
-                      Log.d("svmlog", "localizedMessage = ${response.error?.localizedMessage}")
-                      _errorMessage.value = AppConstants.UNKNOWN_ERROR_MESSAGE
-                      showErrorScreen()
-                  }
-              }
-          }
+                    is NetworkResponse.UnknownError -> {
+                        _errorMessage.value = AppConstants.UNKNOWN_ERROR_MESSAGE
+                        showErrorScreen()
+                    }
+                }
+            }
+        } catch (exception: Exception){
+            throw exception
+        }
     }
 
     private fun showResults(results: List<MovieDTO>) {

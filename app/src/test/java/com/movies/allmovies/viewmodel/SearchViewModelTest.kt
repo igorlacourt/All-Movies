@@ -61,7 +61,7 @@ class SearchViewModelTest {
     @Test
     fun `make request, returns 200`() = dispatcher.runBlockingTest {
         //Arrange
-        `when`(tmdbApi.searchMovieSuspend(AppConstants.LANGUAGE, movieTitle, false)).thenReturn(
+        `when`(tmdbApi.searchMovie(AppConstants.LANGUAGE, movieTitle, false)).thenReturn(
             successResponse
         )
         //Act
@@ -76,7 +76,7 @@ class SearchViewModelTest {
     @Test
     fun `make request, returns 400`() = dispatcher.runBlockingTest {
         //Arrange
-        `when`(tmdbApi.searchMovieSuspend(AppConstants.LANGUAGE, movieTitle, false)).thenReturn(
+        `when`(tmdbApi.searchMovie(AppConstants.LANGUAGE, movieTitle, false)).thenReturn(
             networkErrorResponse
         )
         //Act
@@ -92,7 +92,7 @@ class SearchViewModelTest {
     @Test
     fun `make request, returns 500`() = dispatcher.runBlockingTest {
         // Arrange
-        `when`(tmdbApi.searchMovieSuspend(AppConstants.LANGUAGE, movieTitle, false)).thenReturn(
+        `when`(tmdbApi.searchMovie(AppConstants.LANGUAGE, movieTitle, false)).thenReturn(
             apiErrorResponse
         )
         //Act

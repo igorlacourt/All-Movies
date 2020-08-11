@@ -1,7 +1,6 @@
 package com.movies.allmovies.repository
 
 import android.content.Context
-import android.util.Log
 import com.movies.allmovies.AppConstants
 import com.movies.allmovies.database.MyListDao
 import com.movies.allmovies.domainmodel.MyListItem
@@ -23,11 +22,12 @@ class HomeDataSourceImpl
 
     override suspend fun getListsOfMovies(dispatcher: CoroutineDispatcher, homeResultCallback:  (result: NetworkResponse<List<List<MovieDTO>>, Error>) -> Unit) {
         withContext(dispatcher){
+            // This try catch is usefull for notifying us about any thread issue like ths use of .value instead of .postValue in a background thread
             try {
-                val trendingMoviesResponse = async { tmdbApi.getTrendingMoviesSuspend(AppConstants.LANGUAGE, 1) }
-                val upcomingMoviesResponse = async { tmdbApi.getUpcomingMoviesSuspend(AppConstants.LANGUAGE, 1) }
-                val popularMoviesResponse = async { tmdbApi.getPopularMoviesSuspend(AppConstants.LANGUAGE, 1) }
-                val topRatedMoviesResponse = async { tmdbApi.getTopRatedMoviesSuspend(AppConstants.LANGUAGE, 1) }
+                val trendingMoviesResponse = async { tmdbApi.getTrendingMovies(AppConstants.LANGUAGE, 1) }
+                val upcomingMoviesResponse = async { tmdbApi.getUpcomingMovies(AppConstants.LANGUAGE, 1) }
+                val popularMoviesResponse = async { tmdbApi.getPopularMovies(AppConstants.LANGUAGE, 1) }
+                val topRatedMoviesResponse = async { tmdbApi.getTopRatedMovies(AppConstants.LANGUAGE, 1) }
                 processData(
                     homeResultCallback,
                     trendingMoviesResponse.await(),
@@ -36,7 +36,7 @@ class HomeDataSourceImpl
                     topRatedMoviesResponse.await()
                 )
             } catch (exception: Exception) {
-                Log.d("parallelRequest", exception.message)
+                throw  exception
             }
         }
     }

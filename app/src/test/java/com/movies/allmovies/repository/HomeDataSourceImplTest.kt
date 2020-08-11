@@ -59,16 +59,16 @@ class HomeDataSourceImplTest {
     @Test
     fun `when ALL 4 REQUESTS returns SUCCESSFULLY expect success network response`() = dispatcher.runBlockingTest {
         // Arrange
-        `when`(tmdbApi.getTrendingMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
+        `when`(tmdbApi.getTrendingMovies(AppConstants.LANGUAGE, 1)).thenReturn(
             NetworkResponse.Success(movieResponseDTO)
         )
-        `when`(tmdbApi.getUpcomingMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
+        `when`(tmdbApi.getUpcomingMovies(AppConstants.LANGUAGE, 1)).thenReturn(
             NetworkResponse.Success(movieResponseDTO)
         )
-        `when`(tmdbApi.getPopularMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
+        `when`(tmdbApi.getPopularMovies(AppConstants.LANGUAGE, 1)).thenReturn(
             NetworkResponse.Success(movieResponseDTO)
         )
-        `when`(tmdbApi.getTopRatedMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
+        `when`(tmdbApi.getTopRatedMovies(AppConstants.LANGUAGE, 1)).thenReturn(
             NetworkResponse.Success(movieResponseDTO)
         )
         var response: NetworkResponse<List<List<MovieDTO>>, Error>? = null
@@ -84,16 +84,16 @@ class HomeDataSourceImplTest {
     @Test
     fun `when 1 OF THE REQUESTS returns API ERROR expect api error response`() = dispatcher.runBlockingTest {
         // Arrange
-        `when`(tmdbApi.getTrendingMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
+        `when`(tmdbApi.getTrendingMovies(AppConstants.LANGUAGE, 1)).thenReturn(
             NetworkResponse.ApiError(Error(), 400)
         )
-        `when`(tmdbApi.getUpcomingMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
+        `when`(tmdbApi.getUpcomingMovies(AppConstants.LANGUAGE, 1)).thenReturn(
             NetworkResponse.Success(movieResponseDTO)
         )
-        `when`(tmdbApi.getPopularMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
+        `when`(tmdbApi.getPopularMovies(AppConstants.LANGUAGE, 1)).thenReturn(
             NetworkResponse.Success(movieResponseDTO)
         )
-        `when`(tmdbApi.getTopRatedMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
+        `when`(tmdbApi.getTopRatedMovies(AppConstants.LANGUAGE, 1)).thenReturn(
             NetworkResponse.Success(movieResponseDTO)
         )
         var response: NetworkResponse<List<List<MovieDTO>>, Error>? = null
@@ -108,16 +108,16 @@ class HomeDataSourceImplTest {
     @Test
     fun `when 1 OF THE REQUESTS returns NETWORK ERROR expect api error response`() = dispatcher.runBlockingTest {
         // Arrange
-        `when`(tmdbApi.getTrendingMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
+        `when`(tmdbApi.getTrendingMovies(AppConstants.LANGUAGE, 1)).thenReturn(
             NetworkResponse.NetworkError(IOException())
         )
-        `when`(tmdbApi.getUpcomingMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
+        `when`(tmdbApi.getUpcomingMovies(AppConstants.LANGUAGE, 1)).thenReturn(
             NetworkResponse.Success(movieResponseDTO)
         )
-        `when`(tmdbApi.getPopularMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
+        `when`(tmdbApi.getPopularMovies(AppConstants.LANGUAGE, 1)).thenReturn(
             NetworkResponse.Success(movieResponseDTO)
         )
-        `when`(tmdbApi.getTopRatedMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
+        `when`(tmdbApi.getTopRatedMovies(AppConstants.LANGUAGE, 1)).thenReturn(
             NetworkResponse.Success(movieResponseDTO)
         )
         var response: NetworkResponse<List<List<MovieDTO>>, Error>? = null
@@ -132,16 +132,16 @@ class HomeDataSourceImplTest {
     @Test
     fun `when 1 OF THE REQUESTS returns UNKNOWN ERROR expect api error response`() = dispatcher.runBlockingTest {
         // Arrange
-        `when`(tmdbApi.getTrendingMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
+        `when`(tmdbApi.getTrendingMovies(AppConstants.LANGUAGE, 1)).thenReturn(
             NetworkResponse.UnknownError(Throwable())
         )
-        `when`(tmdbApi.getUpcomingMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
+        `when`(tmdbApi.getUpcomingMovies(AppConstants.LANGUAGE, 1)).thenReturn(
             NetworkResponse.Success(movieResponseDTO)
         )
-        `when`(tmdbApi.getPopularMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
+        `when`(tmdbApi.getPopularMovies(AppConstants.LANGUAGE, 1)).thenReturn(
             NetworkResponse.Success(movieResponseDTO)
         )
-        `when`(tmdbApi.getTopRatedMoviesSuspend(AppConstants.LANGUAGE, 1)).thenReturn(
+        `when`(tmdbApi.getTopRatedMovies(AppConstants.LANGUAGE, 1)).thenReturn(
             NetworkResponse.Success(movieResponseDTO)
         )
         var response: NetworkResponse<List<List<MovieDTO>>, Error>? = null
