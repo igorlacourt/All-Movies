@@ -64,7 +64,7 @@ class HomeViewModelTest {
     // method featureName - https://dzone.com/articles/7-popular-unit-test-naming
     // [what it does] if [something happen]
     @Test
-    fun `live data lists are filled when data source returns no error`() = dispatcher.runBlockingTest {
+    fun `when LISTS OF MOVIES request returns with SUCCESS expect live data lists filled `() = dispatcher.runBlockingTest {
         // Arrange
         homeDataSourceMock = HomeDataSourceMock(
             getListsOfMoviesResponse = NetworkResponse.Success(resultListsMock)
@@ -79,7 +79,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `error live data is filled if data source returns api error`() = dispatcher.runBlockingTest {
+    fun `when LISTS OF MOVIES request returns API ERROR expect error live data filled`() = dispatcher.runBlockingTest {
         // Arrange
         homeDataSourceMock =
             HomeDataSourceMock(
@@ -95,7 +95,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `error live data is filled if data source returns network error`() = dispatcher.runBlockingTest {
+    fun `when LISTS OF MOVIES request returns NETWORK error expect error live data filled`() = dispatcher.runBlockingTest {
         // Arrange
         homeDataSourceMock =
             HomeDataSourceMock(
@@ -111,7 +111,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `error live data is filled if data source returns unknown error`() = dispatcher.runBlockingTest {
+    fun `when LISTS OF MOVIES request returns UNKNOWN error expect error live data filled`() = dispatcher.runBlockingTest {
         // Arrange
         homeDataSourceMock =
             HomeDataSourceMock(
@@ -127,7 +127,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `top trending live data is filled when request returns a successful response`() = dispatcher.runBlockingTest {
+    fun `when TOP MOVIE request returns a successful response expect top trending live data filled`() = dispatcher.runBlockingTest {
         // Arrange
         homeDataSourceMock = HomeDataSourceMock(
             getListsOfMoviesResponse = NetworkResponse.Success(resultListsMock)
@@ -139,7 +139,6 @@ class HomeViewModelTest {
         // Act
         viewModel?.getListOfMovies()
         // Assert
-        // TODO Fix: this should be the exact same instance than the returned one
         assertEquals(detailsDTOMock.toDetails().id, viewModel?.topTrendingMovie?.value?.id)
         assertEquals(detailsDTOMock.toDetails().title, viewModel?.topTrendingMovie?.value?.title)
         assertEquals(false, viewModel?.errorScreenVisibility?.value)
@@ -147,7 +146,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `error live data is filled when request returns a NETWORK error response`() = dispatcher.runBlockingTest {
+    fun `when TOP MOVIE request returns NETWORK error expect error live data filled`() = dispatcher.runBlockingTest {
         // Arrange
         homeDataSourceMock = HomeDataSourceMock(
             getListsOfMoviesResponse = NetworkResponse.Success(resultListsMock)
@@ -165,7 +164,7 @@ class HomeViewModelTest {
     }
 
      @Test
-    fun `error live data is filled when request returns a API error response`() = dispatcher.runBlockingTest {
+    fun `when TOP MOVIE request returns API error expect error live data filled`() = dispatcher.runBlockingTest {
         // Arrange
         homeDataSourceMock = HomeDataSourceMock(
             getListsOfMoviesResponse = NetworkResponse.Success(resultListsMock)
@@ -182,7 +181,7 @@ class HomeViewModelTest {
         assertEquals(AppConstants.API_ERROR_MESSAGE, viewModel?.errorMessage?.value)
     }
 
-    fun `error live data is filled when request returns a UNKNNOWN error response`() = dispatcher.runBlockingTest {
+    fun `when TOP MOVIE request returns UNKNNOWN error expect error live data filled`() = dispatcher.runBlockingTest {
         // Arrange
         homeDataSourceMock = HomeDataSourceMock(
             getListsOfMoviesResponse = NetworkResponse.Success(resultListsMock)
