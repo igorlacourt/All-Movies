@@ -95,7 +95,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `when LISTS OF MOVIES request returns NETWORK error expect error live data filled`() = dispatcher.runBlockingTest {
+    fun `when LISTS OF MOVIES request returns NETWORK ERROR expect error live data filled`() = dispatcher.runBlockingTest {
         // Arrange
         homeDataSourceMock =
             HomeDataSourceMock(
@@ -107,15 +107,15 @@ class HomeViewModelTest {
         // Assert
         assertEquals(null, viewModel?.listsOfMovies?.value)
         assertEquals(true, viewModel?.errorScreenVisibility?.value)
-        assertEquals(AppConstants.API_ERROR_MESSAGE, viewModel?.errorMessage?.value)
+        assertEquals(AppConstants.NETWORK_ERROR_MESSAGE, viewModel?.errorMessage?.value)
     }
 
     @Test
-    fun `when LISTS OF MOVIES request returns UNKNOWN error expect error live data filled`() = dispatcher.runBlockingTest {
+    fun `when LISTS OF MOVIES request returns UNKNOWN ERROR expect error live data filled`() = dispatcher.runBlockingTest {
         // Arrange
         homeDataSourceMock =
             HomeDataSourceMock(
-                getListsOfMoviesResponse = NetworkResponse.NetworkError(IOException())
+                getListsOfMoviesResponse = NetworkResponse.UnknownError(Throwable())
             )
         viewModel = HomeViewModel(context, tmdbApi, homeDataSourceMock!!, dispatcher)
         // Act
@@ -123,11 +123,11 @@ class HomeViewModelTest {
         // Assert
         assertEquals(null, viewModel?.listsOfMovies?.value)
         assertEquals(true, viewModel?.errorScreenVisibility?.value)
-        assertEquals(AppConstants.API_ERROR_MESSAGE, viewModel?.errorMessage?.value)
+        assertEquals(AppConstants.UNKNOWN_ERROR_MESSAGE, viewModel?.errorMessage?.value)
     }
 
     @Test
-    fun `when TOP MOVIE request returns a successful response expect top trending live data filled`() = dispatcher.runBlockingTest {
+    fun `when TOP MOVIE request returns with SUCCESS expect top trending live data filled`() = dispatcher.runBlockingTest {
         // Arrange
         homeDataSourceMock = HomeDataSourceMock(
             getListsOfMoviesResponse = NetworkResponse.Success(resultListsMock)
@@ -146,7 +146,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun `when TOP MOVIE request returns NETWORK error expect error live data filled`() = dispatcher.runBlockingTest {
+    fun `when TOP MOVIE request returns NETWORK ERROR expect error live data filled`() = dispatcher.runBlockingTest {
         // Arrange
         homeDataSourceMock = HomeDataSourceMock(
             getListsOfMoviesResponse = NetworkResponse.Success(resultListsMock)
@@ -164,7 +164,7 @@ class HomeViewModelTest {
     }
 
      @Test
-    fun `when TOP MOVIE request returns API error expect error live data filled`() = dispatcher.runBlockingTest {
+    fun `when TOP MOVIE request returns API ERROR expect error live data filled`() = dispatcher.runBlockingTest {
         // Arrange
         homeDataSourceMock = HomeDataSourceMock(
             getListsOfMoviesResponse = NetworkResponse.Success(resultListsMock)
@@ -181,7 +181,7 @@ class HomeViewModelTest {
         assertEquals(AppConstants.API_ERROR_MESSAGE, viewModel?.errorMessage?.value)
     }
 
-    fun `when TOP MOVIE request returns UNKNNOWN error expect error live data filled`() = dispatcher.runBlockingTest {
+    fun `when TOP MOVIE request returns UNKNNOWN ERROR expect error live data filled`() = dispatcher.runBlockingTest {
         // Arrange
         homeDataSourceMock = HomeDataSourceMock(
             getListsOfMoviesResponse = NetworkResponse.Success(resultListsMock)
@@ -200,13 +200,16 @@ class HomeViewModelTest {
 
     private fun initialiseMockedObjects() {
         movieDTOMock = MovieDTO(0, "", "", "")
+
         successResponseMock = NetworkResponse.Success(MovieResponseDTO(listOf(movieDTOMock)))
+
         resultListsMock = arrayListOf(
             successResponseMock.body.results,
             successResponseMock.body.results,
             successResponseMock.body.results,
             successResponseMock.body.results
         )
+
         detailsDTOMock = DetailsDTO(
             false,
             "",

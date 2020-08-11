@@ -1,17 +1,18 @@
 package com.movies.allmovies.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.movies.allmovies.AppConstants
 import com.movies.allmovies.network.TmdbApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
-import org.junit.*
+import org.junit.After
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
@@ -34,6 +35,7 @@ class HomeDataSourceImplTest {
         Dispatchers.resetMain()
         dispatcher.cleanupTestCoroutines()
     }
+
     @Test
     fun `make all 4 requests and all of them is successful`() = dispatcher.runBlockingTest {
         // Arrange

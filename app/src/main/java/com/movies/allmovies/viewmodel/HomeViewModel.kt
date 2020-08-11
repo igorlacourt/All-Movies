@@ -52,10 +52,10 @@ class HomeViewModel @Inject constructor(val context: Context, private val tmdbAp
                         getTopMovie(result.body[0][0].id)
                     }
                     is NetworkResponse.ApiError -> {
-                        showErrorScreen(show = true, errorMessage = AppConstants.UNKNOWN_ERROR_MESSAGE)
+                        showErrorScreen(show = true, errorMessage = AppConstants.API_ERROR_MESSAGE)
                     }
                     is NetworkResponse.NetworkError -> {
-                        showErrorScreen(show = true, errorMessage = AppConstants.UNKNOWN_ERROR_MESSAGE)
+                        showErrorScreen(show = true, errorMessage = AppConstants.NETWORK_ERROR_MESSAGE)
                     }
                     is NetworkResponse.UnknownError -> {
                         showErrorScreen(show = true, errorMessage = AppConstants.UNKNOWN_ERROR_MESSAGE)
