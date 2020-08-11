@@ -63,10 +63,10 @@ class HomeDataSourceImpl
                             popular: NetworkResponse<MovieResponseDTO, Error>,
                             topRated: NetworkResponse<MovieResponseDTO, Error>
     ) {
-        val pair1 = convertResponse(trending)
-        val pair2 = convertResponse(upcoming)
-        val pair3 = convertResponse(popular)
-        val pair4 = convertResponse(topRated)
+        val pair1 = buildResponse(trending)
+        val pair2 = buildResponse(upcoming)
+        val pair3 = buildResponse(popular)
+        val pair4 = buildResponse(topRated)
 
         when {
             pair1.first == null -> {
@@ -96,7 +96,7 @@ class HomeDataSourceImpl
         }
     }
 
-    private fun convertResponse(response: NetworkResponse<MovieResponseDTO, Error>)
+    private fun buildResponse(response: NetworkResponse<MovieResponseDTO, Error>)
             : Pair<List<MovieDTO>?, NetworkResponse<List<List<MovieDTO>>, Error>?>
     {
         return when(response) {
