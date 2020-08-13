@@ -98,6 +98,7 @@ class HomeFragment : Fragment(), OnMovieClick {
         trailerButtonClickListener()
         learnMoreButtonClickListener()
         topMovieImageClickListener()
+        attachRetryClickListener()
     }
 
     private fun topMovieImageClickListener() {
@@ -129,6 +130,12 @@ class HomeFragment : Fragment(), OnMovieClick {
             viewModel.topTrendingMovie?.value?.id?.let { id ->
                 goToDetailsFragment(id)
             }
+        }
+    }
+
+    private fun attachRetryClickListener() {
+        binding.iErrorScreen.btRetry.setOnClickListener {
+            viewModel.getListOfMovies()
         }
     }
 

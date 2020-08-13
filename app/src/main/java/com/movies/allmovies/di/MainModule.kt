@@ -1,7 +1,6 @@
-package com.movies.allmovies.di.subcomponent
+package com.movies.allmovies.di
 
 import androidx.lifecycle.ViewModel
-import com.movies.allmovies.di.ViewModelKey
 import com.movies.allmovies.viewmodel.*
 import dagger.Binds
 import dagger.Module

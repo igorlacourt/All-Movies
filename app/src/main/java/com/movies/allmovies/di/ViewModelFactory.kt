@@ -12,7 +12,7 @@ import kotlin.reflect.KClass
 /**
  * ViewModelFactory which uses Dagger to create the instances.
  */
-class TodoViewModelFactory @Inject constructor(
+class ViewModelFactory @Inject constructor(
     private val creators:  @JvmSuppressWildcards Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -40,7 +40,7 @@ class TodoViewModelFactory @Inject constructor(
 @Module
 abstract class ViewModelBuilderModule {
     @Binds
-    abstract fun bindViewModelFactory(factory: TodoViewModelFactory): ViewModelProvider.Factory
+    abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 }
 
 @Target(

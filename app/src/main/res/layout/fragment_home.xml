@@ -201,5 +201,13 @@
             app:viewModel="@{viewModel}"
             tool:visibility="visible" />
 
+        <include
+            android:id="@+id/i_error_screen"
+            layout="@layout/layout_error"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:errorMessage="@{viewModel.errorMessage}"
+            app:errorScreenVisibility="@{viewModel.errorScreenVisibility}"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
