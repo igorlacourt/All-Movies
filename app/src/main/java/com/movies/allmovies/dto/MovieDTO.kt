@@ -7,7 +7,7 @@ data class MovieDTO(
     val poster_path: String?,
     val backdrop_path: String?,
     val title: String?
-) : Serializable
+) //: Serializable
 
 
 

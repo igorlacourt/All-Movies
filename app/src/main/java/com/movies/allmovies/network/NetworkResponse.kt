@@ -8,6 +8,21 @@ import java.io.IOException
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
+// Codigo útil p explicar enum antes de explicar sealed class
+enum class Items {
+    ITEM_1, ITEM_2, ITEM_3
+}
+
+class receiveEnum(itemType: Items){
+
+}
+
+class CallEnum {
+   fun doSomething() {
+       receiveEnum(Items.ITEM_2)
+   }
+}
+
 sealed class NetworkResponse<out T : Any, out U : Any> {
     /**
      * Success response with body
