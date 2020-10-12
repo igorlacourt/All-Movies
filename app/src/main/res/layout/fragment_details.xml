@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -8,9 +10,7 @@
             type="com.movies.allmovies.viewmodel.DetailsViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark">
@@ -128,14 +128,14 @@
 
                 <ImageView
                     android:id="@+id/bt_add_to_list"
+                    srcIcon="@{viewModel.isInDatabase}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    srcIcon="@{viewModel.isInDatabase}"
+                    android:layout_marginTop="8dp"
                     android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="@+id/tv_my_list_details"
                     app:layout_constraintStart_toStartOf="@+id/tv_my_list_details"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_casts"
+                    app:layout_constraintTop_toBottomOf="@+id/adView"
                     tools:srcCompat="@drawable/ic_add_white_36dp" />
 
                 <TextView
@@ -149,22 +149,6 @@
                     android:textSize="11sp"
                     app:layout_constraintStart_toEndOf="@+id/btn_search_stream_on_google"
                     app:layout_constraintTop_toBottomOf="@id/bt_add_to_list" />
-
-                <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/adView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    ads:adSize="BANNER"
-                    ads:adUnitId="@string/admob_ad_unit_id"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_recommended" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_recommended"
@@ -223,28 +207,42 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_director" />
 
+                <com.google.android.gms.ads.AdView
+                    android:id="@+id/adView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="8dp"
+                    app:adSize="BANNER"
+                    app:adUnitId="@string/admob_ad_unit_id"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_casts" />
+
                 <TextView
                     android:id="@+id/tv_recommended_header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:text="Recommended"
                     android:textSize="15sp"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/rv_recommended"
                     app:layout_constraintStart_toStartOf="@+id/tv_director"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_my_list_details" />
+                    app:layout_constraintTop_toBottomOf="@+id/btn_search_stream_on_google" />
 
                 <include
                     android:id="@+id/btn_search_stream_on_google"
                     layout="@layout/button_stream_google_search"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_my_list_details"
                     app:layout_constraintStart_toStartOf="@+id/tv_director"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_casts" />
+                    app:layout_constraintTop_toTopOf="@+id/bt_add_to_list" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>

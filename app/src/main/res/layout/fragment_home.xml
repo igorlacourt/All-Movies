@@ -190,7 +190,26 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cl_top_movie" />
+
+                <com.google.android.gms.ads.AdView
+                    android:id="@+id/adView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    app:adSize="BANNER"
+                    app:adUnitId="@string/admob_ad_unit_id"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_lists_of_movies"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.core.widget.NestedScrollView>
 
         <include

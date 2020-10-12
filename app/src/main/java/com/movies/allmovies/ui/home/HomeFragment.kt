@@ -27,6 +27,7 @@ import com.movies.allmovies.domainmappers.toMyListItem
 import com.movies.allmovies.dto.GenreXDTO
 import com.movies.allmovies.dto.VideoDTO
 import com.movies.allmovies.ui.OnMovieClick
+import com.movies.allmovies.util.BannerAds
 import com.movies.allmovies.viewmodel.HomeViewModel
 import com.squareup.picasso.Picasso
 import javax.inject.Inject
@@ -56,6 +57,8 @@ class HomeFragment : Fragment(), OnMovieClick {
 
         attachObservers()
         attachClickListeners()
+
+        BannerAds.loadAds(context, binding.root)
 
         return binding.root
     }
