@@ -41,6 +41,8 @@ class PersonDetailsFragment : Fragment(), OnMovieClick {
 
     lateinit var progressBar: FrameLayout
 
+    lateinit var bannerAds: BannerAds
+
     var personId: Int? = null
 
     override fun onCreateView(
@@ -116,9 +118,15 @@ class PersonDetailsFragment : Fragment(), OnMovieClick {
             }
         })
 
-        BannerAds.loadAds(context, view)
+        bannerAds = BannerAds(view)
+        bannerAds.loadAds(requireContext())
 
         return view
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        bannerAds.removeAds()
     }
 
     fun displayDetails(details: PersonDetails?) {

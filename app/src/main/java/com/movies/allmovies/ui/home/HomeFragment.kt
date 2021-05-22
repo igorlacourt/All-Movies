@@ -42,6 +42,7 @@ class HomeFragment : Fragment(), OnMovieClick {
         (requireActivity() as MainActivity).mainComponent.inject(this)
     }
 
+    private lateinit var bannerAds: BannerAds
     private lateinit var binding: FragmentHomeBinding
 
     override fun onCreateView(
@@ -58,9 +59,15 @@ class HomeFragment : Fragment(), OnMovieClick {
         attachObservers()
         attachClickListeners()
 
-        BannerAds.loadAds(context, binding.root)
+        bannerAds = BannerAds(binding.root)
+        bannerAds.loadAds(requireContext())
 
         return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        bannerAds.removeAds()
     }
 
     private fun attachObservers() {

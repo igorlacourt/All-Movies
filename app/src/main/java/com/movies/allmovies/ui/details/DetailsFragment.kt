@@ -40,6 +40,7 @@ import javax.inject.Inject
 class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
 //    lateinit var viewModel: DetailsViewModel
     private lateinit var binding: FragmentDetailsBinding
+    private lateinit var bannerAds: BannerAds
     private var castsAdapter: CastsAdapter? = null
     private var gridAdapter: GridAdapter? = null
     private var details: Details? = null
@@ -71,9 +72,16 @@ class DetailsFragment : Fragment(), OnMovieClick, OnCastClick {
         viewModel.getDetails(args.id)
 
         setupClickListeners()
-        BannerAds.loadAds(context, binding.root)
+
+        bannerAds = BannerAds(binding.root)
+        bannerAds.loadAds(requireContext())
 
         return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        bannerAds.removeAds()
     }
 
     private fun attachObservers() {
