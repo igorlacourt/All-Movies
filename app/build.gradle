@@ -23,7 +23,16 @@ android {
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
 
-        buildConfigField("String", "TMDB_API_KEY", TMDB_API_KEY)
+        Properties properties = new Properties()
+        File propFile = project.rootProject.file("local.properties")
+
+        if(propFile.exists()) {
+            properties.load(propFile.newDataInputStream())
+        }
+
+        resValue('string', "admob_app_id", System.getenv("admob_app_id") ?: properties["admob_app_id"])
+        resValue('string', "admob_ad_unit_id", System.getenv("admob_ad_unit_id") ?: properties["admob_ad_unit_id"])
+        buildConfigField("String", "TMDB_API_KEY", System.getenv("TMDB_API_KEY") ?: properties["TMDB_API_KEY"])
     }
 
     buildTypes {
@@ -51,8 +60,8 @@ android {
     }
 }
 kapt { correctErrorTypes = true}
-dependencies {
 
+dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'

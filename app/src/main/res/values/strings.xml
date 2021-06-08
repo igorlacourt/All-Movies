@@ -24,9 +24,4 @@
     <string name="rate_play_store_btn_rate">Rate app</string>
     <string name="play_store_uri">market://details?id=com.movies.allmovies</string>
 
-    <string name="admob_app_id">ca-app-pub-5070947808406616~1403692144</string>
-    <string name="admob_ad_unit_id">ca-app-pub-5070947808406616/9255273764</string>
-<!--    test id <string name="admob_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
-
-
 </resources>
