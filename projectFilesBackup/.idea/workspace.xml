@@ -1,0 +1,739 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="4" />
+  </component>
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="java.lang.IllegalStateException: Cannot invoke setValue on a background thread" />
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7c8fe4d4-ae01-42a1-8fc5-1bbbff78549a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/movies/allmovies/viewmodel/HomeViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/movies/allmovies/viewmodel/HomeViewModel.kt" afterDir="false" />
+    </list>
+    <list id="ecaa11d8-ab37-4e71-8b99-0b11036eae2f" name="Revert &quot;creates new package for new way of making requests&quot;" comment="Revert &quot;creates new package for new way of making requests&quot;&#10;&#10;This reverts commit 3eb657b6" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_2_API_28" />
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$/app">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="PAG Test" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="resourceFile" />
+        <option value="layoutResourceFile_vertical" />
+        <option value="Kotlin Interface" />
+        <option value="Class" />
+        <option value="layoutResourceFile" />
+        <option value="Kotlin Class" />
+        <option value="Kotlin File" />
+      </list>
+    </option>
+  </component>
+  <component name="GenerateSignedApkSettings">
+    <option name="EXPORT_PRIVATE_KEY" value="false" />
+    <option name="KEY_STORE_PATH" value="C:\Users\igor\AndroidStudioProjects\keystore\lacourt-keystore.jks" />
+    <option name="KEY_ALIAS" value="aliaskey" />
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIEW_PUSH_PROTECTED_ONLY" value="true" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="develop" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="ProjectId" id="1agLhUlctwm9SQ4RePKAObg3ED0" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="BundleExportedModule" value="app" />
+    <property name="DEBUGGABLE_DEVICE" value="xiaomi-redmi_note_6_pro-484a173e" />
+    <property name="DEBUGGABLE_PROCESS" value="com.movies.allmovies" />
+    <property name="DEBUGGER_ID" value="Auto" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="Pixel_2_API_28" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-08-02T16:06:19.827Z" />
+    <property name="ExportApk.ApkPath" value="C:\Users\igor\AndroidStudioProjects\PAG-Test\app" />
+    <property name="ExportApk.BuildVariants" value="release" />
+    <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SHOW_ALL_PROCESSES" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
+    <property name="not.eligible.for.single.variant.sync" value="true" />
+    <property name="project.structure.last.edited" value="Dependencies" />
+    <property name="project.structure.proportion" value="0.17" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="preferences.editor" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\igor\AndroidStudioProjects\PAG-Test\app\src\test\java\com\movies\allmovies\viewmodel" />
+    </key>
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="com.movies.allmovies.repository" />
+      <recent name="com.movies.allmovies.ui.search" />
+      <recent name="com.lacourt.myapplication.repository" />
+      <recent name="com.lacourt.myapplication.viewmodel" />
+    </key>
+    <key name="android.template.packageName">
+      <recent name="com.lacourt.myapplication.di" />
+      <recent name="com.lacourt.myapplication.ui" />
+      <recent name="com.lacourt.myapplication.ui.search" />
+    </key>
+    <key name="android.template.parentActivityClass">
+      <recent name="" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.movies.allmovies.di" />
+      <recent name="com.movies.allmovies.repository" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Android App.app">
+    <configuration name="HomeDataSourceImplTest" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
+      <module name="app" />
+      <shortenClasspath name="CLASSPATH_FILE" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.movies.allmovies.repository.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.movies.allmovies.repository" />
+      <option name="MAIN_CLASS_NAME" value="com.movies.allmovies.repository.HomeDataSourceImplTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HomeDataSourceImplTest.when ALL 4 REQUESTS returns SUCCESSFULLY expect success network response" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
+      <module name="app" />
+      <shortenClasspath name="CLASSPATH_FILE" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.movies.allmovies.repository.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.movies.allmovies.repository" />
+      <option name="MAIN_CLASS_NAME" value="com.movies.allmovies.repository.HomeDataSourceImplTest" />
+      <option name="METHOD_NAME" value="when ALL 4 REQUESTS returns SUCCESSFULLY expect success network response" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
+      <shortenClasspath name="CLASSPATH_FILE" />
+      <option name="MAIN_CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
+      <module name="app" />
+      <option name="DEPLOY" value="true" />
+      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+      <option name="DEPLOY_AS_INSTANT" value="false" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
+      <Auto>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Auto>
+      <Hybrid>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Hybrid>
+      <Java />
+      <Native>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Native>
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sample Java Methods" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HomeViewModelTest.get lists of movies from the data source successfully" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.movies.allmovies.viewmodel.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.movies.allmovies.viewmodel" />
+      <option name="MAIN_CLASS_NAME" value="com.movies.allmovies.viewmodel.HomeViewModelTest" />
+      <option name="METHOD_NAME" value="get lists of movies from the data source successfully" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HomeViewModelTest.live data lists are filled when data source returns no error" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.movies.allmovies.viewmodel.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.movies.allmovies.viewmodel" />
+      <option name="MAIN_CLASS_NAME" value="com.movies.allmovies.viewmodel.HomeViewModelTest" />
+      <option name="METHOD_NAME" value="live data lists are filled when data source returns no error" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HomeViewModelTest.top trending live data is filled when request returns a successful response" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.movies.allmovies.viewmodel.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.movies.allmovies.viewmodel" />
+      <option name="MAIN_CLASS_NAME" value="com.movies.allmovies.viewmodel.HomeViewModelTest" />
+      <option name="METHOD_NAME" value="top trending live data is filled when request returns a successful response" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Android JUnit.HomeDataSourceImplTest" />
+        <item itemvalue="Android JUnit.HomeDataSourceImplTest.when ALL 4 REQUESTS returns SUCCESSFULLY expect success network response" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7c8fe4d4-ae01-42a1-8fc5-1bbbff78549a" name="Default Changelist" comment="" />
+      <created>1570318865769</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1570318865769</updated>
+    </task>
+    <task id="LOCAL-00071" summary="adds function for drawing genres in the home fragment">
+      <created>1595083184397</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1595083184397</updated>
+    </task>
+    <task id="LOCAL-00072" summary="remove logs from import">
+      <created>1595083289114</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1595083289114</updated>
+    </task>
+    <task id="LOCAL-00073" summary="some ui adjustments">
+      <created>1595083660041</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1595083660041</updated>
+    </task>
+    <task id="LOCAL-00074" summary="implements movie click for home screen">
+      <created>1595084768062</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1595084768062</updated>
+    </task>
+    <task id="LOCAL-00075" summary="creates click listeners for home screen">
+      <created>1595086073381</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1595086073381</updated>
+    </task>
+    <task id="LOCAL-00076" summary="adjusts livedata instances in HomeViewModel">
+      <created>1595105826882</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1595105826883</updated>
+    </task>
+    <task id="LOCAL-00077" summary="refactor of details request">
+      <created>1595109534506</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1595109534506</updated>
+    </task>
+    <task id="LOCAL-00078" summary="implements adding and removing from database in details fragment">
+      <created>1595112276177</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1595112276178</updated>
+    </task>
+    <task id="LOCAL-00079" summary="implements recommended and casts recyclerviews">
+      <created>1595114605188</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1595114605188</updated>
+    </task>
+    <task id="LOCAL-00080" summary="formats movie duration using a livedata transformation">
+      <created>1595183370883</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1595183370884</updated>
+    </task>
+    <task id="LOCAL-00081" summary="moves formatting of fields to the domain object called Details">
+      <created>1595186552737</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1595186552737</updated>
+    </task>
+    <task id="LOCAL-00082" summary="updates lifecycle extensions version and implements isLoading livedata for details screen">
+      <created>1595188624476</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1595188624476</updated>
+    </task>
+    <task id="LOCAL-00083" summary="organizes details fragment code">
+      <created>1595190092711</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1595190092711</updated>
+    </task>
+    <task id="LOCAL-00084" summary="remove codesmell">
+      <created>1595190438952</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1595190438952</updated>
+    </task>
+    <task id="LOCAL-00085" summary="injects viewmodel using dagger in details viewmodel">
+      <created>1595191012399</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1595191012399</updated>
+    </task>
+    <task id="LOCAL-00086" summary="removes unused files">
+      <created>1595258404017</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1595258404018</updated>
+    </task>
+    <task id="LOCAL-00087" summary="separate some classes">
+      <created>1595289410156</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1595289410157</updated>
+    </task>
+    <task id="LOCAL-00088" summary="include some files">
+      <created>1595289505088</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1595289505088</updated>
+    </task>
+    <task id="LOCAL-00089" summary="remove some unnecessary code">
+      <created>1595292339833</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1595292339833</updated>
+    </task>
+    <task id="LOCAL-00090" summary="remove comment">
+      <created>1595293265924</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1595293265924</updated>
+    </task>
+    <task id="LOCAL-00091" summary="injects network service using dagger in every screen and removes unused dependecies and functions">
+      <created>1595548706312</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1595548706313</updated>
+    </task>
+    <task id="LOCAL-00092" summary="creates instant executor extension">
+      <created>1595617592420</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1595617592421</updated>
+    </task>
+    <task id="LOCAL-00093" summary="starts the creation of first coroutines test for SearchViewModel">
+      <created>1595619806041</created>
+      <option name="number" value="00093" />
+      <option name="presentableId" value="LOCAL-00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1595619806041</updated>
+    </task>
+    <task id="LOCAL-00094" summary="fix test for the success case of movie search in SearchViewModel">
+      <created>1595782809528</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1595782809529</updated>
+    </task>
+    <task id="LOCAL-00095" summary="injects coroutine dispatcher according with type in the veiwmodels and in the home data source">
+      <created>1595784680926</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1595784680928</updated>
+    </task>
+    <task id="LOCAL-00096" summary="implements unit test for network error case of the request for searching movie and make mutable livedata private in search viewmodel">
+      <created>1595796372463</created>
+      <option name="number" value="00096" />
+      <option name="presentableId" value="LOCAL-00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1595796372464</updated>
+    </task>
+    <task id="LOCAL-00097" summary="adds strings for request error cases">
+      <created>1596387096061</created>
+      <option name="number" value="00097" />
+      <option name="presentableId" value="LOCAL-00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1596387096062</updated>
+    </task>
+    <task id="LOCAL-00098" summary="creates boolean livedata for error message">
+      <created>1596388539866</created>
+      <option name="number" value="00098" />
+      <option name="presentableId" value="LOCAL-00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1596388539868</updated>
+    </task>
+    <task id="LOCAL-00099" summary="finishing search screen refactoring">
+      <created>1596413656286</created>
+      <option name="number" value="00099" />
+      <option name="presentableId" value="LOCAL-00099" />
+      <option name="project" value="LOCAL" />
+      <updated>1596413656288</updated>
+    </task>
+    <task id="LOCAL-00100" summary="change android.arch.core to androidx.arch.core">
+      <created>1596563183560</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1596563183562</updated>
+    </task>
+    <task id="LOCAL-00101" summary="fixes search viewmodel's unit tests">
+      <created>1596726099481</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1596726099483</updated>
+    </task>
+    <task id="LOCAL-00102" summary="cleans viewmodel after each test function completion">
+      <created>1596726402231</created>
+      <option name="number" value="00102" />
+      <option name="presentableId" value="LOCAL-00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1596726402231</updated>
+    </task>
+    <task id="LOCAL-00103" summary="completes unit tests for getting lists of movies in the home viewmodel">
+      <created>1596851538934</created>
+      <option name="number" value="00103" />
+      <option name="presentableId" value="LOCAL-00103" />
+      <option name="project" value="LOCAL" />
+      <updated>1596851538935</updated>
+    </task>
+    <task id="LOCAL-00104" summary="move HomeViewModelTest to the correct folder">
+      <created>1596851688606</created>
+      <option name="number" value="00104" />
+      <option name="presentableId" value="LOCAL-00104" />
+      <option name="project" value="LOCAL" />
+      <updated>1596851688606</updated>
+    </task>
+    <task id="LOCAL-00105" summary="removes unnecessary database table">
+      <created>1596918123599</created>
+      <option name="number" value="00105" />
+      <option name="presentableId" value="LOCAL-00105" />
+      <option name="project" value="LOCAL" />
+      <updated>1596918123600</updated>
+    </task>
+    <task id="LOCAL-00106" summary="removes unused database queries">
+      <created>1596918469102</created>
+      <option name="number" value="00106" />
+      <option name="presentableId" value="LOCAL-00106" />
+      <option name="project" value="LOCAL" />
+      <updated>1596918469102</updated>
+    </task>
+    <task id="LOCAL-00107" summary="removes some unnecessary logs">
+      <created>1596919221986</created>
+      <option name="number" value="00107" />
+      <option name="presentableId" value="LOCAL-00107" />
+      <option name="project" value="LOCAL" />
+      <updated>1596919221986</updated>
+    </task>
+    <task id="LOCAL-00108" summary="replaces some usages of DomainMovie for MovieDTO and creates some converter functions">
+      <created>1596922590792</created>
+      <option name="number" value="00108" />
+      <option name="presentableId" value="LOCAL-00108" />
+      <option name="project" value="LOCAL" />
+      <updated>1596922590792</updated>
+    </task>
+    <task id="LOCAL-00109" summary="removes unused imports">
+      <created>1596922638606</created>
+      <option name="number" value="00109" />
+      <option name="presentableId" value="LOCAL-00109" />
+      <option name="project" value="LOCAL" />
+      <updated>1596922638606</updated>
+    </task>
+    <task id="LOCAL-00110" summary="removes unused imports">
+      <created>1596922699124</created>
+      <option name="number" value="00110" />
+      <option name="presentableId" value="LOCAL-00110" />
+      <option name="project" value="LOCAL" />
+      <updated>1596922699125</updated>
+    </task>
+    <task id="LOCAL-00111" summary="removes unused dependencies, objects and expose annotations">
+      <created>1596928583878</created>
+      <option name="number" value="00111" />
+      <option name="presentableId" value="LOCAL-00111" />
+      <option name="project" value="LOCAL" />
+      <updated>1596928583878</updated>
+    </task>
+    <task id="LOCAL-00112" summary="refactor HomeDataSourceImpl, so it returns the response containing the error to HomeViewModel">
+      <created>1597009461054</created>
+      <option name="number" value="00112" />
+      <option name="presentableId" value="LOCAL-00112" />
+      <option name="project" value="LOCAL" />
+      <updated>1597009461055</updated>
+    </task>
+    <task id="LOCAL-00113" summary="creates base for HomeDataSourceImpl">
+      <created>1597091366219</created>
+      <option name="number" value="00113" />
+      <option name="presentableId" value="LOCAL-00113" />
+      <option name="project" value="LOCAL" />
+      <updated>1597091366220</updated>
+    </task>
+    <task id="LOCAL-00114" summary="implements unit tests for the top trending movie details - still need some fixes">
+      <created>1597102525093</created>
+      <option name="number" value="00114" />
+      <option name="presentableId" value="LOCAL-00114" />
+      <option name="project" value="LOCAL" />
+      <updated>1597102525093</updated>
+    </task>
+    <task id="LOCAL-00115" summary="implements showErrorScreen on HomeViewModel">
+      <created>1597155048230</created>
+      <option name="number" value="00115" />
+      <option name="presentableId" value="LOCAL-00115" />
+      <option name="project" value="LOCAL" />
+      <updated>1597155048231</updated>
+    </task>
+    <task id="LOCAL-00116" summary="changes test methods names">
+      <created>1597156661623</created>
+      <option name="number" value="00116" />
+      <option name="presentableId" value="LOCAL-00116" />
+      <option name="project" value="LOCAL" />
+      <updated>1597156661623</updated>
+    </task>
+    <task id="LOCAL-00117" summary="finishes HomeViewModelTests">
+      <created>1597158725337</created>
+      <option name="number" value="00117" />
+      <option name="presentableId" value="LOCAL-00117" />
+      <option name="project" value="LOCAL" />
+      <updated>1597158725338</updated>
+    </task>
+    <task id="LOCAL-00118" summary="implements HomeDataSourceImpl tests">
+      <created>1597170076443</created>
+      <option name="number" value="00118" />
+      <option name="presentableId" value="LOCAL-00118" />
+      <option name="project" value="LOCAL" />
+      <updated>1597170076444</updated>
+    </task>
+    <task id="LOCAL-00119" summary="adds try catch for coroutines calls and rename tmdbapi functions">
+      <created>1597177224907</created>
+      <option name="number" value="00119" />
+      <option name="presentableId" value="LOCAL-00119" />
+      <option name="project" value="LOCAL" />
+      <updated>1597177224907</updated>
+    </task>
+    <option name="localTasksCounter" value="120" />
+    <servers />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="injects coroutine dispatcher according with type in the veiwmodels and in the home data source" />
+    <MESSAGE value="implements unit test for network error case of the request for searching movie and make mutable livedata private in search viewmodel" />
+    <MESSAGE value="adds strings for request error cases" />
+    <MESSAGE value="creates boolean livedata for error message" />
+    <MESSAGE value="finishing search screen refactoring" />
+    <MESSAGE value="change androi.arch.core to androidx.arch.core" />
+    <MESSAGE value="change android.arch.core to androidx.arch.core" />
+    <MESSAGE value="fixes search viewmodel's unit tests" />
+    <MESSAGE value="cleans viewmodel after each test function completion" />
+    <MESSAGE value="completes unit tests for getting lists of movies in the home viewmodel" />
+    <MESSAGE value="move HomeViewModelTest to the correct folder" />
+    <MESSAGE value="removes unnecessary database table" />
+    <MESSAGE value="removes unused database queries" />
+    <MESSAGE value="removes some unnecessary logs" />
+    <MESSAGE value="replaces some usages of DomainMovie for MovieDTO and creates some converter functions" />
+    <MESSAGE value="removes unused imports" />
+    <MESSAGE value="removes unused dependencies, objects and expose annotations" />
+    <MESSAGE value="refactor HomeDataSourceImpl, so it returns the response containing the error to HomeViewModel" />
+    <MESSAGE value="creates base for HomeDataSourceImpl" />
+    <MESSAGE value="implements unit tests for the top trending movie details - still need some fixes" />
+    <MESSAGE value="implements showErrorScreen on HomeViewModel" />
+    <MESSAGE value="changes test methods names" />
+    <MESSAGE value="finishes HomeViewModelTests" />
+    <MESSAGE value="implements HomeDataSourceImpl tests" />
+    <MESSAGE value="adds try catch for coroutines calls and rename tmdbapi functions" />
+    <option name="LAST_COMMIT_MESSAGE" value="adds try catch for coroutines calls and rename tmdbapi functions" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/movies/allmovies/ui/details/CastsAdapter.kt</url>
+          <line>71</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/movies/allmovies/ui/details/CastsAdapter.kt</url>
+          <line>78</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/movies/allmovies/domainmodel/Details.kt</url>
+          <line>34</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/PAG_Test$HomeViewModelTest.ic" NAME="HomeViewModelTest Coverage Results" MODIFIED="1597158501659" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.movies.allmovies.viewmodel.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/PAG_Test$SearchViewModelTest__1_.ic" NAME="SearchViewModelTest (1) Coverage Results" MODIFIED="1596413414457" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.movies.allmovies.viewmodel.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/PAG_Test$SearchViewModelTest.ic" NAME="SearchViewModelTest Coverage Results" MODIFIED="1596725842610" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.movies.allmovies.viewmodel.*</FILTER>
+    </SUITE>
+  </component>
+</project>
